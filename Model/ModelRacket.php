@@ -1,8 +1,7 @@
 <?php
 
-require_once 'Database.php';
-require_once 'Racket.php'; // Import class Racket
-
+require_once 'database.php';
+require_once '..\Model\Entity\Racket.php';
 class ModelRacket {
     protected $db;
 

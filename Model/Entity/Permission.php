@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Database.php';
-
 class Permission {
     public $roleID;
     public $functionID;

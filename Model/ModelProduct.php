@@ -1,8 +1,6 @@
 <?php
-
-require_once 'Database.php';
-require_once 'Product.php';
-
+require_once 'database.php';
+require_once '..\Model\Entity\Product.php';
 class ModelProduct {
     private $db;
 

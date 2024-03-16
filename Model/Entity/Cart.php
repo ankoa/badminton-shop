@@ -1,7 +1,4 @@
 <?php
-
-require_once 'Database.php';
-
 class Cart {
     public $cartID;
     public $userID;

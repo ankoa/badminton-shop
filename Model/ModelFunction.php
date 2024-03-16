@@ -1,6 +1,7 @@
 <?php
 
-require_once 'Database.php';
+require_once 'database.php';
+require_once '..\Model\Entity\function_user.php';
 
 class ModelFunction {
     protected $db;

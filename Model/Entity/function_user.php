@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Database.php';
-
 class function_user {
     public $functionID;
     public $functionName;

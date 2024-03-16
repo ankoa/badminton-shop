@@ -1,7 +1,7 @@
 <div class="header_contentTop">
         <div class="left_header_contentTop">
             <div class="logo">
-                <img src="../images/logo.png">
+                <img src="../View/images/logo.png">
             </div>
             <a href=""> HOTLINE: 0123456789 | 0987654321 </a>
         </div>
