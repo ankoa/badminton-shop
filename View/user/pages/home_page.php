@@ -4,11 +4,11 @@
     <section class="slider">
                 <div class="slider-content-top-container">
                     <div class="slider-content-top">
-                    <a href=""> <img src="../images/slider1.png" alt="" /></a>
-                    <a href=""> <img src="../images/slider3.png" alt="" /> </a>
-                    <a href=""> <img src="../images/slider1.png" alt="" /></a>
-                    <a href=""> <img src="../images/slider2.png" alt="" /> </a>
-                    <a href=""> <img src="../images/slider2.png" alt="" /> </a>
+                    <a href=""> <img src="../View/images/slider1.png" alt="" /></a>
+                    <a href=""> <img src="../View/images/slider3.png" alt="" /> </a>
+                    <a href=""> <img src="../View/images/slider1.png" alt="" /></a>
+                    <a href=""> <img src="../View/images/slider2.png" alt="" /> </a>
+                    <a href=""> <img src="../View/images/slider2.png" alt="" /> </a>
                     </div>
                     <div class="slider-content-top-next">
                     <i class="fa-solid fa-left-long"> </i>
@@ -23,7 +23,7 @@
             <div class="box_service">
                 <div class="promo-item">
                     <div class="icon-service">
-                        <img src="../images/iconservice_transport.png" alt="">
+                        <img src="../View/images/iconservice_transport.png" alt="">
 
                     </div>
                     <div class="infor">
@@ -38,7 +38,7 @@
             <div class="box_service">
                 <div class="promo-item">
                     <div class="icon-service">
-                        <img src="../images/iconservice_transport.png" alt="">
+                        <img src="../View/images/iconservice_transport.png" alt="">
 
                     </div>
                     <div class="infor">
@@ -52,7 +52,7 @@
             <div class="box_service">
                 <div class="promo-item">
                     <div class="icon-service">
-                        <img src="../images/iconservice_transport.png" alt="">
+                        <img src="../View/images/iconservice_transport.png" alt="">
 
                     </div>
                     <div class="infor">
@@ -68,7 +68,7 @@
             <div class="box_service">
                 <div class="promo-item">
                     <div class="icon-service">
-                        <img src="../images/iconservice_transport.png" alt="">
+                        <img src="../View/images/iconservice_transport.png" alt="">
 
                     </div>
                     <div class="infor">
