@@ -1,7 +1,7 @@
 <?php
 
-require_once 'Database.php';
-require_once 'String.php'; // Import Entity String
+require_once 'database.php';
+require_once '..\Model\Entity\String.php';
 
 class ModelString {
     protected $db;

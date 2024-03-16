@@ -1,7 +1,6 @@
 <?php
-
-require_once 'Database.php';
-
+require_once 'database.php';
+require_once '..\Model\Entity\User.php';
 class ModelUser {
     protected $db;
 

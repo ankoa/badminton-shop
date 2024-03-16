@@ -1,6 +1,7 @@
 <?php
 
-require_once 'Database.php';
+require_once 'database.php';
+require_once '..\Model\Entity\Shuttle.php';
 
 class ModelShuttle {
     protected $db;

@@ -1,7 +1,4 @@
 <?php
-
-require_once 'Database.php';
-
 class Brand {
     public $brandID;
     public $name;
