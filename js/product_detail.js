@@ -44,8 +44,15 @@ const initSlider = () => {
         bigImageContainer.appendChild(bigImage);
     };
 
-    // Function to handle click on images in the slider
     const handleClickOnImage = (event) => {
+        // Remove class .testimg from all images in the slider
+        imageList.querySelectorAll('.image-item').forEach(image => {
+            image.classList.remove('img-chosen-border');
+        });
+    
+        // Add class .testimg to the clicked image
+        event.target.classList.add('img-chosen-border');
+    
         const clickedImageSrc = event.target.src;
         displayBigImage(clickedImageSrc);
     };
@@ -58,7 +65,15 @@ const initSlider = () => {
     // Display the first image in the big-img container on page load
     const firstImageSrc = imageList.querySelector('.image-item').src;
     displayBigImage(firstImageSrc);
+
+    // Select the first image in the slider
+    const firstImage = imageList.querySelector('.image-item');
+
+    // Add class .testimg to the first image
+    firstImage.classList.add('img-chosen-border');
 };
+
+
 
 // Call initSlider function on window resize and page load
 window.addEventListener("resize", initSlider);
