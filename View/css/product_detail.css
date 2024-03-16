@@ -144,13 +144,17 @@ a,.text-link {
   scrollbar-width: none;
 }
 
+.img-chosen-border {
+  border: 1px solid #E95221;
+}
+
 .slider-wrapper .image-list::-webkit-scrollbar {
   display: none;
 }
 
 .slider-wrapper .image-list .image-item {
   width: 60px;
-  height: 100%;
+  height: 90%;
   object-fit: cover;
 }
 
@@ -159,14 +163,7 @@ a,.text-link {
   /* Adjust this value as needed */
 }
 
-.slider-wrapper .image-list .image-item {
-  transition: transform 0.3s ease;
-  /* Adding transition for smooth effect */
-}
 
-.slider-wrapper .image-list .image-item:hover {
-  transform: scale(1.2);
-}
 
 .description {
   width: 80%;
