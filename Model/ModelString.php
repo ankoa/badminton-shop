@@ -28,10 +28,10 @@ class ModelString {
     public function getListStringByID($productID) {
         $query = "SELECT * FROM string WHERE productID='$productID' AND status != 0";
         $result = $this->db->select($query);
-        $string = [];
+        $strings = []; // Đổi tên biến từ $string thành $strings để tránh sự nhầm lẫn
         if ($result) {
             while ($row = $result->fetch_assoc()) {
-                // Tạo đối tượng Racket từ dữ liệu trong hàng kết quả
+                // Tạo đối tượng StringProduct từ dữ liệu trong hàng kết quả
                 $string = new StringProduct(
                     $row['productID'],
                     $row['color'],
@@ -43,10 +43,34 @@ class ModelString {
                     $row['note'],
                     $row['list_image']
                 );
-                $string[] = $string;
+                $strings[] = $string; // Thêm đối tượng StringProduct vào mảng $strings
             }
         }
-        return $string;
+        return $strings; // Trả về mảng chứa các đối tượng StringProduct
+    }
+    
+
+    public function getStringByIDAndColor($productID,$color) {
+        $query = "SELECT * FROM string WHERE productID = '$productID' AND color='$color' AND status != 0";
+        $result = $this->db->select($query);
+        if ($result) {
+            $row = $result->fetch_assoc();
+            // Tạo đối tượng Racket từ dữ liệu trong hàng kết quả
+            $string = new StringProduct(
+                $row['productID'],
+                $row['color'],
+                $row['price'],
+                $row['discount'],
+                $row['status'],
+                $row['quantity'],
+                $row['country'],
+                $row['note'],
+                $row['list_image']
+            );
+            return $string;
+        } else {
+            return null;
+        }
     }
 
     // Phương thức để lấy thông tin một string bằng ID
