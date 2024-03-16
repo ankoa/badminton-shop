@@ -84,7 +84,6 @@ class ModelProduct {
             return false;
         }
     }
-}
 
     // Thêm sản phẩm mới vào cơ sở dữ liệu
     public function addProduct($product) {
