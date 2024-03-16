@@ -2,6 +2,7 @@
     require_once __DIR__ . '/../../../Model/ModelProduct.php';
     require_once __DIR__ . '/../../../Model/ModelRacket.php';
     require_once __DIR__ . '/../../../Model/ModelBrand.php';
+    require_once __DIR__ . '/../../../Model/ModelCatalog.php';
     
 
     // Khởi tạo đối tượng ModelProduct
@@ -11,20 +12,48 @@
     $productID = 7; // Thay thế 1 bằng productID cụ thể bạn muốn lấy thông tin
     $product = $modelProduct->getProductByID($productID);
 
-    // Khởi tạo đối tượng ModelRacket
-    $modelRacket = new ModelRacket();
-    
-    // Lấy thông tin sản phẩm từ cơ sở dữ liệu dựa trên productID
-    $listracket = $modelRacket->getListRacketByID($productID);
-    $racket= $modelRacket->getRacketByIDAndColor($productID, reset($listracket)->getColor());
-    $imagePaths = explode(",", $racket->getListImage());
-
     // Khởi tạo đối tượng ModelBrand
     $modelBrand = new ModelBrand();
-    
+        
     // Lấy thông tin sản phẩm từ cơ sở dữ liệu dựa trên brandID
     $brand = $modelBrand->getBrandByID($product->getBrandID());
 
+    // Khởi tạo đối tượng ModelBrand
+    $modelCatalog = new ModelCatalog();
+
+    // Lấy thông tin sản phẩm từ cơ sở dữ liệu dựa trên brandID
+    $catalog = $modelCatalog->getCatalogByID($product->getCatalogID());
+
+    
+
+    if($catalog->getName()=="Racket") {
+        // Khởi tạo đối tượng ModelRacket
+        $modelRacket = new ModelRacket();
+        
+        // Lấy thông tin sản phẩm từ cơ sở dữ liệu dựa trên productID
+        $listracket = $modelRacket->getListRacketByID($productID);
+        $racket= $modelRacket->getRacketByIDAndColor($productID, reset($listracket)->getColor());
+        $imagePaths = explode(",", $racket->getListImage());
+    } else if($catalog->getName()== "String") {
+        // Khởi tạo đối tượng ModelRacket
+        $modelRacket = new ModelString();
+        
+        // Lấy thông tin sản phẩm từ cơ sở dữ liệu dựa trên productID
+        $listracket = $modelRacket->getListStringByID($productID);
+        $racket= $modelRacket->getStringByIDAndColor($productID, reset($listracket)->getColor());
+        $imagePaths = explode(",", $racket->getListImage());
+     }
+    else if($catalog->getName()== "Shuttle") {
+        // Khởi tạo đối tượng ModelRacket
+        $modelRacket = new ModelRacket();
+        
+        // Lấy thông tin sản phẩm từ cơ sở dữ liệu dựa trên productID
+        $listracket = $modelRacket->getListRacketByID($productID);
+        $racket= $modelRacket->getRacketByIDAndColor($productID, reset($listracket)->getColor());
+        $imagePaths = explode(",", $racket->getListImage());
+     }
+
+    
 ?>
 
 <!DOCTYPE html>
@@ -231,7 +260,29 @@
                         </div>
                     </fieldset>
                     <div class="form-product">
+                        <?php if ($catalog->getName()=='Shuttle'): ?>
                         <div class="select-swatch">
+                            <div class="swatch clearfix">
+                                <div class="header">Chọn tốc độ: </div>
+                                <?php foreach ($listracket as $listracket): ?>
+                                    <?php if ($listracket->getQuantity()>0): ?>
+                                        <div class="swatch-element color-<?php echo $listracket->getColor(); ?>" data-value="<?php echo $listracket->getColor(); ?>" data-value_2="<?php echo $listracket->getColor(); ?>">
+                                        <input id="color-<?php echo $listracket->getColor(); ?>" type="radio" name="color" value="<?php echo $listracket->getColor(); ?>">
+                                    <?php else: ?>
+                                        <div class="swatch-element soldout color-<?php echo $listracket->getColor(); ?>" data-value="<?php echo $listracket->getColor(); ?>" data-value_2="<?php echo $listracket->getColor(); ?>">
+                                        <input disabled id="color-<?php echo $listracket->getColor(); ?>" type="radio" name="color" value="<?php echo $listracket->getColor(); ?>">
+                                    <?php endif; ?>   
+                                        <label for="color-<?php echo $listracket->getColor(); ?>">
+                                            <?php echo $listracket->getColor(); ?>
+                                            <img class="crossed-out" src="https://cdn.shopvnb.com/themes/images/soldout.png" alt="<?php echo $listracket->getColor(); ?>">
+                                        </label>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                        </div>
+                        <?php else: ?>
+                            <div class="select-swatch">
                             <div class="swatch clearfix">
                                 <div class="header">Chọn màu: </div>
                                 <?php foreach ($listracket as $listracket): ?>
@@ -250,9 +301,8 @@
                                 <?php endforeach; ?>
                             </div>
                         </div>
-                        </div>
-
-                        
+                        </div> 
+                        <?php endif; ?>  
                         
 
                         <div class="boz-form">
