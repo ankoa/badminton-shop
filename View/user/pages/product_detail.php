@@ -1,6 +1,8 @@
 <?php
     require_once __DIR__ . '/../../../Model/ModelProduct.php';
     require_once __DIR__ . '/../../../Model/ModelRacket.php';
+    require_once __DIR__ . '/../../../Model/ModelShuttle.php';
+    require_once __DIR__ . '/../../../Model/ModelString.php';
     require_once __DIR__ . '/../../../Model/ModelBrand.php';
     require_once __DIR__ . '/../../../Model/ModelCatalog.php';
     
@@ -9,7 +11,7 @@
     $modelProduct = new ModelProduct();
     
     // Lấy thông tin sản phẩm từ cơ sở dữ liệu dựa trên productID
-    $productID = 7; // Thay thế 1 bằng productID cụ thể bạn muốn lấy thông tin
+    $productID = 10; // Thay thế 1 bằng productID cụ thể bạn muốn lấy thông tin
     $product = $modelProduct->getProductByID($productID);
 
     // Khởi tạo đối tượng ModelBrand
