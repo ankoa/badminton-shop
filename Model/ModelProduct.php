@@ -1,6 +1,6 @@
 <?php
 require_once 'database.php';
-require_once '..\Model\Entity\Product.php';
+require_once(__DIR__ . '/Entity/Product.php') ;
 class ModelProduct {
     private $db;
 

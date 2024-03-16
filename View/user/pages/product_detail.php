@@ -1,6 +1,7 @@
 <?php
-    require_once '../../../Model/ModelProduct.php';
-    require_once '../../../Model/ModelRacket.php';
+    require_once __DIR__ . '/../../../Model/ModelProduct.php';
+    require_once __DIR__ . '/../../../Model/ModelRacket.php';
+
 
     // Khởi tạo đối tượng ModelProduct
     $modelProduct = new ModelProduct();

@@ -1,7 +1,7 @@
 <?php
 
 require_once 'database.php';
-require_once '..\Model\Entity\Racket.php';
+require_once(__DIR__ .'/Entity/Racket.php') ;
 class ModelRacket {
     protected $db;
 
