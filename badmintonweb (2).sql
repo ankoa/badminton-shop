@@ -299,18 +299,18 @@ CREATE TABLE `user` (
   `type` text NOT NULL,
   `status` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-INSERT INTO `user` (`userID`, `username`, `password`, `timeCreated`, `roleID`, `name`, `mail`, `phoneNumber`, `point`, `type`, `status`)
-VALUES 
-(1, 'user1', 'password1', CURRENT_TIMESTAMP(), 1, 'User One', 'user1@example.com', '123456789', 0, 'regular', 'active'),
-(2, 'user2', 'password2', CURRENT_TIMESTAMP(), 1, 'User Two', 'user2@example.com', '987654321', 0, 'regular', 'active'),
-(3, 'user3', 'password3', CURRENT_TIMESTAMP(), 1, 'User Three', 'user3@example.com', '555555555', 0, 'regular', 'active'),
-(4, 'user4', 'password4', CURRENT_TIMESTAMP(), 1, 'User Four', 'user4@example.com', '111111111', 0, 'regular', 'active'),
-(5, 'user5', 'password5', CURRENT_TIMESTAMP(), 1, 'User Five', 'user5@example.com', '222222222', 0, 'regular', 'active'),
-(6, 'user6', 'password6', CURRENT_TIMESTAMP(), 1, 'User Six', 'user6@example.com', '333333333', 0, 'regular', 'active'),
-(7, 'user7', 'password7', CURRENT_TIMESTAMP(), 1, 'User Seven', 'user7@example.com', '444444444', 0, 'regular', 'active'),
-(8, 'user8', 'password8', CURRENT_TIMESTAMP(), 1, 'User Eight', 'user8@example.com', '666666666', 0, 'regular', 'active'),
-(9, 'user9', 'password9', CURRENT_TIMESTAMP(), 1, 'User Nine', 'user9@example.com', '777777777', 0, 'regular', 'active'),
-(10, 'user10', 'password10', CURRENT_TIMESTAMP(), 1, 'User Ten', 'user10@example.com', '888888888', 0, 'regular', 'active');
+  INSERT INTO `user` (`userID`, `username`, `password`, `timeCreated`, `roleID`, `name`, `mail`, `phoneNumber`, `point`, `type`, `status`)
+  VALUES 
+  (1, 'user1', 'password1', CURRENT_TIMESTAMP(), 1, 'User One', 'user1@example.com', '123456789', 0, 'regular', 'active'),
+  (2, 'user2', 'password2', CURRENT_TIMESTAMP(), 1, 'User Two', 'user2@example.com', '987654321', 0, 'regular', 'active'),
+  (3, 'user3', 'password3', CURRENT_TIMESTAMP(), 1, 'User Three', 'user3@example.com', '555555555', 0, 'regular', 'active'),
+  (4, 'user4', 'password4', CURRENT_TIMESTAMP(), 1, 'User Four', 'user4@example.com', '111111111', 0, 'regular', 'active'),
+  (5, 'user5', 'password5', CURRENT_TIMESTAMP(), 1, 'User Five', 'user5@example.com', '222222222', 0, 'regular', 'active'),
+  (6, 'user6', 'password6', CURRENT_TIMESTAMP(), 1, 'User Six', 'user6@example.com', '333333333', 0, 'regular', 'active'),
+  (7, 'user7', 'password7', CURRENT_TIMESTAMP(), 1, 'User Seven', 'user7@example.com', '444444444', 0, 'regular', 'active'),
+  (8, 'user8', 'password8', CURRENT_TIMESTAMP(), 1, 'User Eight', 'user8@example.com', '666666666', 0, 'regular', 'active'),
+  (9, 'user9', 'password9', CURRENT_TIMESTAMP(), 1, 'User Nine', 'user9@example.com', '777777777', 0, 'regular', 'active'),
+  (10, 'user10', 'password10', CURRENT_TIMESTAMP(), 1, 'User Ten', 'user10@example.com', '888888888', 0, 'regular', 'active');
 
 --
 -- Indexes for dumped tables
