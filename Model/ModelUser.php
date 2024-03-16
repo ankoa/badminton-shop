@@ -10,7 +10,7 @@ class ModelUser {
     }
     // Phương thức để lấy tất cả người dùng từ cơ sở dữ liệu
     public function getAllUsers() {
-        $query = "SELECT * FROM user";
+        $query = "SELECT * FROM user WHERE status != 0";
         $result = $this->db->select($query);
         if ($result) {
             $users = [];
@@ -22,9 +22,9 @@ class ModelUser {
             return false;
         }
     }
-    // Phương thức để lấy thông tin người dùng bằng ID
+    
     public function getUserByID($userID) {
-        $query = "SELECT * FROM user WHERE userID = '$userID'";
+        $query = "SELECT * FROM user WHERE userID = '$userID' AND status != 0";
         $result = $this->db->select($query);
         if ($result) {
             return $result->fetch_assoc();
@@ -32,10 +32,9 @@ class ModelUser {
             return false;
         }
     }
-
-    // Phương thức để lấy thông tin người dùng bằng username
+    
     public function getUserByUsername($username) {
-        $query = "SELECT * FROM user WHERE username = '$username'";
+        $query = "SELECT * FROM user WHERE username = '$username' AND status != 0";
         $result = $this->db->select($query);
         if ($result) {
             return $result->fetch_assoc();
@@ -43,6 +42,7 @@ class ModelUser {
             return false;
         }
     }
+    
 
     // Phương thức để thêm một người dùng mới vào cơ sở dữ liệu
     public function addUser($username, $password, $roleID, $name, $mail, $phoneNumber, $point, $type, $status) {
@@ -85,7 +85,7 @@ class ModelUser {
 
     // Phương thức để xóa một người dùng khỏi cơ sở dữ liệu
     public function deleteUser($userID) {
-        $query = "DELETE FROM user WHERE userID = '$userID'";
+        $query = "UPDATE FROM user SET status=0 WHERE userID = '$userID'";
         return $this->db->delete($query);
     }
 
