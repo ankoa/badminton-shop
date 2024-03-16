@@ -1,5 +1,6 @@
 <?php
-    require_once 'ModelProduct.php';
+    require_once '../../../Model/ModelProduct.php';
+    require_once '../../../Model/ModelRacket.php';
 
     // Khởi tạo đối tượng ModelProduct
     $modelProduct = new ModelProduct();
@@ -7,6 +8,15 @@
     // Lấy thông tin sản phẩm từ cơ sở dữ liệu dựa trên productID
     $productID = 7; // Thay thế 1 bằng productID cụ thể bạn muốn lấy thông tin
     $product = $modelProduct->getProductByID($productID);
+
+    
+
+    // Khởi tạo đối tượng ModelProduct
+    $modelRacket = new ModelRacket();
+    
+    // Lấy thông tin sản phẩm từ cơ sở dữ liệu dựa trên productID
+    $racket = $modelRacket->getRacketByID($productID);
+    $imagePaths = explode(",", $racket->getListImage());
 ?>
 
 <!DOCTYPE html>
@@ -20,10 +30,10 @@
     </link>
     <link href="https://cdn.shopvnb.com/themes/css/breadcrumb_style.scss.css" rel="stylesheet" type="text/css" />
     <link rel="preload" as='style' type="text/css" href="https://cdn.shopvnb.com/themes/css/breadcrumb_style.scss.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../css/product_detail.css">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,0,0" />
-    <script src="script.js" defer></script>
+    <script src="../../../js/product_detail.js" defer></script>
     <title>test</title>
 </head>
 
@@ -91,23 +101,38 @@
                         <button id="prev-slide" class="slide-button material-symbols-rounded">
                             chevron_left
                         </button>
-                        <ul class="image-list">
-                            <img class="image-item" src="images/img-1.jpg" alt="img-1" />
-                            <img class="image-item" src="images/img-2.jpg" alt="img-2" />
-                            <img class="image-item" src="images/img-3.jpg" alt="img-3" />
-                            <img class="image-item" src="images/img-4.jpg" alt="img-4" />
-                            <img class="image-item" src="images/img-5.jpg" alt="img-5" />
-                            <img class="image-item" src="images/img-6.jpg" alt="img-6" />
-                            <img class="image-item" src="images/img-7.jpg" alt="img-7" />
-                            <img class="image-item" src="images/img-8.jpg" alt="img-8" />
-                            <img class="image-item" src="images/img-9.jpg" alt="img-9" />
-                            <img class="image-item" src="images/img-10.jpg" alt="img-10" />
+                        <ul class="image-list" id="image-list">
+                            <img class="image-item" src=<?php echo $product->getUrlAvatar(); ?> alt="img-1" />
+                            <script>
+                                // Đảm bảo rằng biến imagePaths đã được định nghĩa trước
+                                const imagePaths = <?php echo json_encode($imagePaths); ?>;
+
+                                // Lặp qua mỗi đường dẫn hình ảnh và chèn chúng vào danh sách
+                                imagePaths.forEach((path, index) => {
+                                    // Tạo một thẻ img và đặt thuộc tính src và alt
+                                    const image = document.createElement('img');
+                                    image.src = path;
+                                    image.alt = `Image ${index + 1}`; // Tùy chỉnh alt nếu cần
+                                    image.classList.add('image-item');
+
+                                    // Chọn ul danh sách hình ảnh
+                                    const container = document.getElementById("image-list");
+
+                                    // Kiểm tra xem danh sách có tồn tại không trước khi chèn hình vào
+                                    if (container) {
+                                        container.appendChild(image);
+                                    } else {
+                                        console.error(`UL with id 'image-list' not found.`);
+                                    }
+                                });
+                            </script>
                         </ul>
                         <button id="next-slide" class="slide-button material-symbols-rounded">
                             chevron_right
                         </button>
                     </div>
-                </div>
+</div>
+
             </div>
 
             <div class="product-detail">
