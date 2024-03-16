@@ -1,7 +1,8 @@
 <?php
     require_once __DIR__ . '/../../../Model/ModelProduct.php';
     require_once __DIR__ . '/../../../Model/ModelRacket.php';
-
+    require_once __DIR__ . '/../../../Model/ModelBrand.php';
+    
 
     // Khởi tạo đối tượng ModelProduct
     $modelProduct = new ModelProduct();
@@ -10,14 +11,20 @@
     $productID = 7; // Thay thế 1 bằng productID cụ thể bạn muốn lấy thông tin
     $product = $modelProduct->getProductByID($productID);
 
-    
-
-    // Khởi tạo đối tượng ModelProduct
+    // Khởi tạo đối tượng ModelRacket
     $modelRacket = new ModelRacket();
     
     // Lấy thông tin sản phẩm từ cơ sở dữ liệu dựa trên productID
-    $racket = $modelRacket->getRacketByID($productID);
+    $listracket = $modelRacket->getListRacketByID($productID);
+    $racket= $modelRacket->getRacketByIDAndColor($productID, reset($listracket)->getColor());
     $imagePaths = explode(",", $racket->getListImage());
+
+    // Khởi tạo đối tượng ModelBrand
+    $modelBrand = new ModelBrand();
+    
+    // Lấy thông tin sản phẩm từ cơ sở dữ liệu dựa trên brandID
+    $brand = $modelBrand->getBrandByID($product->getBrandID());
+
 ?>
 
 <!DOCTYPE html>
@@ -148,29 +155,37 @@
                 <div class="product-quantity">
                     <span class="mb-break">
                         <span class="brand-title">Thương hiệu</span>
-                        <a class="a-vendor" href="">Apacs</a>
+                        <a class="a-vendor" href=""><?php echo $brand->getName(); ?></a>
                     </span>
                     <span class="line">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-                    <span class="mb-break">
-                        <span class="brand-title">Tình trạng: </span>
-                        <span class="a-vendor">Còn hàng</span>
+                    <span class="mb-break" id="tinhtrang">
+                        <script>
+                            const racket = <?php echo json_encode($racket); ?>;
+                            if (racket && racket.quantity <= 0) {
+                                document.getElementById('tinhtrang').innerHTML = '<span class="brand-title">Tình trạng: </span><span class="a-vendor">Hết hàng</span>';
+                            } else {
+                                document.getElementById('tinhtrang').innerHTML = '<span class="brand-title">Tình trạng: </span><span class="a-vendor">Còn hàng</span>';
+                            }
+                        </script>
                     </span>
+
                 </div>
 
                 <form>
-                    <div class="price-box">
-                        <span class="special-price">
-                            <span class="price product-price">9.999.999 ₫</span>
-                        </span>
+                <div class="price-box">
+                    <span class="special-price">
+                        <span class="price product-price"><?php echo number_format($racket->getPrice(), 0, ',', '.'); ?> ₫</span>
+                    </span>
 
-                        <span class="old-price">
-                            Giá niêm yết:
-                            <del class="price product-price-old">9.999.999 ₫</del>
-                        </span>
-                    </div>
+                    <span class="old-price">
+                        Giá niêm yết:
+                        <del class="price product-price-old"><?php echo number_format($racket->getDiscount(), 0, ',', '.'); ?> ₫</del>
+                    </span>
+                </div>
+
                     <fieldset class="pro-discount uu-dai" style="margin-top: 10px;">
                         <legend>
-                            <img src="/images/code_dis.gif" alt="khuyến mãi">ƯU ĐÃI
+                            <img src="../../images/icon/code_dis.gif" alt="khuyến mãi">ƯU ĐÃI
                         </legend>
                         <div class="product-promotions-list-content">
                             <p>
@@ -218,43 +233,26 @@
                     <div class="form-product">
                         <div class="select-swatch">
                             <div class="swatch clearfix">
-                                <div class="header">Chọn size: </div>
-                                <div class="swatch-element  size-36" data-value="36" data-value_2="36">
-                                    <input id="size-36" type="radio" name="size" value="36">
-                                    <label for="size-36">
-                                        36 <img class="crossed-out"
-                                            src="https://cdn.shopvnb.com/themes/images/soldout.png" alt="36">
-                                    </label>
-                                </div>
-                                <div class="swatch-element  size-36" data-value="36" data-value_2="36">
-                                    <input id="size-37" type="radio" name="size" value="37">
-                                    <label for="size-37">
-                                        37 <img class="crossed-out"
-                                            src="https://cdn.shopvnb.com/themes/images/soldout.png" alt="37">
-                                    </label>
-                                </div>
+                                <div class="header">Chọn màu: </div>
+                                <?php foreach ($listracket as $listracket): ?>
+                                    <?php if ($listracket->getQuantity()>0): ?>
+                                        <div class="swatch-element color-<?php echo $listracket->getColor(); ?>" data-value="<?php echo $listracket->getColor(); ?>" data-value_2="<?php echo $listracket->getColor(); ?>">
+                                        <input id="color-<?php echo $listracket->getColor(); ?>" type="radio" name="color" value="<?php echo $listracket->getColor(); ?>">
+                                    <?php else: ?>
+                                        <div class="swatch-element soldout color-<?php echo $listracket->getColor(); ?>" data-value="<?php echo $listracket->getColor(); ?>" data-value_2="<?php echo $listracket->getColor(); ?>">
+                                        <input disabled id="color-<?php echo $listracket->getColor(); ?>" type="radio" name="color" value="<?php echo $listracket->getColor(); ?>">
+                                    <?php endif; ?>   
+                                        <label for="color-<?php echo $listracket->getColor(); ?>">
+                                            <?php echo $listracket->getColor(); ?>
+                                            <img class="crossed-out" src="https://cdn.shopvnb.com/themes/images/soldout.png" alt="<?php echo $listracket->getColor(); ?>">
+                                        </label>
+                                    </div>
+                                <?php endforeach; ?>
                             </div>
+                        </div>
                         </div>
 
-                        <div class="select-swatch">
-                            <div class="swatch clearfix">
-                                <div class="header">Chọn size: </div>
-                                <div class="swatch-element  size-99" data-value="99" data-value_2="99">
-                                    <input id="size-99" type="radio" name="size2" value="99">
-                                    <label for="size-99">
-                                        99 <img class="crossed-out"
-                                            src="https://cdn.shopvnb.com/themes/images/soldout.png" alt="99">
-                                    </label>
-                                </div>
-                                <div class="swatch-element  size-300" data-value="300" data-value_2="300">
-                                    <input id="size-300" type="radio" name="size2" value="300">
-                                    <label for="size-300">
-                                        300 <img class="crossed-out"
-                                            src="https://cdn.shopvnb.com/themes/images/soldout.png" alt="300">
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
+                        
                         
 
                         <div class="boz-form">
