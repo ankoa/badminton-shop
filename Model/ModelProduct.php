@@ -52,6 +52,40 @@ class ModelProduct {
         return null;
     }
 
+    // Phương thức để lấy thông tin sản phẩm bằng catalogID
+    public function getProductByCatalogID($catalogID) {
+        $query = "SELECT * FROM product WHERE catalogID = '$catalogID'";
+        $result = $this->db->select($query);
+        if ($result) {
+            return $result->fetch_assoc();
+        } else {
+            return false;
+        }
+    }
+
+    // Phương thức để lấy thông tin sản phẩm bằng brandID
+    public function getProductByBrandID($brandID) {
+        $query = "SELECT * FROM product WHERE brandID = '$brandID'";
+        $result = $this->db->select($query);
+        if ($result) {
+            return $result->fetch_assoc();
+        } else {
+            return false;
+        }
+    }
+
+    // Phương thức để lấy thông tin sản phẩm bằng name
+    public function getProductByName($name) {
+        $query = "SELECT * FROM product WHERE name = '$name'";
+        $result = $this->db->select($query);
+        if ($result) {
+            return $result->fetch_assoc();
+        } else {
+            return false;
+        }
+    }
+}
+
     // Thêm sản phẩm mới vào cơ sở dữ liệu
     public function addProduct($product) {
         $productID = $product->getProductID();
