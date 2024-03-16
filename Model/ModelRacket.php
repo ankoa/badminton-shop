@@ -1,7 +1,7 @@
 <?php
 
 require_once 'database.php';
-require_once(__DIR__ .'/Entity/Racket.php') ;
+require_once(__DIR__ . '/Entity/Racket.php');
 class ModelRacket {
     protected $db;
 
@@ -12,6 +12,37 @@ class ModelRacket {
     // Phương thức để lấy tất cả các vợt từ cơ sở dữ liệu
     public function getAllRackets() {
         $query = "SELECT * FROM racket WHERE status != 0";
+        $result = $this->db->select($query);
+        $rackets = [];
+        if ($result) {
+            while ($row = $result->fetch_assoc()) {
+                // Tạo đối tượng Racket từ dữ liệu trong hàng kết quả
+                $racket = new Racket(
+                    $row['productID'],
+                    $row['color'],
+                    $row['price'],
+                    $row['discount'],
+                    $row['flex'],
+                    $row['tension_max'],
+                    $row['grip'],
+                    $row['frame_build'],
+                    $row['shaft_build'],
+                    $row['weight'],
+                    $row['status'],
+                    $row['quantity'],
+                    $row['swing_weight'],
+                    $row['balance_point'],
+                    $row['note'],
+                    $row['list_image']
+                );
+                $rackets[] = $racket;
+            }
+        }
+        return $rackets;
+    }
+
+    public function getListRacketByID($productID) {
+        $query = "SELECT * FROM racket WHERE productID='$productID' AND status != 0";
         $result = $this->db->select($query);
         $rackets = [];
         if ($result) {
@@ -71,6 +102,38 @@ class ModelRacket {
             return null;
         }
     }
+
+    // Phương thức để lấy một vợt theo ID và màu
+    public function getRacketByIDAndColor($productID,$color) {
+        $query = "SELECT * FROM racket WHERE productID = '$productID' AND color='$color' AND status != 0";
+        $result = $this->db->select($query);
+        if ($result) {
+            $row = $result->fetch_assoc();
+            // Tạo đối tượng Racket từ dữ liệu trong hàng kết quả
+            $racket = new Racket(
+                $row['productID'],
+                $row['color'],
+                $row['price'],
+                $row['discount'],
+                $row['flex'],
+                $row['tension_max'],
+                $row['grip'],
+                $row['frame_build'],
+                $row['shaft_build'],
+                $row['weight'],
+                $row['status'],
+                $row['quantity'],
+                $row['swing_weight'],
+                $row['balance_point'],
+                $row['note'],
+                $row['list_image']
+            );
+            return $racket;
+        } else {
+            return null;
+        }
+    }
+
     // Phương thức để tìm kiếm vợt theo màu sắc
 public function searchRacketsByColor($color) {
     $query = "SELECT * FROM racket WHERE color = '$color'";
@@ -172,6 +235,7 @@ public function searchRacketsByColor($color) {
         $query = "UPDATE FROM racket SET status=0 WHERE productID = '$productID'";
         return $this->db->delete($query);
     }
+
 
 
 }
