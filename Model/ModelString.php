@@ -1,7 +1,6 @@
 <?php
 
-require_once 'database.php';
-require_once '..\Model\Entity\String.php';
+require_once(__DIR__ . '/Entity/String.php');
 
 class ModelString {
     protected $db;
@@ -24,6 +23,30 @@ class ModelString {
         } else {
             return false;
         }
+    }
+
+    public function getListStringByID($productID) {
+        $query = "SELECT * FROM string WHERE productID='$productID' AND status != 0";
+        $result = $this->db->select($query);
+        $string = [];
+        if ($result) {
+            while ($row = $result->fetch_assoc()) {
+                // Tạo đối tượng Racket từ dữ liệu trong hàng kết quả
+                $string = new StringProduct(
+                    $row['productID'],
+                    $row['color'],
+                    $row['price'],
+                    $row['discount'],
+                    $row['status'],
+                    $row['quantity'],
+                    $row['country'],
+                    $row['note'],
+                    $row['list_image']
+                );
+                $string[] = $string;
+            }
+        }
+        return $string;
     }
 
     // Phương thức để lấy thông tin một string bằng ID
