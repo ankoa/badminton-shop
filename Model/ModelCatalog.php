@@ -1,6 +1,6 @@
 <?php
 require_once 'database.php';
-require_once '..\Model\Entity\Catalog.php';
+require_once(__DIR__ . '/Entity/Catalog.php');
 class ModelCatalog {
     protected $db;
 
@@ -28,7 +28,8 @@ class ModelCatalog {
         $query = "SELECT * FROM catalog WHERE catalogID = '$catalogID'";
         $result = $this->db->select($query);
         if ($result) {
-            return $result->fetch_assoc();
+            $row = $result->fetch_assoc();
+            return new Catalog($row['catalogID'], $row['name'], $row['parentID']);
         } else {
             return false;
         }
