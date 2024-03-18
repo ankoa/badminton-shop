@@ -1,5 +1,6 @@
 <?php
 require_once 'database.php';
+
 require_once(__DIR__ . '/Entity/Product.php');
 
 class ModelProduct {
@@ -43,6 +44,7 @@ class ModelProduct {
             $row = $result->fetch_assoc();
             $product = new Product(
                 $row['productID'],
+
                     $row['brandID'],
                     $row['catalogID'],
                     $row['name'],
@@ -50,6 +52,7 @@ class ModelProduct {
                     $row['price'],
                     $row['discount'],
                     $row['status']
+
             );
             return $product;
         }
@@ -96,9 +99,11 @@ class ModelProduct {
         $brandID = $product->getBrandID();
         $catalogID = $product->getCatalogID();
         $name = $product->getName();
+
         $description = $product->getDescription();
 
         $query = "INSERT INTO product (productID, brandID, catalogID, name, description) VALUES ('$productID', '$brandID', '$catalogID', '$name', '$urlAvatar')";
+
         return $this->db->insert($query);
     }
 

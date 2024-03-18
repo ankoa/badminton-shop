@@ -4,12 +4,14 @@ class Product {
     public $brandID;
     public $catalogID;
     public $name;
+
     public $description;
     public $status;
     public $price;
     public $discount;
 
     public function __construct($productID, $brandID, $catalogID, $name, $description, $status, $price, $discount) {
+
         $this->productID = $productID;
         $this->brandID = $brandID;
         $this->catalogID = $catalogID;
@@ -51,7 +53,6 @@ class Product {
     public function setName($name) {
         $this->name = $name;
     }
-
     public function getDescription() {
         return $this->description;
     }
@@ -84,4 +85,5 @@ class Product {
         $this->discount = $discount;
     }
 }
+
 ?>
