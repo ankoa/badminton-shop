@@ -39,6 +39,7 @@ if ($roles !== false) {
 } else {
     echo "Không có vai trò nào trong cơ sở dữ liệu.";
 }
+
 ?>
 <?php
 require_once __DIR__ . '/../../../Model/ModelProduct.php';
@@ -104,3 +105,4 @@ if ($rackets) {
     echo "<p>Không có vợt nào được tìm thấy.</p>";
 }
 ?>
+

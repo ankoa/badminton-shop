@@ -1,6 +1,8 @@
 <?php
 require_once 'database.php';
-require_once(__DIR__ . '/Entity/Product.php') ;
+
+require_once(__DIR__ . '/Entity/Product.php');
+
 class ModelProduct {
     private $db;
 
@@ -21,7 +23,10 @@ class ModelProduct {
                     $row['brandID'],
                     $row['catalogID'],
                     $row['name'],
-                    $row['urlAvatar']
+                    $row['description'],
+                    $row['price'],
+                    $row['discount'],
+                    $row['status']
                 );
                 $products[] = $product;
             }
@@ -39,10 +44,15 @@ class ModelProduct {
             $row = $result->fetch_assoc();
             $product = new Product(
                 $row['productID'],
-                $row['brandID'],
-                $row['catalogID'],
-                $row['name'],
-                $row['urlAvatar']
+
+                    $row['brandID'],
+                    $row['catalogID'],
+                    $row['name'],
+                    $row['description'],
+                    $row['price'],
+                    $row['discount'],
+                    $row['status']
+
             );
             return $product;
         }
@@ -89,9 +99,11 @@ class ModelProduct {
         $brandID = $product->getBrandID();
         $catalogID = $product->getCatalogID();
         $name = $product->getName();
-        $urlAvatar = $product->getUrlAvatar();
 
-        $query = "INSERT INTO product (productID, brandID, catalogID, name, urlAvatar) VALUES ('$productID', '$brandID', '$catalogID', '$name', '$urlAvatar')";
+        $description = $product->getDescription();
+
+        $query = "INSERT INTO product (productID, brandID, catalogID, name, description) VALUES ('$productID', '$brandID', '$catalogID', '$name', '$urlAvatar')";
+
         return $this->db->insert($query);
     }
 
@@ -101,9 +113,9 @@ class ModelProduct {
         $brandID = $product->getBrandID();
         $catalogID = $product->getCatalogID();
         $name = $product->getName();
-        $urlAvatar = $product->getUrlAvatar();
+        $description = $product->getDescription();
 
-        $query = "UPDATE product SET brandID = '$brandID', catalogID = '$catalogID', name = '$name', urlAvatar = '$urlAvatar' WHERE productID = '$productID'";
+        $query = "UPDATE product SET brandID = '$brandID', catalogID = '$catalogID', name = '$name', description = '$description' WHERE productID = '$productID'";
         return $this->db->update($query);
     }
 
