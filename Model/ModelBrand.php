@@ -1,7 +1,7 @@
 <?php
 
 require_once 'database.php';
-require_once '..\Model\Entity\Brand.php';
+require_once(__DIR__ . '/Entity/Brand.php');
 
 class ModelBrand {
     protected $db;
