@@ -1,0 +1,46 @@
+
+.section_service {
+    padding: 30px;
+    margin: 0 100px;
+}
+
+.container {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.box_service {
+    flex: 1;
+    background-color: #ffffff;
+}
+
+.promo-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 3px rgba(0,0,0,0.2);
+    border-radius: 10px;
+    margin: 0 15px;
+    height: 60px;
+}
+
+.icon-service {
+    margin: 0 15px;
+}
+
+.infor {
+    font-size: 16px;
+    line-height: 1.5;
+    color: #E95221;
+    font-size: 14px;
+
+}
+.infor span{
+    font-weight: bold;
+}
+.slide_product{
+    height: 1200px;
+}
