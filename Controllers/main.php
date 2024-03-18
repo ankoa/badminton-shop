@@ -22,7 +22,8 @@
             include("../View/user/pages/home_page.php");
         }
     ?>
-    <div class="back-to-top">
-        <a class="" href="#"><i class="fa-solid fa-arrow-up back-top-top-icon"></i></a>
-    </div>
+        <div class="back-to-top" onclick="scrollToTop()">
+            <a class="" href="#"><i class="fa-solid fa-arrow-up back-top-top-icon" style="color: #ffffff;"></i></a>
+        </div>
+
 </div>

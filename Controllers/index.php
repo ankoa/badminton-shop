@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
 </head>
-<header>
+<header id="header">
 <?php include("../View/user/header.php"); ?>
 </header>
 
@@ -24,5 +24,6 @@
         ?>
     </div>
      <script src="../js/slider.js" defer></script>
+     <script src="../js/backToHome-button.js" defer></script>
 </body>
 </html> 

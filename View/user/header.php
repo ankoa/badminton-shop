@@ -3,7 +3,7 @@
             <div class="logo">
                 <img src="../View/images/logo.png">
             </div>
-            <a href=""> HOTLINE: 0123456789 | 0987654321 </a>
+            <a href="#"> HOTLINE: 0123456789 | 0987654321 </a>
         </div>
         
         <div class="center_header_contentTop">

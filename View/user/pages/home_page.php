@@ -4,11 +4,11 @@
     <section class="slider">
                 <div class="slider-content-top-container">
                     <div class="slider-content-top">
-                    <a href=""> <img src="../View/images/slider1.png" alt="" /></a>
-                    <a href=""> <img src="../View/images/slider3.png" alt="" /> </a>
-                    <a href=""> <img src="../View/images/slider1.png" alt="" /></a>
-                    <a href=""> <img src="../View/images/slider2.png" alt="" /> </a>
-                    <a href=""> <img src="../View/images/slider2.png" alt="" /> </a>
+                    <a href=""> <img src="../View/images/banner/slider1.png" alt="" /></a>
+                    <a href=""> <img src="../View/images/banner/slider3.png" alt="" /> </a>
+                    <a href=""> <img src="../View/images/banner/slider1.png" alt="" /></a>
+                    <a href=""> <img src="../View/images/banner/slider2.png" alt="" /> </a>
+                    <a href=""> <img src="../View/images/banner/slider2.png" alt="" /> </a>
                     </div>
                     <div class="slider-content-top-next">
                     <i class="fa-solid fa-left-long"> </i>
@@ -152,21 +152,21 @@
 		<div class="row-banners">
             <div class="column-banner">
                 <div class="banner-item">
-                    <a href="/thanh-ly/vot-cau-long.html" title="Vợt Cầu Lông">
+                    <a href="" title="Vợt Cầu Lông">
                         <img width="400" height="150" src="https://cdn.shopvnb.com/uploads/danh_muc/3_2.webp" alt="Vợt Cầu Lông">
                     </a>
                 </div>
             </div>
             <div class="column-banner">
                 <div class="banner-item">
-                    <a href="/thanh-ly/giay-cau-long.html" title="Giày Cầu Lông">
+                    <a href="" title="Giày Cầu Lông">
                         <img width="400" height="150" src="https://cdn.shopvnb.com/uploads/danh_muc/2.webp" alt="Giày Cầu Lông">
                     </a>
                 </div>
             </div>
             <div class="column-banner">
                 <div class="banner-item">
-                    <a href="/thanh-ly/ao-cau-long.html" title="Áo Cầu Lông">
+                    <a href="" title="Áo Cầu Lông">
                         <img width="400" height="150" src="https://cdn.shopvnb.com/uploads/danh_muc/1_3.webp" alt="Áo Cầu Lông">
                     </a>
                 </div>
@@ -176,4 +176,33 @@
 
 	</div>
 </section>
+<section class="products-section">
+    <div class="title_modules">
+                <h2> 
+                    <a href="" title="Thanh lý">
+                        <span>Các Loại Sản Phẩm Cầu Lông</span>
+                    </a>
+                </h2>
+    </div>
+    <div class="product-container">
+        <div class="product">
+            <img src="https://cdn.shopvnb.com/img/400x400/uploads/danh_muc/thumb/1.1.webp" alt="Vợt Cầu Lông">
+            <h3>VỢT CẦU LÔNG</h3>
+        </div>
+        <div class="product">
+            <img src="https://cdn.shopvnb.com/img/400x400/uploads/danh_muc/thumb/2_1.webp" alt="Lưới">
+            <h3>LƯỚI</h3>
+        </div>
+        <div class="product">
+            <img src="https://cdn.shopvnb.com/img/400x400/uploads/danh_muc/thumb/7.webp" alt="Quả Cầu Lông">
+            <h3>QUẢ CẦU LÔNG</h3>
+        </div>
+        <div class="product">
+            <img src="https://cdn.shopvnb.com/img/400x400/uploads/danh_muc/thumb/2_1.webp" alt="Giày Cầu Lông">
+            <h3>GiÀY CẦU LÔNG</h3>
+        </div>
+    </div>
+</section>
+
+
 </div>
