@@ -85,6 +85,16 @@ class ModelVariantDetail {
         }
     }
 
+    public function getVariantQuantityByColor($listVariant,$color) {
+        $quantity=0;
+        foreach($listVariant as $variant):
+            if($variant->getColor()==$color):
+                $quantity+=$variant->getQuantity();
+            endif;
+        endforeach;
+        return $quantity;
+    }
+
     // Phương thức để thêm một biến thể vào cơ sở dữ liệu
     public function addVariant($variant) {
         $variantID = $variant->getVariantID();
