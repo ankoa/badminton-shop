@@ -1,55 +1,51 @@
-
 <?php
-    require_once __DIR__ . '/../../../Model/ModelProduct.php';
-    require_once __DIR__ . '/../../../Model/ModelBrand.php';
-    require_once __DIR__ . '/../../../Model/ModelCatalog.php';
-    require_once __DIR__ . '/../../../Model/ModelVariant.php';
-    require_once __DIR__ . '/../../../Model/ModelVariantDetail.php';
-    
-
-    // Khởi tạo đối tượng ModelProduct
-    $modelProduct = new ModelProduct();
-    
-    // Lấy thông tin sản phẩm từ cơ sở dữ liệu dựa trên productID
-    $productID = 1;
-    $product = $modelProduct->getProductByID($productID);
-
-    // Khởi tạo đối tượng ModelBrand
-    $modelBrand = new ModelBrand();
-        
-    // Lấy thông tin sản phẩm từ cơ sở dữ liệu dựa trên brandID
-    $brand = $modelBrand->getBrandByID($product->getBrandID());
-
-    // Khởi tạo đối tượng ModelBrand
-    $modelCatalog = new ModelCatalog();
-
-    // Lấy thông tin sản phẩm từ cơ sở dữ liệu dựa trên catalogID
-    $catalog = $modelCatalog->getCatalogByID($product->getCatalogID());
-
- 
-    $modelVariant = new ModelVariant();
-    $listvariants = $modelVariant->getListVariantByProductID($productID);
-
-    $modelVariantDetail = new ModelVariantDetail();
-    $listVariantDetails = [];
-
-    foreach ($listvariants as $variant) {
-        $variantID = $variant->getVariantID();
-        $variantDetail = $modelVariantDetail->getVariantByID($variantID);
-        // Thêm chi tiết biến thể vào mảng $listVariantDetails
-        $listVariantDetails[] = $variantDetail;
-    }
-    $imagePaths = explode(",", reset($listVariantDetails)->getListImage());
-    if ($catalog->getName() == "Racket") {
-        
-    } else if ($catalog->getName() == "String") {
-   
-    } else if ($catalog->getName() == "Shuttle") {
-
-    }
+require_once __DIR__ . '/../../../Model/ModelProduct.php';
+require_once __DIR__ . '/../../../Model/ModelBrand.php';
+require_once __DIR__ . '/../../../Model/ModelCatalog.php';
+require_once __DIR__ . '/../../../Model/ModelVariant.php';
+require_once __DIR__ . '/../../../Model/ModelVariantDetail.php';
 
 
-    
+// Khởi tạo đối tượng ModelProduct
+$modelProduct = new ModelProduct();
+
+// Lấy thông tin sản phẩm từ cơ sở dữ liệu dựa trên productID
+$productID = 1;
+$product = $modelProduct->getProductByID($productID);
+
+// Khởi tạo đối tượng ModelBrand
+$modelBrand = new ModelBrand();
+
+// Lấy thông tin sản phẩm từ cơ sở dữ liệu dựa trên brandID
+$brand = $modelBrand->getBrandByID($product->getBrandID());
+
+// Khởi tạo đối tượng ModelBrand
+$modelCatalog = new ModelCatalog();
+
+// Lấy thông tin sản phẩm từ cơ sở dữ liệu dựa trên catalogID
+$catalog = $modelCatalog->getCatalogByID($product->getCatalogID());
+
+
+$modelVariant = new ModelVariant();
+$listvariants = $modelVariant->getListVariantByProductID($productID);
+
+$modelVariantDetail = new ModelVariantDetail();
+$listVariantDetails = [];
+
+foreach ($listvariants as $variant) {
+    $variantID = $variant->getVariantID();
+    $variantDetail = $modelVariantDetail->getVariantByID($variantID);
+    // Thêm chi tiết biến thể vào mảng $listVariantDetails
+    $listVariantDetails[] = $variantDetail;
+}
+$imagePaths = explode(",", reset($listVariantDetails)->getListImage());
+if ($catalog->getName() == "Racket") {
+} else if ($catalog->getName() == "String") {
+} else if ($catalog->getName() == "Shuttle") {
+}
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -117,7 +113,9 @@
                             </svg>&nbsp;</span>
                     </li>
                     <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                        <strong itemprop="name"><?php echo $product->getName(); ?></strong>
+                        <strong itemprop="name">
+                            <?php echo $product->getName(); ?>
+                        </strong>
                         <meta itemprop="position" content="3" />
                     </li>
                 </ul>
@@ -164,23 +162,29 @@
                             chevron_right
                         </button>
                     </div>
-</div>
+                </div>
 
             </div>
 
             <div class="product-detail">
-                <h1 class="title-product"><?php echo $product->getName(); ?></h1>
+                <h1 class="title-product">
+                    <?php echo $product->getName(); ?>
+                </h1>
                 <div class="product-code">
                     <span content="123456789" style="font-size: 14px;">
                         Mã:
-                        <span class="code">VNB<?php echo $product->getProductID(); ?></span>
+                        <span class="code">VNB
+                            <?php echo $product->getProductID(); ?>
+                        </span>
                     </span>
                 </div>
 
                 <div class="product-quantity">
                     <span class="mb-break">
                         <span class="brand-title">Thương hiệu</span>
-                        <a class="a-vendor" href=""><?php echo $brand->getName(); ?></a>
+                        <a class="a-vendor" href="">
+                            <?php echo $brand->getName(); ?>
+                        </a>
                     </span>
                     <span class="line">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
                     <span class="mb-break" id="tinhtrang">
@@ -197,16 +201,20 @@
                 </div>
 
                 <form>
-                <div class="price-box">
-                    <span class="special-price">
-                        <span class="price product-price"><?php echo number_format($product->getPrice(), 0, ',', '.'); ?> ₫</span>
-                    </span>
+                    <div class="price-box">
+                        <span class="special-price">
+                            <span class="price product-price">
+                                <?php echo number_format($product->getPrice(), 0, ',', '.'); ?> ₫
+                            </span>
+                        </span>
 
-                    <span class="old-price">
-                        Giá niêm yết:
-                        <del class="price product-price-old"><?php echo number_format($product->getDiscount(), 0, ',', '.'); ?> ₫</del>
-                    </span>
-                </div>
+                        <span class="old-price">
+                            Giá niêm yết:
+                            <del class="price product-price-old">
+                                <?php echo number_format($product->getDiscount(), 0, ',', '.'); ?> ₫
+                            </del>
+                        </span>
+                    </div>
 
                     <fieldset class="pro-discount uu-dai" style="margin-top: 10px;">
                         <legend>
@@ -256,62 +264,76 @@
                         </div>
                     </fieldset>
                     <div class="form-product">
-                        <?php if ($catalog->getName()=='Shuttle'): ?>
-                        <div class="select-swatch">
-                            <div class="swatch clearfix">
+                        <?php if ($catalog->getName() == 'Shuttle'): ?>
+                            <div class="select-swatch">
+                                <div class="swatch clearfix">
                                     <div class="header">Chọn tốc độ: </div>
                                     <?php foreach ($listVariantDetails as $variantDetail): ?>
                                         <?php if ($variantDetail->getQuantity() > 0): ?>
-                                            <div class="swatch-element color-<?php echo $variantDetail->getSpeed(); ?>" data-value="<?php echo $variantDetail->getSpeed(); ?>" data-value_2="<?php echo $variantDetail->getSpeed(); ?>">
-                                                <input id="color-<?php echo $variantDetail->getSpeed(); ?>" type="radio" name="color" value="<?php echo $variantDetail->getSpeed(); ?>">
-                                        <?php else: ?>
-                                            <div class="swatch-element soldout color-<?php echo $variantDetail->getSpeed(); ?>" data-value="<?php echo $variantDetail->getSpeed(); ?>" data-value_2="<?php echo $variantDetail->getSpeed(); ?>">
-                                                <input disabled id="color-<?php echo $variantDetail->getSpeed(); ?>" type="radio" name="color" value="<?php echo $variantDetail->getSpeed(); ?>">
-                                        <?php endif; ?>   
-                                        <label for="color-<?php echo $variantDetail->getSpeed(); ?>">
-                                            <?php echo $variantDetail->getSpeed(); ?>
-                                            <img class="crossed-out" src="https://cdn.shopvnb.com/themes/images/soldout.png" alt="<?php echo $variantDetail->getSpeed(); ?>">
-                                        </label>
-                                    </div>
-                                <?php endforeach; ?>
-                            </div>
-                            </div>
-                            </div> 
-                            <?php else: ?>
-                                <div class="select-swatch">
-                                    <div class="swatch clearfix">
-                                        <div class="header">Chọn màu: </div>
-                                        <?php
-                                            // Mảng tạm thời để lưu trữ các màu đã xuất hiện
-                                            $seenColors = [];
-
-                                            foreach ($listVariantDetails as $variantDetail):
-                                                // Lấy màu của biến thể hiện tại
-                                                $color = $variantDetail->getColor();
-
-                                                // Kiểm tra xem màu đã được thêm vào mảng tạm thời chưa
-                                                if (!in_array($color, $seenColors)):
-                                                    // Thêm màu vào mảng tạm thời
-                                                    $seenColors[] = $color;
-
-                                                    // Hiển thị swatch-element cho màu
-                                        ?>
-                                            <div class="swatch-element color-<?php echo $color; ?>" data-value="<?php echo $color; ?>" data-value_2="<?php echo $color; ?>">
-                                                <input id="color-<?php echo $color; ?>" type="radio" name="color" value="<?php echo $color; ?>">
-                                                <label for="color-<?php echo $color; ?>">
-                                                    <?php echo $color; ?>
-                                                    <img class="crossed-out" src="https://cdn.shopvnb.com/themes/images/soldout.png" alt="<?php echo $color; ?>">
+                                            <div class="swatch-element color-<?php echo $variantDetail->getSpeed(); ?>"
+                                                data-value="<?php echo $variantDetail->getSpeed(); ?>"
+                                                data-value_2="<?php echo $variantDetail->getSpeed(); ?>">
+                                                <input id="color-<?php echo $variantDetail->getSpeed(); ?>" type="radio"
+                                                    name="color" value="<?php echo $variantDetail->getSpeed(); ?>">
+                                            <?php else: ?>
+                                                <div class="swatch-element soldout color-<?php echo $variantDetail->getSpeed(); ?>"
+                                                    data-value="<?php echo $variantDetail->getSpeed(); ?>"
+                                                    data-value_2="<?php echo $variantDetail->getSpeed(); ?>">
+                                                    <input disabled id="color-<?php echo $variantDetail->getSpeed(); ?>"
+                                                        type="radio" name="color" value="<?php echo $variantDetail->getSpeed(); ?>">
+                                                <?php endif; ?>
+                                                <label for="color-<?php echo $variantDetail->getSpeed(); ?>">
+                                                    <?php echo $variantDetail->getSpeed(); ?>
+                                                    <img class="crossed-out"
+                                                        src="https://cdn.shopvnb.com/themes/images/soldout.png"
+                                                        alt="<?php echo $variantDetail->getSpeed(); ?>">
                                                 </label>
                                             </div>
-                                        <?php
-                                                endif;
-                                            endforeach;
-                                        ?>
+                                        <?php endforeach; ?>
                                     </div>
                                 </div>
+                            </div>
+                        <?php else: ?>
+                            <div class="select-swatch">
+                                <div class="swatch clearfix">
+                                    <div class="header">Chọn màu: </div>
+                                    <?php
+                                    // Mảng tạm thời để lưu trữ các màu đã xuất hiện
+                                    $seenColors = [];
 
+                                    foreach ($listVariantDetails as $variantDetail):
+                                        // Lấy màu của biến thể hiện tại
+                                        $color = $variantDetail->getColor();
 
-                        <?php endif; ?>  
+                                        // Kiểm tra xem màu đã được thêm vào mảng tạm thời chưa
+                                        if (!in_array($color, $seenColors)):
+                                            // Thêm màu vào mảng tạm thời
+                                            $seenColors[] = $color;
+
+                                            // Hiển thị swatch-element cho màu
+                                            ?>
+                                            <div class="swatch-element <?php if ($modelVariantDetail->getVariantQuantityByColor($listVariantDetails, $color) <= 0):
+                                                echo "soldout";
+                                            endif; ?> color-<?php echo $color; ?>"
+                                                data-value="<?php echo $color; ?>" data-value_2="<?php echo $color; ?>">
+                                                <input <?php if ($modelVariantDetail->getVariantQuantityByColor($listVariantDetails, $color) <= 0):
+                                                echo "disabled";
+                                            endif; ?> id="color-<?php echo $color; ?>" type="radio" name="color"
+                                                    value="<?php echo $color; ?>">
+                                                <label for="color-<?php echo $color; ?>">
+                                                    <?php echo $color; ?>
+                                                    <img class="crossed-out" src="https://cdn.shopvnb.com/themes/images/soldout.png"
+                                                        alt="<?php echo $color; ?>">
+                                                </label>
+                                            </div>
+                                            <?php
+                                        endif;
+                                    endforeach;
+                                    ?>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+
 
                         <div class="boz-form">
                             <div class="clearfix form-group">
@@ -341,59 +363,59 @@
                             </div>
                         </div>
 
-                        </div>
                     </div>
             </div>
-            </form>
-
-
         </div>
+        </form>
 
-        <div class="description">
-            <div class="tab-header">
-                <button class="tab-button active" data-tab="tab1">Mô tả sản phẩm</button>
-                <button class="tab-button" data-tab="tab2">Thông số kỹ thuật</button>
-            </div>
-            <div class="tab-content" id="tab1">
-                Content for Tab 1
-            </div>
-            <div id="tab2" class="tab-content content_extab" style="display: none;">
-                <div class="thongso-container">
-                    <table class="table table-bordered">
-                        <tbody>
-                            <tr>
-                                <td width="30%"><b>Trình Độ Chơi:</b></td>
-                                <td>Khá Tốt</td>
-                            </tr>
-                            <tr>
-                                <td width="30%"><b>Chiều dài vợt:</b></td>
-                                <td>675 mm </td>
-                            </tr>
-                            <tr>
-                                <td width="30%"><b>Nội Dung Chơi:</b></td>
-                                <td>Cả Đơn và Đôi</td>
-                            </tr>
-                            <tr>
-                                <td width="30%"><b>Điểm Cân Bằng:</b></td>
-                                <td>Nặng Đầu</td>
-                            </tr>
-                            <tr>
-                                <td width="30%"><b>Trọng Lượng:</b></td>
-                                <td>3U: 85 - 89g</td>
-                            </tr>
-                            <tr>
-                                <td width="30%"><b>Phong Cách Chơi:</b></td>
-                                <td>Tấn Công</td>
-                            </tr>
-                            <tr>
-                                <td width="30%"><b>Độ Cứng Đũa:</b></td>
-                                <td>Cứng</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+
+    </div>
+
+    <div class="description">
+        <div class="tab-header">
+            <button class="tab-button active" data-tab="tab1">Mô tả sản phẩm</button>
+            <button class="tab-button" data-tab="tab2">Thông số kỹ thuật</button>
+        </div>
+        <div class="tab-content" id="tab1">
+            Content for Tab 1
+        </div>
+        <div id="tab2" class="tab-content content_extab" style="display: none;">
+            <div class="thongso-container">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <td width="30%"><b>Trình Độ Chơi:</b></td>
+                            <td>Khá Tốt</td>
+                        </tr>
+                        <tr>
+                            <td width="30%"><b>Chiều dài vợt:</b></td>
+                            <td>675 mm </td>
+                        </tr>
+                        <tr>
+                            <td width="30%"><b>Nội Dung Chơi:</b></td>
+                            <td>Cả Đơn và Đôi</td>
+                        </tr>
+                        <tr>
+                            <td width="30%"><b>Điểm Cân Bằng:</b></td>
+                            <td>Nặng Đầu</td>
+                        </tr>
+                        <tr>
+                            <td width="30%"><b>Trọng Lượng:</b></td>
+                            <td>3U: 85 - 89g</td>
+                        </tr>
+                        <tr>
+                            <td width="30%"><b>Phong Cách Chơi:</b></td>
+                            <td>Tấn Công</td>
+                        </tr>
+                        <tr>
+                            <td width="30%"><b>Độ Cứng Đũa:</b></td>
+                            <td>Cứng</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
+    </div>
 
 
 
