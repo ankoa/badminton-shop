@@ -1,4 +1,3 @@
-
 const initSlider = () => {
     const imageList = document.querySelector(".slider-wrapper .image-list");
     const slideButtons = document.querySelectorAll(".slider-wrapper .slide-button");
@@ -46,12 +45,12 @@ const initSlider = () => {
     };
 
     const handleClickOnImage = (event) => {
-        // Remove class .testimg from all images in the slider
+        // Remove class .img-chosen-border from all images in the slider
         imageList.querySelectorAll('.image-item').forEach(image => {
             image.classList.remove('img-chosen-border');
         });
     
-        // Add class .testimg to the clicked image
+        // Add class .img-chosen-border to the clicked image
         event.target.classList.add('img-chosen-border');
     
         const clickedImageSrc = event.target.src;
@@ -70,31 +69,65 @@ const initSlider = () => {
     // Select the first image in the slider
     const firstImage = imageList.querySelector('.image-item');
 
-    // Add class .testimg to the first image
+    // Add class .img-chosen-border to the first image
     firstImage.classList.add('img-chosen-border');
+    
 };
-
-
 
 // Call initSlider function on window resize and page load
 window.addEventListener("resize", initSlider);
 window.addEventListener("load", initSlider);
 
-document.addEventListener("DOMContentLoaded", function() {
-    const tabButtons = document.querySelectorAll(".tab-button");
-    const tabContents = document.querySelectorAll(".tab-content");
+// Function to load version by color using AJAX
+// Function to load version by color using AJAX
+function loadVersion(productID, color) {
+    var xhttp = new XMLHttpRequest();
+    
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            var listVariantDetails = JSON.parse(this.responseText);
+            var existingVersion = document.getElementById('version');
+            if (existingVersion !== null) {
+                // Nếu phần tử đã tồn tại, có thể xóa nếu cần
+                existingVersion.parentNode.removeChild(existingVersion);
+            }
+            var htmlContent = '<div class="select-swatch"><div class="swatch clearfix"><div class="header">Chọn phiên bản: </div>';
+            console.log(listVariantDetails);
+            for (var i = 0; i < listVariantDetails.length; i++) {
+                if (listVariantDetails[i].color == color) {
+                    if (listVariantDetails[i].quantity >= 1) {
+                        // Thêm mã HTML cho phần tử mới vào chuỗi htmlContent
+                        htmlContent += '<div class="swatch-element version-' + listVariantDetails[i].weight + listVariantDetails[i].grip + '" data-value="1" data-value_2="1">' +
+                            '<input id="version-' + listVariantDetails[i].weight + listVariantDetails[i].grip + '" type="radio" name="1" value="1">' +
+                            '<label for="version-' + listVariantDetails[i].weight + listVariantDetails[i].grip + '">' +
+                            listVariantDetails[i].weight + listVariantDetails[i].grip +
+                            '<img class="crossed-out" src="https://cdn.shopvnb.com/themes/images/soldout.png" alt="'+listVariantDetails[i].weight + listVariantDetails[i].grip+'">' +
+                            '</label>' +
+                            '</div>';
+                    } else if (listVariantDetails[i].quantity <=0 ) {
+                        htmlContent += '<div class="swatch-element soldout version-' + listVariantDetails[i].weight + listVariantDetails[i].grip + '" data-value="1" data-value_2="1">' +
+                            '<input disabled id="version-' + listVariantDetails[i].weight + listVariantDetails[i].grip + '" type="radio" name="1" value="1">' +
+                            '<label for="version-' + listVariantDetails[i].weight + listVariantDetails[i].grip + '">' +
+                            listVariantDetails[i].weight + listVariantDetails[i].grip +
+                            '<img class="crossed-out" src="https://cdn.shopvnb.com/themes/images/soldout.png" alt="'+listVariantDetails[i].weight + listVariantDetails[i].grip+'">' +
+                            '</label>' +
+                            '</div>';
+                    }
+                }
+            }
+            htmlContent += '</div></div>';
+            // Thêm chuỗi HTML vào phần tử có id là "hidden"
+            document.getElementById("hidden").innerHTML = htmlContent;
+        }
+    };
+    
+    // Gửi yêu cầu AJAX đến tệp PHP để xử lý
+    xhttp.open("GET", "http://localhost/badminton-shop/Controllers/ProductDetailController.php?productID=" + productID + "&color=" + color, true);
+    xhttp.send();
+}
 
-    tabButtons.forEach(button => {
-        button.addEventListener("click", () => {
-            const tabId = button.getAttribute("data-tab");
 
-            // Deactivate all tab buttons and hide tab contents
-            tabButtons.forEach(btn => btn.classList.remove("active"));
-            tabContents.forEach(content => content.style.display = "none");
 
-            // Activate the clicked tab button and display its content
-            button.classList.add("active");
-            document.getElementById(tabId).style.display = "block";
-        });
-    });
-});
+
+
+
