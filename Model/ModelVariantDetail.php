@@ -10,6 +10,8 @@ class ModelVariantDetail {
         $this->db = new Database();
     }
 
+    
+
     // Phương thức để lấy tất cả các biến thể từ cơ sở dữ liệu
     public function getAllVariantsDetail() {
         $query = "SELECT * FROM variantdetail WHERE status != 0";
