@@ -20,6 +20,7 @@
         }
         else{
             include("../View/user/pages/home_page.php");
+            include("../View/user/pages/login.php");
         }
     ?>
         <div class="back-to-top" onclick="scrollToTop()">
@@ -27,3 +28,16 @@
         </div>
 
 </div>
+<?php 
+
+        if(isset($_GET['control'])){
+            $tmp = $_GET['control'];
+        }
+        else $tmp = '';
+        if($tmp=='login'){
+            include("../View/user/pages/login.php");
+        }
+        else{
+            include("../View/user/pages/signin.php");
+        }
+    ?>

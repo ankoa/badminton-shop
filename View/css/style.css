@@ -58,6 +58,7 @@ header{
     background: #f3f3f3;
     border: none;
     border-radius: 5px;
+    padding: 5px;
 }
 .center_header_contentTop > li input::placeholder {
     text-align: left;
@@ -69,6 +70,7 @@ header{
     right: 5px;
     margin-top: 5px;
 }
+
 .right_header_contentTop{
     flex: 1;
     display: flex;
@@ -293,6 +295,3 @@ header{
 html {
     scroll-behavior: smooth;
 }
-
-
-

@@ -30,8 +30,8 @@
                     <i class="fa-solid fa-user" style="color: #e95221;"></i>
                     <span class="icon-name">TÀI KHOẢN</span>
                         <ul class="submenu_user">
-                            <li class="dropdown-item"> <a href=""> Đăng nhập </a></li>
-                            <li class="dropdown-item"> <a href=""> Đăng kí</a></li>
+                            <li class="dropdown-item"> <a href="index.php?control=login"> Đăng nhập </a></li>
+                            <li class="dropdown-item"> <a href="index.php?control=signin"> Đăng kí</a></li>
                         </ul>
                     
                 </li>

@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../View/css/homepage.css">
     <link rel="stylesheet" href="../View/css/footer.css">
     <link rel="stylesheet" href="../View/css/slider.css">
+    <link rel="stylesheet" href="../View/css/signin-menu.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
 </head>
