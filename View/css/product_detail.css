@@ -353,8 +353,8 @@ a,.text-link {
   margin-right: 10px;
 }
 
-.button_actions button:last-child {
-  background: #E95221;
+.button_actions2 button {
+  background: blue;
   color: #fff;
   padding: 0px 40px;
   border-radius: 4px;
@@ -365,7 +365,7 @@ a,.text-link {
   -ms-transition: .3s;
   -o-transition: .3s;
   text-transform: uppercase;
-  border: 1px solid #E95221;
+  border: 1px solid blue;
   height: 31px;
   line-height: 31px;
   margin-right: 10px;
@@ -377,7 +377,7 @@ a,.text-link {
   color: #E95221;
 }
 
-.button_actions button:last-child:hover {
+.button_actions2 button:hover {
   background-color: white;
   color: blue;
 }
@@ -463,6 +463,15 @@ a,.text-link {
 .soldout {
   position: relative;
   background: rgb(204, 204, 204, 0.8);
+}
+
+.thongso-container {
+  width: 60%;
+  margin-left: 20%;
+}
+
+.tab-header {
+  border-bottom: 1px solid gray;
 }
 
 

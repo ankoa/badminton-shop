@@ -10,7 +10,7 @@ require_once __DIR__ . '/../../../Model/ModelVariantDetail.php';
 $modelProduct = new ModelProduct();
 
 // Lấy thông tin sản phẩm từ cơ sở dữ liệu dựa trên productID
-$productID = 1;
+$productID = 16;
 $product = $modelProduct->getProductByID($productID);
 
 // Khởi tạo đối tượng ModelBrand
@@ -37,10 +37,22 @@ foreach ($listvariants as $variant) {
     $variantDetail = $modelVariantDetail->getVariantByID($variantID);
     // Thêm chi tiết biến thể vào mảng $listVariantDetails
     $listVariantDetails[] = $variantDetail;
+    echo $variantDetail->getSize();
 }
 $imagePaths = explode(",", reset($listVariantDetails)->getListImage());
 if ($catalog->getName() == "Racket") {
-} else if ($catalog->getName() == "String") {
+} else if ($catalog->getName() == "Shoes") {
+    usort($listVariantDetails, function ($a, $b) {
+        // Lấy giá trị 'size' của mỗi đối tượng
+        $sizeA = $a->getSize();
+        $sizeB = $b->getSize();
+
+        if ($sizeA == $sizeB) {
+            return 0; // Giữ nguyên vị trí nếu giá trị 'size' bằng nhau
+        }
+
+        return ($sizeA < $sizeB) ? -1 : 1; // Trả về số âm, 0 hoặc dương tùy thuộc vào thứ tự của 'size'
+    });
 } else if ($catalog->getName() == "Shuttle") {
 }
 
@@ -265,6 +277,44 @@ if ($catalog->getName() == "Racket") {
                                             </div>
                                 </div>
                             </div>
+                        <?php elseif ($catalog->getName() == 'Racket' || $catalog->getName() == 'Shoes') : ?>
+                            <div class="select-swatch">
+                                <div class="swatch clearfix">
+                                    <div class="header">Chọn màu: </div>
+                                    <?php
+                                    // Mảng tạm thời để lưu trữ các màu đã xuất hiện
+                                    $seenColors = [];
+
+                                    foreach ($listVariantDetails as $variantDetail) :
+                                        // Lấy màu của biến thể hiện tại
+                                        $color = $variantDetail->getColor();
+
+                                        // Kiểm tra xem màu đã được thêm vào mảng tạm thời chưa
+                                        if (!in_array($color, $seenColors)) :
+                                            // Thêm màu vào mảng tạm thời
+                                            $seenColors[] = $color;
+
+                                            // Hiển thị swatch-element cho màu
+                                    ?>
+                                            <div class="swatch-element <?php if ($modelVariantDetail->getVariantQuantityByColor($listVariantDetails, $color) <= 0) :
+                                                                            echo "soldout";
+                                                                        endif; ?> color-<?php echo $color; ?>" data-value="<?php echo $color; ?>" data-value_2="<?php echo $color; ?>">
+                                                <input onclick="<?php if ($catalog->getName() == 'Shoes') echo 'loadSize';
+                                                                else echo 'loadVersion' ?>('<?php echo json_encode($productID); ?>', '<?php echo $color; ?>')" <?php if ($modelVariantDetail->getVariantQuantityByColor($listVariantDetails, $color) <= 0) :
+                                                                                                                                                                    echo "disabled";
+                                                                                                                                                                endif; ?> id="color-<?php echo $color; ?>" type="radio" name="color" value="<?php echo $color; ?>">
+                                                <label for="color-<?php echo $color; ?>">
+                                                    <?php echo $color; ?>
+                                                    <img class="crossed-out" src="https://cdn.shopvnb.com/themes/images/soldout.png" alt="<?php echo $color; ?>">
+                                                </label>
+                                            </div>
+                                    <?php
+                                        endif;
+                                    endforeach;
+                                    ?>
+                                </div>
+                            </div>
+
                         <?php else : ?>
                             <div class="select-swatch">
                                 <div class="swatch clearfix">
@@ -287,9 +337,9 @@ if ($catalog->getName() == "Racket") {
                                             <div class="swatch-element <?php if ($modelVariantDetail->getVariantQuantityByColor($listVariantDetails, $color) <= 0) :
                                                                             echo "soldout";
                                                                         endif; ?> color-<?php echo $color; ?>" data-value="<?php echo $color; ?>" data-value_2="<?php echo $color; ?>">
-                                                <input onclick="loadVersion('<?php echo json_encode($productID); ?>', '<?php echo $color; ?>')" <?php if ($modelVariantDetail->getVariantQuantityByColor($listVariantDetails, $color) <= 0) :
-                                                                                                                                                                echo "disabled";
-                                                                                                                                                            endif; ?> id="color-<?php echo $color; ?>" type="radio" name="color" value="<?php echo $color; ?>">
+                                                <input <?php if ($modelVariantDetail->getVariantQuantityByColor($listVariantDetails, $color) <= 0) :
+                                                            echo "disabled";
+                                                        endif; ?> id="color-<?php echo $color; ?>" type="radio" name="color" value="<?php echo $color; ?>">
                                                 <label for="color-<?php echo $color; ?>">
                                                     <?php echo $color; ?>
                                                     <img class="crossed-out" src="https://cdn.shopvnb.com/themes/images/soldout.png" alt="<?php echo $color; ?>">
@@ -301,8 +351,9 @@ if ($catalog->getName() == "Racket") {
                                     ?>
                                 </div>
                             </div>
+
                         <?php endif; ?>
-                        
+
                         <div id="hidden"></div>
 
                         <div class="boz-form">
@@ -320,7 +371,7 @@ if ($catalog->getName() == "Racket") {
                                         <button type="submit" class="btn btn_base normal_button btn_add_cart add_to_cart btn-cart"><span class="txt-main">Thêm vào giỏ hàng</span></button>
 
                                     </div>
-                                    <div class="btn-mua button_actions clearfix">
+                                    <div class="btn-mua button_actions2 clearfix">
 
                                         <button type="submit" class="btn btn_base normal_button btn_add_cart add_to_cart btn-cart"><span class="txt-main">Mua ngay</span></button>
 
@@ -342,8 +393,8 @@ if ($catalog->getName() == "Racket") {
             <button class="tab-button active" data-tab="tab1">Mô tả sản phẩm</button>
             <button class="tab-button" data-tab="tab2">Thông số kỹ thuật</button>
         </div>
-        <div class="tab-content" id="tab1">
-            Content for Tab 1
+        <div class="tab-content" id="tab1" style="width: 80%; margin-left:10%">
+            <?php if ($product->getDescription() != 0) echo $product->getDescription(); ?>
         </div>
         <div id="tab2" class="tab-content content_extab" style="display: none;">
             <div class="thongso-container">
