@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -25,7 +25,7 @@
 
 
     <link href="https://cdn.shopvnb.com/themes/css/breadcrumb_style.scss.css" rel="stylesheet" type="text/css" />
-    <style>
+    <!--<style>
         :root {
             --mainColor: #E95211;
             --textColor: #231f20;
@@ -6266,7 +6266,7 @@
         }
 
         @media screen and (max-width: 767px) {}
-    </style>
+    </style>-->
 
     <div class="bodywrap">
         <div class="layout-collection">

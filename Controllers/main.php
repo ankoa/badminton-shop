@@ -6,7 +6,7 @@
         }
         else $tmp = '';
         if($tmp=='ProductCategory'){
-            include("../View/user/pages/product_page.php");
+            include("../View/user/pages/product_detail.php");
         }
         else if($tmp=='SaleOffCategory'){
             include("../View/user/pages/saleOff_page.php");
@@ -33,10 +33,10 @@
             $tmp = $_GET['control'];
         }
         else $tmp = '';
-        if($tmp=='login'){
-            include("../View/user/pages/login.php");
+        if($tmp=='signup'){
+            include("../View/user/pages/signup.php");
         }
-        else{
+        else if($tmp=='signin'){
             include("../View/user/pages/signin.php");
         }
     ?>

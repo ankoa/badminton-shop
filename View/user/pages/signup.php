@@ -1,4 +1,3 @@
-<!--
 
 <div id="sigin-background">
     <div class="signin" id="create">
@@ -8,7 +7,7 @@
                 Bạn đã có tài khoản ? 
                 <a href="#" class="signin-link-underline" onclick="fdn()">Đăng nhập ngay </a>
             </p>
-            <form onsubmit="createAcc(event)">
+            <form onsubmit="">
                 <div class="form-user-name">
                     <input type="text" class="form-input" placeholder="Name" id="form-Name">
                 </div>
@@ -33,6 +32,6 @@
                 </div>
             </form>
         </div>
-</div>-->
+</div>
         
       

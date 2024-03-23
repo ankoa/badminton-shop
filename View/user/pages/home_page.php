@@ -176,6 +176,7 @@
 
 	</div>
 </section>
+
 <section class="products-section">
     <div class="title_modules">
                 <h2> 
@@ -184,7 +185,7 @@
                     </a>
                 </h2>
     </div>
-    <div class="product-container">
+    <div class="product-containerHomepage">
         <div class="product">
             <img src="https://cdn.shopvnb.com/img/400x400/uploads/danh_muc/thumb/1.1.webp" alt="Vợt Cầu Lông">
             <h3>VỢT CẦU LÔNG</h3>
