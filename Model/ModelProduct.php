@@ -3,15 +3,18 @@ require_once 'database.php';
 
 require_once(__DIR__ . '/Entity/Product.php');
 
-class ModelProduct {
+class ModelProduct
+{
     private $db;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->db = new Database();
     }
 
     // Lấy tất cả sản phẩm từ cơ sở dữ liệu
-    public function getAllProducts() {
+    public function getAllProducts()
+    {
         $query = "SELECT * FROM product";
         $result = $this->db->select($query);
 
@@ -24,9 +27,9 @@ class ModelProduct {
                     $row['catalogID'],
                     $row['name'],
                     $row['description'],
+                    $row['status'],
                     $row['price'],
-                    $row['discount'],
-                    $row['status']
+                    $row['discount']
                 );
                 $products[] = $product;
             }
@@ -36,7 +39,8 @@ class ModelProduct {
     }
 
     // Lấy thông tin sản phẩm dựa trên ID
-    public function getProductByID($productID) {
+    public function getProductByID($productID)
+    {
         $query = "SELECT * FROM product WHERE productID = '$productID'";
         $result = $this->db->select($query);
 
@@ -44,14 +48,13 @@ class ModelProduct {
             $row = $result->fetch_assoc();
             $product = new Product(
                 $row['productID'],
-
-                    $row['brandID'],
-                    $row['catalogID'],
-                    $row['name'],
-                    $row['description'],
-                    $row['price'],
-                    $row['discount'],
-                    $row['status']
+                $row['brandID'],
+                $row['catalogID'],
+                $row['name'],
+                $row['description'],
+                $row['status'],
+                $row['price'],
+                $row['discount']
 
             );
             return $product;
@@ -61,7 +64,8 @@ class ModelProduct {
     }
 
     // Phương thức để lấy thông tin sản phẩm bằng catalogID
-    public function getProductByCatalogID($catalogID) {
+    public function getProductByCatalogID($catalogID)
+    {
         $query = "SELECT * FROM product WHERE catalogID = '$catalogID'";
         $result = $this->db->select($query);
         if ($result) {
@@ -72,7 +76,8 @@ class ModelProduct {
     }
 
     // Phương thức để lấy thông tin sản phẩm bằng brandID
-    public function getProductByBrandID($brandID) {
+    public function getProductByBrandID($brandID)
+    {
         $query = "SELECT * FROM product WHERE brandID = '$brandID'";
         $result = $this->db->select($query);
         if ($result) {
@@ -83,7 +88,8 @@ class ModelProduct {
     }
 
     // Phương thức để lấy thông tin sản phẩm bằng name
-    public function getProductByName($name) {
+    public function getProductByName($name)
+    {
         $query = "SELECT * FROM product WHERE name = '$name'";
         $result = $this->db->select($query);
         if ($result) {
@@ -94,7 +100,8 @@ class ModelProduct {
     }
 
     // Thêm sản phẩm mới vào cơ sở dữ liệu
-    public function addProduct($product) {
+    public function addProduct($product)
+    {
         $productID = $product->getProductID();
         $brandID = $product->getBrandID();
         $catalogID = $product->getCatalogID();
@@ -108,7 +115,8 @@ class ModelProduct {
     }
 
     // Cập nhật thông tin sản phẩm trong cơ sở dữ liệu
-    public function updateProduct($product) {
+    public function updateProduct($product)
+    {
         $productID = $product->getProductID();
         $brandID = $product->getBrandID();
         $catalogID = $product->getCatalogID();
@@ -120,11 +128,9 @@ class ModelProduct {
     }
 
     // Xóa sản phẩm khỏi cơ sở dữ liệu
-    public function deleteProduct($productID) {
+    public function deleteProduct($productID)
+    {
         $query = "DELETE FROM product WHERE productID = '$productID'";
         return $this->db->delete($query);
     }
 }
-
-?>
-
