@@ -1,4 +1,16 @@
 <?php
+require_once(__DIR__ . '/../Model/ModelProduct.php');
+require_once(__DIR__ . '/../Model/ModelBrand.php');
+require_once(__DIR__ . '/../Model/ModelCatalog.php');
+require_once(__DIR__ . '/../Model/ModelVariantDetail.php');
+require_once(__DIR__ . '/../Model/ModelVariant.php');
+
+$modelBrand=new ModelBrand();
+$modelCatalog=new ModelBrand();
+$modelProduct=new ModelBrand();
+$modelVariant=new ModelBrand();
+$modelVariantDetail=new ModelBrand();
+
 function loadPage($page, $productsPerPage, $id)
 {
     $mysqli = new mysqli("localhost", "root", "", "badmintonweb");
@@ -41,6 +53,41 @@ function loadPage($page, $productsPerPage, $id)
 }
 
 function loadNav($productsPerPage, $id) {
+    $id = intval($id);
+
+    $totalProducts=0;
+    $mysqli = new mysqli("localhost", "root", "", "badmintonweb");
+
+    if ($mysqli->connect_errno) {
+        echo "Failed to connect to MySQL: " . $mysqli->connect_error;
+        exit();
+    }
+
+    $strSQL = "SELECT catalogID, COUNT(*) AS total_products
+    FROM product
+    GROUP BY catalogID";
+    $result = $mysqli->query($strSQL); 
+    while ($row = $result->fetch_assoc()) {
+        // Lấy giá trị của cột 'name' từ mỗi hàng kết quả
+        $catalog = $row['catalogID'];
+        if($catalog == $id){
+            $totalProducts = $row['total_products']; 
+            break;
+        }
+    }    
+
+    $totalPages = ceil($totalProducts / $productsPerPage);
+    $mysqli->close();
+    
+    return $totalPages;
+}
+
+function searchFilter($type, $key) {
+    if($type=="Khoảng giá") {
+
+    } else if($type== "Hãng") {
+    
+    }
     $id = intval($id);
 
     $totalProducts=0;
