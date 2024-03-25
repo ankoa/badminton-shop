@@ -1,3 +1,12 @@
+a, text-link {
+    text-decoration: none;
+    color: #333e44;
+}
+
+.hide {
+    display: none;
+}
+
 .aside-content ul {
     list-style: none;
 }
@@ -29,7 +38,7 @@
 .dqdt-sidebar {
     -ms-flex: 0 0 26%;
     flex: 0 0 26%;
-    max-width: 20%;
+    max-width: 22%;
     height: 1000px;
 }
 
@@ -44,6 +53,95 @@
     margin-bottom: 20px;
 }
 
+.dqdt-sidebar .filter-content .filter-container .filter-container__selected-filter {
+    width: 100%;
+    border-bottom: 1px dashed #F2F2F2;
+    margin-bottom: 10px;
+}
+
+.dqdt-sidebar .filter-content .filter-container .filter-container__selected-filter-header {
+    margin-bottom: 5px;
+}
+
+.dqdt-sidebar .filter-content .filter-container .filter-container__selected-filter-header-title {
+    font-size: 1.15rem;
+    font-weight: bold;
+    color: #E95221;
+}
+
+.dqdt-sidebar .filter-content .filter-container .filter-container__clear-all {
+    float: right;
+    color: #000;
+    margin-top: 0px;
+}
+
+.dqdt-sidebar .filter-content .filter-container .filter-container__clear-all i svg {
+    width: 10px;
+    height: 10px;
+    position: relative;
+    bottom: 1px;
+}
+
+.dqdt-sidebar .filter-content .filter-container .filter-container__clear-all i svg path {
+    fill: #666;
+}
+
+.dqdt-sidebar .filter-content .filter-container .filter-container__clear-all:hover i svg path {
+    fill: #E95211;
+}
+
+
+.filter-content .filter-container .filter-container__selected-filter-header a:hover {
+    color: #E95211;
+}
+
+
+.dqdt-sidebar .filter-content .filter-container .filter-container__selected-filter-list ul {
+    padding-left: 0px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.dqdt-sidebar .filter-content .filter-container .filter-container__selected-filter-list ul li {
+    display: inline-block;
+    float: left;
+    margin-right: 10px;
+    border-radius: 5px;
+    background: #E95221;
+    color: #fff;
+    padding: 0 5px;
+    margin-bottom: 5px;
+}
+
+.dqdt-sidebar .filter-content .filter-container .filter-container__selected-filter-list ul li a {
+    color: #fff;
+}
+
+.dqdt-sidebar .filter-content .filter-container .filter-container__selected-filter-item>a {
+    color: #333;
+    font-size: em(13px);
+    position: relative;
+    padding-left: 15px;
+}
+
+.dqdt-sidebar .filter-content .filter-container .filter-container__selected-filter-item .fa {
+    margin-right: 10px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.1' id='Layer_1' x='0px' y='0px' viewBox='0 0 492 492' style='enable-background:new 0 0 492 492;' xml:space='preserve'%3E%3Cg%3E%3Cg%3E%3Cpath d='M300.188,246L484.14,62.04c5.06-5.064,7.852-11.82,7.86-19.024c0-7.208-2.792-13.972-7.86-19.028L468.02,7.872 c-5.068-5.076-11.824-7.856-19.036-7.856c-7.2,0-13.956,2.78-19.024,7.856L246.008,191.82L62.048,7.872 c-5.06-5.076-11.82-7.856-19.028-7.856c-7.2,0-13.96,2.78-19.02,7.856L7.872,23.988c-10.496,10.496-10.496,27.568,0,38.052 L191.828,246L7.872,429.952c-5.064,5.072-7.852,11.828-7.852,19.032c0,7.204,2.788,13.96,7.852,19.028l16.124,16.116 c5.06,5.072,11.824,7.856,19.02,7.856c7.208,0,13.968-2.784,19.028-7.856l183.96-183.952l183.952,183.952 c5.068,5.072,11.824,7.856,19.024,7.856h0.008c7.204,0,13.96-2.784,19.028-7.856l16.12-16.116 c5.06-5.064,7.852-11.824,7.852-19.028c0-7.204-2.792-13.96-7.852-19.028L300.188,246z'/%3E%3C/g%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    width: 20px;
+    height: 9px;
+    display: block;
+    background-size: contain;
+    position: absolute;
+    top: 5px;
+    left: 0px;
+}
+
+.dqdt-sidebar .filter-content .filter-container .filter-container__selected-filter-list ul li .fa {
+    filter: invert(1);
+}
+
+
 .dqdt-sidebar .filter-content .filter-container .aside-item{
     width: 100%;
     display: block;
@@ -57,7 +155,7 @@
     margin-bottom: 10px;
 }
 
-.layout-collection .dqdt-sidebar .filter-content .filter-container .aside-item .aside-title h2 {
+.dqdt-sidebar .filter-content .filter-container .aside-item .aside-title h2 {
     font-size: 14px;
     text-transform: uppercase;
     font-weight: bold;
@@ -334,10 +432,92 @@ img {
     border: 1px solid gray
 }
 
+.content__paging li:hover {
+    background-color: #E95211;
+    border: 1px solid #E95211;
+}
+
+.content__paging li:hover a {
+    color: white;
+}
+
 .content__paging .number-page {
     display: flex;
 }
 
 .content__paging .page {
     margin-left: auto;
+}
+
+.item_product_main {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.item_product_main .product-thumbnail {
+    position: relative;
+    overflow: hidden;
+}
+
+.item_product_main .product-thumbnail .product_overlay {
+    content: "";
+    width: 100%;
+    height: 100%;
+    background: #fdfdfd;
+    opacity: 0;
+    position: absolute;
+    z-index: 0;
+    top: 0;
+    left: 0;
+    -webkit-transition: all 150ms ease-in-out;
+    -moz-transition: all 150ms ease-in-out;
+    -ms-transition: all 150ms ease-in-out;
+    -o-transition: all 150ms ease-in-out;
+    transition: all 150ms ease-in-out;
+}
+
+.item_product_main .product-info {
+    margin: 5px 0 5px;
+    position: relative;
+}
+
+.item_product_main .product-info h3 {
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    text-overflow: ellipsis;
+    color: #333e44;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 400;
+    margin: 0 0 3px;
+    padding-bottom: 3px;
+    line-height: 22px;
+    text-transform: capitalize;
+    height: 44px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    white-space: initial;
+}
+
+.item_product_main .product-info h3 a {
+    color: #333e44;
+}
+
+.item_product_main .product-info .price-box {
+    color: #e8002d;
+    line-height: 23px;
+    display: block;
+    font-size: 16px;
+    font-weight: 500;
+    min-height: 25px;
+}
+
+.item_product_main .product-info .price-box .price {
+    padding-right: 5px;
+}
+
+.item_product_main .product-info h3 a:hover {
+    color: #E95211;
 }
