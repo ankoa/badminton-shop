@@ -1,4 +1,3 @@
-
 <?php
 require_once __DIR__ . '/../../../Model/ModelProduct.php';
 require_once __DIR__ . '/../../../Model/ModelBrand.php';
@@ -41,8 +40,10 @@ $listVariantDetails = [];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>web</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
-
+    <link rel="preload" as='style' type="text/css" href="https://cdn.shopvnb.com/themes/css/quickviews_popup_cart.scss.css">
+    <link rel="preload" as='style' type="text/css" href="https://cdn.shopvnb.com/themes/css/danh_muc_style.scss.css?v=18">
+    <link rel="preload" as='style' type="text/css" href="https://cdn.shopvnb.com/themes/css/breadcrumb_style.scss.css">
+    <link rel="preload" as='style' type="text/css" href="https://cdn.shopvnb.com/themes/css/bootstrap-4-3-min.css">
     <link rel="stylesheet" href="https://cdn.shopvnb.com/themes/css/bootstrap-4-3-min.css">
     <link href="https://cdn.shopvnb.com/themes/css/danh_muc_style.scss.css?v=16" rel="stylesheet" type="text/css" />
     <link href="https://cdn.shopvnb.com/themes/css/quickviews_popup_cart.scss.css" rel="stylesheet" type="text/css" />
@@ -55,7 +56,7 @@ $listVariantDetails = [];
     <link rel="preload" as="style" href="https://cdn.shopvnb.com/themes/css/ajaxcart.scss.css" type="text/css">
     <link href="https://cdn.shopvnb.com/themes/css/ajaxcart.scss.css" rel="stylesheet" type="text/css" />
     <div class="backdrop__body-backdrop___1rvky"></div>
-    <script src="../../../js/nav.js" defer></script>
+
     <link rel="stylesheet" href="../../css/product_nav.css">
     <link href="https://cdn.shopvnb.com/themes/css/breadcrumb_style.scss.css" rel="stylesheet" type="text/css" />
 </head>
@@ -142,15 +143,15 @@ $listVariantDetails = [];
                                 </div>
                                 <div class="aside-content margin-top-0 filter-group">
                                     <ul class="filter-vendor">
-                                        <?php foreach ($listBrands as $brand) : ?>
-                                            <li class="filter-item filter-item--check-box filter-item--green">
-                                                <label data-filter="filter-th-<?php echo $brand->getBrandID(); ?>" for="filter-th-<?php echo $brand->getBrandID(); ?>" class="th-<?php echo $brand->getBrandID(); ?>">
-                                                    <input type="checkbox" id="filter-th-<?php echo $brand->getBrandID(); ?>" onchange="toggleFilter(this)" data-group="Hãng" data-field="thuong_hieu" data-text="<?php echo $brand->getName(); ?>" value="<?php echo $brand->getBrandID(); ?>" data-operator="OR">
-                                                    <i class="fa"></i>
-                                                    <?php echo $brand->getName(); ?>
-                                                </label>
-                                            </li>
-                                        <?php endforeach; ?>
+                                            <?php foreach ($listBrands as $brand) : ?>
+                                                <li class="filter-item filter-item--check-box filter-item--green">
+                                                    <label data-filter="filter-th-<?php echo $brand->getBrandID(); ?>" for="filter-th-<?php echo $brand->getBrandID(); ?>" class="th-<?php echo $brand->getBrandID(); ?>">
+                                                        <input type="checkbox" id="filter-th-<?php echo $brand->getBrandID(); ?>" onchange="toggleFilter(this)" data-group="Hãng" data-field="thuong_hieu" data-text="<?php echo $brand->getName(); ?>" value="<?php echo $brand->getBrandID(); ?>" data-operator="OR">
+                                                        <i class="fa"></i>
+                                                        <?php echo $brand->getName(); ?>
+                                                    </label>
+                                                </li>
+                                            <?php endforeach; ?>
                                     </ul>
                                 </div>
                             </aside>
@@ -168,43 +169,20 @@ $listVariantDetails = [];
                         <div id="sort-by">
                             <label class="left"><img width="16" height="16" alt="Sắp xếp" src="https://cdn.shopvnb.com/themes/images/sort.png">Sắp xếp: </label>
                             <ul id="sortBy">
-                                <li><span>Tên A → Z</span>
-                                    <ul>
-                                        <li><a href="javascript:;" onclick="sortby('alpha-asc')">A → Z</a></li>
-                                        <li><a href="javascript:;" onclick="sortby('alpha-desc')">Z → A</a></li>
-                                        <li><a href="javascript:;" onclick="sortby('price-asc')">Giá tăng dần</a></li>
-                                        <li><a href="javascript:;" onclick="sortby('price-desc')">Giá giảm dần</a></li>
-                                        <li><a href="javascript:;" onclick="sortby('created-desc')">Hàng mới nhất</a></li>
-                                        <li><a href="javascript:;" onclick="sortby('created-asc')">Hàng cũ nhất</a></li>
-                                    </ul>
-                                </li>
+                            <li><span>Tên A → Z</span>
+                            <ul>								
+                            <li><a href="javascript:;" onclick="sortby('alpha-asc')">A → Z</a></li>
+                            <li><a href="javascript:;" onclick="sortby('alpha-desc')">Z → A</a></li>
+                            <li><a href="javascript:;" onclick="sortby('price-asc')">Giá tăng dần</a></li>
+                            <li><a href="javascript:;" onclick="sortby('price-desc')">Giá giảm dần</a></li>
+                            <li><a href="javascript:;" onclick="sortby('created-desc')">Hàng mới nhất</a></li>
+                            <li><a href="javascript:;" onclick="sortby('created-asc')">Hàng cũ nhất</a></li>
+                            </ul>
+                            </li>
                             </ul>
                         </div>
-                        <div class="product-view" id="product">
-                            
+                        <div class="product-view">
 
-                        </div>
-                        <div class="content__paging">
-                            <div class="page">
-                                <ul>
-                                    <li class="btn-prev btn-active fas fa-angle-left"></li>
-                                    <div class="number-page" id="number-page">
-                                        
-                                    </div>
-                                    <li class="btn-next fas fa-angle-right"></li>
-                                </ul>
-                            </div>
-                            <div class="page-config">
-                                <label for="">Item per page: </label>
-                                <select name="" id="mySelect" onchange="loadPerPage()">
-                                    <option value="3">3</option>
-                                    <option value="6" selected>6</option>
-                                    <option value="9">9</option>
-                                    <option value="12">12</option>
-                                </select>
-                            </div>
-                            <div class="total-page"></div>
-                            <div class="total-item"></div>
                         </div>
                     </div>
                 </div>

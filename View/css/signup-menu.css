@@ -36,7 +36,7 @@
     transform: translate(-50%, -50%);
     width: 45%; 
     max-width: 35rem; 
-    height: 70%;
+    height: 80%;
 }
 
 /* Close icon */
@@ -66,15 +66,13 @@
     font-size: 3rem;
     text-align: center;
     font-weight: bold;
-    margin-bottom: 2rem;
+    margin-bottom: 0.5rem;
 }
 
 /* "Already have an account?" */
 .signin-already {
     text-align: center;
-    font-size: 1.6rem;
-    margin-bottom: 3.5rem;
-}
+    font-size: 1.6rem;}
 
 /* Underlined link */
 .signin-link-underline {
@@ -88,7 +86,8 @@
     font-family: 'Poppins', sans-serif;
     color: black;
     padding: 1.5rem;
-    margin-bottom: 1.8rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
     border-radius: 1rem;
     outline: none;
     font-size: 1.6rem;
@@ -123,7 +122,7 @@
     text-align: center;
     cursor: pointer;
     border: 0;
-    width: 100%;
+    width: 80%;
     background-color: #ed673a;
 }
 
@@ -140,4 +139,25 @@
 /* Centering text within submit button */
 .form-submit-text {
     margin: 0 auto;
+}
+.error-signin {
+        height: 0.5rem;
+        margin-bottom: 1rem;
+        color: red; /* Màu chữ đỏ */
+}
+.error-signin p{
+    height: 100%;
+    font-size: 1rem;
+}
+/*label jquery validate*/
+form label {
+    color: #F86345;
+    font-size: 1.4rem;
+    left: 0;
+    width: 100%;
+    
+}
+form label.error{
+    height: 2rem;
+    margin-bottom: 2rem;        
 }

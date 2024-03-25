@@ -19,7 +19,6 @@
         }
         else{
             include("../View/user/pages/home_page.php");
-            include("../View/user/pages/login.php");
         }
     ?>
         <div class="back-to-top" onclick="scrollToTop()">
@@ -27,8 +26,17 @@
         </div>
 
 </div>
-<?php 
+<?php
+/*session_start();
+    if (!isset($_SESSION['login']) || $_SESSION['login'] !== true) 
+    {
+        include("../View/user/pages/signin.php");
+        exit;
+    }*/
 
+?>
+
+<?php 
         if(isset($_GET['control'])){
             $tmp = $_GET['control'];
         }
@@ -39,4 +47,9 @@
         else if($tmp=='signin'){
             include("../View/user/pages/signin.php");
         }
+        /*require_once(__DIR__ . '/../Model/ModelUser.php');
+        $modeluser = new ModelUser();
+        $add_user = $modeluser->addUser(1, 111, 1, 111, "a@gmail.com", "0364985452", 0, 'normal', 1);
+        echo $add_user;*/
     ?>
+    

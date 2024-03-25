@@ -35,10 +35,8 @@ class ModelUser {
     
 
     public function addUser($username, $password, $roleID, $name, $mail, $phoneNumber, $point, $type, $status) {
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        
         $query = "INSERT INTO user (username, password, roleID, name, mail, phoneNumber, point, type, status) 
-                  VALUES ('$username', '$hashedPassword', '$roleID', '$name', '$mail', '$phoneNumber', '$point', '$type', '$status')";
+                  VALUES ('$username', '$password', '$roleID', '$name', '$mail', '$phoneNumber', '$point', '$type', '$status')";
         return $this->db->insert($query);
     }
 
@@ -105,6 +103,38 @@ class ModelUser {
             );
         } else {
             return null;
+        }
+    }
+    public function checkExistingUsername($username) {
+        $query = "SELECT COUNT(*) AS count FROM user WHERE username = '$username'";
+        $result = $this->db->select($query);
+        if ($result) {
+            $row = $result->fetch_assoc();
+            return $row['count'] > 0;
+        } else {
+            return false;
+        }
+    }
+    
+    public function checkExistingEmail($email) {
+        $query = "SELECT COUNT(*) AS count FROM user WHERE mail = '$email'";
+        $result = $this->db->select($query);
+        if ($result) {
+            $row = $result->fetch_assoc();
+            return $row['count'] > 0;
+        } else {
+            return false;
+        }
+    }
+    
+    public function checkExistingPhoneNumber($phoneNumber) {
+        $query = "SELECT COUNT(*) AS count FROM user WHERE phoneNumber = '$phoneNumber'";
+        $result = $this->db->select($query);
+        if ($result) {
+            $row = $result->fetch_assoc();
+            return $row['count'] > 0;
+        } else {
+            return false;
         }
     }
     
