@@ -20,10 +20,12 @@
         else{
             include("../View/user/pages/home_page.php");
         }
-    ?>
+        echo '
         <div class="back-to-top" onclick="scrollToTop()">
             <a class="" href="#"><i class="fa-solid fa-arrow-up back-top-top-icon" style="color: #ffffff;"></i></a>
-        </div>
+        </div>'
+    ?>
+        
 
 </div>
 <?php
@@ -50,6 +52,7 @@
         /*require_once(__DIR__ . '/../Model/ModelUser.php');
         $modeluser = new ModelUser();
         $add_user = $modeluser->addUser(1, 111, 1, 111, "a@gmail.com", "0364985452", 0, 'normal', 1);
-        echo $add_user;*/
+        echo $add_user;
+        require_once(__DIR__ . '/../Model/check-email.php');*/
     ?>
     

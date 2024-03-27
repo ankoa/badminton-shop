@@ -4,11 +4,11 @@
     <section class="slider">
                 <div class="slider-content-top-container">
                     <div class="slider-content-top">
-                    <a href=""> <img src="../View/images/banner/slider1.png" alt="" /></a>
-                    <a href=""> <img src="../View/images/banner/slider3.png" alt="" /> </a>
-                    <a href=""> <img src="../View/images/banner/slider1.png" alt="" /></a>
-                    <a href=""> <img src="../View/images/banner/slider2.png" alt="" /> </a>
-                    <a href=""> <img src="../View/images/banner/slider2.png" alt="" /> </a>
+                    <a href="index.php?productID=1"> <img src="../View/images/banner/slider1.png" alt="" /></a>
+                    <a href="index.php?productID=1"> <img src="../View/images/banner/slider3.png" alt="" /> </a>
+                    <a href="index.php?productID=1"> <img src="../View/images/banner/slider1.png" alt="" /></a>
+                    <a href="index.php?productID=1"> <img src="../View/images/banner/slider2.png" alt="" /> </a>
+                    <a href="index.php?productID=1"> <img src="../View/images/banner/slider2.png" alt="" /> </a>
                     </div>
                     <div class="slider-content-top-next">
                     <i class="fa-solid fa-left-long"> </i>

@@ -30,7 +30,15 @@ class ModelUser {
             return false;
         }
     }
-    
+    public function getRoleUsetByID($userID) {
+        $query = "SELECT * FROM user WHERE userID = '$userID' AND status != 0";
+        $result = $this->db->select($query);
+        if ($result) {
+            return $result->fetch_assoc();
+        } else {
+            return false;
+        }
+    }
 
     
 
@@ -137,7 +145,13 @@ class ModelUser {
             return false;
         }
     }
-    
+    public function checkPhoneNumberFormat($phoneNumber) {
+        if(preg_match('/^0\d{9}$/', $phoneNumber) && is_numeric($phoneNumber) && strlen($phoneNumber) == 10) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 }
 

@@ -56,7 +56,7 @@
                 <h2 class="signin-heading">Tạo tài khoản</h2>
                 <p class="signin-already" id="signin-already">
                     Bạn đã có tài khoản ? 
-                    <a href="#" class="signin-link-underline" onclick="fdn()">Đăng nhập ngay </a>
+                    <a href="index.php?control=signin" class="signin-link-underline" onclick="fdn()">Đăng nhập ngay </a>
                 </p>
                 <div class="error-signup"> <p class="error-message"></p> </div>
                 <form id="signup-form" action="../Controllers/Signin-upController.php" method="post" >
@@ -84,64 +84,8 @@
     </div>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="../js/jquery.validate.min.js" defer></script>
-    <script>
-        $("#signup-form").ready(function() {
-            $("#signup-form").validate({
-                rules: {
-                    formName: "required",
-                    formPassword: "required",
-                    formPhone: "required",
-                    formEmail: {
-                        required: true,
-                        email: true
-                    }
-                },
-                messages: {
-                    formName: "Tên không được bỏ trống",
-                    formPassword: "Mật khẩu không được bỏ trống",
-                    formPhone: "Số điện thoại không được bỏ trống",
-                    formEmail: {
-                        required: "Email không được bỏ trống",
-                        email: "Hãy nhập đúng định dạng email"
-                    }
-                },
-            });
-        });     
-    </script>
-<script>
-    $("#signup-form").on("submit", function(event) {
-        event.preventDefault();
-        console.log( $(this).serialize() );
-        $.ajax({
-            type: "POST",
-            url: '../Controllers/Signin-upController.php',
-            data: $(this).serializeArray(),
-            success: function(response) {
-            
-            try {
-                response = JSON.parse(response);
-                console.log(response.message);
-                if (response.status == 0) {
-                    $(".error-message").text(response.message);
-                } else {
-                    window.location.href = 'index.php';
-                }
-            } catch (error) {
-                console.log("lỗi");
-            }
-        }
-        });
-    });
-</script>
-<script>
-function focusOnErrorInput() {
-    var errorInput = $(".form-input.error");
-    if (errorInput.length > 0) {
-        errorInput.first().focus();
-    }
-}
-focusOnErrorInput();
-</script>
+    <script type="text/javascript" src="../js/signup-form.js" defer></script>
+    <script src="../js/signin-up.js" defer></script>
 </body>
 </html>
 

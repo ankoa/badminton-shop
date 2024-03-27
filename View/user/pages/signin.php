@@ -74,7 +74,7 @@
         <h2 class="signin-heading">Đăng nhập</h2>
         <p class="signin-already" id="signin-already">
           Bạn chưa có tài khoản?
-          <a href="#" class="signin-link-underline" onclick="">Hãy tạo ngay</a>
+          <a href="index.php?control=signup" class="signin-link-underline" onclick="">Hãy tạo ngay</a>
         </p>
         <div class="error-signin"> <p class="error-message"></p> </div>
         <form id="signin-form" action="../Controllers/Signin-upController.php" method="post" >
@@ -96,54 +96,8 @@
 </div>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="../js/jquery.validate.min.js" defer></script>
-<script>
-        $("#signin-form").ready(function() {
-            $("#signin-form").validate({
-                rules: {
-                    username: "required",
-                    password: "required"
-                },
-                messages: {
-                  username: "Tên không được bỏ trống",
-                  password: "Mật khẩu không được bỏ trống",
-                },
-            });
-        });     
-    </script>
-<script>
-    $("#signin-form").on("submit", function(event) {
-        event.preventDefault();
-        console.log( $(this).serialize() );
-        $.ajax({
-            type: "POST",
-            url: '../Controllers/Signin-upController.php',
-            data: $(this).serializeArray(),
-            success: function(response) {
-             
-            try {
-                response = JSON.parse(response); 
-                console.log(response.message);
-                if (response.status == 0) {
-                    $(".error-message").text(response.message);
-                } else {
-                    window.location.href = 'index.php';
-                }
-              } catch (error) {
-                console.log("lỗi");
-            }
-        }
-        });
-    });
-</script>
-<script>
-function focusOnErrorInput() {
-    var errorInput = $(".form-input.error");
-    if (errorInput.length > 0) {
-        errorInput.first().focus();
-    }
-}
-focusOnErrorInput();
-</script>
+<script type="text/javascript" src="../js/signin-form.js" defer></script>
+<script src="../js/signin-up.js" defer></script>
 </body>
 </html>
 

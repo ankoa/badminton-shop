@@ -139,6 +139,7 @@
 /* Centering text within submit button */
 .form-submit-text {
     margin: 0 auto;
+    font-size: 1.4rem;
 }
 .error-signin {
         height: 0.5rem;
@@ -151,7 +152,7 @@
 }
 /*label jquery validate*/
 form label {
-    color: #F86345;
+    color: red;
     font-size: 1.4rem;
     left: 0;
     width: 100%;

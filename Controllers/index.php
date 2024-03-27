@@ -28,7 +28,7 @@
      <script src="../js/slider.js" defer></script>
      <script src="../js/backToHome-button.js" defer></script>
      <script src="../js/product_detail.js" defer></script>
-     <script src="../js/signin-up.js" defer></script>
+     
 
 
 
