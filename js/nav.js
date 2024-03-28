@@ -5,20 +5,19 @@ function loadPage(page, productsPerPage, id) {
 
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            
             var listVariantDetails = JSON.parse(this.responseText);
             var htmlContent = '';
             for (var i = 0; i < listVariantDetails.length; i++) {
                 htmlContent += `<div class="col-6 col-md-4">
                     <div class="item_product_main">
                         <div class="product-thumbnail">
-                            <a class="product_overlay" href="" title=""></a>
-                            <a class="image_thumb" href="" title="">
+                            <a class="product_overlay" href="product_detail.php?productID=`+listVariantDetails[i].productID+`" title=""></a>
+                            <a class="image_thumb" href="product_detail.php?productID=`+listVariantDetails[i].productID+`" title="">
                                 <img width="300" height="300" class="lazyload loaded" src="https://cdn.shopvnb.com/img/300x300/uploads/gallery/vot-cau-long-victor-brave-sword-ltd-pro-noi-dia-taiwan-jpg-4_1711143954.webp" data-src="https://cdn.shopvnb.com/img/300x300/uploads/gallery/vot-cau-long-victor-brave-sword-ltd-pro-noi-dia-taiwan-jpg-4_1711143954.webp" alt="Vợt Cầu Lông Victor Brave Sword LTD Pro (Nội Địa Taiwan)" data-was-processed="true">
                             </a>
                         </div>
                         <div class="product-info">
-                            <h3 class="product-name"><a href="" title="Vợt Cầu Lông Victor Brave Sword LTD Pro (Nội Địa Taiwan)">`+listVariantDetails[i].name+`</a></h3>
+                            <h3 class="product-name"><a href="product_detail.php?productID=`+listVariantDetails[i].productID+`" title="Vợt Cầu Lông Victor Brave Sword LTD Pro (Nội Địa Taiwan)">`+listVariantDetails[i].name+`</a></h3>
                             <div class="price-box">
                                 <span class="price">`+ formatPrice(listVariantDetails[i].price) + ` ₫</span>
                             </div>
@@ -78,6 +77,10 @@ function loadNav(productsPerPage, id) {
     xhttp.send();
 }
 
+function searchFilter(type, key) {
+    
+}
+
 function loadPerPage() {
     var productsPerPage = document.getElementById("mySelect").value;
     var id = getIdFromUrl();
@@ -116,7 +119,6 @@ function toggleFilter(checkbox) {
 
     if (checkbox.checked) {
         countFilter += 1;
-        console.log(countFilter);
         var dataText = checkbox.dataset.text;
 
         // Tạo một phần tử mới nếu nó chưa tồn tại
@@ -138,7 +140,6 @@ function toggleFilter(checkbox) {
     } else {
         if (filterItem) {
             countFilter -= 1;
-            console.log(countFilter);
             document.getElementById("filter").removeChild(filterItem);
         }
 

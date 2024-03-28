@@ -435,6 +435,7 @@ img {
 .content__paging li:hover {
     background-color: #E95211;
     border: 1px solid #E95211;
+    color: white;
 }
 
 .content__paging li:hover a {

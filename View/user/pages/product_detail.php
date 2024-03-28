@@ -9,8 +9,10 @@ require_once __DIR__ . '/../../../Model/ModelVariantDetail.php';
 // Khởi tạo đối tượng ModelProduct
 $modelProduct = new ModelProduct();
 
+$productID = $_GET['productID'];
+
 // Lấy thông tin sản phẩm từ cơ sở dữ liệu dựa trên productID
-$productID = 16;
+//$productID = 16;
 $product = $modelProduct->getProductByID($productID);
 
 // Khởi tạo đối tượng ModelBrand
