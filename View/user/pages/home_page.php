@@ -23,7 +23,7 @@
             <div class="box_service">
                 <div class="promo-item">
                     <div class="icon-service">
-                        <img src="../View/images/iconservice_transport.png" alt="">
+                        <img src="https://cdn.shopvnb.com/themes/images/policy_image_2.svg" alt="">
 
                     </div>
                     <div class="infor">

@@ -12,16 +12,18 @@
                 if(!empty($username) && !empty($password)) {
                     $authenticated_user = $modeluser->authenticate($username, $password);
                     if($authenticated_user){ 
-
-                       /*  if(){
-                            $authenticated_role = $modelrole->getRoleByID();    
-                        } */
-                        $_SESSION['login'] = true;
-                        echo json_encode(array(
-                            'message' => "Đăng nhập thành công",
-                            'status' => 1
-                        ));
-                        exit;
+                        $authenticated_role = $modeluser->getRoleUsetByID($modeluser->getUIDByUserName($username));   
+                        //Khách hàng 
+                        if($authenticated_role ==1){
+                            $_SESSION['login'] = true;
+                            $_SESSION['username'] = $username;
+                            echo json_encode(array(
+                                'message' => "Đăng nhập thành công",
+                                'status' => 1
+                            ));
+                            exit;
+                        } 
+                        
                     } else {
                         echo json_encode(array(
                             'message' => "Tên người dùng hoặc mật khẩu không chính xác!",

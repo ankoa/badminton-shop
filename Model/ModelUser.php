@@ -30,15 +30,27 @@ class ModelUser {
             return false;
         }
     }
-    public function getRoleUsetByID($userID) {
-        $query = "SELECT * FROM user WHERE userID = '$userID' AND status != 0";
+    public function getUIDByUserName($username) {
+        $query = "SELECT userID FROM user WHERE username = '$username' AND status != 0";
         $result = $this->db->select($query);
         if ($result) {
-            return $result->fetch_assoc();
+            $row = $result->fetch_assoc();
+            return $row['userID']; 
         } else {
             return false;
         }
     }
+    public function getRoleUsetByID($userID) {
+        $query = "SELECT roleID FROM user WHERE userID = '$userID' AND status != 0";
+        $result = $this->db->select($query);
+        if ($result) {
+            $row = $result->fetch_assoc();
+            return $row['roleID']; 
+        } else {
+            return false;
+        }
+    }
+    
 
     
 
