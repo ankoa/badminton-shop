@@ -52,6 +52,7 @@ function loadPage($page, $productsPerPage, $id)
     return $variantsArray; // Trả về mảng kết quả
 }
 
+
 function loadNav($productsPerPage, $id) {
     $id = intval($id);
 
@@ -88,7 +89,7 @@ function searchFilter($type, $key) {
     } else if($type== "Hãng") {
     
     }
-    $id = intval($id);
+    
 
     $totalProducts=0;
     $mysqli = new mysqli("localhost", "root", "", "badmintonweb");
