@@ -77,46 +77,6 @@ function loadNav(productsPerPage, id) {
     xhttp.send();
 }
 
-function searchFilter(type, key) {
-    var id = getIdFromUrl(); // Lấy id từ đường dẫn URL
-    var productsPerPage = document.getElementById("mySelect").value;
-
-    var xhttp = new XMLHttpRequest();
-
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            var listVariantDetails = JSON.parse(this.responseText);
-            var htmlContent = '';
-
-            for (var i = 0; i < listVariantDetails.length; i++) {
-                htmlContent += `<div class="col-6 col-md-4">
-                    <div class="item_product_main">
-                        <div class="product-thumbnail">
-                            <a class="product_overlay" href="product_detail.php?productID=`+listVariantDetails[i].productID+`" title=""></a>
-                            <a class="image_thumb" href="product_detail.php?productID=`+listVariantDetails[i].productID+`" title="">
-                                <img width="300" height="300" class="lazyload loaded" src="https://cdn.shopvnb.com/img/300x300/uploads/gallery/vot-cau-long-victor-brave-sword-ltd-pro-noi-dia-taiwan-jpg-4_1711143954.webp" data-src="https://cdn.shopvnb.com/img/300x300/uploads/gallery/vot-cau-long-victor-brave-sword-ltd-pro-noi-dia-taiwan-jpg-4_1711143954.webp" alt="Vợt Cầu Lông Victor Brave Sword LTD Pro (Nội Địa Taiwan)" data-was-processed="true">
-                            </a>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-name"><a href="product_detail.php?productID=`+listVariantDetails[i].productID+`" title="Vợt Cầu Lông Victor Brave Sword LTD Pro (Nội Địa Taiwan)">`+listVariantDetails[i].name+`</a></h3>
-                            <div class="price-box">
-                                <span class="price">`+ formatPrice(listVariantDetails[i].price) + ` ₫</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>`;
-            }
-            document.getElementById("show-product").innerHTML = htmlContent;
-
-            // Reset lại pagination về trang đầu tiên khi thực hiện lọc
-            loadNav(productsPerPage, id);
-        }
-    };
-
-    // Gửi yêu cầu lọc đến server
-    xhttp.open("GET", "http://localhost/badminton-shop/Controllers/ProductFilterController.php?type=" + type + "&key=" + key + "&id=" + id + "&productsPerPage=" + productsPerPage, true);
-    xhttp.send();
-}
 
 
 function loadPerPage() {
@@ -133,8 +93,9 @@ window.addEventListener("load", function() {
     var id = getIdFromUrl();
 
     // Gọi loadPage và loadNav với id và số 6
-    loadPage(1, 6, id);
     loadNav(6, id);
+    loadPage(1, 6, id);
+    
     if(countFilter==0) {
         document.getElementById("filter-container").classList.add("hide");
     }
@@ -218,6 +179,48 @@ function clearAllFiltered() {
     var filterContainerElement = document.getElementById("filter-container");
     filterContainerElement.classList.add("hide");
 }
+
+$(document).ready(function() {
+    // Khởi tạo một object để lưu trữ các giá trị của các nhóm filter
+    var selectedFilters = {};
+
+    // Xử lý sự kiện khi các input checkbox thay đổi trạng thái
+    $("input[type='checkbox']").change(function() {
+        // Lấy data-group của checkbox được chọn
+        var group = $(this).data('field');
+        // Lấy giá trị của checkbox
+        var value = $(this).val();
+        // Kiểm tra nếu group đã tồn tại trong selectedFilters
+        if (selectedFilters[group] === undefined) {
+            // Nếu chưa tồn tại, tạo một mảng mới
+            selectedFilters[group] = [];
+        }
+        // Nếu checkbox được chọn, thêm giá trị vào mảng của group tương ứng
+        if ($(this).prop("checked")) {
+            selectedFilters[group].push(value);
+        } else {
+            // Nếu checkbox được bỏ chọn, loại bỏ giá trị khỏi mảng của group tương ứng
+            var index = selectedFilters[group].indexOf(value);
+            if (index !== -1) {
+                selectedFilters[group].splice(index, 1);
+            }
+        }
+
+        // Gửi yêu cầu lọc đến máy chủ bằng AJAX
+        $.ajax({
+            url: "http://localhost/badminton-shop/Controllers/ProductNavController.php", // Đường dẫn tới file xử lý yêu cầu lọc trên máy chủ
+            type: "GET",
+            data: {
+                selectedFilters, 
+                filter : true
+            }, // Truyền object chứa thông tin các bộ lọc đã chọn
+            success: function(response) {
+                // Xử lý kết quả trả về từ máy chủ
+                $("#filteredData").html(response); // Hiển thị dữ liệu đã lọc trong phần tử có id="filteredData"
+            }
+        });
+    });
+});
 
 
 
