@@ -288,7 +288,8 @@ $(document).ready(function () {
                 data: {
                     selectedFilters,
                     filter: true,
-                    productsPerPage: getProductPerPage()
+                    productsPerPage: getProductPerPage(),
+                    id: getIdFromUrl()
                 }, // Truyền object chứa thông tin các bộ lọc đã chọn
                 success: function (response) {
                     filterArray = JSON.parse(response);

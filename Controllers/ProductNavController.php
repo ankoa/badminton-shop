@@ -119,23 +119,13 @@ function findCommonProducts($list1, $list2) {
 
 
 // Kiểm tra nếu có dữ liệu được gửi từ yêu cầu AJAX
-if (isset($_GET['page']) && isset($_GET['productsPerPage']) &&  isset($_GET['id'])) {
-    $page = $_GET['page'];
-    $id = $_GET['id'];
-    $productsPerPage = $_GET['productsPerPage'];
-    $listVariantDetails = loadPage($page, $productsPerPage, $id);
-    echo json_encode($listVariantDetails); // Chuyển đổi thành chuỗi JSON và echo ra
-} else if (isset($_GET['productsPerPage']) && isset($_GET['id'])) {
-    $productsPerPage = $_GET['productsPerPage'];
-    $id = $_GET['id'];
-    $listVariantDetails = loadNav($productsPerPage, $id);
-    echo json_encode($listVariantDetails); // Chuyển đổi thành chuỗi JSON và echo ra
-} else if (isset($_GET['filter']) && isset($_GET['selectedFilters'])) {
+if (isset($_GET['filter']) && isset($_GET['selectedFilters'])) {
     $filterBrand = array();
     $filterPrice = array();
     $final = array();
     $selectedFilters = $_GET['selectedFilters'];
-    $listProducts = loadPage(1, 12, 1);
+    $id = $_GET['id'];
+    $listProducts = loadPage(1, 12, $id);
     $thuong_hieu=[];
     $gia=[];
     if (isset($selectedFilters['thuong_hieu'])) {
@@ -185,6 +175,17 @@ if (isset($_GET['page']) && isset($_GET['productsPerPage']) &&  isset($_GET['id'
 
     // In ra kết quả lọc được từ JavaScript
     echo $jsonData;
+} else if (isset($_GET['page']) && isset($_GET['productsPerPage']) &&  isset($_GET['id'])) {
+    $page = $_GET['page'];
+    $id = $_GET['id'];
+    $productsPerPage = $_GET['productsPerPage'];
+    $listVariantDetails = loadPage($page, $productsPerPage, $id);
+    echo json_encode($listVariantDetails); // Chuyển đổi thành chuỗi JSON và echo ra
+}  else if (isset($_GET['productsPerPage']) && isset($_GET['id'])) {
+    $productsPerPage = $_GET['productsPerPage'];
+    $id = $_GET['id'];
+    $listVariantDetails = loadNav($productsPerPage, $id);
+    echo json_encode($listVariantDetails); // Chuyển đổi thành chuỗi JSON và echo ra
 } else {
     // Nếu không có dữ liệu được gửi, trả về một mảng trống dưới dạng chuỗi JSON
     echo json_encode([]);
