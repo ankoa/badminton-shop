@@ -194,7 +194,7 @@ $listVariantDetails = [];
                                     <li class="btn-next fas fa-angle-right"></li>
                                 </ul>
                             </div>
-                            <div class="page-config">
+                            <div class="page-config" id="page-config">
                                 <label for="">Item per page: </label>
                                 <select name="" id="mySelect" onchange="loadPerPage()">
                                     <option value="3">3</option>

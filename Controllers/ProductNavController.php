@@ -130,7 +130,7 @@ if (isset($_GET['page']) && isset($_GET['productsPerPage']) &&  isset($_GET['id'
     $id = $_GET['id'];
     $listVariantDetails = loadNav($productsPerPage, $id);
     echo json_encode($listVariantDetails); // Chuyển đổi thành chuỗi JSON và echo ra
-} else if (isset($_GET['filter'])) {
+} else if (isset($_GET['filter']) && isset($_GET['selectedFilters'])) {
     $filterBrand = array();
     $filterPrice = array();
     $final = array();
@@ -184,7 +184,7 @@ if (isset($_GET['page']) && isset($_GET['productsPerPage']) &&  isset($_GET['id'
     $jsonData = json_encode($final);
 
     // In ra kết quả lọc được từ JavaScript
-    echo "<div>Kết quả nhận được từ JavaScript (data group 'brand'): $jsonData</div>";
+    echo $jsonData;
 } else {
     // Nếu không có dữ liệu được gửi, trả về một mảng trống dưới dạng chuỗi JSON
     echo json_encode([]);
