@@ -1,3 +1,4 @@
+
 <?php
 require_once __DIR__ . '/../../../Model/ModelProduct.php';
 require_once __DIR__ . '/../../../Model/ModelBrand.php';
@@ -47,9 +48,7 @@ $listVariantDetails = [];
     <link href="https://cdn.shopvnb.com/themes/css/quickviews_popup_cart.scss.css" rel="stylesheet" type="text/css" />
     <link rel="preload" as='style' type="text/css" href="https://cdn.shopvnb.com/themes/css/sidebar_style.scss.css">
     <link href="https://cdn.shopvnb.com/themes/css/sidebar_style.scss.css" rel="stylesheet" type="text/css" />
-    <script type='text/javascript'>
-        var this_url = 'https://shopvnb.com/vot-cau-long.html';
-    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     </div>
     <link rel="preload" as="style" href="https://cdn.shopvnb.com/themes/css/ajaxcart.scss.css" type="text/css">
     <link href="https://cdn.shopvnb.com/themes/css/ajaxcart.scss.css" rel="stylesheet" type="text/css" />
@@ -196,7 +195,7 @@ $listVariantDetails = [];
                                     <li class="btn-next fas fa-angle-right"></li>
                                 </ul>
                             </div>
-                            <div class="page-config">
+                            <div class="page-config" id="page-config">
                                 <label for="">Item per page: </label>
                                 <select name="" id="mySelect" onchange="loadPerPage()">
                                     <option value="3">3</option>
@@ -212,5 +211,7 @@ $listVariantDetails = [];
                 </div>
             </div>
         </div>
+
+        <div id="filteredData"></div>
     </div>
 </body>

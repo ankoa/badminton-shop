@@ -68,11 +68,23 @@ class ModelProduct
     {
         $query = "SELECT * FROM product WHERE catalogID = '$catalogID'";
         $result = $this->db->select($query);
-        if ($result) {
-            return $result->fetch_assoc();
-        } else {
-            return false;
+        $products = [];
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $product = new Product(
+                    $row['productID'],
+                    $row['brandID'],
+                    $row['catalogID'],
+                    $row['name'],
+                    $row['description'],
+                    $row['status'],
+                    $row['price'],
+                    $row['discount']
+                );
+                $products[] = $product;
+            }
         }
+        return $products;
     }
 
     // Phương thức để lấy thông tin sản phẩm bằng brandID
