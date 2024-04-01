@@ -114,6 +114,21 @@ class ModelVariantDetail {
         return $this->db->insert($query);
     }
 
+    
+
+    public function getListShoesSize() {
+        $query = "SELECT DISTINCT(size) FROM variantdetail WHERE size IS NOT NULL AND STATUS !=0;";
+        $result = $this->db->select($query);
+        $variants = [];
+        if ($result) {
+            while ($row = $result->fetch_assoc()) {
+                // Tạo đối tượng Variant từ dữ liệu trong hàng kết quả
+                $variants[] = $row['size'];
+            }
+        }
+        return $variants;
+    }
+    
     // Phương thức để cập nhật thông tin biến thể trong cơ sở dữ liệu
     public function updateVariant($variant) {
         $variantID = $variant->getVariantID();

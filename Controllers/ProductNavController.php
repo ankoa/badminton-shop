@@ -108,7 +108,7 @@ function findCommonProducts($list1, $list2) {
 
     foreach($intersection as $index) {
         foreach($list1 as $value) {
-            if($value['productID']==$index) {
+            if($value->getProductID()==$index) {
                 $commonProducts[]=$value;
             }
         }

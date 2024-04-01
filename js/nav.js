@@ -1,5 +1,6 @@
 countFilter = 0;
 filterArray = [];
+selectedFilters = {};
 
 function loadPage(page, productsPerPage, id) {
     var xhttp = new XMLHttpRequest();
@@ -178,6 +179,8 @@ function toggleFilter(checkbox) {
 }
 
 function removeFilteredItem(id) {
+    console.log(selectedFilters.thuong_hieu);
+    
     var filterItem = document.getElementById("filter-item-" + id);
     var filterItem2 = document.getElementById(id);
 
@@ -207,25 +210,6 @@ function clearAllFiltered() {
 
     var filterContainerElement = document.getElementById("filter-container");
     filterContainerElement.classList.add("hide");
-
-    // Lấy id từ đường dẫn URL
-            var id = getIdFromUrl();
-
-            // Gọi loadPage và loadNav với id và số 6
-            loadNav(6, id);
-            loadPage(1, 6, id);
-
-            if (countFilter == 0) {
-                document.getElementById("filter-container").classList.add("hide");
-            }
-
-            document.getElementById("page-config").innerHTML = '<label for="mySelect">Item per page: </label>' +
-                '<select name="mySelect" id="mySelect" onchange="loadPerPage()">' +
-                '<option value="3">3</option>' +
-                '<option value="6" selected>6</option>' +
-                '<option value="9">9</option>' +
-                '<option value="12">12</option>' +
-                '</select>';
 }
 
 function loadPageFilter(page, productsPerPage) {
@@ -267,7 +251,7 @@ function loadPageFilter(page, productsPerPage) {
 
 $(document).ready(function () {
     // Khởi tạo một object để lưu trữ các giá trị của các nhóm filter
-    var selectedFilters = {};
+
 
     // Xử lý sự kiện khi các input checkbox thay đổi trạng thái
     $("input[type='checkbox']").change(function () {
