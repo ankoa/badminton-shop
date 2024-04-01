@@ -1,59 +1,21 @@
 <?php
-require_once(__DIR__ . '.Model/ModelVariantDetail.php');
-function getVersionByColor($productID, $color) {
-    $modelVariant = new ModelVariant();
-    $listvariants = $modelVariant->getListVariantByProductID($productID);
-
-    $modelVariantDetail = new ModelVariantDetail();
-    $listVariantDetails = [];
-
-    foreach ($listvariants as $variant) {
-        $variantID = $variant->getVariantID();
-        $variantDetail = $modelVariantDetail->getVariantByID($variantID);
-        // Thêm chi tiết biến thể vào mảng $listVariantDetails
-        if($variantDetail->getColor() == $color) {
-            $listVariantDetails[] = $variantDetail;
+// Kiểm tra xem có dữ liệu được gửi đến không
+if ($_GET) {
+    // Duyệt qua các phần tử trong $_GET để lọc dữ liệu theo data group là "brand"
+    $filteredBrands = array();
+    foreach ($_GET as $key => $value) {
+        if (strpos($key, 'thuong_hieu') !== false) {
+            $filteredBrands[$key] = $value;
         }
     }
-}
 
-function getSizeByColor($productID, $color) {
-    $modelVariant = new ModelVariant();
-    $listvariants = $modelVariant->getListVariantByProductID($productID);
+    // Chuyển đổi dữ liệu thành chuỗi JSON để trả về cho JavaScript
+    $jsonData = json_encode($filteredBrands);
 
-    $modelVariantDetail = new ModelVariantDetail();
-    $listVariantDetails = [];
-
-    foreach ($listvariants as $variant) {
-        $variantID = $variant->getVariantID();
-        $variantDetail = $modelVariantDetail->getVariantByID($variantID);
-        // Thêm chi tiết biến thể vào mảng $listVariantDetails
-        if($variantDetail->getColor() == $color) {
-            $listVariantDetails[] = $variantDetail;
-        }
-    }
-}
-
-// Kiểm tra nếu có dữ liệu được gửi từ yêu cầu AJAX
-if (isset($_GET['productID']) && isset($_GET['color'])) {
-    // Lấy dữ liệu từ yêu cầu AJAX
-    $productID = $_GET['productID'];
-    $color = $_GET['color'];
-    $type = $_GET['type'];
-
-    if($type=='shoes') {
-        // Gọi hàm để lấy dữ liệu từ cơ sở dữ liệu
-        $listVariantDetails = getVersionByColor($productID, $color);
-    }
-    else if($type=='shoes') {
-        // Gọi hàm để lấy dữ liệu từ cơ sở dữ liệu
-        $listVariantDetails = getSizeByColor($productID, $color);
-    }
-
-    // Trả về dữ liệu dưới dạng chuỗi JSON
-    echo json_encode($listVariantDetails);
+    // In ra kết quả lọc được từ JavaScript
+    echo "<div>Kết quả nhận được từ JavaScript (data group 'brand'): $jsonData</div>";
 } else {
-    // Nếu không có dữ liệu được gửi, trả về một thông báo lỗi
-    echo "Error: No data received.";
+    // Nếu không có dữ liệu được gửi đến từ JavaScript, trả về thông báo lỗi
+    echo "<div>Không có dữ liệu lọc được gửi đến.</div>";
 }
 ?>
