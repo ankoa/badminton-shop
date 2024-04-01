@@ -153,6 +153,10 @@ $listVariantDetails = [];
                                 </div>
                             </aside>
 
+                            
+
+                            ?>
+
 
                         </div>
                     </div>

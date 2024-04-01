@@ -207,6 +207,25 @@ function clearAllFiltered() {
 
     var filterContainerElement = document.getElementById("filter-container");
     filterContainerElement.classList.add("hide");
+
+    // Lấy id từ đường dẫn URL
+            var id = getIdFromUrl();
+
+            // Gọi loadPage và loadNav với id và số 6
+            loadNav(6, id);
+            loadPage(1, 6, id);
+
+            if (countFilter == 0) {
+                document.getElementById("filter-container").classList.add("hide");
+            }
+
+            document.getElementById("page-config").innerHTML = '<label for="mySelect">Item per page: </label>' +
+                '<select name="mySelect" id="mySelect" onchange="loadPerPage()">' +
+                '<option value="3">3</option>' +
+                '<option value="6" selected>6</option>' +
+                '<option value="9">9</option>' +
+                '<option value="12">12</option>' +
+                '</select>';
 }
 
 function loadPageFilter(page, productsPerPage) {
