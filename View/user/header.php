@@ -20,7 +20,7 @@
                     <i class="fa-solid fa-clipboard-list" style="color: #e95221;"></i>
                     <span class="icon-name">TRA CỨU</span>
                     <ul class="submenu_check">
-                            <li class="dropdown-item"> <a href="index.php?d=checkDonHang"> Kiểm tra đơn hàng </a></li>
+                            <li class="dropdown-item"> <a href="index.php?control=checkDonHang"> Kiểm tra đơn hàng </a></li>
                     </ul>
                 </li>
             </div>

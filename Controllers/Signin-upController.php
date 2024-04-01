@@ -13,16 +13,33 @@
                     $authenticated_user = $modeluser->authenticate($username, $password);
                     if($authenticated_user){ 
                         $authenticated_role = $modeluser->getRoleUsetByID($modeluser->getUIDByUserName($username));   
-                        //Khách hàng 
+                        
                         if($authenticated_role ==1){
                             $_SESSION['login'] = true;
                             $_SESSION['username'] = $username;
                             echo json_encode(array(
-                                'message' => "Đăng nhập thành công",
+                                'message' => "Đăng nhập thành công - khách hàng",
                                 'status' => 1
                             ));
                             exit;
-                        } 
+                        } elseif($authenticated_role == 2){
+                            $_SESSION['login'] = true;
+                            $_SESSION['username'] = $username;
+                            echo json_encode(array(
+                                'message' => "Đăng nhập thành công - nhân viên",
+                                'status' => 2
+                            ));
+                            exit;   
+                        }
+                        elseif($authenticated_role == 3){
+                            $_SESSION['login'] = true;
+                            $_SESSION['username'] = $username;
+                            echo json_encode(array(
+                                'message' => "Đăng nhập thành công - admin",
+                                'status' => 2
+                            ));
+                            exit;   
+                        }
                         
                     } else {
                         echo json_encode(array(

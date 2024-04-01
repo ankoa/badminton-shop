@@ -17,6 +17,9 @@
         else if($tmp=='ContactCategory'){
             include("../View/user/pages/contact_page.php");
         }
+        else if($tmp=='checkDonHang'){
+            include("../View/user/pages/orderTransaction_page.php");
+        }
         else{
             include("../View/user/pages/home_page.php");
         }

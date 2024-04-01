@@ -33,6 +33,29 @@ require_once '..\Model\Entity\Transaction.php';
                 return false;
             }
         }
+
+        public function getTransactionByPhone($Phonenumber) {
+            //$Phonenumber = $this->db->escape_string($Phonenumber);
+            $query = "Select * from transaction where transaction.userID in 
+            (select user.userID from user where phonenumber like '$Phonenumber')";
+            $result = $this->db->select($query);
+            if ($result && $result->num_rows > 0) {
+                // Initialize an array to store transactions
+                $transactions = array();
+                
+                // Loop through the result set and fetch each row
+                while ($row = $result->fetch_assoc()) {
+                    // Add each transaction to the transactions array
+                    $transactions[] = $row;
+                }
+                
+                // Return the array of transactions
+                return $transactions;
+            } else {
+                // Return false if no transactions found
+                return false;
+            }
+        }
     
         // Phương thức để thêm một giao dịch mới vào cơ sở dữ liệu
         public function addTransaction($userID, $total, $note, $time, $address) {
