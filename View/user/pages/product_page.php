@@ -291,8 +291,9 @@ $listVariantDetails = [];
                                         </ul>
                                     </div>
                                 </aside>
-                            <?php elseif ($catalog->getName() == "Shuttles") : ?>
+                            <?php elseif ($catalog->getName() == "String") : ?>
 
+                            <?php elseif ($catalog->getName() == "Shuttle") : ?>
                             <?php endif; ?>
 
 
