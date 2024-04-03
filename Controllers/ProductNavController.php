@@ -11,6 +11,39 @@ $modelCatalog=new ModelBrand();
 $modelVariant=new ModelBrand();
 $modelVariantDetail=new ModelBrand();
 
+function getAll($id)
+{
+    $mysqli = new mysqli("localhost", "root", "", "badmintonweb");
+
+    if ($mysqli->connect_errno) {
+        echo "Failed to connect to MySQL: " . $mysqli->connect_error;
+        exit();
+    }
+
+    $strSQL = "SELECT * FROM  product 
+    WHERE catalogID= $id";
+
+    $result = $mysqli->query($strSQL); // Thực thi truy vấn SQL
+
+    $variantsArray = [];
+    if ($result) {
+        while ($variant = $result->fetch_assoc()) {
+            $variantsArray[] = array(
+                'productID' => $variant['productID'],
+                'brandID' => $variant['brandID'],
+                'catalogID' => $variant['catalogID'],
+                'name' => $variant['name'],
+                'price' => $variant['price'],
+                'discount' => $variant['discount'],
+                'status' => $variant['status'],
+            );
+        }
+        $result->close(); // Đóng kết quả truy vấn
+    }
+
+    $mysqli->close();
+    return $variantsArray; // Trả về mảng kết quả
+}
 
 function loadPage($page, $productsPerPage, $id)
 {
@@ -187,6 +220,10 @@ if (isset($_GET['filter']) && isset($_GET['selectedFilters'])) {
     $id = $_GET['id'];
     $listVariantDetails = loadNav($productsPerPage, $id);
     echo json_encode($listVariantDetails); // Chuyển đổi thành chuỗi JSON và echo ra
+} else if(isset($_GET['getAll'])) {
+    $id = $_GET['id'];
+    $list = getAll($id);
+    echo json_encode($list);
 } else {
     // Nếu không có dữ liệu được gửi, trả về một mảng trống dưới dạng chuỗi JSON
     echo json_encode([]);

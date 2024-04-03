@@ -46,7 +46,6 @@ $listVariantDetails = [];
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.shopvnb.com/themes/css/bootstrap-4-3-min.css">
     <link href="https://cdn.shopvnb.com/themes/css/danh_muc_style.scss.css?v=16" rel="stylesheet" type="text/css" />
-    <link href="https://cdn.shopvnb.com/themes/css/quickviews_popup_cart.scss.css" rel="stylesheet" type="text/css" />
     <link rel="preload" as='style' type="text/css" href="https://cdn.shopvnb.com/themes/css/sidebar_style.scss.css">
     <link href="https://cdn.shopvnb.com/themes/css/sidebar_style.scss.css" rel="stylesheet" type="text/css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -268,7 +267,6 @@ $listVariantDetails = [];
                                     </div>
                                 </aside>
                             <?php elseif ($catalog->getName() == "Shoes") : ?>
-                                <?php echo $catalog->getName(); ?>
                                 <aside class="aside-item filter-vendor">
                                     <div class="aside-title">
                                         <h2 class="title-head margin-top-0"><span>Lọc theo size</span></h2>
@@ -294,6 +292,28 @@ $listVariantDetails = [];
                             <?php elseif ($catalog->getName() == "String") : ?>
 
                             <?php elseif ($catalog->getName() == "Shuttle") : ?>
+                                <aside class="aside-item filter-vendor">
+                                    <div class="aside-title">
+                                        <h2 class="title-head margin-top-0"><span>Tốc độ</span></h2>
+                                    </div>
+                                    <div class="aside-content filter-group">
+
+                                        <ul class="filter-speed">
+
+                                            <?php foreach ($modelVariantDetail->getListShuttleSpeed() as $brand) : ?>
+                                                <li class="filter-item filter-item--check-box filter-item--green ">
+                                                    <label data-filter="filter-speed-<?php echo $brand; ?>" for="filter-speed-<?php echo $brand; ?>" class="speed-<?php echo $brand; ?>">
+                                                        <input type="checkbox" id="filter-speed-<?php echo $brand; ?>" onchange="toggleFilter(this)" data-group="Speed" data-field="speed" data-text="<?php echo $brand; ?>" value="<?php echo $brand; ?>" data-operator="OR">
+                                                        <i class="fa"></i>
+                                                        <?php echo $brand; ?>
+                                                    </label>
+                                                </li>
+                                            <?php endforeach; ?>
+
+
+                                        </ul>
+                                    </div>
+                                </aside>
                             <?php endif; ?>
 
 
@@ -310,7 +330,7 @@ $listVariantDetails = [];
                         <div id="sort-by">
                             <label class="left"><img width="16" height="16" alt="Sắp xếp" src="https://cdn.shopvnb.com/themes/images/sort.png">Sắp xếp: </label>
                             <ul id="sortBy">
-                                <li><span>Tên A → Z</span>
+                                <li><span id="keysort">Mặc định</span>
                                     <ul>
                                         <li><a href="javascript:;" onclick="sortby('alpha-asc')">A → Z</a></li>
                                         <li><a href="javascript:;" onclick="sortby('alpha-desc')">Z → A</a></li>
