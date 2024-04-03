@@ -80,12 +80,6 @@
                             exit;
                         }
                     }
-                } else {
-                    echo json_encode(array(
-                        'message' => "Có lỗi trong dữ liệu gửi đi",
-                        'status' => 0
-                    ));
-                    exit;
                 }
             }
             

@@ -54,6 +54,18 @@ class ModelBrand {
         $query = "UPDATE brand SET status = 0 WHERE brandID = '$brandID'";
         return $this->db->update($query);
     }
+     // Phương thức lấy list brandID của 1 loại catalog 
+     public function suggestBrandIDsForCatalog($catalogID) {
+        $query = "SELECT DISTINCT brandID FROM product WHERE catalogID = '$catalogID'";
+        $result = $this->db->select($query);
+        $brandIDs = [];
+        if ($result) {
+            while ($row = $result->fetch_assoc()) {
+                $brandIDs[] = $row['brandID'];
+            }
+        }
+        return $brandIDs;
+    }
 }
 
 ?>

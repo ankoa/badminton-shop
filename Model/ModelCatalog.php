@@ -15,13 +15,15 @@ class ModelCatalog {
         if ($result) {
             $catalogs = [];
             while ($row = $result->fetch_assoc()) {
-                $catalogs[] = $row;
+                $catalog = new Catalog($row['catalogID'], $row['name'], $row['parentID']);
+                $catalogs[] = $catalog;
             }
             return $catalogs;
         } else {
             return false;
         }
     }
+    
 
     // Phương thức để lấy thông tin danh mục bằng ID
     public function getCatalogByID($catalogID) {

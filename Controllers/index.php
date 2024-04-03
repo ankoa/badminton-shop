@@ -11,7 +11,8 @@
     <link rel="stylesheet" href="../View/css/signup-menu.css">
     <link rel="stylesheet" href="../View/css/product_detail.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"> 
-       
+    <link rel="stylesheet" href="https://cdn.shopvnb.com/themes/css/bootstrap-4-3-min.css">
+
 </head>
 <header id="header">
 <?php include("../View/user/header.php"); ?>
