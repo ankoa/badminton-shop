@@ -5,9 +5,12 @@ require_once __DIR__ . '/../../../Model/ModelCatalog.php';
 require_once __DIR__ . '/../../../Model/ModelVariant.php';
 require_once __DIR__ . '/../../../Model/ModelVariantDetail.php';
 
-
+// Khởi tạo đối tượng ModelBrand
+$modelCatalog = new ModelCatalog();
 // Khởi tạo đối tượng ModelProduct
 $modelProduct = new ModelProduct();
+$catalogID = $_GET['id'];
+$catalog = $modelCatalog->getCatalogByID($catalogID);
 
 // Lấy thông tin sản phẩm từ cơ sở dữ liệu dựa trên productID
 $productID = 16;
@@ -18,11 +21,10 @@ $modelBrand = new ModelBrand();
 $listBrands = $modelBrand->getAllBrands();
 
 
-// Khởi tạo đối tượng ModelBrand
-$modelCatalog = new ModelCatalog();
+
 
 // Lấy thông tin sản phẩm từ cơ sở dữ liệu dựa trên catalogID
-$catalog = $modelCatalog->getCatalogByID($product->getCatalogID());
+//$catalog = $modelCatalog->getCatalogByID($product->getCatalogID());
 
 
 $modelVariant = new ModelVariant();
@@ -44,7 +46,6 @@ $listVariantDetails = [];
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.shopvnb.com/themes/css/bootstrap-4-3-min.css">
     <link href="https://cdn.shopvnb.com/themes/css/danh_muc_style.scss.css?v=16" rel="stylesheet" type="text/css" />
-    <link href="https://cdn.shopvnb.com/themes/css/quickviews_popup_cart.scss.css" rel="stylesheet" type="text/css" />
     <link rel="preload" as='style' type="text/css" href="https://cdn.shopvnb.com/themes/css/sidebar_style.scss.css">
     <link href="https://cdn.shopvnb.com/themes/css/sidebar_style.scss.css" rel="stylesheet" type="text/css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -75,7 +76,7 @@ $listVariantDetails = [];
                                 </div>
                                 <div class="filter-container__selected-filter-list">
                                     <ul id="filter">
-                                        
+
                                     </ul>
                                 </div>
                             </div>
@@ -153,6 +154,169 @@ $listVariantDetails = [];
                                 </div>
                             </aside>
 
+                            <?php if ($catalog->getName() == "Racket") : ?>
+                                <aside class="aside-item filter-ts-trong-luong">
+                                    <div class="aside-title">
+                                        <h2 class="title-head margin-top-0"><span>Trọng Lượng</span></h2>
+                                    </div>
+                                    <div class="aside-content filter-group">
+                                        <ul class="filter-thong_so-trong-luong">
+                                            <li class="filter-item filter-item--check-box filter-item--green">
+                                                <label data-filter="filter-trong-luong-2u-90-94g" for="filter-trong-luong-2u-90-94g" class="filter-trong-luong-2u-90-94g">
+                                                    <input type="checkbox" id="filter-trong-luong-2u-90-94g" onchange="toggleFilter(this);" data-group="Trọng Lượng" data-field="trong-luong" data-text="2U: 90 - 94g" value="2u-90-94g" data-operator="OR">
+                                                    <i class="fa"></i>
+                                                    2U: 90 - 94g
+                                                </label>
+                                            </li>
+                                            <li class="filter-item filter-item--check-box filter-item--green ">
+                                                <label data-filter="filter-trong-luong-3u-85-89g" for="filter-trong-luong-3u-85-89g" class="filter-trong-luong-3u-85-89g">
+                                                    <input type="checkbox" id="filter-trong-luong-3u-85-89g" onchange="toggleFilter(this);" data-group="Trọng Lượng" data-field="trong-luong" data-text="3U: 85 - 89g" value="3u-85-89g" data-operator="OR">
+                                                    <i class="fa"></i>
+                                                    3U: 85 - 89g
+                                                </label>
+                                            </li>
+
+                                            <li class="filter-item filter-item--check-box filter-item--green ">
+                                                <label data-filter="filter-trong-luong-4u-80-84g" for="filter-trong-luong-4u-80-84g" class="filter-trong-luong-4u-80-84g">
+                                                    <input type="checkbox" id="filter-trong-luong-4u-80-84g" onchange="toggleFilter(this);" data-group="Trọng Lượng" data-field="trong-luong" data-text="4U: 80 - 84g" value="4u-80-84g" data-operator="OR">
+                                                    <i class="fa"></i>
+                                                    4U: 80 - 84g
+                                                </label>
+                                            </li>
+
+                                            <li class="filter-item filter-item--check-box filter-item--green ">
+                                                <label data-filter="filter-trong-luong-5u-75-79g" for="filter-trong-luong-5u-75-79g" class="filter-trong-luong-5u-75-79g">
+                                                    <input type="checkbox" id="filter-trong-luong-5u-75-79g" onchange="toggleFilter(this);" data-group="Trọng Lượng" data-field="trong-luong" data-text="5U: 75 - 79g" value="5u-75-79g" data-operator="OR">
+                                                    <i class="fa"></i>
+                                                    5U: 75 - 79g
+                                                </label>
+                                            </li>
+
+                                            <li class="filter-item filter-item--check-box filter-item--green ">
+                                                <label data-filter="filter-trong-luong-f-70-74g" for="filter-trong-luong-f-70-74g" class="filter-trong-luong-f-70-74g">
+                                                    <input type="checkbox" id="filter-trong-luong-f-70-74g" onchange="toggleFilter(this);" data-group="Trọng Lượng" data-field="trong-luong" data-text="F: 70 - 74g" value="f-70-74g" data-operator="OR">
+                                                    <i class="fa"></i>
+                                                    F: 70 - 74g
+                                                </label>
+                                            </li>
+
+                                            <li class="filter-item filter-item--check-box filter-item--green ">
+                                                <label data-filter="filter-trong-luong-2f-65-69g" for="filter-trong-luong-2f-65-69g" class="filter-trong-luong-2f-65-69g">
+                                                    <input type="checkbox" id="filter-trong-luong-2f-65-69g" onchange="toggleFilter(this);" data-group="Trọng Lượng" data-field="trong-luong" data-text="2F: 65 - 69g" value="2f-65-69g" data-operator="OR">
+                                                    <i class="fa"></i>
+                                                    2F: 65 - 69g
+                                                </label>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </aside>
+
+                                <aside class="aside-item filter-ts-trong-luong">
+                                    <div class="aside-title">
+                                        <h2 class="title-head margin-top-0"><span>Cán cầm</span></h2>
+                                    </div>
+                                    <div class="aside-content filter-group">
+                                        <ul class="filter-thong_so-trong-luong">
+                                            <li class="filter-item filter-item--check-box filter-item--green">
+                                                <label data-filter="filter-trong-luong-2u-90-94g" for="filter-trong-luong-2u-90-94g" class="filter-trong-luong-2u-90-94g">
+                                                    <input type="checkbox" id="filter-trong-luong-2u-90-94g" onchange="toggleFilter(this);" data-group="Trọng Lượng" data-field="trong-luong" data-text="2U: 90 - 94g" value="2u-90-94g" data-operator="OR">
+                                                    <i class="fa"></i>
+                                                    2U: 90 - 94g
+                                                </label>
+                                            </li>
+                                            <li class="filter-item filter-item--check-box filter-item--green ">
+                                                <label data-filter="filter-trong-luong-3u-85-89g" for="filter-trong-luong-3u-85-89g" class="filter-trong-luong-3u-85-89g">
+                                                    <input type="checkbox" id="filter-trong-luong-3u-85-89g" onchange="toggleFilter(this);" data-group="Trọng Lượng" data-field="trong-luong" data-text="3U: 85 - 89g" value="3u-85-89g" data-operator="OR">
+                                                    <i class="fa"></i>
+                                                    3U: 85 - 89g
+                                                </label>
+                                            </li>
+
+                                            <li class="filter-item filter-item--check-box filter-item--green ">
+                                                <label data-filter="filter-trong-luong-4u-80-84g" for="filter-trong-luong-4u-80-84g" class="filter-trong-luong-4u-80-84g">
+                                                    <input type="checkbox" id="filter-trong-luong-4u-80-84g" onchange="toggleFilter(this);" data-group="Trọng Lượng" data-field="trong-luong" data-text="4U: 80 - 84g" value="4u-80-84g" data-operator="OR">
+                                                    <i class="fa"></i>
+                                                    4U: 80 - 84g
+                                                </label>
+                                            </li>
+
+                                            <li class="filter-item filter-item--check-box filter-item--green ">
+                                                <label data-filter="filter-trong-luong-5u-75-79g" for="filter-trong-luong-5u-75-79g" class="filter-trong-luong-5u-75-79g">
+                                                    <input type="checkbox" id="filter-trong-luong-5u-75-79g" onchange="toggleFilter(this);" data-group="Trọng Lượng" data-field="trong-luong" data-text="5U: 75 - 79g" value="5u-75-79g" data-operator="OR">
+                                                    <i class="fa"></i>
+                                                    5U: 75 - 79g
+                                                </label>
+                                            </li>
+
+                                            <li class="filter-item filter-item--check-box filter-item--green ">
+                                                <label data-filter="filter-trong-luong-f-70-74g" for="filter-trong-luong-f-70-74g" class="filter-trong-luong-f-70-74g">
+                                                    <input type="checkbox" id="filter-trong-luong-f-70-74g" onchange="toggleFilter(this);" data-group="Trọng Lượng" data-field="trong-luong" data-text="F: 70 - 74g" value="f-70-74g" data-operator="OR">
+                                                    <i class="fa"></i>
+                                                    F: 70 - 74g
+                                                </label>
+                                            </li>
+
+                                            <li class="filter-item filter-item--check-box filter-item--green ">
+                                                <label data-filter="filter-trong-luong-2f-65-69g" for="filter-trong-luong-2f-65-69g" class="filter-trong-luong-2f-65-69g">
+                                                    <input type="checkbox" id="filter-trong-luong-2f-65-69g" onchange="toggleFilter(this);" data-group="Trọng Lượng" data-field="trong-luong" data-text="2F: 65 - 69g" value="2f-65-69g" data-operator="OR">
+                                                    <i class="fa"></i>
+                                                    2F: 65 - 69g
+                                                </label>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </aside>
+                            <?php elseif ($catalog->getName() == "Shoes") : ?>
+                                <aside class="aside-item filter-vendor">
+                                    <div class="aside-title">
+                                        <h2 class="title-head margin-top-0"><span>Lọc theo size</span></h2>
+                                    </div>
+                                    <div class="aside-content filter-group">
+
+                                        <ul class="filter-size">
+
+                                            <?php foreach ($modelVariantDetail->getListShoesSize() as $brand) : ?>
+                                                <li class="filter-item filter-item--check-box filter-item--green ">
+                                                    <label data-filter="filter-size-<?php echo $brand; ?>" for="filter-size-<?php echo $brand; ?>" class="size-<?php echo $brand; ?>">
+                                                        <input type="checkbox" id="filter-size-<?php echo $brand; ?>" onchange="toggleFilter(this)" data-group="Size" data-field="size" data-text="<?php echo $brand; ?>" value="<?php echo $brand; ?>" data-operator="OR">
+                                                        <i class="fa"></i>
+                                                        <?php echo $brand; ?>
+                                                    </label>
+                                                </li>
+                                            <?php endforeach; ?>
+
+
+                                        </ul>
+                                    </div>
+                                </aside>
+                            <?php elseif ($catalog->getName() == "String") : ?>
+
+                            <?php elseif ($catalog->getName() == "Shuttle") : ?>
+                                <aside class="aside-item filter-vendor">
+                                    <div class="aside-title">
+                                        <h2 class="title-head margin-top-0"><span>Tốc độ</span></h2>
+                                    </div>
+                                    <div class="aside-content filter-group">
+
+                                        <ul class="filter-speed">
+
+                                            <?php foreach ($modelVariantDetail->getListShuttleSpeed() as $brand) : ?>
+                                                <li class="filter-item filter-item--check-box filter-item--green ">
+                                                    <label data-filter="filter-speed-<?php echo $brand; ?>" for="filter-speed-<?php echo $brand; ?>" class="speed-<?php echo $brand; ?>">
+                                                        <input type="checkbox" id="filter-speed-<?php echo $brand; ?>" onchange="toggleFilter(this)" data-group="Speed" data-field="speed" data-text="<?php echo $brand; ?>" value="<?php echo $brand; ?>" data-operator="OR">
+                                                        <i class="fa"></i>
+                                                        <?php echo $brand; ?>
+                                                    </label>
+                                                </li>
+                                            <?php endforeach; ?>
+
+
+                                        </ul>
+                                    </div>
+                                </aside>
+                            <?php endif; ?>
+
+
 
                         </div>
                     </div>
@@ -166,7 +330,7 @@ $listVariantDetails = [];
                         <div id="sort-by">
                             <label class="left"><img width="16" height="16" alt="Sắp xếp" src="https://cdn.shopvnb.com/themes/images/sort.png">Sắp xếp: </label>
                             <ul id="sortBy">
-                                <li><span>Tên A → Z</span>
+                                <li><span id="keysort">Mặc định</span>
                                     <ul>
                                         <li><a href="javascript:;" onclick="sortby('alpha-asc')">A → Z</a></li>
                                         <li><a href="javascript:;" onclick="sortby('alpha-desc')">Z → A</a></li>

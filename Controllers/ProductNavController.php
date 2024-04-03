@@ -7,10 +7,43 @@ require_once(__DIR__ . '/../Model/ModelVariant.php');
 
 $modelBrand=new ModelBrand();
 $modelCatalog=new ModelBrand();
-$modelProduct=new ModelBrand();
+
 $modelVariant=new ModelBrand();
 $modelVariantDetail=new ModelBrand();
 
+function getAll($id)
+{
+    $mysqli = new mysqli("localhost", "root", "", "badmintonweb");
+
+    if ($mysqli->connect_errno) {
+        echo "Failed to connect to MySQL: " . $mysqli->connect_error;
+        exit();
+    }
+
+    $strSQL = "SELECT * FROM  product 
+    WHERE catalogID= $id";
+
+    $result = $mysqli->query($strSQL); // Thực thi truy vấn SQL
+
+    $variantsArray = [];
+    if ($result) {
+        while ($variant = $result->fetch_assoc()) {
+            $variantsArray[] = array(
+                'productID' => $variant['productID'],
+                'brandID' => $variant['brandID'],
+                'catalogID' => $variant['catalogID'],
+                'name' => $variant['name'],
+                'price' => $variant['price'],
+                'discount' => $variant['discount'],
+                'status' => $variant['status'],
+            );
+        }
+        $result->close(); // Đóng kết quả truy vấn
+    }
+
+    $mysqli->close();
+    return $variantsArray; // Trả về mảng kết quả
+}
 
 function loadPage($page, $productsPerPage, $id)
 {
@@ -108,7 +141,7 @@ function findCommonProducts($list1, $list2) {
 
     foreach($intersection as $index) {
         foreach($list1 as $value) {
-            if($value['productID']==$index) {
+            if($value->getProductID()==$index) {
                 $commonProducts[]=$value;
             }
         }
@@ -125,7 +158,8 @@ if (isset($_GET['filter']) && isset($_GET['selectedFilters'])) {
     $final = array();
     $selectedFilters = $_GET['selectedFilters'];
     $id = $_GET['id'];
-    $listProducts = loadPage(1, 12, $id);
+    $modelProduct=new ModelProduct();
+    $listProducts = $modelProduct->getProductByCatalogID( $id );
     $thuong_hieu=[];
     $gia=[];
     if (isset($selectedFilters['thuong_hieu'])) {
@@ -138,7 +172,7 @@ if (isset($_GET['filter']) && isset($_GET['selectedFilters'])) {
     if (count($thuong_hieu)!=0) {
         foreach ($listProducts as $key => $product) {
             foreach ($thuong_hieu as $value) {
-                if ($product['brandID'] == $value) {
+                if ($product->getBrandID() == $value) {
                     $filterBrand[]= $product;
                 }
             }
@@ -152,11 +186,11 @@ if (isset($_GET['filter']) && isset($_GET['selectedFilters'])) {
             foreach ($gia as $value) {
                 $parts = explode("-", $value);
                 if ($parts[1] == 0) {
-                    if ($product['price'] >= $parts[0]) {
+                    if ($product->getPrice() >= $parts[0]) {
                         $filterPrice[]= $product;
                     }
                 } else {
-                    if ($product['price'] >= $parts[0] && $product['price'] < $parts[1]) {
+                    if ($product->getPrice() >= $parts[0] && $product->getPrice() < $parts[1]) {
                         $filterPrice[]= $product;
                     }
                 }
@@ -186,6 +220,10 @@ if (isset($_GET['filter']) && isset($_GET['selectedFilters'])) {
     $id = $_GET['id'];
     $listVariantDetails = loadNav($productsPerPage, $id);
     echo json_encode($listVariantDetails); // Chuyển đổi thành chuỗi JSON và echo ra
+} else if(isset($_GET['getAll'])) {
+    $id = $_GET['id'];
+    $list = getAll($id);
+    echo json_encode($list);
 } else {
     // Nếu không có dữ liệu được gửi, trả về một mảng trống dưới dạng chuỗi JSON
     echo json_encode([]);
