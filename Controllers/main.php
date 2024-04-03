@@ -1,15 +1,12 @@
 <div id = "main">
     <?php 
 
-        if(isset($_GET['id'])){
-            $id = $_GET['id'];
-        } else $id = '';
         if(isset($_GET['control'])){
             $tmp = $_GET['control'];
         }
-        else $tmp = 'home_page';
+        else $tmp = '';
         if($tmp=='ProductCategory'){
-            include("../View/user/pages/product_page.php");
+            include("../View/user/pages/product_detail.php");
         }
         else if($tmp=='SaleOffCategory'){
             include("../View/user/pages/saleOff_page.php");
@@ -23,18 +20,16 @@
         else if($tmp=='checkDonHang'){
             include("../View/user/pages/orderTransaction_page.php");
         }
-        else if($tmp=='home_page' && empty($id)){
+        else{
             include("../View/user/pages/home_page.php");
         }
-        else{
-            include("../View/user/pages/product_page.php");
-        }
-
         echo '
         <div class="back-to-top" onclick="scrollToTop()">
             <a class="" href="#"><i class="fa-solid fa-arrow-up back-top-top-icon" style="color: #ffffff;"></i></a>
         </div>'
-    ?> 
+    ?>
+        
+
 </div>
 <?php
 /*session_start();
