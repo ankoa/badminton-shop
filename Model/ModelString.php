@@ -1,6 +1,7 @@
 <?php
 
-require_once(__DIR__ . '/Entity/String.php');
+require_once 'database.php';
+require_once '..\Model\Entity\String.php';
 
 class ModelString {
     protected $db;
@@ -16,7 +17,7 @@ class ModelString {
         if ($result) {
             $strings = [];
             while ($row = $result->fetch_assoc()) {
-                $string = new String($row['productID'], $row['color'], $row['price'], $row['discount'], $row['status'], $row['quantity'], $row['country'], $row['note'], $row['list_image']);
+                $string = new StringProduct($row['productID'], $row['color'], $row['price'], $row['discount'], $row['status'], $row['quantity'], $row['country'], $row['note'], $row['list_image']);
                 $strings[] = $string;
             }
             return $strings;
@@ -79,7 +80,7 @@ class ModelString {
         $result = $this->db->select($query);
         if ($result && $result->num_rows > 0) {
             $row = $result->fetch_assoc();
-            $string = new String($row['productID'], $row['color'], $row['price'], $row['discount'], $row['status'], $row['quantity'], $row['country'], $row['note'], $row['list_image']);
+            $string = new StringProduct($row['productID'], $row['color'], $row['price'], $row['discount'], $row['status'], $row['quantity'], $row['country'], $row['note'], $row['list_image']);
             return $string;
         } else {
             return false;
@@ -115,7 +116,7 @@ class ModelString {
         if ($result) {
             $strings = [];
             while ($row = $result->fetch_assoc()) {
-                $string = new String($row['productID'], $row['color'], $row['price'], $row['discount'], $row['status'], $row['quantity'], $row['country'], $row['note'], $row['list_image']);
+                $string = new StringProduct($row['productID'], $row['color'], $row['price'], $row['discount'], $row['status'], $row['quantity'], $row['country'], $row['note'], $row['list_image']);
                 $strings[] = $string;
             }
             return $strings;
@@ -131,7 +132,7 @@ class ModelString {
         if ($result) {
             $strings = [];
             while ($row = $result->fetch_assoc()) {
-                $string = new String($row['productID'], $row['color'], $row['price'], $row['discount'], $row['status'], $row['quantity'], $row['country'], $row['note'], $row['list_image']);
+                $string = new StringProduct($row['productID'], $row['color'], $row['price'], $row['discount'], $row['status'], $row['quantity'], $row['country'], $row['note'], $row['list_image']);
                 $strings[] = $string;
             }
             return $strings;

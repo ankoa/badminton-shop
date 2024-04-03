@@ -363,7 +363,7 @@ if ($catalog->getName() == "Racket") {
                                 <div class="flex-quantity">
                                     <div class="custom custom-btn-number show">
                                         <div class="input_number_product">
-                                            <button class="btn_num num_1 button button_qty" onclick="var result = document.getElementById('qtym'); var qtypro = result.value; if( !isNaN( qtypro ) &amp;&amp; qtypro > 1 ) result.value--;return false;" type="button">-</button>
+                                            <button class="btn_num num_1 button button_qty" onclick="var result = document.getElementById('qtym'); var qtypro = result.value; if( !isNaN( qtypro ) &amp; &amp; qtypro > 1 ) result.value--;return false;" type="button">-</button>
                                             <input type="text" id="qtym" name="so_luong" value="1" maxlength="3" class="form-control prd_quantity" onkeypress="if ( isNaN(this.value + String.fromCharCode(event.keyCode) )) return false;" onchange="if(this.value == 0)this.value=1;">
                                             <button class="btn_num num_2 button button_qty" onclick="var result = document.getElementById('qtym'); var qtypro = result.value; if( !isNaN( qtypro )) result.value++;return false;" type="button"><span>+</span></button>
                                         </div>

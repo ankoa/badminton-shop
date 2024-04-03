@@ -19,14 +19,6 @@ th, td {
   color: #1c1c1c;
 }
 
-body,textarea,input,button,select {
-  line-height: 1.7;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  color: #333e44;
-  -webkit-font-smoothing: antialiased;
-  -webkit-text-size-adjust: 100%;
-  max-width: 100%;
-}
 
 table {
   width: 100%;
