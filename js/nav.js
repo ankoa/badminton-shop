@@ -41,17 +41,17 @@ function loadPage(page, productsPerPage, id) {
             var listVariantDetails = JSON.parse(this.responseText);
             var htmlContent = '';
             for (var i = 0; i < listVariantDetails.length; i++) {
-                htmlContent += `<div class="col-6 col-md-4">
+                htmlContent += `<div class="col-6 col-md-3">
                     <div class="item_product_main">
                         <div class="product-thumbnail">
-                            <a class="product_overlay" href="product_detail.php?productID=`+ listVariantDetails[i].productID + `" title=""></a>
-                            <a class="image_thumb" href="product_detail.php?productID=`+ listVariantDetails[i].productID + `" title="">
+                            <a class="product_overlay" href="index.php?control=ProductDetail&productID=`+ listVariantDetails[i].productID + `" title=""></a>
+                            <a class="image_thumb" href="index.php?control=ProductDetail&productID=`+ listVariantDetails[i].productID + `" title="">
                                 <img width="300" height="300" class="lazyload loaded" src="https://cdn.shopvnb.com/img/300x300/uploads/gallery/vot-cau-long-victor-brave-sword-ltd-pro-noi-dia-taiwan-jpg-4_1711143954.webp" data-src="https://cdn.shopvnb.com/img/300x300/uploads/gallery/vot-cau-long-victor-brave-sword-ltd-pro-noi-dia-taiwan-jpg-4_1711143954.webp" alt="Vợt Cầu Lông Victor Brave Sword LTD Pro (Nội Địa Taiwan)" data-was-processed="true">
                             </a>
                         </div>
                         <div class="product-info">
-                            <h3 class="product-name"><a href="product_detail.php?productID=`+ listVariantDetails[i].productID + `" title="Vợt Cầu Lông Victor Brave Sword LTD Pro (Nội Địa Taiwan)">` + listVariantDetails[i].name + `</a></h3>
-                            <div class="price-box">
+                            <h3 class="product-name"><a href="index.php?control=ProductDetail&productID=`+ listVariantDetails[i].productID + `" title="Vợt Cầu Lông Victor Brave Sword LTD Pro (Nội Địa Taiwan)">` + listVariantDetails[i].name + `</a></h3>
+                            <div class="price-box-nav">
                                 <span class="price">`+ formatPrice(listVariantDetails[i].price) + ` ₫</span>
                             </div>
                         </div>
@@ -84,17 +84,17 @@ function loadPageFilter(page, productsPerPage) {
 
     var htmlContent = '';
     for (var i = 0; i < productsOnCurrentPage.length; i++) {
-        htmlContent += `<div class="col-6 col-md-4">
+        htmlContent += `<div class="col-6 col-md-3">
                     <div class="item_product_main">
                         <div class="product-thumbnail">
-                            <a class="product_overlay" href="product_detail.php?productID=`+ productsOnCurrentPage[i].productID + `" title=""></a>
-                            <a class="image_thumb" href="product_detail.php?productID=`+ productsOnCurrentPage[i].productID + `" title="">
+                            <a class="product_overlay" href="index.php?control=ProductDetail&productID=`+ productsOnCurrentPage[i].productID + `" title=""></a>
+                            <a class="image_thumb" href="index.php?control=ProductDetail&productID=`+ productsOnCurrentPage[i].productID + `" title="">
                                 <img width="300" height="300" class="lazyload loaded" src="https://cdn.shopvnb.com/img/300x300/uploads/gallery/vot-cau-long-victor-brave-sword-ltd-pro-noi-dia-taiwan-jpg-4_1711143954.webp" data-src="https://cdn.shopvnb.com/img/300x300/uploads/gallery/vot-cau-long-victor-brave-sword-ltd-pro-noi-dia-taiwan-jpg-4_1711143954.webp" alt="Vợt Cầu Lông Victor Brave Sword LTD Pro (Nội Địa Taiwan)" data-was-processed="true">
                             </a>
                         </div>
                         <div class="product-info">
-                            <h3 class="product-name"><a href="product_detail.php?productID=`+ productsOnCurrentPage[i].productID + `" title="Vợt Cầu Lông Victor Brave Sword LTD Pro (Nội Địa Taiwan)">` + productsOnCurrentPage[i].name + `</a></h3>
-                            <div class="price-box">
+                            <h3 class="product-name"><a href="index.php?control=ProductDetail&productID=`+ productsOnCurrentPage[i].productID + `" title="Vợt Cầu Lông Victor Brave Sword LTD Pro (Nội Địa Taiwan)">` + productsOnCurrentPage[i].name + `</a></h3>
+                            <div class="price-box-nav">
                                 <span class="price">`+ formatPrice(productsOnCurrentPage[i].price) + ` ₫</span>
                             </div>
                         </div>
@@ -173,7 +173,6 @@ function loadPerPage() {
     var productsPerPage = document.getElementById("mySelect").value;
     var id = getIdFromUrl();
 
-    // Gọi loadPage và loadNav với id và số 6
     loadPage(1, productsPerPage, id);
     loadNav(productsPerPage, id);
 }
@@ -195,8 +194,8 @@ window.addEventListener("load", function () {
     var id = getIdFromUrl();
 
     // Gọi loadPage và loadNav với id và số 6
-    loadNav(6, id);
-    loadPage(1, 6, id);
+    loadNav(8, id);
+    loadPage(1, 8, id);
 
     if (countFilter == 0) {
         document.getElementById("filter-container").classList.add("hide");
@@ -207,12 +206,13 @@ function getIdFromUrl() {
     // Lấy đường dẫn URL hiện tại
     var url = window.location.href;
 
-    // Phân tích đường dẫn URL để lấy id mong muốn
-    var parts = url.split('=');
-    var id = parts[1]; // Giả sử id nằm sau dấu '=' trong đường dẫn URL
+    // Phân tích đường dẫn URL để lấy tham số id
+    var urlParams = new URLSearchParams(new URL(url).search);
+    var id = urlParams.get('id');
 
     return id;
 }
+
 
 function toggleFilter(checkbox) {
     var filterId = checkbox.id;
@@ -323,10 +323,10 @@ function sortby(key) {
 
     document.getElementById("page-config").innerHTML = '<label for="mySelect">Item per page: </label>' +
                         '<select name="mySelect" id="mySelect" onchange="loadPerPageFilter()">' +
-                        '<option value="3">3</option>' +
-                        '<option value="6" selected>6</option>' +
-                        '<option value="9">9</option>' +
+                        '<option value="4">4</option>' +
+                        '<option value="8" selected>8</option>' +
                         '<option value="12">12</option>' +
+                        '<option value="16">16</option>' +
                         '</select>';
                         if (key == 'alpha-asc') {
                             document.getElementById('keysort').innerHTML='A → Z';
@@ -418,10 +418,10 @@ $(document).ready(function () {
                     //--------------------------//
                     document.getElementById("page-config").innerHTML = '<label for="mySelect">Item per page: </label>' +
                         '<select name="mySelect" id="mySelect" onchange="loadPerPageFilter()">' +
-                        '<option value="3">3</option>' +
-                        '<option value="6" selected>6</option>' +
-                        '<option value="9">9</option>' +
+                        '<option value="4">4</option>' +
+                        '<option value="8" selected>8</option>' +
                         '<option value="12">12</option>' +
+                        '<option value="16">16</option>' +
                         '</select>';
 
                 }
@@ -431,8 +431,8 @@ $(document).ready(function () {
             var id = getIdFromUrl();
 
             // Gọi loadPage và loadNav với id và số 6
-            loadNav(6, id);
-            loadPage(1, 6, id);
+            loadNav(8, id);
+            loadPage(1, 8, id);
 
             if (countFilter == 0) {
                 document.getElementById("filter-container").classList.add("hide");
@@ -440,10 +440,10 @@ $(document).ready(function () {
 
             document.getElementById("page-config").innerHTML = '<label for="mySelect">Item per page: </label>' +
                 '<select name="mySelect" id="mySelect" onchange="loadPerPage()">' +
-                '<option value="3">3</option>' +
-                '<option value="6" selected>6</option>' +
-                '<option value="9">9</option>' +
+                '<option value="4">4</option>' +
+                '<option value="8" selected>8</option>' +
                 '<option value="12">12</option>' +
+                '<option value="16">16</option>' +
                 '</select>';
         }
     });

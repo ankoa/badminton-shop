@@ -6,7 +6,7 @@
         }
         else $tmp = '';
         if($tmp=='ProductCategory'){
-            include('../View/user/pages/product_page.php');
+            include("../View/user/pages/product_page.php");
         }
         else if($tmp=='SaleOffCategory'){
             include("../View/user/pages/saleOff_page.php");
@@ -19,6 +19,9 @@
         }
         else if($tmp=='checkDonHang'){
             include("../View/user/pages/orderTransaction_page.php");
+        }
+        else if($tmp=='ProductDetail'){
+            include("../View/user/pages/product_detail.php");
         }
         else{
             include("../View/user/pages/home_page.php");
