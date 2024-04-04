@@ -45,20 +45,15 @@ $listVariantDetails = [];
     <title>web</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.shopvnb.com/themes/css/bootstrap-4-3-min.css">
+   
     <link href="https://cdn.shopvnb.com/themes/css/danh_muc_style.scss.css?v=16" rel="stylesheet" type="text/css" />
     <link rel="preload" as='style' type="text/css" href="https://cdn.shopvnb.com/themes/css/sidebar_style.scss.css">
     <link href="https://cdn.shopvnb.com/themes/css/sidebar_style.scss.css" rel="stylesheet" type="text/css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    </div>
     <link rel="preload" as="style" href="https://cdn.shopvnb.com/themes/css/ajaxcart.scss.css" type="text/css">
     <link href="https://cdn.shopvnb.com/themes/css/ajaxcart.scss.css" rel="stylesheet" type="text/css" />
-    <div class="backdrop__body-backdrop___1rvky"></div>
-    <script src="../../../js/nav.js" defer></script>
-    <link rel="stylesheet" href="../../css/product_nav.css">
     <link href="https://cdn.shopvnb.com/themes/css/breadcrumb_style.scss.css" rel="stylesheet" type="text/css" />
 </head>
-
 <body>
     <div class="nav-container">
         <div class="nav-row">
