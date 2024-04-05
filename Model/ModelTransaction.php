@@ -24,20 +24,33 @@ require_once '..\Model\Entity\Transaction.php';
         }
     
         // Phương thức để lấy thông tin của một giao dịch bằng ID
-        public function getTransactionByID($transactionID) {
-            $query = "SELECT * FROM `transaction` WHERE `transactionID` = '$transactionID'";
+        public function getTransactionByID($TransactionID) {
+            ///$query = "SELECT * FROM transaction WHERE transaction.transactionID = '$transactionID'";
+            $query = "SELECT * FROM transaction JOIN ordertransaction ON transaction.transactionID = ordertransaction.transactionID 
+                        WHERE ordertransaction.transactionID = '$TransactionID'";
             $result = $this->db->select($query);
-            if ($result) {
-                return $result->fetch_assoc();
+            if ($result && $result->num_rows > 0) {
+                // Initialize an array to store transactions
+                $transactions = array();
+                
+                // Loop through the result set and fetch each row
+                while ($row = $result->fetch_assoc()) {
+                    // Add each transaction to the transactions array
+                    $transactions[] = $row;
+                }
+                
+                // Return the array of transactions
+                return $transactions;
             } else {
+                // Return false if no transactions found
                 return false;
             }
         }
 
-        public function getTransactionByPhone($Phonenumber) {
+        public function getTransactionByPhone($phoneNumber) {
             //$Phonenumber = $this->db->escape_string($Phonenumber);
             $query = "Select * from transaction where transaction.userID in 
-            (select user.userID from user where phonenumber like '$Phonenumber')";
+            (select user.userID from user where phoneNumber like '$phoneNumber')";
             $result = $this->db->select($query);
             if ($result && $result->num_rows > 0) {
                 // Initialize an array to store transactions
