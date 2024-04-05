@@ -1,0 +1,98 @@
+.container {
+  display: flex;
+  justify-content: center; /* căn giữa theo chiều ngang */
+  align-items: center; /* căn giữa theo chiều dọc */
+  
+}
+
+main {
+  width: 80%; /* chiều rộng của main là 80% chiều rộng của container */
+}
+
+.layout-info-find h1 {
+	font-size: 20px;
+	margin-top: 0;
+}
+.layout-info-find h1 a {
+	position: absolute;
+	right: 15px;
+	top: 3px;
+	font-size: 14px;
+}
+
+.col-lg-1,.col-lg-10,.col-lg-11,.col-lg-12,.col-lg-2,.col-lg-3,.col-lg-4,.col-lg-5,.col-lg-6,.col-lg-7,.col-lg-8,.col-lg-9,.col-md-1,.col-md-10,.col-md-11,.col-md-12,.col-md-2,.col-md-3,.col-md-4,.col-md-5,.col-md-6,.col-md-7,.col-md-8,.col-md-9,.col-sm-1,.col-sm-10,.col-sm-11,.col-sm-12,.col-sm-2,.col-sm-3,.col-sm-4,.col-sm-5,.col-sm-6,.col-sm-7,.col-sm-8,.col-sm-9,.col-xs-1,.col-xs-10,.col-xs-11,.col-xs-12,.col-xs-2,.col-xs-3,.col-xs-4,.col-xs-5,.col-xs-6,.col-xs-7,.col-xs-8,.col-xs-9{
+	position:relative;
+	min-height:1px;
+	padding-right:15px;
+	font-size: 20px;
+	}
+
+form {
+  margin-bottom: 20px; /* Khoảng cách dưới của form */
+}
+
+.custom1 {
+  display: block; /* Hiển thị label trên một dòng */
+  margin-top: 20px;
+}
+
+input {
+  width: 250px; 
+  height: 40px;
+  margin-bottom: 10px; 
+}
+
+.btn-search {
+  width: 200px; 
+  padding: 10px; 
+  background-color: rgb(231, 90, 14);
+  color: white;
+}
+
+.thong-tin-don-hang {
+  width: 100%; /* chiều rộng của phần thông tin đơn hàng là 100% chiều rộng của container */
+}
+
+table {
+  width: 100%; /* chiều rộng của table là 100% chiều rộng của container */
+}
+
+.pagination {
+  float: right;
+  margin-top: 40px; /* Khoảng cách trên của phân trang */
+  margin-right: -165px;
+}
+
+.pagination li {
+  display: inline; 
+  margin-right: 5px; 
+}
+
+.hint-text {
+  float: right;
+  margin-top: 10px;
+  font-size: 13px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: left;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tr:nth-child(odd) {
+  background-color: #ffffff;
+}
+
+.logout {
+  float: right;
+}

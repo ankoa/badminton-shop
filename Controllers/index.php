@@ -38,7 +38,7 @@
      <script src="../js/backToHome-button.js" defer></script>
      <script src="../js/product_detail.js" defer></script>
      <script src="../js/nav.js" defer></script>
-
+     <script src="../js/Transaction.js"> defer</script>
 
 
     </body>
