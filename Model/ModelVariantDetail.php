@@ -129,6 +129,47 @@ class ModelVariantDetail {
         return $variants;
     }
 
+    public function getListWeight() {
+        $query = "SELECT DISTINCT(weight) FROM variantdetail WHERE weight IS NOT NULL AND STATUS !=0;";
+        $result = $this->db->select($query);
+        $variants = [];
+        if ($result) {
+            while ($row = $result->fetch_assoc()) {
+                // Tạo đối tượng Variant từ dữ liệu trong hàng kết quả
+                $variants[] = $row['weight'];
+            }
+        }
+        return $variants;
+    }
+
+    public function getListGrip() {
+        $query = "SELECT DISTINCT(grip) FROM variantdetail WHERE grip IS NOT NULL AND STATUS !=0;";
+        $result = $this->db->select($query);
+        $variants = [];
+        if ($result) {
+            while ($row = $result->fetch_assoc()) {
+                // Tạo đối tượng Variant từ dữ liệu trong hàng kết quả
+                $variants[] = $row['grip'];
+            }
+        }
+        return $variants;
+    }
+
+    public function getListStringColor() {
+        $query = "SELECT DISTINCT(color)
+        FROM product p, variantdetail vd, variant v
+        WHERE p.productID=v.productID AND vd.variantID=v.variantID and p.catalogID=2";
+        $result = $this->db->select($query);
+        $variants = [];
+        if ($result) {
+            while ($row = $result->fetch_assoc()) {
+                // Tạo đối tượng Variant từ dữ liệu trong hàng kết quả
+                $variants[] = $row['color'];
+            }
+        }
+        return $variants;
+    }
+
     public function getListShuttleSpeed() {
         $query = "SELECT DISTINCT(speed) FROM variantdetail WHERE speed IS NOT NULL AND STATUS !=0;";
         $result = $this->db->select($query);

@@ -2,6 +2,16 @@ countFilter = 0;
 filterArray = [];
 selectedFilters = {};
 
+function uncheckAllInputs() {
+    // Lấy tất cả các phần tử input trên trang
+    var inputs = document.querySelectorAll('input[type="checkbox"]');
+    
+    // Lặp qua mỗi phần tử và bỏ chọn (unchecked) nó
+    inputs.forEach(function(input) {
+        input.checked = false;
+    });
+}
+
 function getAllByCatalogAndBrand() {
     return new Promise(function(resolve, reject) {
         var xhttp = new XMLHttpRequest();
@@ -200,6 +210,8 @@ window.addEventListener("load", function () {
     if (countFilter == 0) {
         document.getElementById("filter-container").classList.add("hide");
     }
+
+    uncheckAllInputs()
 });
 
 function getIdFromUrl() {
@@ -378,6 +390,8 @@ $(document).ready(function () {
                 selectedFilters[group].splice(index, 1);
             }
         }
+
+        console.log(selectedFilters);
 
 
         if (checkedCount > 0) {

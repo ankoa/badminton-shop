@@ -38,6 +38,56 @@ class ModelProduct
         return $products;
     }
 
+    public function getListProductBySpeed($speed)
+    {
+        $query = "SELECT *
+        FROM product p, variantdetail vd, variant v
+        WHERE p.productID=v.productID and v.variantID=vd.variantID and vd.speed=$speed";
+        $result = $this->db->select($query);
+        $products = [];
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $product = new Product(
+                    $row['productID'],
+                    $row['brandID'],
+                    $row['catalogID'],
+                    $row['name'],
+                    $row['description'],
+                    $row['status'],
+                    $row['price'],
+                    $row['discount']
+                );
+                $products[] = $product;
+            }
+        }
+        return $products;
+    }
+
+    public function getListProductBySize($size)
+    {
+        $query = "SELECT *
+        FROM product p, variantdetail vd, variant v
+        WHERE p.productID=v.productID and v.variantID=vd.variantID and vd.size=$size";
+        $result = $this->db->select($query);
+        $products = [];
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $product = new Product(
+                    $row['productID'],
+                    $row['brandID'],
+                    $row['catalogID'],
+                    $row['name'],
+                    $row['description'],
+                    $row['status'],
+                    $row['price'],
+                    $row['discount']
+                );
+                $products[] = $product;
+            }
+        }
+        return $products;
+    }
+
     // Lấy thông tin sản phẩm dựa trên ID
     public function getProductByID($productID)
     {
