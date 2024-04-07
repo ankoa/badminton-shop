@@ -2,6 +2,16 @@ countFilter = 0;
 filterArray = [];
 selectedFilters = {};
 
+function uncheckAllInputs() {
+    // Lấy tất cả các phần tử input trên trang
+    var inputs = document.querySelectorAll('input[type="checkbox"]');
+    
+    // Lặp qua mỗi phần tử và bỏ chọn (unchecked) nó
+    inputs.forEach(function(input) {
+        input.checked = false;
+    });
+}
+
 function getAllByCatalogAndBrand() {
     return new Promise(function(resolve, reject) {
         var xhttp = new XMLHttpRequest();
@@ -200,6 +210,8 @@ window.addEventListener("load", function () {
     if (countFilter == 0) {
         document.getElementById("filter-container").classList.add("hide");
     }
+
+    uncheckAllInputs()
 });
 
 function getIdFromUrl() {
@@ -379,6 +391,8 @@ $(document).ready(function () {
             }
         }
 
+        console.log(selectedFilters);
+
 
         if (checkedCount > 0) {
             // Gửi yêu cầu lọc đến máy chủ bằng AJAX
@@ -393,7 +407,7 @@ $(document).ready(function () {
                 }, // Truyền object chứa thông tin các bộ lọc đã chọn
                 success: function (response) {
                     filterArray = JSON.parse(response);
-                    //console.log(response);
+                    console.log(response);
                     var totalPages = Math.ceil(filterArray.length / getProductPerPage());
                     //console.log(filterArray.length);
                     var htmlContent = '';
