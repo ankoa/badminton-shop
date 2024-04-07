@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../View/css/signup-menu.css">
     <link rel="stylesheet" href="../View/css/product_detail.css">
     <link rel="stylesheet" href="../View/css/product_nav.css">
+    <link rel="stylesheet" href="../View/css/checktranscation.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
