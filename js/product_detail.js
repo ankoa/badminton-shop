@@ -75,7 +75,12 @@ const initSlider = () => {
 
 // Call initSlider function on window resize and page load
 window.addEventListener("resize", initSlider);
-window.addEventListener("load", initSlider);
+
+window.addEventListener("load", function () {
+    initSlider();
+    document.getElementById("tab1").click();
+    document.getElementById("tab1").style.display = 'block';
+});
 
 // Function to load version by color using AJAX
 function loadVersion(productID, color) {
