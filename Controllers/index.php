@@ -10,6 +10,8 @@
             echo '<link rel="stylesheet" href="../View/css/product_nav.css"> <script src="../js/nav.js" defer></script>';
         } else if($_GET['control']=="ProductDetail") {
             echo '<link rel="stylesheet" href="../View/css/product_detail.css"> <script src="../js/product_detail.js" defer></script>';
+        } else if($_GET['control']=="checkDonHang") {
+            echo '<link rel="stylesheet" href="../View/css/checktranscation.css"> <script src="../js/Transaction.js"> defer</script>';
         }
     } else {
         echo '<link rel="stylesheet" href="../View/css/slider.css"> <script src="../js/slider.js" defer></script>';
@@ -42,6 +44,5 @@
         ?>
     </div>
      <script src="../js/backToHome-button.js" defer></script>
-     <script src="../js/Transaction.js"> defer</script>
     </body>
 </html> 
