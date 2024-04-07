@@ -44,5 +44,7 @@
         ?>
     </div>
      <script src="../js/backToHome-button.js" defer></script>
+     <script src="../js/Transaction.js"> defer</script>
+     <script src="../js/Introduce.js"> defer</script>
     </body>
 </html> 
