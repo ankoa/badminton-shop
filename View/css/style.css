@@ -192,7 +192,7 @@ header{
     margin-top: 22px;
     transform: translateX(-325px);
     visibility: hidden;
-    z-index: 1;
+    z-index: 99999999;
     background: #ffffff;
     border-radius: 10px;
 }   
