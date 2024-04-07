@@ -270,6 +270,48 @@ if (isset($_GET['filter']) && isset($_GET['selectedFilters'])) {
         else $final = $filterSize;
     }
 
+    // Lọc theo weight
+    if (count($weight) != 0) {
+        $modelProduct = new $modelProduct();
+        
+
+        foreach ($weight as $value) {
+            $listWeight = $modelProduct->getListProductByWeight($value);
+            $filterWeight= mergeArrays($filterWeight,$listWeight);
+        }
+
+        if (count($final) > 0) $final = findCommonProducts($final, $filterWeight);
+        else $final = $filterWeight;
+    }
+
+    // Lọc theo grip
+    if (count($grip) != 0) {
+        $modelProduct = new $modelProduct();
+        
+
+        foreach ($grip as $value) {
+            $listGrip = $modelProduct->getListProductBySize($value);
+            $filterGrip= mergeArrays($filterGrip,$listGrip);
+        }
+
+        if (count($final) > 0) $final = findCommonProducts($final, $filterGrip);
+        else $final = $filterGrip;
+    }
+
+    // Lọc theo color
+    if (count($color) != 0) {
+        $modelProduct = new $modelProduct();
+        
+
+        foreach ($color as $value) {
+            $listColor = $modelProduct->getListProductByColor($value);
+            $filterColor= mergeArrays($filterColor,$listColor);
+        }
+
+        if (count($final) > 0) $final = findCommonProducts($listColor, $filterColor);
+        else $final = $filterColor;
+    }
+
     
 
 

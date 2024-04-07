@@ -407,7 +407,7 @@ $(document).ready(function () {
                 }, // Truyền object chứa thông tin các bộ lọc đã chọn
                 success: function (response) {
                     filterArray = JSON.parse(response);
-                    //console.log(response);
+                    console.log(response);
                     var totalPages = Math.ceil(filterArray.length / getProductPerPage());
                     //console.log(filterArray.length);
                     var htmlContent = '';
