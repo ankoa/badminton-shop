@@ -19,12 +19,12 @@ header{
 .header_contentTop{
     display: flex;
     justify-content: space-between;
-    padding: 10px 100px;
+    padding: 10px 35px;
 
     height: 65%;
 }
 .logo{
-    padding: 0 25px;
+    padding: 0 10px;
     cursor: pointer;
 }
 .left_header_contentTop{

@@ -112,7 +112,7 @@
                                 else $temp = "Giày cầu lông ";         
                                 echo '
                                 <li> 
-                                    <a href="">' . $temp . '</a> 
+                                    <a href="index.php?control=ProductCategory&id=1">' . $temp . '</a> 
                                     <ul class="menu_item">';
                                     $brandIDs = $modelBrand->suggestBrandIDsForCatalog($catalog->getCatalogID());
                                     foreach ($brandIDs as $brandID) {
