@@ -10,20 +10,20 @@
         </div>
         
         <div class="center_header_contentTop">
-            
-            <li> 
-                <input placeholder="Tìm kiếm..." type="text"> 
-                <i class="fa fa-search" aria-hidden="true" style="color: #e95221;"></i> 
-            </li>
-            
+            <ul>
+                <li class="search-box"> 
+                    <input placeholder="Tìm kiếm..." type="text"> 
+                    <i class="fa fa-search" aria-hidden="true" style="color: #e95221;"></i> 
+                </li>
+            </ul>
         </div>
         <div class="right_header_contentTop">
             <div class="icon-item">
                 <li>
                     <i class="fa-solid fa-clipboard-list" style="color: #e95221;"></i>
                     <span class="icon-name">TRA CỨU</span>
-                    <ul class="submenu_check">
-                            <li class="dropdown-item"> <a href="index.php?control=checkDonHang"> Kiểm tra đơn hàng </a></li>
+                    <ul class="submenu_check" style="height: 30px;">
+                            <li class="dropdown-item"  style="height: 100%;"> <a href="index.php?control=checkDonHang"> Kiểm tra đơn hàng </a></li>
                     </ul>
                 </li>
             </div>
