@@ -217,7 +217,7 @@ if ($catalog->getName() == "Racket") {
 
                     <fieldset class="pro-discount uu-dai" style="margin-top: 10px;">
                         <legend>
-                            <img src="../../images/icon/code_dis.gif" alt="khuyến mãi">ƯU ĐÃI
+                            <img src="../View/images/icon/code_dis.gif" alt="khuyến mãi">ƯU ĐÃI
                         </legend>
                         <div class="product-promotions-list-content">
                             <p>
@@ -302,7 +302,7 @@ if ($catalog->getName() == "Racket") {
                                                                             echo "soldout";
                                                                         endif; ?> color-<?php echo $color; ?>" data-value="<?php echo $color; ?>" data-value_2="<?php echo $color; ?>">
                                                 <input onclick="<?php if ($catalog->getName() == 'Shoes') echo 'loadSize';
-                                                                else echo 'loadVersion' ?>('<?php echo json_encode($productID); ?>', '<?php echo $color; ?>')" <?php if ($modelVariantDetail->getVariantQuantityByColor($listVariantDetails, $color) <= 0) :
+                                                                else echo 'loadVersion' ?>('<?php echo $productID; ?>', '<?php echo $color; ?>')" <?php if ($modelVariantDetail->getVariantQuantityByColor($listVariantDetails, $color) <= 0) :
                                                                                                                                                                     echo "disabled";
                                                                                                                                                                 endif; ?> id="color-<?php echo $color; ?>" type="radio" name="color" value="<?php echo $color; ?>">
                                                 <label for="color-<?php echo $color; ?>">
