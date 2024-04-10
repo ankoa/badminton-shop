@@ -303,8 +303,8 @@ if ($catalog->getName() == "Racket") {
                                                                         endif; ?> color-<?php echo $color; ?>" data-value="<?php echo $color; ?>" data-value_2="<?php echo $color; ?>">
                                                 <input onclick="<?php if ($catalog->getName() == 'Shoes') echo 'loadSize';
                                                                 else echo 'loadVersion' ?>('<?php echo $productID; ?>', '<?php echo $color; ?>')" <?php if ($modelVariantDetail->getVariantQuantityByColor($listVariantDetails, $color) <= 0) :
-                                                                                                                                                                    echo "disabled";
-                                                                                                                                                                endif; ?> id="color-<?php echo $color; ?>" type="radio" name="color" value="<?php echo $color; ?>">
+                                                                                                                                                        echo "disabled";
+                                                                                                                                                    endif; ?> id="color-<?php echo $color; ?>" type="radio" name="color" value="<?php echo $color; ?>">
                                                 <label for="color-<?php echo $color; ?>">
                                                     <?php echo $color; ?>
                                                     <img class="crossed-out" src="https://cdn.shopvnb.com/themes/images/soldout.png" alt="<?php echo $color; ?>">
@@ -368,9 +368,12 @@ if ($catalog->getName() == "Racket") {
                                             <button class="btn_num num_2 button button_qty" onclick="var result = document.getElementById('qtym'); var qtypro = result.value; if( !isNaN( qtypro )) result.value++;return false;" type="button"><span>+</span></button>
                                         </div>
                                     </div>
+
+                                </div>
+                                <div class="flex-quantity">
                                     <div class="btn-mua button_actions clearfix">
 
-                                        <button type="submit" class="btn btn_base normal_button btn_add_cart add_to_cart btn-cart"><span class="txt-main">Thêm vào giỏ hàng</span></button>
+                                        <button onclick="addCart()" type="button" class="btn btn_base normal_button btn_add_cart add_to_cart btn-cart"><span class="txt-main">Thêm vào giỏ hàng</span></button>
 
                                     </div>
                                     <div class="btn-mua button_actions2 clearfix">
@@ -435,12 +438,6 @@ if ($catalog->getName() == "Racket") {
             </div>
         </div>
     </div>
-
-
-
-
-
-
 
 
 
