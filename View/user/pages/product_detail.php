@@ -9,10 +9,8 @@ require_once __DIR__ . '/../../../Model/ModelVariantDetail.php';
 // Khởi tạo đối tượng ModelProduct
 $modelProduct = new ModelProduct();
 
-$productID = $_GET['productID'];
-
 // Lấy thông tin sản phẩm từ cơ sở dữ liệu dựa trên productID
-//$productID = 16;
+$productID = 1;
 $product = $modelProduct->getProductByID($productID);
 
 // Khởi tạo đối tượng ModelBrand
@@ -39,22 +37,10 @@ foreach ($listvariants as $variant) {
     $variantDetail = $modelVariantDetail->getVariantByID($variantID);
     // Thêm chi tiết biến thể vào mảng $listVariantDetails
     $listVariantDetails[] = $variantDetail;
-    echo $variantDetail->getSize();
 }
 $imagePaths = explode(",", reset($listVariantDetails)->getListImage());
 if ($catalog->getName() == "Racket") {
-} else if ($catalog->getName() == "Shoes") {
-    usort($listVariantDetails, function ($a, $b) {
-        // Lấy giá trị 'size' của mỗi đối tượng
-        $sizeA = $a->getSize();
-        $sizeB = $b->getSize();
-
-        if ($sizeA == $sizeB) {
-            return 0; // Giữ nguyên vị trí nếu giá trị 'size' bằng nhau
-        }
-
-        return ($sizeA < $sizeB) ? -1 : 1; // Trả về số âm, 0 hoặc dương tùy thuộc vào thứ tự của 'size'
-    });
+} else if ($catalog->getName() == "String") {
 } else if ($catalog->getName() == "Shuttle") {
 }
 
@@ -74,7 +60,8 @@ if ($catalog->getName() == "Racket") {
     <link href="https://cdn.shopvnb.com/themes/css/breadcrumb_style.scss.css" rel="stylesheet" type="text/css" />
     <link rel="preload" as='style' type="text/css" href="https://cdn.shopvnb.com/themes/css/breadcrumb_style.scss.css">
     <link rel="stylesheet" href="../../css/product_detail.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,0,0" />
     <script src="../../../js/product_detail.js" defer></script>
     <title>test</title>
 </head>
@@ -85,10 +72,15 @@ if ($catalog->getName() == "Racket") {
             <div class="container">
                 <ul class="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList">
                     <li class="home" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                        <a href="https://shopvnb.com" title="Trang chủ" itemprop="item" href=""><span itemprop="name">Trang chủ</span></a>
+                        <a href="https://shopvnb.com" title="Trang chủ" itemprop="item" href=""><span
+                                itemprop="name">Trang chủ</span></a>
                         <meta itemprop="position" content="0" />
-                        <span class="mr_lr">&nbsp;<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" class="svg-inline--fa fa-chevron-right fa-w-10">
-                                <path fill="currentColor" d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" class=""></path>
+                        <span class="mr_lr">&nbsp;<svg aria-hidden="true" focusable="false" data-prefix="fas"
+                                data-icon="chevron-right" role="img" xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 320 512" class="svg-inline--fa fa-chevron-right fa-w-10">
+                                <path fill="currentColor"
+                                    d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"
+                                    class=""></path>
                             </svg>&nbsp;</span>
                     </li>
 
@@ -98,17 +90,26 @@ if ($catalog->getName() == "Racket") {
                                 Cầu Lông</span></a>
 
                         <meta itemprop="position" content="1" />
-                        <span class="mr_lr">&nbsp;<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" class="svg-inline--fa fa-chevron-right fa-w-10">
-                                <path fill="currentColor" d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" class=""></path>
+                        <span class="mr_lr">&nbsp;<svg aria-hidden="true" focusable="false" data-prefix="fas"
+                                data-icon="chevron-right" role="img" xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 320 512" class="svg-inline--fa fa-chevron-right fa-w-10">
+                                <path fill="currentColor"
+                                    d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"
+                                    class=""></path>
                             </svg>&nbsp;</span>
                     </li>
                     <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
 
-                        <a itemprop="item" href="giay-cau-long-mizuno.html" title="Giày Cầu Lông Mizuno"><span itemprop="name">Giày Cầu Lông Mizuno</span></a>
+                        <a itemprop="item" href="giay-cau-long-mizuno.html" title="Giày Cầu Lông Mizuno"><span
+                                itemprop="name">Giày Cầu Lông Mizuno</span></a>
 
                         <meta itemprop="position" content="2" />
-                        <span class="mr_lr">&nbsp;<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" class="svg-inline--fa fa-chevron-right fa-w-10">
-                                <path fill="currentColor" d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" class=""></path>
+                        <span class="mr_lr">&nbsp;<svg aria-hidden="true" focusable="false" data-prefix="fas"
+                                data-icon="chevron-right" role="img" xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 320 512" class="svg-inline--fa fa-chevron-right fa-w-10">
+                                <path fill="currentColor"
+                                    d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"
+                                    class=""></path>
                             </svg>&nbsp;</span>
                     </li>
                     <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
@@ -217,7 +218,7 @@ if ($catalog->getName() == "Racket") {
 
                     <fieldset class="pro-discount uu-dai" style="margin-top: 10px;">
                         <legend>
-                            <img src="../View/images/icon/code_dis.gif" alt="khuyến mãi">ƯU ĐÃI
+                            <img src="../../images/icon/code_dis.gif" alt="khuyến mãi">ƯU ĐÃI
                         </legend>
                         <div class="product-promotions-list-content">
                             <p>
@@ -244,42 +245,55 @@ if ($catalog->getName() == "Racket") {
                                 </strong>
                             </span>
                             <p>
-                                <span style="font-family:verdana,geneva,sans-serif">✅ <a href="https://shopvnb.com/son-logo-mat-vot-mien-phi-tai-shop-vnb-premium.html">Sơn
+                                <span style="font-family:verdana,geneva,sans-serif">✅ <a
+                                        href="https://shopvnb.com/son-logo-mat-vot-mien-phi-tai-shop-vnb-premium.html">Sơn
                                         logo mặt vợt</a> miễn phí</span>
                             </p>
-                            <p><span style="font-family:verdana,geneva,sans-serif">✅&nbsp;<a href="https://shopvnb.com/thay-gen-vot-cau-long-mien-phi-tai-vnb-premium.html">Thay
+                            <p><span style="font-family:verdana,geneva,sans-serif">✅&nbsp;<a
+                                        href="https://shopvnb.com/thay-gen-vot-cau-long-mien-phi-tai-vnb-premium.html">Thay
                                         gen vợt</a> miễn phí trọn đời</span></p>
-                            <p><span style="font-family:verdana,geneva,sans-serif">✅&nbsp;<a href="https://shopvnb.com/thay-gen-vot-cau-long-mien-phi-tai-vnb-premium.html">Thay
+                            <p><span style="font-family:verdana,geneva,sans-serif">✅&nbsp;<a
+                                        href="https://shopvnb.com/thay-gen-vot-cau-long-mien-phi-tai-vnb-premium.html">Thay
                                         gen vợt</a> miễn phí trọn đời</span></p>
-                            <p><span style="font-family:verdana,geneva,sans-serif">✅&nbsp;<a href="https://shopvnb.com/thay-gen-vot-cau-long-mien-phi-tai-vnb-premium.html">Thay
+                            <p><span style="font-family:verdana,geneva,sans-serif">✅&nbsp;<a
+                                        href="https://shopvnb.com/thay-gen-vot-cau-long-mien-phi-tai-vnb-premium.html">Thay
                                         gen vợt</a> miễn phí trọn đời</span></p>
-                            <p><span style="font-family:verdana,geneva,sans-serif">✅&nbsp;<a href="https://shopvnb.com/thay-gen-vot-cau-long-mien-phi-tai-vnb-premium.html">Thay
+                            <p><span style="font-family:verdana,geneva,sans-serif">✅&nbsp;<a
+                                        href="https://shopvnb.com/thay-gen-vot-cau-long-mien-phi-tai-vnb-premium.html">Thay
                                         gen vợt</a> miễn phí trọn đời</span></p>
                         </div>
                     </fieldset>
-                    <div class="form-product" id="test">
-                        <?php if ($catalog->getName() == 'Shuttle') : ?>
+                    <div class="form-product">
+                        <?php if ($catalog->getName() == 'Shuttle'): ?>
                             <div class="select-swatch">
                                 <div class="swatch clearfix">
                                     <div class="header">Chọn tốc độ: </div>
-                                    <?php foreach ($listVariantDetails as $variantDetail) : ?>
-                                        <?php if ($variantDetail->getQuantity() > 0) : ?>
-                                            <div class="swatch-element color-<?php echo $variantDetail->getSpeed(); ?>" data-value="<?php echo $variantDetail->getSpeed(); ?>" data-value_2="<?php echo $variantDetail->getSpeed(); ?>">
-                                                <input id="color-<?php echo $variantDetail->getSpeed(); ?>" type="radio" name="color" value="<?php echo $variantDetail->getSpeed(); ?>">
-                                            <?php else : ?>
-                                                <div class="swatch-element soldout color-<?php echo $variantDetail->getSpeed(); ?>" data-value="<?php echo $variantDetail->getSpeed(); ?>" data-value_2="<?php echo $variantDetail->getSpeed(); ?>">
-                                                    <input disabled id="color-<?php echo $variantDetail->getSpeed(); ?>" type="radio" name="color" value="<?php echo $variantDetail->getSpeed(); ?>">
+                                    <?php foreach ($listVariantDetails as $variantDetail): ?>
+                                        <?php if ($variantDetail->getQuantity() > 0): ?>
+                                            <div class="swatch-element color-<?php echo $variantDetail->getSpeed(); ?>"
+                                                data-value="<?php echo $variantDetail->getSpeed(); ?>"
+                                                data-value_2="<?php echo $variantDetail->getSpeed(); ?>">
+                                                <input id="color-<?php echo $variantDetail->getSpeed(); ?>" type="radio"
+                                                    name="color" value="<?php echo $variantDetail->getSpeed(); ?>">
+                                            <?php else: ?>
+                                                <div class="swatch-element soldout color-<?php echo $variantDetail->getSpeed(); ?>"
+                                                    data-value="<?php echo $variantDetail->getSpeed(); ?>"
+                                                    data-value_2="<?php echo $variantDetail->getSpeed(); ?>">
+                                                    <input disabled id="color-<?php echo $variantDetail->getSpeed(); ?>"
+                                                        type="radio" name="color" value="<?php echo $variantDetail->getSpeed(); ?>">
                                                 <?php endif; ?>
                                                 <label for="color-<?php echo $variantDetail->getSpeed(); ?>">
                                                     <?php echo $variantDetail->getSpeed(); ?>
-                                                    <img class="crossed-out" src="https://cdn.shopvnb.com/themes/images/soldout.png" alt="<?php echo $variantDetail->getSpeed(); ?>">
+                                                    <img class="crossed-out"
+                                                        src="https://cdn.shopvnb.com/themes/images/soldout.png"
+                                                        alt="<?php echo $variantDetail->getSpeed(); ?>">
                                                 </label>
-                                                </div>
-                                            <?php endforeach; ?>
                                             </div>
+                                        <?php endforeach; ?>
+                                    </div>
                                 </div>
                             </div>
-                        <?php elseif ($catalog->getName() == 'Racket' || $catalog->getName() == 'Shoes') : ?>
+                        <?php else: ?>
                             <div class="select-swatch">
                                 <div class="swatch clearfix">
                                     <div class="header">Chọn màu: </div>
@@ -287,95 +301,62 @@ if ($catalog->getName() == "Racket") {
                                     // Mảng tạm thời để lưu trữ các màu đã xuất hiện
                                     $seenColors = [];
 
-                                    foreach ($listVariantDetails as $variantDetail) :
+                                    foreach ($listVariantDetails as $variantDetail):
                                         // Lấy màu của biến thể hiện tại
                                         $color = $variantDetail->getColor();
 
                                         // Kiểm tra xem màu đã được thêm vào mảng tạm thời chưa
-                                        if (!in_array($color, $seenColors)) :
+                                        if (!in_array($color, $seenColors)):
                                             // Thêm màu vào mảng tạm thời
                                             $seenColors[] = $color;
 
                                             // Hiển thị swatch-element cho màu
-                                    ?>
-                                            <div class="swatch-element <?php if ($modelVariantDetail->getVariantQuantityByColor($listVariantDetails, $color) <= 0) :
-                                                                            echo "soldout";
-                                                                        endif; ?> color-<?php echo $color; ?>" data-value="<?php echo $color; ?>" data-value_2="<?php echo $color; ?>">
-                                                <input onclick="<?php if ($catalog->getName() == 'Shoes') echo 'loadSize';
-                                                                else echo 'loadVersion' ?>('<?php echo $productID; ?>', '<?php echo $color; ?>')" <?php if ($modelVariantDetail->getVariantQuantityByColor($listVariantDetails, $color) <= 0) :
-                                                                                                                                                                    echo "disabled";
-                                                                                                                                                                endif; ?> id="color-<?php echo $color; ?>" type="radio" name="color" value="<?php echo $color; ?>">
+                                            ?>
+                                            <div class="swatch-element <?php if ($modelVariantDetail->getVariantQuantityByColor($listVariantDetails, $color) <= 0):
+                                                echo "soldout";
+                                            endif; ?> color-<?php echo $color; ?>"
+                                                data-value="<?php echo $color; ?>" data-value_2="<?php echo $color; ?>">
+                                                <input <?php if ($modelVariantDetail->getVariantQuantityByColor($listVariantDetails, $color) <= 0):
+                                                echo "disabled";
+                                            endif; ?> id="color-<?php echo $color; ?>" type="radio" name="color"
+                                                    value="<?php echo $color; ?>">
                                                 <label for="color-<?php echo $color; ?>">
                                                     <?php echo $color; ?>
-                                                    <img class="crossed-out" src="https://cdn.shopvnb.com/themes/images/soldout.png" alt="<?php echo $color; ?>">
+                                                    <img class="crossed-out" src="https://cdn.shopvnb.com/themes/images/soldout.png"
+                                                        alt="<?php echo $color; ?>">
                                                 </label>
                                             </div>
-                                    <?php
+                                            <?php
                                         endif;
                                     endforeach;
                                     ?>
                                 </div>
                             </div>
-
-                        <?php else : ?>
-                            <div class="select-swatch">
-                                <div class="swatch clearfix">
-                                    <div class="header">Chọn màu: </div>
-                                    <?php
-                                    // Mảng tạm thời để lưu trữ các màu đã xuất hiện
-                                    $seenColors = [];
-
-                                    foreach ($listVariantDetails as $variantDetail) :
-                                        // Lấy màu của biến thể hiện tại
-                                        $color = $variantDetail->getColor();
-
-                                        // Kiểm tra xem màu đã được thêm vào mảng tạm thời chưa
-                                        if (!in_array($color, $seenColors)) :
-                                            // Thêm màu vào mảng tạm thời
-                                            $seenColors[] = $color;
-
-                                            // Hiển thị swatch-element cho màu
-                                    ?>
-                                            <div class="swatch-element <?php if ($modelVariantDetail->getVariantQuantityByColor($listVariantDetails, $color) <= 0) :
-                                                                            echo "soldout";
-                                                                        endif; ?> color-<?php echo $color; ?>" data-value="<?php echo $color; ?>" data-value_2="<?php echo $color; ?>">
-                                                <input <?php if ($modelVariantDetail->getVariantQuantityByColor($listVariantDetails, $color) <= 0) :
-                                                            echo "disabled";
-                                                        endif; ?> id="color-<?php echo $color; ?>" type="radio" name="color" value="<?php echo $color; ?>">
-                                                <label for="color-<?php echo $color; ?>">
-                                                    <?php echo $color; ?>
-                                                    <img class="crossed-out" src="https://cdn.shopvnb.com/themes/images/soldout.png" alt="<?php echo $color; ?>">
-                                                </label>
-                                            </div>
-                                    <?php
-                                        endif;
-                                    endforeach;
-                                    ?>
-                                </div>
-                            </div>
-
                         <?php endif; ?>
 
-                        <div id="hidden"></div>
 
                         <div class="boz-form">
                             <div class="clearfix form-group">
                                 <div class="flex-quantity">
                                     <div class="custom custom-btn-number show">
                                         <div class="input_number_product">
-                                            <button class="btn_num num_1 button button_qty" onclick="var result = document.getElementById('qtym'); var qtypro = result.value; if( !isNaN( qtypro ) &amp; &amp; qtypro > 1 ) result.value--;return false;" type="button">-</button>
-                                            <input type="text" id="qtym" name="so_luong" value="1" maxlength="3" class="form-control prd_quantity" onkeypress="if ( isNaN(this.value + String.fromCharCode(event.keyCode) )) return false;" onchange="if(this.value == 0)this.value=1;">
-                                            <button class="btn_num num_2 button button_qty" onclick="var result = document.getElementById('qtym'); var qtypro = result.value; if( !isNaN( qtypro )) result.value++;return false;" type="button"><span>+</span></button>
+                                            <button class="btn_num num_1 button button_qty"
+                                                onclick="var result = document.getElementById('qtym'); var qtypro = result.value; if( !isNaN( qtypro ) &amp;&amp; qtypro > 1 ) result.value--;return false;"
+                                                type="button">-</button>
+                                            <input type="text" id="qtym" name="so_luong" value="1" maxlength="3"
+                                                class="form-control prd_quantity"
+                                                onkeypress="if ( isNaN(this.value + String.fromCharCode(event.keyCode) )) return false;"
+                                                onchange="if(this.value == 0)this.value=1;">
+                                            <button class="btn_num num_2 button button_qty"
+                                                onclick="var result = document.getElementById('qtym'); var qtypro = result.value; if( !isNaN( qtypro )) result.value++;return false;"
+                                                type="button"><span>+</span></button>
                                         </div>
                                     </div>
                                     <div class="btn-mua button_actions clearfix">
 
-                                        <button type="submit" class="btn btn_base normal_button btn_add_cart add_to_cart btn-cart"><span class="txt-main">Thêm vào giỏ hàng</span></button>
-
-                                    </div>
-                                    <div class="btn-mua button_actions2 clearfix">
-
-                                        <button type="submit" class="btn btn_base normal_button btn_add_cart add_to_cart btn-cart"><span class="txt-main">Mua ngay</span></button>
+                                        <button type="submit"
+                                            class="btn btn_base normal_button btn_add_cart add_to_cart btn-cart"><span
+                                                class="txt-main">Thêm vào giỏ hàng</span></button>
 
                                     </div>
                                 </div>
@@ -395,8 +376,8 @@ if ($catalog->getName() == "Racket") {
             <button class="tab-button active" data-tab="tab1">Mô tả sản phẩm</button>
             <button class="tab-button" data-tab="tab2">Thông số kỹ thuật</button>
         </div>
-        <div class="tab-content" id="tab1" style="width: 80%; margin-left:10%">
-            <?php if ($product->getDescription() != 0) echo $product->getDescription(); ?>
+        <div class="tab-content" id="tab1">
+            Content for Tab 1
         </div>
         <div id="tab2" class="tab-content content_extab" style="display: none;">
             <div class="thongso-container">

@@ -19,6 +19,14 @@ th, td {
   color: #1c1c1c;
 }
 
+body,textarea,input,button,select {
+  line-height: 1.7;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  color: #333e44;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  max-width: 100%;
+}
 
 table {
   width: 100%;
@@ -345,33 +353,9 @@ a,.text-link {
   margin-right: 10px;
 }
 
-.button_actions2 button {
-  background: blue;
-  color: #fff;
-  padding: 0px 40px;
-  border-radius: 4px;
-  font-size: 12px;
-  transition: .3s;
-  -webkit-transition: .3s;
-  -moz-transition: .3s;
-  -ms-transition: .3s;
-  -o-transition: .3s;
-  text-transform: uppercase;
-  border: 1px solid blue;
-  height: 31px;
-  line-height: 31px;
-  margin-right: 10px;
-}
-
-
 .button_actions button:hover {
   background-color: white;
   color: #E95221;
-}
-
-.button_actions2 button:hover {
-  background-color: white;
-  color: blue;
 }
 
 .clearfix::after {
@@ -455,15 +439,6 @@ a,.text-link {
 .soldout {
   position: relative;
   background: rgb(204, 204, 204, 0.8);
-}
-
-.thongso-container {
-  width: 60%;
-  margin-left: 20%;
-}
-
-.tab-header {
-  border-bottom: 1px solid gray;
 }
 
 

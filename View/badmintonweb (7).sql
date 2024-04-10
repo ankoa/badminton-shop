@@ -10,8 +10,7 @@
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
-CREATE DATABASE badmintonweb;
-USE badmintonweb;
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -27,6 +26,10 @@ USE badmintonweb;
 --
 -- Table structure for table `brand`
 --
+
+
+
+CREATE DATABASE `badmintonweb`
 
 CREATE TABLE `brand` (
   `brandID` int(10) NOT NULL,
@@ -210,6 +213,32 @@ INSERT INTO `product` (`productID`, `brandID`, `catalogID`, `name`, `price`, `di
 (44, 13, 3, 'Ống Cầu Lông Vina Star Đỏ', 0, 0, 1, 0),
 (45, 13, 3, 'Ống Cầu Lông Vina Star Bạc Xanh', 0, 0, 1, 0);
 
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `products`
+--
+
+CREATE TABLE `products` (
+  `productID` int(11) NOT NULL,
+  `productName` varchar(255) NOT NULL,
+  `productPrice` decimal(10,2) NOT NULL,
+  `productBrand` varchar(255),
+  `productType` varchar(255),
+  `productWeight` decimal(6,2),
+  `productSize` int(50),
+  `productMaterial` varchar(255),
+  `productImage` BLOB
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `product` (`productID`, `productName`, `productPrice`, `productBrand`, `productType`, `productWeight`, `productSize`, `productMaterial`, `productImage`) VALUES
+(0002, 'Vợt Cầu Lông Yonex Astrox 100zz', 30.000, 'Yonex', 'Vợt chuyên nghiệp', 2, 1, 'Thép không gỉ');
+
 -- --------------------------------------------------------
 
 --
@@ -237,7 +266,13 @@ CREATE TABLE `transaction` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
-
+INSERT INTO `transaction` (`transactionID`, `userID`, `total`, `note`, `time`, `address`) VALUES
+(1, 1, 100000, 'Ghi chú 1', '2024-03-27 06:36:46', 'Địa chỉ 1'),
+(2, 2, 200000, 'Ghi chú 2', '2024-03-28 06:36:46', 'Địa chỉ 2'),
+(3, 3, 300000, 'Ghi chú 3', '2024-03-29 06:36:46', 'Địa chỉ 3'),
+(4, 4, 400000, 'Ghi chú 4', '2024-03-30 06:36:46', 'Địa chỉ 4'),
+(5, 5, 500000, 'Ghi chú 5', '2024-03-31 06:36:46', 'Địa chỉ 5'),
+(6, 6, 600000, 'Ghi chú 6', '2024-04-01 06:36:46', 'Địa chỉ 6');
 --
 -- Table structure for table `user`
 --
