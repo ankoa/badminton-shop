@@ -10,13 +10,35 @@
         </div>
         
         <div class="center_header_contentTop">
-            <ul>
-                <li class="search-box"> 
-                    <input placeholder="Tìm kiếm..." type="text"> 
-                    <i class="fa fa-search" aria-hidden="true" style="color: #e95221;"></i> 
-                </li>
-            </ul>
-        </div>
+        <form action="" method="POST" id="search_box">
+            
+            <li class="search-box"> 
+                <input type="search" name="search_text" id="search_text" placeholder="Bạn muốn tìm gì !!!!" value=""> 
+                <button type="submit" name="search_button">Tìm kiếm</button>
+            </li>
+            <ul class="search-list" id="searchList">
+                <?php
+                // Khai báo mảng chứa danh sách sản phẩm (có thể lấy từ cơ sở dữ liệu)
+                $products = [
+                    ['name' => 'Áo thun nam', 'description' => 'Áo thun nam màu đen'],
+                    ['name' => 'Quần jean nữ', 'description' => 'Quần jean nữ size M'],
+                    ['name' => 'Giày thể thao', 'description' => 'Giày thể thao chạy bộ']
+                ];
+
+                if (isset($_POST['search_button'])) {
+                    $searchText = strtolower($_POST['search_text']);
+                    foreach ($products as $product) {
+                        $productName = strtolower($product['name']);
+                        if (strpos($productName, $searchText) !== false && $searchText !== '') {
+                            echo '<li>' . $product['name'] . ' - ' . $product['description'] . '</li>';
+                        }
+                    }
+                }
+                ?>
+            </ul>   
+        </form>
+    </div>
+
         <div class="right_header_contentTop">
             <div class="icon-item">
                 <li>

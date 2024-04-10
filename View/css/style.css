@@ -303,3 +303,7 @@ header{
     background: #eceded;
 
 }
+.search-list {
+    list-style: none; /* Loại bỏ dấu đầu dòng của danh sách */
+}
+
