@@ -303,7 +303,29 @@ header{
     background: #eceded;
 
 }
+
 .search-list {
-    list-style: none; /* Loại bỏ dấu đầu dòng của danh sách */
+    list-style-type: none; /* Loại bỏ dấu đầu dòng của danh sách */
+    padding: 0; /* Xóa padding mặc định của danh sách */
+    margin-top: 10px; /* Khoảng cách giữa ô tìm kiếm và danh sách */
 }
 
+.search-list li {
+    padding: 8px; /* Padding cho mỗi phần tử trong danh sách */
+    border-bottom: 1px solid #ccc; /* Đường viền phân tách các sản phẩm */
+    cursor: pointer; /* Đổi con trỏ thành dấu nhấn khi di chuột qua sản phẩm */
+}
+
+.search-list li:hover {
+    background-color: #f0f0f0; /* Màu nền khi di chuột qua sản phẩm */
+}
+
+/* Định dạng văn bản trong danh sách sản phẩm */
+.search-list li a {
+    text-decoration: none; /* Loại bỏ đường gạch chân của liên kết */
+    color: #333; /* Màu văn bản */
+}
+
+.search-list li a:hover {
+    text-decoration: underline; /* Gạch chân dưới khi di chuột qua liên kết */
+}

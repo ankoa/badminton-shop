@@ -10,33 +10,17 @@
         </div>
         
         <div class="center_header_contentTop">
-        <form action="" method="POST" id="search_box">
-            
-            <li class="search-box"> 
-                <input type="search" name="search_text" id="search_text" placeholder="Bạn muốn tìm gì !!!!" value=""> 
-                <button type="submit" name="search_button">Tìm kiếm</button>
-            </li>
-            <ul class="search-list" id="searchList">
-                <?php
-                // Khai báo mảng chứa danh sách sản phẩm (có thể lấy từ cơ sở dữ liệu)
-                $products = [
-                    ['name' => 'Áo thun nam', 'description' => 'Áo thun nam màu đen'],
-                    ['name' => 'Quần jean nữ', 'description' => 'Quần jean nữ size M'],
-                    ['name' => 'Giày thể thao', 'description' => 'Giày thể thao chạy bộ']
-                ];
+        <form action="" method="POST" id="search_box" name="search_box">
+    <li class="search-box"> 
+        <input type="search" name="search_text" id="search_text" placeholder="Bạn muốn tìm gì !!!!" value=""> 
+        <button type="submit" name="search_button" id="search_button">Tìm kiếm</button>
+    </li>
+</form>
+<ul class="search-list" id="searchList">
+    <!-- Nơi hiển thị kết quả tìm kiếm -->
+</ul>
 
-                if (isset($_POST['search_button'])) {
-                    $searchText = strtolower($_POST['search_text']);
-                    foreach ($products as $product) {
-                        $productName = strtolower($product['name']);
-                        if (strpos($productName, $searchText) !== false && $searchText !== '') {
-                            echo '<li>' . $product['name'] . ' - ' . $product['description'] . '</li>';
-                        }
-                    }
-                }
-                ?>
-            </ul>   
-        </form>
+
     </div>
 
         <div class="right_header_contentTop">
@@ -160,3 +144,30 @@
         <li> <a class="titlemenu" href="index.php?control=IntroduceCategory">GIỚI THIỆU</a></li>
         <li> <a class="titlemenu" href="index.php?control=ContactCategory">LIÊN HỆ</a></li>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#search_box').on('submit', function(event) {
+        event.preventDefault();
+        var searchText = $('#search_text').val().trim();
+
+        $.ajax({
+            type: 'POST',
+            url: '//Controllers/search_products.php', // Đường dẫn đúng đến file PHP
+            data: { search_text: searchText },
+            dataType: 'json',
+            success: function(response) {
+                console.log(response);
+                var outputHtml = '';
+                response.forEach(function(product) {
+                    outputHtml += '<li>' + product.name + ' - ' + product.description + '</li>';
+                });
+                $('#searchList').html(outputHtml);
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    });
+});
+</script>
