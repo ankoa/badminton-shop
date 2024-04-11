@@ -24,9 +24,11 @@ $("#signin-form").on("submit", function(event) {
                 console.log(response.message + "thông báo lỗi");
                 if (response.status == 0) {
                     $(".error-message").text(response.message);
-                } else {
-                    window.location.href = 'index.php';
                 }
+                else if(response.status == 1){
+                    window.location.href = 'Badminton_Admin.php';
+                }
+                 
               } catch (error) {
                 console.log("lỗi");
             }

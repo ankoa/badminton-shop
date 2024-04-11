@@ -36,7 +36,7 @@
                             $_SESSION['username'] = $username;
                             echo json_encode(array(
                                 'message' => "Đăng nhập thành công - admin",
-                                'status' => 2
+                                'status' => 3
                             ));
                             exit;   
                         }

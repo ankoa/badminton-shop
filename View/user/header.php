@@ -153,7 +153,7 @@ $(document).ready(function() {
 
         $.ajax({
             type: 'POST',
-            url: '//Controllers/search_products.php', // Đường dẫn đúng đến file PHP
+            url: '../../Controllers/search_products.php', // Đường dẫn đúng đến file PHP
             data: { search_text: searchText },
             dataType: 'json',
             success: function(response) {
