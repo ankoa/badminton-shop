@@ -82,6 +82,12 @@ window.addEventListener("load", function () {
     document.getElementById("tab1").style.display = 'block';
 });
 
+function addCart() {
+    document.getElementById('popup-cart-mobile').classList.add('active');
+    document.getElementById('full-cover').style.opacity = "0.5";
+
+}
+
 // Function to load version by color using AJAX
 function loadVersion(productID, color) {
     var xhttp = new XMLHttpRequest();
