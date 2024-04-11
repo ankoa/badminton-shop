@@ -91,6 +91,12 @@ if ("geolocation" in navigator) {
   } else {
     console.log("Trình duyệt của bạn không hỗ trợ GeoLocation API.");
   }
+
+    var productDataElement = document.getElementById('product-data-get');
+    var product = JSON.parse(productDataElement.dataset.product);
+    document.getElementById("product-title").innerHTML=product.name;
+    document.getElementById("product-new-price").innerHTML="<b>"+formatPrice(product.price)+ "₫</b>";
+
   
 });
 
@@ -108,6 +114,10 @@ function removeActiveTab() {
         document.getElementById('full-cover').style.pointerEvents = "auto";
         document.getElementById('full-cover').style.opacity = "1";
     }
+}
+
+function formatPrice(price) {
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
 
 // Function to load version by color using AJAX

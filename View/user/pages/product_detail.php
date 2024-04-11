@@ -440,6 +440,8 @@ if ($catalog->getName() == "Racket") {
     </div>
 
 
+    <div id="product-data-get" data-product="<?php echo htmlspecialchars(json_encode($product)); ?>"></div>
+
 
 </body>
 
