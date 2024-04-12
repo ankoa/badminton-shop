@@ -100,10 +100,21 @@ if ("geolocation" in navigator) {
   
 });
 
-function addCart() {
-    document.getElementById('popup-cart-mobile').classList.add('active');
-    document.getElementById('full-cover').style.opacity = "0.5";
-    document.getElementById('full-cover').style.pointerEvents = "none";
+function addCart() {    
+    var loginDataDiv = document.getElementById("login-data-get");
+    if (loginDataDiv) {
+        var loginData = loginDataDiv.getAttribute("data-login");
+
+        var loginObject = JSON.parse(loginData);
+
+        if(loginObject=="true") {
+            document.getElementById('popup-cart-mobile').classList.add('active');
+            document.getElementById('full-cover').style.opacity = "0.5";
+            document.getElementById('full-cover').style.pointerEvents = "none";
+        } else {
+            alert("Cần đăng nhập để thêm vào giỏ hàng");
+        }
+    }
 }
 
 function removeActiveTab() {
