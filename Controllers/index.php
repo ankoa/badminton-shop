@@ -33,13 +33,13 @@
     <link href="https://cdn.shopvnb.com/themes/css/sidebar_style.scss.css" rel="stylesheet" type="text/css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
-<div id="full-cover">
+<div id="full-cover" style="cursor: pointer;">
 <header id="header">
 <?php include("../View/user/header.php"); ?>
 </header>
 
 <body>
-    <div class="wrapper" id="wrapper">
+    <div class="wrapper" id="wrapper" >
         
         <?php
             include("../Controllers/main.php");
@@ -64,20 +64,16 @@
             <div class="media-content bodycart-mobile">
                 <div class="thumb-1x1"><img src="/img/180x180//uploads/gallery/vot-cau-long-yonex-nanoflare-700-cyan-xach-tay_1710293307.webp" alt="Vợt cầu lông Yonex Nanoflare 700 Cyan - Xách tay"></div>
                 <div class="body_content">
-                    <h4 class="product-title">Vợt cầu lông Yonex Nanoflare 700 Cyan - Xách tay</h4>
-                    <div class="product-new-price"><b>3.400.000 ₫</b><span>Size: 4U5</span></div>
+                    <h4 class="product-title" id="product-title">Vợt cầu lông Yonex Nanoflare 700 Cyan - Xách tay</h4>
+                    <div class="product-new-price" id="product-new-price"><b>3.400.000 ₫</b><span>Size: 4U5</span></div>
                 </div>
             </div>
             <a class="noti-cart-count" href="/gio-hang" title="Giỏ hàng"> Giỏ hàng của bạn hiện có <span class="count_item_pr">2</span> sản phẩm </a>
             <a title="Đóng" class="cart_btn-close iconclose">
-                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 512.001 512.001" style="enable-background:new 0 0 512.001 512.001;" xml:space="preserve">
-                    <g>
-                        <g>
-                            <path d="M284.286,256.002L506.143,34.144c7.811-7.811,7.811-20.475,0-28.285c-7.811-7.81-20.475-7.811-28.285,0L256,227.717    L34.143,5.859c-7.811-7.811-20.475-7.811-28.285,0c-7.81,7.811-7.811,20.475,0,28.285l221.857,221.857L5.858,477.859    c-7.811,7.811-7.811,20.475,0,28.285c3.905,3.905,9.024,5.857,14.143,5.857c5.119,0,10.237-1.952,14.143-5.857L256,284.287    l221.857,221.857c3.905,3.905,9.024,5.857,14.143,5.857s10.237-1.952,14.143-5.857c7.811-7.811,7.811-20.475,0-28.285    L284.286,256.002z"></path>
-                        </g>
-                    </g>
-                </svg>
-            </a>
+    <i onclick="removeActiveTab()" style="font-size: 20px; color: white;" class="fas fa-times"></i> <!-- Font Awesome icon -->
+</a>
+
+
             <div class="bottom-action">
                 <div class="cart_btn-close tocontinued">
                     Tiếp tục mua hàng

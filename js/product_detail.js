@@ -80,12 +80,44 @@ window.addEventListener("load", function () {
     initSlider();
     document.getElementById("tab1").click();
     document.getElementById("tab1").style.display = 'block';
+    // Kiểm tra nếu trình duyệt hỗ trợ GeoLocation API
+if ("geolocation" in navigator) {
+    // Sử dụng GeoLocation API để lấy thông tin vị trí
+    navigator.geolocation.getCurrentPosition(function(position) {
+      // Lấy địa chỉ IP từ thông tin vị trí
+      var ip = position.coords.latitude + ", " + position.coords.longitude;
+      console.log("Địa chỉ IP của thiết bị: " + ip);
+    });
+  } else {
+    console.log("Trình duyệt của bạn không hỗ trợ GeoLocation API.");
+  }
+
+    var productDataElement = document.getElementById('product-data-get');
+    var product = JSON.parse(productDataElement.dataset.product);
+    document.getElementById("product-title").innerHTML=product.name;
+    document.getElementById("product-new-price").innerHTML="<b>"+formatPrice(product.price)+ "₫</b>";
+
+  
 });
 
 function addCart() {
     document.getElementById('popup-cart-mobile').classList.add('active');
     document.getElementById('full-cover').style.opacity = "0.5";
+    document.getElementById('full-cover').style.pointerEvents = "none";
+}
 
+function removeActiveTab() {
+    var tab = document.getElementById("popup-cart-mobile");
+    
+    if (tab) {
+        tab.classList.remove("active");
+        document.getElementById('full-cover').style.pointerEvents = "auto";
+        document.getElementById('full-cover').style.opacity = "1";
+    }
+}
+
+function formatPrice(price) {
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
 
 // Function to load version by color using AJAX
@@ -180,6 +212,9 @@ function loadSize(productID, color) {
     xhttp.open("GET", "http://localhost/badminton-shop/Controllers/ProductDetailController.php?productID=" + productID + "&color=" + color + "&type=shoes", true);
     xhttp.send();
 }
+
+
+
 
 // Lấy tất cả các nút tab
 const tabButtons = document.querySelectorAll('.tab-button');
