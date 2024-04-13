@@ -49,10 +49,10 @@ const initSlider = () => {
         imageList.querySelectorAll('.image-item').forEach(image => {
             image.classList.remove('img-chosen-border');
         });
-    
+
         // Add class .img-chosen-border to the clicked image
         event.target.classList.add('img-chosen-border');
-    
+
         const clickedImageSrc = event.target.src;
         displayBigImage(clickedImageSrc);
     };
@@ -81,36 +81,61 @@ window.addEventListener("load", function () {
     document.getElementById("tab1").click();
     document.getElementById("tab1").style.display = 'block';
     // Kiểm tra nếu trình duyệt hỗ trợ GeoLocation API
-if ("geolocation" in navigator) {
-    // Sử dụng GeoLocation API để lấy thông tin vị trí
-    navigator.geolocation.getCurrentPosition(function(position) {
-      // Lấy địa chỉ IP từ thông tin vị trí
-      var ip = position.coords.latitude + ", " + position.coords.longitude;
-      console.log("Địa chỉ IP của thiết bị: " + ip);
-    });
-  } else {
-    console.log("Trình duyệt của bạn không hỗ trợ GeoLocation API.");
-  }
+    if ("geolocation" in navigator) {
+        // Sử dụng GeoLocation API để lấy thông tin vị trí
+        navigator.geolocation.getCurrentPosition(function (position) {
+            // Lấy địa chỉ IP từ thông tin vị trí
+            var ip = position.coords.latitude + ", " + position.coords.longitude;
+            console.log("Địa chỉ IP của thiết bị: " + ip);
+        });
+    } else {
+        console.log("Trình duyệt của bạn không hỗ trợ GeoLocation API.");
+    }
 
     var productDataElement = document.getElementById('product-data-get');
     var product = JSON.parse(productDataElement.dataset.product);
-    document.getElementById("product-title").innerHTML=product.name;
-    document.getElementById("product-new-price").innerHTML="<b>"+formatPrice(product.price)+ "₫</b>";
+    document.getElementById("product-title").innerHTML = product.name;
+    document.getElementById("product-new-price").innerHTML = "<b>" + formatPrice(product.price) + "₫</b>";
 
-  
+
 });
 
-function addCart() {    
+function addCart() {
     var loginDataDiv = document.getElementById("login-data-get");
+    var productDataElement = document.getElementById('product-data-get');
+    var product = JSON.parse(productDataElement.dataset.product);
+    var quantity = document.getElementById('qtym').value;
     if (loginDataDiv) {
         var loginData = loginDataDiv.getAttribute("data-login");
 
         var loginObject = JSON.parse(loginData);
 
-        if(loginObject=="true") {
-            document.getElementById('popup-cart-mobile').classList.add('active');
-            document.getElementById('full-cover').style.opacity = "0.5";
-            document.getElementById('full-cover').style.pointerEvents = "none";
+        var loginUserDiv = document.getElementById("product-data-user");
+        var loginUser = loginUserDiv.getAttribute("data-user");
+
+        var loginUserObject = JSON.parse(loginUser);
+
+        if (loginObject === true) {
+            var ratios = document.getElementsByName("version");
+            if (ratios.length == 0) {
+                alert("Vui lòng chọn phiên bản cần mua");
+            } else {
+                
+                var xhttp = new XMLHttpRequest();
+
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        console.log(JSON.parse(this.responseText));
+                        document.getElementById('popup-cart-mobile').classList.add('active');
+                        document.getElementById('full-cover').style.opacity = "0.5";
+                        document.getElementById('full-cover').style.pointerEvents = "none";
+                    }
+                };
+
+                // Gửi yêu cầu AJAX đến tệp PHP để xử lý
+                xhttp.open("GET", "http://localhost/badminton/Controllers/addCart.php?productID=" + product.productID + "&variantID=" + ratios[0].value + "&quantity=" + quantity+ "&username=" + loginUserObject  + "&price=" + product.price*quantity, true);
+                xhttp.send();
+            }
         } else {
             alert("Cần đăng nhập để thêm vào giỏ hàng");
         }
@@ -119,7 +144,7 @@ function addCart() {
 
 function removeActiveTab() {
     var tab = document.getElementById("popup-cart-mobile");
-    
+
     if (tab) {
         tab.classList.remove("active");
         document.getElementById('full-cover').style.pointerEvents = "auto";
@@ -134,8 +159,8 @@ function formatPrice(price) {
 // Function to load version by color using AJAX
 function loadVersion(productID, color) {
     var xhttp = new XMLHttpRequest();
-    
-    xhttp.onreadystatechange = function() {
+
+    xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             var listVariantDetails = JSON.parse(this.responseText);
             var existingVersion = document.getElementById('version');
@@ -150,18 +175,18 @@ function loadVersion(productID, color) {
                     if (listVariantDetails[i].quantity >= 1) {
                         // Thêm mã HTML cho phần tử mới vào chuỗi htmlContent
                         htmlContent += '<div class="swatch-element version-' + listVariantDetails[i].weight + listVariantDetails[i].grip + '" data-value="1" data-value_2="1">' +
-                            '<input id="version-' + listVariantDetails[i].weight + listVariantDetails[i].grip + '" type="radio" name="1" value="1">' +
+                            '<input id="version-' + listVariantDetails[i].weight + listVariantDetails[i].grip + '" type="radio" name="version" value="' + listVariantDetails[i].variantID + '">' +
                             '<label for="version-' + listVariantDetails[i].weight + listVariantDetails[i].grip + '">' +
                             listVariantDetails[i].weight + listVariantDetails[i].grip +
-                            '<img class="crossed-out" src="https://cdn.shopvnb.com/themes/images/soldout.png" alt="'+listVariantDetails[i].weight + listVariantDetails[i].grip+'">' +
+                            '<img class="crossed-out" src="https://cdn.shopvnb.com/themes/images/soldout.png" alt="' + listVariantDetails[i].weight + listVariantDetails[i].grip + '">' +
                             '</label>' +
                             '</div>';
-                    } else if (listVariantDetails[i].quantity <=0 ) {
+                    } else if (listVariantDetails[i].quantity <= 0) {
                         htmlContent += '<div class="swatch-element soldout version-' + listVariantDetails[i].weight + listVariantDetails[i].grip + '" data-value="1" data-value_2="1">' +
-                            '<input disabled id="version-' + listVariantDetails[i].weight + listVariantDetails[i].grip + '" type="radio" name="1" value="1">' +
+                            '<input disabled id="version-' + listVariantDetails[i].weight + listVariantDetails[i].grip + '" type="radio" name="version" value="' + listVariantDetails[i].variantID + '">' +
                             '<label for="version-' + listVariantDetails[i].weight + listVariantDetails[i].grip + '">' +
                             listVariantDetails[i].weight + listVariantDetails[i].grip +
-                            '<img class="crossed-out" src="https://cdn.shopvnb.com/themes/images/soldout.png" alt="'+listVariantDetails[i].weight + listVariantDetails[i].grip+'">' +
+                            '<img class="crossed-out" src="https://cdn.shopvnb.com/themes/images/soldout.png" alt="' + listVariantDetails[i].weight + listVariantDetails[i].grip + '">' +
                             '</label>' +
                             '</div>';
                     }
@@ -172,7 +197,7 @@ function loadVersion(productID, color) {
             document.getElementById("hidden").innerHTML = htmlContent;
         }
     };
-    
+
     // Gửi yêu cầu AJAX đến tệp PHP để xử lý
     xhttp.open("GET", "http://localhost/badminton-shop/Controllers/ProductDetailController.php?productID=" + productID + "&color=" + color + "&type=racket", true);
     xhttp.send();
@@ -180,8 +205,8 @@ function loadVersion(productID, color) {
 
 function loadSize(productID, color) {
     var xhttp = new XMLHttpRequest();
-    
-    xhttp.onreadystatechange = function() {
+
+    xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             var listVariantDetails = JSON.parse(this.responseText);
             var existingVersion = document.getElementById('version');
@@ -195,19 +220,19 @@ function loadSize(productID, color) {
                 if (listVariantDetails[i].color == color) {
                     if (listVariantDetails[i].quantity >= 1) {
                         // Thêm mã HTML cho phần tử mới vào chuỗi htmlContent
-                        htmlContent += '<div class="swatch-element version-' + listVariantDetails[i].size+ '" data-value="1" data-value_2="1">' +
-                            '<input id="version-' + listVariantDetails[i].size + '" type="radio" name="1" value="1">' +
+                        htmlContent += '<div class="swatch-element version-' + listVariantDetails[i].size + '" data-value="1" data-value_2="1">' +
+                            '<input id="version-' + listVariantDetails[i].size + '" type="radio" name="version" value="' + listVariantDetails[i].variantID + '">' +
                             '<label for="version-' + listVariantDetails[i].size + '">' +
                             listVariantDetails[i].size +
-                            '<img class="crossed-out" src="https://cdn.shopvnb.com/themes/images/soldout.png" alt="'+listVariantDetails[i].size+'">' +
+                            '<img class="crossed-out" src="https://cdn.shopvnb.com/themes/images/soldout.png" alt="' + listVariantDetails[i].size + '">' +
                             '</label>' +
                             '</div>';
-                    } else if (listVariantDetails[i].quantity <=0 ) {
+                    } else if (listVariantDetails[i].quantity <= 0) {
                         htmlContent += '<div class="swatch-element soldout version-' + listVariantDetails[i].size + '" data-value="1" data-value_2="1">' +
-                            '<input disabled id="version-' + listVariantDetails[i].size + '" type="radio" name="1" value="1">' +
+                            '<input disabled id="version-' + listVariantDetails[i].size + '" type="radio" name="version" value="' + listVariantDetails[i].variantID + '">' +
                             '<label for="version-' + listVariantDetails[i].size + '">' +
                             listVariantDetails[i].size +
-                            '<img class="crossed-out" src="https://cdn.shopvnb.com/themes/images/soldout.png" alt="'+listVariantDetails[i].size+'">' +
+                            '<img class="crossed-out" src="https://cdn.shopvnb.com/themes/images/soldout.png" alt="' + listVariantDetails[i].size + '">' +
                             '</label>' +
                             '</div>';
                     }
@@ -218,7 +243,7 @@ function loadSize(productID, color) {
             document.getElementById("hidden").innerHTML = htmlContent;
         }
     };
-    
+
     // Gửi yêu cầu AJAX đến tệp PHP để xử lý
     xhttp.open("GET", "http://localhost/badminton-shop/Controllers/ProductDetailController.php?productID=" + productID + "&color=" + color + "&type=shoes", true);
     xhttp.send();
