@@ -110,14 +110,24 @@ function addCart() {
 
         var loginObject = JSON.parse(loginData);
 
-        var loginUserDiv = document.getElementById("product-data-user");
-        var loginUser = loginUserDiv.getAttribute("data-user");
-
-        var loginUserObject = JSON.parse(loginUser);
+        
 
         if (loginObject === true) {
+            var loginUserDiv = document.getElementById("product-data-user");
+            var loginUser = loginUserDiv.getAttribute("data-user");
+
+            var loginUserObject = JSON.parse(loginUser);
+            var selectedVariant = null;
             var ratios = document.getElementsByName("version");
-            if (ratios.length == 0) {
+
+            for (var i = 0; i < ratios.length; i++) {
+                if (ratios[i].checked) {
+                    selectedVariant = ratios[i].value;
+                    break;
+                }
+            }
+            
+            if (selectedVariant == null) {
                 alert("Vui lòng chọn phiên bản cần mua");
             } else {
                 
@@ -133,7 +143,7 @@ function addCart() {
                 };
 
                 // Gửi yêu cầu AJAX đến tệp PHP để xử lý
-                xhttp.open("GET", "http://localhost/badminton/Controllers/addCart.php?productID=" + product.productID + "&variantID=" + ratios[0].value + "&quantity=" + quantity+ "&username=" + loginUserObject  + "&price=" + product.price*quantity, true);
+                xhttp.open("GET", "http://localhost/badminton/Controllers/addCart.php?productID=" + product.productID + "&variantID=" + selectedVariant + "&quantity=" + quantity+ "&username=" + loginUserObject  + "&price=" + product.price*quantity, true);
                 xhttp.send();
             }
         } else {

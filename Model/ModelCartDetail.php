@@ -41,6 +41,21 @@ class ModelCartDetail {
         return $this->db->insert($query);
     }
 
+    public function checkCartDetail($productID, $variantID) {
+        $query = "SELECT * FROM cartdetail WHERE productID = '$productID' AND variantID = '$variantID'";
+        $result = $this->db->select($query);
+        if ($result) {
+            $cartDetails = [];
+            while ($row = $result->fetch_assoc()) {
+                $cartDetails[] = $row;
+            }
+            if(count($cartDetails) > 0) return true;
+            else return false;
+        } else {
+            return false;
+        }
+    }
+
     // Phương thức để cập nhật thông tin chi tiết giỏ hàng trong cơ sở dữ liệu
     public function updateCartDetail($cartDetailID, $cartID, $productID, $quantity, $price) {
         $query = "UPDATE cartdetail 
