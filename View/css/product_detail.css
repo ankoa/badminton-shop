@@ -479,6 +479,7 @@ a,.text-link {
 .popup-cart-mobile.active {
   visibility: visible;
   z-index: 9999;
+  transform: translate(-50%, -50%); 
 }
 
 .hidden {

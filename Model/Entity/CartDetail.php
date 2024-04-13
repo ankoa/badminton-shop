@@ -1,6 +1,5 @@
 <?php
 
-require_once 'Database.php';
 
 class CartDetail {
     public $cartDetailID;
@@ -8,13 +7,15 @@ class CartDetail {
     public $productID;
     public $quantity;
     public $price;
+    public $variantID;
 
-    public function __construct($cartDetailID, $cartID, $productID, $quantity, $price) {
+    public function __construct($cartDetailID, $cartID, $productID, $variantID, $quantity, $price) {
         $this->cartDetailID = $cartDetailID;
         $this->cartID = $cartID;
         $this->productID = $productID;
         $this->quantity = $quantity;
         $this->price = $price;
+        $this->variantID = $variantID;
     }
 
     // Getter và setter cho cartDetailID
@@ -24,6 +25,14 @@ class CartDetail {
 
     public function setCartDetailID($cartDetailID) {
         $this->cartDetailID = $cartDetailID;
+    }
+
+    public function getVariantID() {
+        return $this->variantID;
+    }
+
+    public function setVariantID($variantID) {
+        $this->variantID = $variantID;
     }
 
     // Getter và setter cho cartID
