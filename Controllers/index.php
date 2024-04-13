@@ -14,6 +14,8 @@
             echo '<link rel="stylesheet" href="../View/css/checktranscation.css"> <script src="../js/Transaction.js"> defer</script>';
         } else if($_GET['control']=="IntroduceCategory") {
             echo '<script src="../js/Introduce.js"> defer</script> <link rel="stylesheet" href="../View/css/intro.css">';
+        } else if($_GET['control']=="Cart") {
+            echo '<script src="../js/Cart.js"> defer</script>';
         }
     } else {
         echo '<link rel="stylesheet" href="../View/css/slider.css"> <script src="../js/slider.js" defer></script>';

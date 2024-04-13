@@ -22,6 +22,8 @@
         }
         else if($tmp=='ProductDetail'){
             include("../View/user/pages/product_detail.php");
+        } else if($tmp=='Cart'){
+            include("../View/user/pages/cart_page.php");
         }
         else{
             include("../View/user/pages/home_page.php");
