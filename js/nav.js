@@ -27,7 +27,7 @@ function getAllByCatalogAndBrand() {
             }
         };
 
-        xhttp.open("GET", "http://localhost/badminton-shop/Controllers/ProductNavController.php?getAll=true&id="+getIdFromUrl(), true);
+        xhttp.open("GET", "ProductNavController.php?getAll=true&id="+getIdFromUrl(), true);
         xhttp.send();
     });
 }
@@ -83,7 +83,7 @@ function loadPage(page, productsPerPage, id) {
         }
     };
 
-    xhttp.open("GET", "http://localhost/badminton-shop/Controllers/ProductNavController.php?page=" + parseInt(page) + "&productsPerPage=" + parseInt(productsPerPage) + "&id=" + parseInt(id), true);
+    xhttp.open("GET", "ProductNavController.php?page=" + parseInt(page) + "&productsPerPage=" + parseInt(productsPerPage) + "&id=" + parseInt(id), true);
     xhttp.send();
 }
 
@@ -173,7 +173,7 @@ function loadNav(productsPerPage, id) {
         }
     };
 
-    xhttp.open("GET", "http://localhost/badminton-shop/Controllers/ProductNavController.php?id=" + id + "&productsPerPage=" + productsPerPage, true);
+    xhttp.open("GET", "ProductNavController.php?id=" + id + "&productsPerPage=" + productsPerPage, true);
     xhttp.send();
 }
 
@@ -397,7 +397,7 @@ $(document).ready(function () {
         if (checkedCount > 0) {
             // Gửi yêu cầu lọc đến máy chủ bằng AJAX
             $.ajax({
-                url: "http://localhost/badminton-shop/Controllers/ProductNavController.php", // Đường dẫn tới file xử lý yêu cầu lọc trên máy chủ
+                url: "ProductNavController.php", // Đường dẫn tới file xử lý yêu cầu lọc trên máy chủ
                 type: "GET",
                 data: {
                     selectedFilters,

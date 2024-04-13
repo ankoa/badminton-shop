@@ -143,7 +143,7 @@ function addCart() {
                 };
 
                 // Gửi yêu cầu AJAX đến tệp PHP để xử lý
-                xhttp.open("GET", "http://localhost/badminton/Controllers/addCart.php?productID=" + product.productID + "&variantID=" + selectedVariant + "&quantity=" + quantity+ "&username=" + loginUserObject  + "&price=" + product.price*quantity, true);
+                xhttp.open("GET", "addCart.php?productID=" + product.productID + "&variantID=" + selectedVariant + "&quantity=" + quantity+ "&username=" + loginUserObject  + "&price=" + product.price*quantity, true);
                 xhttp.send();
             }
         } else {
@@ -209,7 +209,7 @@ function loadVersion(productID, color) {
     };
 
     // Gửi yêu cầu AJAX đến tệp PHP để xử lý
-    xhttp.open("GET", "http://localhost/badminton-shop/Controllers/ProductDetailController.php?productID=" + productID + "&color=" + color + "&type=racket", true);
+    xhttp.open("GET", "ProductDetailController.php?productID=" + productID + "&color=" + color + "&type=racket", true);
     xhttp.send();
 }
 
@@ -255,7 +255,7 @@ function loadSize(productID, color) {
     };
 
     // Gửi yêu cầu AJAX đến tệp PHP để xử lý
-    xhttp.open("GET", "http://localhost/badminton-shop/Controllers/ProductDetailController.php?productID=" + productID + "&color=" + color + "&type=shoes", true);
+    xhttp.open("GET", "ProductDetailController.php?productID=" + productID + "&color=" + color + "&type=shoes", true);
     xhttp.send();
 }
 
