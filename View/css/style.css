@@ -281,3 +281,14 @@ header{
   transform: translateY(0);
 
 }
+
+.bodywrap {
+    width: 100px;
+    height: 100px;
+    background-color: red;
+    transition: all 0.3s ease; /* Thêm transition để smooth transition khi hover */
+}
+
+.bodywrap:hover {
+    transform: scale(1.2); /* Scale lên 1.2 lần khi hover */
+}
