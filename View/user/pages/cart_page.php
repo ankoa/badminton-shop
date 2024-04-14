@@ -217,6 +217,54 @@ img {
     color: #e95221;
     line-height: 28px;
 }
+/* Đặt hàng */
+.cartheader .ajaxcart-footer {
+    padding: 5px 10px 10px;
+    border-top: solid 1px #ebebeb;
+}
+
+.cartheader .ajaxcart-footer .cart-subtotal {
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 12px;
+    display: flex;
+}
+
+.cartheader .ajaxcart-footer .cart-subtotal .cart-col-6 {
+    width: 50%;
+    float: left;
+}
+
+.cartheader .ajaxcart-footer .cart-subtotal .cart-totle {
+    width: 50%;
+    float: left;
+    text-align: right;
+}
+
+.cartheader .ajaxcart-footer .cart-subtotal .cart-totle .total-price {
+    font-weight: bold;
+    color: #ef1104;
+}
+
+.cartheader .ajaxcart-footer .cart-btn-proceed-checkout-dt {
+    display: block;
+    position: relative;
+}
+
+.cartheader .ajaxcart-footer .cart-btn-proceed-checkout-dt button {
+    width: 100%;
+    background: #e95221;
+    color: #fff;
+    padding: 0px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    transition: .3s;
+    -webkit-transition: .3s;
+    text-transform: uppercase;
+    border: 1px solid #e95221;
+    height: 40px;
+    line-height: 40px;
+}
 </style>
 
 <div class="bodywrap">
@@ -289,6 +337,17 @@ img {
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div class="ajaxcart-footer">
+                                            <div class="ajaxcart-subtotal">
+                                                <div class="cart-subtotal">
+                                                    <div class="cart-col-6">Tổng tiền:</div>
+                                                    <div class="text-right cart-totle"><span class="total-price">3.390.000 ₫</span></div>
+                                                </div>
+                                            </div>
+                                            <div class="cart-btn-proceed-checkout-dt ">
+                                                <button onclick="location.href='/gio-hang/thanh-toan'" type="button" class="button btn btn-default cart-btn-proceed-checkout" id="btn-proceed-checkout" title="Thanh toán">Đặt hàng</button>
                                             </div>
                                         </div>
                                     </form>
