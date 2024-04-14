@@ -479,6 +479,11 @@ a,.text-link {
 .popup-cart-mobile.active {
   visibility: visible;
   z-index: 9999;
+  transform: translate(-50%, -50%); 
+}
+
+.hidden {
+  display: none;
 }
 
 .popup-cart-mobile {
@@ -496,6 +501,7 @@ a,.text-link {
   overflow: hidden;
   border: 1px solid #e95221;
 }
+
 
 .popup-cart-mobile .header-popcart .top-cart-header span {
   display: block;
@@ -609,6 +615,7 @@ a:not([href]):not([tabindex]) {
   position: absolute;
   right: 10px;
   top: 6px;
+  cursor: pointer;
 }
 
 .popup-cart-mobile .bottom-action {

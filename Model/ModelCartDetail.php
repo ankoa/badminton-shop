@@ -1,6 +1,6 @@
 <?php
 require_once 'database.php';
-require_once '..\Model\Entity\CartDetail.php';
+require_once(__DIR__ . '/Entity/CartDetail.php');
 class ModelCartDetail {
     protected $db;
 
@@ -35,10 +35,25 @@ class ModelCartDetail {
     }
 
     // Phương thức để thêm một chi tiết giỏ hàng mới vào cơ sở dữ liệu
-    public function addCartDetail($cartID, $productID, $quantity, $price) {
-        $query = "INSERT INTO cartdetail (cartID, productID, quantity, price) 
-                  VALUES ('$cartID', '$productID', '$quantity', '$price')";
+    public function addCartDetail($cartID, $productID, $variantID, $quantity, $price) {
+        $query = "INSERT INTO cartdetail (cartID, productID, variantID, quantity, price) 
+                  VALUES ('$cartID', '$productID', '$variantID', '$quantity', '$price')";
         return $this->db->insert($query);
+    }
+
+    public function checkCartDetail($productID, $variantID) {
+        $query = "SELECT * FROM cartdetail WHERE productID = '$productID' AND variantID = '$variantID'";
+        $result = $this->db->select($query);
+        if ($result) {
+            $cartDetails = [];
+            while ($row = $result->fetch_assoc()) {
+                $cartDetails[] = $row;
+            }
+            if(count($cartDetails) > 0) return true;
+            else return false;
+        } else {
+            return false;
+        }
     }
 
     // Phương thức để cập nhật thông tin chi tiết giỏ hàng trong cơ sở dữ liệu
