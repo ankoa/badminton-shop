@@ -16,14 +16,16 @@
                         
                         if($authenticated_role ==1){
                             $_SESSION['login'] = true;
+                            $_SESSION['type'] = 'admin';
                             $_SESSION['username'] = $username;
                             echo json_encode(array(
-                                'message' => "Đăng nhập thành công - khách hàng",
+                                'message' => "Đăng nhập thành công - admin",
                                 'status' => 1
                             ));
                             exit;
                         } elseif($authenticated_role == 2){
                             $_SESSION['login'] = true;
+                            $_SESSION['type'] = 'customer';
                             $_SESSION['username'] = $username;
                             echo json_encode(array(
                                 'message' => "Đăng nhập thành công - nhân viên",
@@ -33,9 +35,10 @@
                         }
                         elseif($authenticated_role == 3){
                             $_SESSION['login'] = true;
+                            $_SESSION['type'] = 'customer';
                             $_SESSION['username'] = $username;
                             echo json_encode(array(
-                                'message' => "Đăng nhập thành công - admin",
+                                'message' => "Đăng nhập thành công - customer",
                                 'status' => 3
                             ));
                             exit;   

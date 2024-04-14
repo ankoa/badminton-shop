@@ -74,7 +74,6 @@
         <h2 class="signin-heading">Đăng nhập</h2>
         <p class="signin-already" id="signin-already">
           Bạn chưa có tài khoản?
-          <a href="index.php?control=signup" class="signin-link-underline" onclick="">Hãy tạo ngay</a>
         </p>
         <div class="error-signin"> <p class="error-message"></p> </div>
         <form id="signin-form" action="../Controllers/Signin-upController.php" method="post" >

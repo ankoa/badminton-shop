@@ -235,6 +235,8 @@ header{
     width: 100%;
     background: #000;
 }
+/*back to top button */
+
 .back-to-top
 {
   width: 50px;
@@ -251,25 +253,30 @@ header{
   box-shadow: 0 4px 6px rgba(0, 0, 0, .6) ;
   transition: ease .3s;
   pointer-events: none;
+  right: 20px;
+  bottom: 20px;
 }
 
 .back-top-top-icon {
   width: 50px;
   line-height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
+  margin-top: 20px;
+
 }
 
-.back-to-top:hover .back-top-top-icon {
-  width: 55px;
-  line-height: 55px;
-}
-
+.back-top-top-icon:hover {
+    color: white; 
+  }
 .back-to-top:hover {
   cursor: pointer;
-  color: rgb(167, 49, 49);
+  color: white;
   font-size: 24px;
-  width: 55px;
-  height: 55px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   box-shadow: 0 4px 6px rgba(0, 0, 0, .8) ;
 
@@ -280,6 +287,10 @@ header{
   opacity: 1;
   transform: translateY(0);
 
+}
+
+html {
+    scroll-behavior: smooth;
 }
 /* SEARCH */
 .search-box {
