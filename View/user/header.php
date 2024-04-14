@@ -25,19 +25,14 @@
 
         <div class="right_header_contentTop">
             <div class="icon-item">
-                <li> <a href="index.php?control=Cart">
-                    <i class="fa-solid fa-clipboard-list" style="color: #e95221;"></i>
+                <li>
+                     <a href="index.php?control=Cart">
+                        <i class="fa-solid fa-clipboard-list" style="color: #e95221;"></i>
                     <span class="icon-name">TRA CỨU</span>
-<!-- <<<<<<< HEAD
                     <ul class="submenu_check" style="height: 30px;">
                             <li class="dropdown-item"  style="height: 100%;"> <a href="index.php?control=checkDonHang"> Kiểm tra đơn hàng </a></li>
                     </ul>
-======= -->
-                    <ul class="submenu_check">
-                            <li class="dropdown-item"> <a href="index.php?control=checkDonHang"> Kiểm tra đơn hàng </a></li>
-                    </ul>
                     </a>
-<!-- >>>>>>> 47e71f8f9c794f9406a9cc1535925312c831a528 -->
                 </li>
             </div>
             <div class="icon-item">

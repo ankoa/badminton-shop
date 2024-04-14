@@ -23,7 +23,7 @@
             <div class="box_service">
                 <div class="promo-item">
                     <div class="icon-service">
-                        <img src="https://cdn.shopvnb.com/themes/images/policy_image_2.svg" alt="">
+                        <img src="https://cdn.shopvnb.com/themes/images/policy_image_2.svg" alt="" class="custom-img">
 
                     </div>
                     <div class="infor">
@@ -38,7 +38,7 @@
             <div class="box_service">
                 <div class="promo-item">
                     <div class="icon-service">
-                        <img src="../View/images/iconservice_transport.png" alt="">
+                        <img src="https://cdn.shopvnb.com/themes/images/policy_image_1.svg" alt="" class="custom-img">
 
                     </div>
                     <div class="infor">
@@ -52,7 +52,7 @@
             <div class="box_service">
                 <div class="promo-item">
                     <div class="icon-service">
-                        <img src="../View/images/iconservice_transport.png" alt="">
+                        <img src="https://cdn.shopvnb.com/themes/images/thanh_toan.svg" alt="" class="custom-img">
 
                     </div>
                     <div class="infor">
@@ -68,7 +68,7 @@
             <div class="box_service">
                 <div class="promo-item">
                     <div class="icon-service">
-                        <img src="../View/images/iconservice_transport.png" alt="">
+                        <img src="https://cdn.shopvnb.com/themes/images/doi_san_pham.svg" alt="" class="custom-img">
 
                     </div>
                     <div class="infor">
