@@ -19,12 +19,12 @@
         </div>
         <div class="right_header_contentTop">
             <div class="icon-item">
-                <li> <a href="index.php?control=Cart">
+                <li>
                     <i class="fa-solid fa-clipboard-list" style="color: #e95221;"></i>
                     <span class="icon-name">TRA CỨU</span>
                     <ul class="submenu_check">
                             <li class="dropdown-item"> <a href="index.php?control=checkDonHang"> Kiểm tra đơn hàng </a></li>
-                    </ul></a>
+                    </ul>
                 </li>
             </div>
             <div class="icon-item">
@@ -76,9 +76,9 @@
                 </li>
             </div>
             <div class="icon-item">
-                <li>
+                <li> <a href="index.php?control=Cart">
                     <i class="fa-solid fa-cart-arrow-down" style="color: #e95221;"></i>
-                    <span class="icon-name">GIỎ HÀNG</span>
+                    <span class="icon-name">GIỎ HÀNG</span> </a>
                 </li>
             </div>
         </div>

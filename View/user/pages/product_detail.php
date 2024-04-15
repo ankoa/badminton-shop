@@ -265,10 +265,10 @@ if ($catalog->getName() == "Racket") {
                                     <?php foreach ($listVariantDetails as $variantDetail) : ?>
                                         <?php if ($variantDetail->getQuantity() > 0) : ?>
                                             <div class="swatch-element color-<?php echo $variantDetail->getSpeed(); ?>" data-value="<?php echo $variantDetail->getSpeed(); ?>" data-value_2="<?php echo $variantDetail->getSpeed(); ?>">
-                                                <input id="color-<?php echo $variantDetail->getSpeed(); ?>" type="radio" name="color" value="<?php echo $variantDetail->getSpeed(); ?>">
+                                                <input id="color-<?php echo $variantDetail->getSpeed(); ?>" type="radio" name="version" value="<?php echo $variantDetail->getVariantID(); ?>">
                                             <?php else : ?>
                                                 <div class="swatch-element soldout color-<?php echo $variantDetail->getSpeed(); ?>" data-value="<?php echo $variantDetail->getSpeed(); ?>" data-value_2="<?php echo $variantDetail->getSpeed(); ?>">
-                                                    <input disabled id="color-<?php echo $variantDetail->getSpeed(); ?>" type="radio" name="color" value="<?php echo $variantDetail->getSpeed(); ?>">
+                                                    <input disabled id="color-<?php echo $variantDetail->getSpeed(); ?>" type="radio" name="version" value="<?php echo $variantDetail->getVariantID(); ?>">
                                                 <?php endif; ?>
                                                 <label for="color-<?php echo $variantDetail->getSpeed(); ?>">
                                                     <?php echo $variantDetail->getSpeed(); ?>
@@ -341,7 +341,7 @@ if ($catalog->getName() == "Racket") {
                                                                         endif; ?> color-<?php echo $color; ?>" data-value="<?php echo $color; ?>" data-value_2="<?php echo $color; ?>">
                                                 <input <?php if ($modelVariantDetail->getVariantQuantityByColor($listVariantDetails, $color) <= 0) :
                                                             echo "disabled";
-                                                        endif; ?> id="color-<?php echo $color; ?>" type="radio" name="color" value="<?php echo $color; ?>">
+                                                        endif; ?> id="color-<?php echo $color; ?>" type="radio" name="version" value="<?php echo $variantDetail->getVariantID(); ?>">
                                                 <label for="color-<?php echo $color; ?>">
                                                     <?php echo $color; ?>
                                                     <img class="crossed-out" src="https://cdn.shopvnb.com/themes/images/soldout.png" alt="<?php echo $color; ?>">
