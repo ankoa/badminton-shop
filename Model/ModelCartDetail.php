@@ -24,6 +24,28 @@ class ModelCartDetail {
     }
 
     // Phương thức để lấy thông tin chi tiết giỏ hàng bằng ID
+    public function getCartDetailByCartID($cartID) {
+        $query = "SELECT * FROM cartdetail WHERE cartID = '$cartID'";
+        $result = $this->db->select($query);
+        $products = [];
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $product = new CartDetail(
+                    $row['cartDetailID'],
+                    $row['cartID'],
+                    $row['productID'],
+                    $row['variantID'],
+                    $row['quantity'],
+                    $row['price'],
+                );
+                $products[] = $product;
+            }
+        }
+
+        return $products;
+    }
+
+    // Phương thức để lấy thông tin chi tiết giỏ hàng bằng ID
     public function getCartDetailByID($cartDetailID) {
         $query = "SELECT * FROM cartdetail WHERE cartDetailID = '$cartDetailID'";
         $result = $this->db->select($query);

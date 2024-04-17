@@ -293,9 +293,13 @@ header{
     margin-bottom: 0;
     width: 400px;
     height: auto;
+    padding: 0px;
+    border-radius: 10px;
 }
 
 .title-cart-head {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
     width: 100% !important;
     height: auto !important;
     text-align: center;
