@@ -81,6 +81,7 @@ window.addEventListener("load", function () {
     document.getElementById("tab1").click();
     document.getElementById("tab1").style.display = 'block';
     // Kiểm tra nếu trình duyệt hỗ trợ GeoLocation API
+    /*
     if ("geolocation" in navigator) {
         // Sử dụng GeoLocation API để lấy thông tin vị trí
         navigator.geolocation.getCurrentPosition(function (position) {
@@ -90,18 +91,19 @@ window.addEventListener("load", function () {
         });
     } else {
         console.log("Trình duyệt của bạn không hỗ trợ GeoLocation API.");
-    }
+    } */
 
     var productDataElement = document.getElementById('product-data-get');
     var product = JSON.parse(productDataElement.dataset.product);
     document.getElementById("product-title").innerHTML = product.name;
-    document.getElementById("product-new-price").innerHTML = "<b>" + formatPrice(product.price) + "₫</b>";
+    
 
 
 });
 
 function addCart() {
     var loginDataDiv = document.getElementById("login-data-get");
+    
     var productDataElement = document.getElementById('product-data-get');
     var product = JSON.parse(productDataElement.dataset.product);
     var quantity = document.getElementById('qtym').value;
@@ -118,11 +120,20 @@ function addCart() {
 
             var loginUserObject = JSON.parse(loginUser);
             var selectedVariant = null;
+            var selectedColor = null;
             var ratios = document.getElementsByName("version");
+            var colors = document.getElementsByName("color");
 
             for (var i = 0; i < ratios.length; i++) {
                 if (ratios[i].checked) {
                     selectedVariant = ratios[i].value;
+                    break;
+                }
+            }
+
+            for (var i = 0; i < colors.length; i++) {
+                if (colors[i].checked) {
+                    selectedColor = colors[i].value;
                     break;
                 }
             }
@@ -135,7 +146,16 @@ function addCart() {
 
                 xhttp.onreadystatechange = function () {
                     if (this.readyState == 4 && this.status == 200) {
-                        console.log(JSON.parse(this.responseText));
+                        var catalogData = this.responseText;
+                        if(catalogData=="Racket") {
+                            document.getElementById("product-new-price").innerHTML = "<b>" + formatPrice(product.price) + "₫</b><span>Màu: "+selectedColor+" Bản: "+selectedVariant+"</span>";
+                        } else if(catalogData=="Shoes") {
+                            document.getElementById("product-new-price").innerHTML = "<b>" + formatPrice(product.price) + "₫</b><span>Màu: "+selectedColor+" Size: "+selectedVariant+"</span>";
+                        } else if(catalogData=="Shuttle") {
+                            document.getElementById("product-new-price").innerHTML = "<b>" + formatPrice(product.price) + "₫</b><span>Tốc độ: "+selectedVariant+"</span>";
+                        } else if(catalogData=="String") {
+                            document.getElementById("product-new-price").innerHTML = "<b>" + formatPrice(product.price) + "₫</b><span>Màu: "+selectedVariant+"</span>";
+                        }
                         document.getElementById('popup-cart-mobile').classList.add('active');
                         document.getElementById('full-cover').style.opacity = "0.5";
                         document.getElementById('full-cover').style.pointerEvents = "none";
@@ -179,7 +199,6 @@ function loadVersion(productID, color) {
                 existingVersion.parentNode.removeChild(existingVersion);
             }
             var htmlContent = '<div class="select-swatch"><div class="swatch clearfix"><div class="header">Chọn phiên bản: </div>';
-            console.log(listVariantDetails);
             for (var i = 0; i < listVariantDetails.length; i++) {
                 if (listVariantDetails[i].color == color) {
                     if (listVariantDetails[i].quantity >= 1) {
