@@ -183,7 +183,7 @@ $total_price_cart=0;
                             </div>
                         </div>
                         <div class='cart-prices'>
-                            <span class='cart-price'>" . number_format($product->getPrice() , 0, '.', '.') . "₫</span>
+                            <span class='cart-price'>" . number_format($product->getPrice() , 0, '.', '.') . "</span>
                         </div>
                     </div>
                 </div>
