@@ -1,5 +1,6 @@
 <?php
 session_start();
+$total_price_cart=0;
 ?>
 <div class="header_contentTop">
     <div class="left_header_contentTop">
@@ -154,6 +155,7 @@ session_start();
                         foreach ($cartDetails  as $cartDetail) {
                             $variantDetail = $modelVariantDetail->getVariantByID(($cartDetail)->getVariantID());
                             $product = $modelProduct->getProductByID(($cartDetail)->getProductID());
+                            $total_price_cart+=$product->getPrice();
                             echo "<div class='cart-product'>
                         <a href='#' class='cart-image' title='" . $product->getName() . "'><img width='80' height='80' src='../View/images/product/GiayNam.png' 
                         alt='" . $product->getName() . "'></a>
@@ -181,7 +183,7 @@ session_start();
                             </div>
                         </div>
                         <div class='cart-prices'>
-                            <span class='cart-price'>" . $product->getPrice() . "</span>
+                            <span class='cart-price'>" . number_format($product->getPrice() , 0, '.', '.') . "₫</span>
                         </div>
                     </div>
                 </div>
@@ -189,37 +191,14 @@ session_start();
                         }
                         ?>
 
-            <div class="cart-product">
-                <a href="#" class="cart-image" title="Giày cầu lông Yonex SHB CFT2EX - 
-                    Hồng (Nội địa Trung)"><img width="80" height="80" src="../View/images/product/GiayNam.png" alt="Giày cầu lông Yonex SHB CFT2EX - Hồng (Nội địa Trung)"></a>
-                <div class="cart-info">
-                    <div class="cart-name">
-                        <a href="#" class="" title="Giày cầu lông Yonex SHB CFT2EX
-                            - Hồng (Nội địa Trung)">Giày cầu lông Yonex SHB CFT2EX - Hồng (Nội địa Trung)</a>
-                        <span class="variant-title">Size: 40</span>
-                        <a title="Xóa" class="remove-item-cart" href="javascript:;"></a>
-                    </div>
-                    <div class="grid">
-                        <div class="cart-item-name">
-                            <div class="input-group-btn">
-                                <button type="button" class="ajaxcart-qty--minus items-count" data-id="" data-qty="0" aria-label="-"> - </button>
-                                <input type="text" name="updates[]" class="ajaxcart__qty-num number-sidebar" maxlength="3" value="1" min="0" data-id="" aria-label="quantity" pattern="[0-9]*">
-                                <button type="button" class="ajaxcart-qty--plus items-count" data-id="" data-qty="2" aria-label="+"> + </button>
-                            </div>
-                        </div>
-                        <div class="cart-prices">
-                            <span class="cart-price">1.590.000 ₫</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            
         </div>
     </div>
     <div class="ajaxcart-footer">
         <div class="ajaxcart-subtotal">
             <div class="cart-subtotal">
                 <div class="cart-col-6">Tổng tiền:</div>
-                <div class="text-right cart-totle"><span class="total-price">3.390.000 ₫</span></div>
+                <div class="text-right cart-totle"><span class="total-price"><?php echo number_format($total_price_cart , 0, '.', '.'); ?>₫</span></div>
             </div>
         </div>
         <div class="cart-btn-proceed-checkout-dt ">
