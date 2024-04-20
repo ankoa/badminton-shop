@@ -78,9 +78,9 @@ $total_price_cart=0;
         </div>
         <div class="icon-item">
             <li>
-                <ul class="show-item"> <a href="index.php?control=Cart">
+                <ul class="show-item"> 
                         <i class="fa-solid fa-cart-arrow-down" style="color: #e95221;"></i>
-                        <span class="icon-name"><a href="index.php?control=Cart">Giỏ Hàng</a></span>
+                        <span class="icon-name"><a class="a-head" href="index.php?control=Cart">Giỏ Hàng</a></span>
                 </ul>
             </li>
         </div>
@@ -156,7 +156,8 @@ $total_price_cart=0;
                             $variantDetail = $modelVariantDetail->getVariantByID(($cartDetail)->getVariantID());
                             $product = $modelProduct->getProductByID(($cartDetail)->getProductID());
                             $total_price_cart+=$product->getPrice();
-                            echo "<div class='cart-product'>
+                            echo "
+                            <div class='cart-product'>
                         <a href='#' class='cart-image' title='" . $product->getName() . "'><img width='80' height='80' src='../View/images/product/GiayNam.png' 
                         alt='" . $product->getName() . "'></a>
                         <div class='cart-info'>
@@ -170,20 +171,18 @@ $total_price_cart=0;
                                 echo "<span class='variant-title'>Size: " . $variantDetail->getSize() . "</span>";
                             if ($variantDetail->getSpeed() != null)
                                 echo "<span class='variant-title'>Tốc độ: " . $variantDetail->getSpeed() . "</span>";
-                            echo "<a title='Xóa' class='remove-item-cart' href='javascript:void(0);'></a>
+                            echo "
                     </div>
                     <div class='grid'>
                         <div class='cart-item-name'>
                             <div class='input-group-btn'>
-                                <button type='button' class='ajaxcart-qty--minus items-count' 
-                                data-id='' data-qty='0' aria-label='-'> - </button>
-                                <input type='text' name='updates[]' class='ajaxcart__qty-num number-sidebar' maxlength='3' value='1' min='0' data-id='' aria-label='quantity' pattern='[0-9]*'>
-                                <button type='button' class='ajaxcart-qty--plus items-count' 
-                                data-id='' data-qty='2' aria-label='+'> + </button>
+                                <button class='qty-minus' onclick='var result = document.getElementById(\"qtym\"); var qtypro = parseInt(result.value); if (!isNaN(qtypro) && qtypro > 1) result.value = qtypro - 1; return false;' type='button'>-</button>
+                                <input type='text' id='qtym' name='so_luong' value='1' maxlength='3' class='in' onkeypress='if (isNaN(this.value + String.fromCharCode(event.keyCode))) return false;' onchange='if(this.value == 0) this.value=1;'>
+                                <button class='qty-plus' onclick='var result = document.getElementById(\"qtym\"); var qtypro = parseInt(result.value); if (!isNaN(qtypro)) result.value = qtypro + 1; return false;' type='button'><span>+</span></button>
                             </div>
                         </div>
                         <div class='cart-prices'>
-                            <span class='cart-price'>" . number_format($product->getPrice() , 0, '.', '.') . "</span>
+                            <span class='cart-price'>" . number_format($product->getPrice(), 0, '.', '.') . "₫</span>
                         </div>
                     </div>
                 </div>
@@ -194,29 +193,35 @@ $total_price_cart=0;
             
         </div>
     </div>
-    <div class="ajaxcart-footer">
-        <div class="ajaxcart-subtotal">
-            <div class="cart-subtotal">
-                <div class="cart-col-6">Tổng tiền:</div>
-                <div class="text-right cart-totle"><span class="total-price"><?php echo number_format($total_price_cart , 0, '.', '.'); ?>₫</span></div>
-            </div>
-        </div>
-        <div class="cart-btn-proceed-checkout-dt ">
-            <button onclick="location.href='/gio-hang/thanh-toan'" type="button" class="button btn btn-default cart-btn-proceed-checkout" id="btn-proceed-checkout" title="Thanh toán">Đặt hàng</button>
-        </div>
-    </div>
-</form>
+                <div class="ajaxcart-footer">
+                    <div class="ajaxcart-subtotal">
+                        <div class="cart-subtotal">
+                            <div class="cart-col-6">Tổng tiền:</div>
+                            <div class="text-right cart-totle"><span class="total-price"><?php echo number_format($total_price_cart , 0, '.', '.'); ?>₫</span></div>
+                        </div>
+                    </div>
+                    <div class="cart-btn-proceed-checkout-dt ">
+                        <button onclick="location.href='/gio-hang/thanh-toan'" type="button" class="button btn btn-default cart-btn-proceed-checkout" id="btn-proceed-checkout" title="Thanh toán">Đặt hàng</button>
+                    </div>
+                </div>
+            </form>
 <script>
     const popupCart = document.querySelector('.popup-cart');
     const showItem = document.querySelector('.show-item');
 
     // Thêm sự kiện khi di chuột qua biểu tượng giỏ hàng
-    showItem.addEventListener('mouseover', function() {
+    showItem.addEventListener('mouseover', function(event) {
         popupCart.style.display = 'block'; // Hiển thị pop-up
     });
 
     // Thêm sự kiện khi di chuột ra khỏi biểu tượng giỏ hàng
-    showItem.addEventListener('mouseout', function() {
-        popupCart.style.display = 'none'; // Ẩn pop-up
+    showItem.addEventListener('mouseleave', function(event) {
+        const toElement = event.toElement || event.relatedTarget;
+        // Kiểm tra xem con trỏ đi ra khỏi phần tử popupCart
+        if (!popupCart.contains(toElement) || showItem.contains(toElement)) {
+            popupCart.style.display = "none"; // Ẩn pop-up
+        }
     });
+
+    
 </script>
