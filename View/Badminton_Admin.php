@@ -9,6 +9,18 @@
     <link rel="stylesheet" href="./css/Badminton_Admin.css">
     <title>Admin</title>
 </head>
+    <?php
+
+require_once __DIR__ . '../../Model/ModelTransaction.php';
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $startDate = $_POST['startDate'];
+    $endDate = $_POST['endDate'];
+
+    // Tạo một đối tượng ModelTransaction và gọi hàm displayTotalSales
+    $modelTransaction = new ModelTransaction();
+    $modelTransaction->displayTotalSales($startDate, $endDate);
+}
+?>
 <script>
     function showContent(contentId) {
 
@@ -25,6 +37,113 @@
     }
 </script>
 
+    <script>
+   function thongKe(event) {
+    event.preventDefault(); // Prevent the default form behavior
+
+    var startDate = document.getElementById('datestart2').value;
+    var endDate = document.getElementById('dateend2').value;
+
+    // Create an AJAX request to your PHP script
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'doanhso.php', true);
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var salesData = JSON.parse(this.responseText);
+
+            // Get the canvas element where the chart will be drawn
+            var ctx = document.getElementById('salesChart').getContext('2d');
+
+            // Define the chart data and options
+            var chartData = {
+                labels: salesData.labels,
+                datasets: [{
+                    label: 'Doanh số thu được',
+                    data: salesData.sales,
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            };
+
+            var chartOptions = {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            };
+
+            // Create the chart
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: chartData,
+                options: chartOptions
+            });
+
+            // Get the table element
+            var table = document.getElementById('quanlydoanhso');
+
+            // Clear the table
+            while (table.rows.length > 1) {
+                table.deleteRow(1);
+            }
+
+            // Populate the table with sales data
+            for (var i = 0; i < salesData.labels.length; i++) {
+                var row = table.insertRow(-1); // Insert a new row at the end of the table
+                var cell1 = row.insertCell(0); // Insert a new cell in the row
+                var cell2 = row.insertCell(1); // Insert a new cell in the row
+                var cell3 = row.insertCell(2); // Insert a new cell in the row
+
+                cell1.innerHTML = salesData.labels[i]; // Set the cell content (date)
+                cell2.innerHTML = 'N/A'; // Set the cell content (quantity sold)
+                cell3.innerHTML = salesData.sales[i]; // Set the cell content (sales amount)
+            }
+        }
+    };
+
+    // Send the form data in the AJAX request
+    var formData = 'startDate=' + startDate + '&endDate=' + endDate;
+    xhr.send(formData);
+}
+</script>
+
+<script>
+ // JavaScript để hiển thị và ẩn popup
+ function showPopup() {
+        var popup = document.getElementById('popup');
+        popup.style.display = 'block';
+    }
+
+    function closePopup() {
+        var popup = document.getElementById('popup');
+        popup.style.display = 'none';
+    }
+
+    // Thêm sự kiện click cho nút "Chi tiết"
+    function showTransactionDetails(transactionID) {
+        // Tạo yêu cầu AJAX để lấy chi tiết hóa đơn từ máy chủ
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'ViewDetail.php?transactionID=' + transactionID, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                // Hiển thị nội dung chi tiết hóa đơn trong popup
+                document.getElementById('popup-details').innerHTML = this.responseText;
+                // Hiển thị popup
+                showPopup();
+            }
+        };
+        xhr.send();
+    
+}
+
+    </script>
+
+
+</script>
+     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <body>
     <div>
         <div class="top_header">
@@ -369,57 +488,74 @@
 
 
 
-    <!-- Quản lý hoá đơn -->
-    <div id="hoadon-content" class="content-section">
+          <div id="hoadon-content" class="content-section">
+      
+
+       
+
         <?php
-        require_once __DIR__ . '/../Model//ModelTransaction.php';
+    
+require_once __DIR__ . '../../Model/ModelTransaction.php';
 
-        // Tạo một đối tượng ModelTransaction
-        $modelTransaction = new ModelTransaction();
+// Tạo một đối tượng ModelTransaction
+$modelTransaction = new ModelTransaction();
 
-        // Lấy tất cả các giao dịch từ cơ sở dữ liệu
-        $transactions = $modelTransaction->getAllTransactions();
+// Lấy tất cả các giao dịch từ cơ sở dữ liệu
+$transactions = $modelTransaction->getAllTransactions();
 
-        // Kiểm tra xem có giao dịch nào không
-        if ($transactions) {
-            // In ra tiêu đề của bảng
-            echo "<table border='1'>
-                    <tr>
-                        <th>Transaction ID</th>
-                        <th>User ID</th>
-                        <th>Total</th>
-                        <th>Note</th>
-                        <th>Time</th>
-                        <th>Address</th>
-                    </tr>";
+// Kiểm tra xem có giao dịch nào không
+if ($transactions) {
+    // In ra tiêu đề của bảng
+    echo "<table border='1'>
+            <tr>
+                <th>Transaction ID</th>
+                <th>Total</th>
+                <th>Note</th>
+                <th>Time</th>
+                <th>Address</th>
+                <th>Detail</th>
+            </tr>";
 
-            // Duyệt qua từng giao dịch và in ra thông tin
-            foreach ($transactions as $transaction) {
-                $transactionObj = new Transaction(
-                    $transaction['transactionID'],
-                    $transaction['userID'],
-                    $transaction['total'],
-                    $transaction['note'],
-                    $transaction['time'],
-                    $transaction['address']
-                );
+    // Duyệt qua từng giao dịch và in ra thông tin
+    foreach ($transactions as $transaction) {
+        $transactionObj = new Transaction(
+            $transaction['transactionID'],
+            $transaction['userID'],
+            $transaction['total'],
+            $transaction['note'],
+            $transaction['time'],
+            $transaction['address']
+        );
+        echo "<tr>
+        <td>" . $transactionObj->getTransactionID() . "</td>
+        <td>" . $transactionObj->getTotal() . "</td>
+        <td>" . $transactionObj->getNote() . "</td>
+        <td>" . $transactionObj->getTime() . "</td>
+        <td>" . $transactionObj->getAddress() . "</td>
+        <td><button onclick='showTransactionDetails(\"" . $transactionObj->getTransactionID() . "\")'>Chi tiết</button></td>
+    </tr>";
+    
 
-                echo "<tr>
-                        <td>" . $transactionObj->getTransactionID() . "</td>
-                        <td>" . $transactionObj->getUserID() . "</td>
-                        <td>" . $transactionObj->getTotal() . "</td>
-                        <td>" . $transactionObj->getNote() . "</td>
-                        <td>" . $transactionObj->getTime() . "</td>
-                        <td>" . $transactionObj->getAddress() . "</td>
-                    </tr>";
-            }
 
-            echo "</table>";
-        } else {
-            echo "Không có giao dịch nào.";
-        }
-        ?>
+    }
+
+    echo "</table>";
+} else {
+    echo "Không có giao dịch nào.";
+}
+?>
+ <div id="popup" class="popup">
+        <div class="popup-content">
+            <span class="popup-close" onclick="closePopup()">&times;</span>
+            <div id="popup-details">
+                <!-- Nội dung chi tiết hóa đơn sẽ được thêm bằng JavaScript -->
+            </div>
+        </div>
+    </div>
+        </div>
         <div id="dangxuat-content" class="content-section"></div>
+    </div>
+
     </div>
 </body>
 
