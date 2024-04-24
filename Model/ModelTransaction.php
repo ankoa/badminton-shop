@@ -91,6 +91,28 @@ require_once '..\Model\Entity\Transaction.php';
             return $this->db->delete($query);
         }
     }
+    public function displayTransactionDetails($transactionID) {
+    $query = "SELECT * FROM `detail_transaction` WHERE `transactionID` = '$transactionID'";
+    $result = $this->db->select($query);
+    if ($result && $result->num_rows > 0) {
+        $details = [];
+        while ($row = $result->fetch_assoc()) {
+            $details[] = $row;
+        }
+        return $details;
+    } else {
+        return false;
+    }
+}
+
+        }
+
+        
+
     
+    
+    
+
+?>
 
 ?>
