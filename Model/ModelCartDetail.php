@@ -91,6 +91,18 @@ class ModelCartDetail {
         }
         return $cartDetails[0]['quantity'];
     }
+ 
+    public function getTotalPriceCart($cartID) {
+        $query = "SELECT SUM(price) AS total_price FROM cartdetail WHERE cartID = $cartID";
+        $result = $this->db->select($query);
+        if ($result) {
+            $row = $result->fetch_assoc();
+            return $row['total_price'];
+        } else {
+            return false;
+        }
+    }
+    
 
     // Phương thức để cập nhật thông tin chi tiết giỏ hàng trong cơ sở dữ liệu
     public function updateCartDetail($cartDetailID, $cartID, $productID, $quantity, $price) {
