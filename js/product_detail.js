@@ -109,11 +109,7 @@ function addCart() {
     var quantity = document.getElementById('qtym').value;
     if (loginDataDiv) {
         var loginData = loginDataDiv.getAttribute("data-login");
-
         var loginObject = JSON.parse(loginData);
-
-        
-
         if (loginObject === true) {
             var loginUserDiv = document.getElementById("product-data-user");
             var loginUser = loginUserDiv.getAttribute("data-user");
@@ -147,6 +143,7 @@ function addCart() {
                 xhttp.onreadystatechange = function () {
                     if (this.readyState == 4 && this.status == 200) {
                         var catalogData = this.responseText;
+                        console.log(catalogData);
                         if(catalogData=="Racket") {
                             document.getElementById("product-new-price").innerHTML = "<b>" + formatPrice(product.price) + "₫</b><span>Màu: "+selectedColor+" Bản: "+selectedVariant+"</span>";
                         } else if(catalogData=="Shoes") {

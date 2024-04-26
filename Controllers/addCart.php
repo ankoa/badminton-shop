@@ -14,7 +14,7 @@ $modelCatalog = new ModelCatalog();
 
 if (isset($_GET['productID']) && isset($_GET['username']) && isset($_GET['variantID']) && isset($_GET['quantity']) && isset($_GET['price'])) {
     // Lấy dữ liệu từ yêu cầu AJAX
-    if($modelcartdetail->checkCartDetail($_GET['productID'], $_GET['variantID'])==false) {
+    if($modelcartdetail->checkCartDetail($modeluser->getUIDByUserName($_GET['username']), $_GET['productID'], $_GET['variantID'])==false) {
         $productID = $_GET['productID'];
         $variantID = $_GET['variantID'];
         $quantity = $_GET['quantity'];
@@ -22,17 +22,20 @@ if (isset($_GET['productID']) && isset($_GET['username']) && isset($_GET['varian
         $username = $_GET['username'];
         $userID= $modeluser->getUIDByUserName($username);
         $modelcartdetail->addCartDetail($userID, $productID, $variantID, $quantity,$price);
+        echo "k trung";
     } else {
         $product=$modelproduct->getProductByID($_GET['productID']);
         $quantity=$_GET['quantity']+$modelcartdetail->getQuantityCartDetail($_GET['productID'], $_GET['variantID']);
         $price= $product->getPrice()*$quantity;
         $modelcartdetail->updateAddCartDetail($modeluser->getUIDByUserName($_GET['username']), $_GET['productID'], $_GET['variantID'], $quantity, $price);
+        echo 'trung';
     }
     $catalog = $modelCatalog->getCatalogByID($_GET['productID']);
-    echo $catalog->getName();
     
+    
+} else if (isset($_GET['productID']) && isset($_GET['cartID']) && isset($_GET['variantID'])) {
+    $modelcartdetail->deleteProductCartDetail($_GET['cartID'], $_GET['productID'], $_GET['variantID']);
 } else {
-    // Nếu không có dữ liệu được gửi, trả về một mảng trống dưới dạng chuỗi JSON
     echo json_encode([]);
 }
 

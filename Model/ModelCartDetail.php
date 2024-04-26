@@ -63,8 +63,8 @@ class ModelCartDetail {
         return $this->db->insert($query);
     }
 
-    public function checkCartDetail($productID, $variantID) {
-        $query = "SELECT * FROM cartdetail WHERE productID = '$productID' AND variantID = '$variantID'";
+    public function checkCartDetail($cartID, $productID, $variantID) {
+        $query = "SELECT * FROM cartdetail WHERE cartID='$cartID' AND productID = '$productID' AND variantID = '$variantID'";
         $result = $this->db->select($query);
         if ($result) {
             $cartDetails = [];
@@ -126,6 +126,12 @@ class ModelCartDetail {
     // Phương thức để xóa một chi tiết giỏ hàng khỏi cơ sở dữ liệu
     public function deleteCartDetail($cartDetailID) {
         $query = "DELETE FROM cartdetail WHERE cartDetailID = '$cartDetailID'";
+        return $this->db->delete($query);
+    }
+
+    // Phương thức để xóa một chi tiết giỏ hàng khỏi cơ sở dữ liệu
+    public function deleteProductCartDetail($cartID, $productID, $variantID) {
+        $query = "DELETE FROM cartdetail WHERE cartID = '$cartID' AND productID = '$productID' AND variantID = '$variantID'";
         return $this->db->delete($query);
     }
 }

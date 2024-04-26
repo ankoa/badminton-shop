@@ -77,10 +77,10 @@ $total_price_cart=0;
             </li>
         </div>
         <div class="icon-item">
-            <li>
+            <li href="index.php?control=Cart">
                 <ul class="show-item"> 
-                        <i class="fa-solid fa-cart-arrow-down" style="color: #e95221;"></i>
-                        <span class="icon-name"><a class="a-head" href="index.php?control=Cart">Giỏ Hàng</a></span>
+                        <a class="a-head" href="index.php?control=Cart"><i class="fa-solid fa-cart-arrow-down" style="color: #e95221;"></i></a>
+                        <span class="icon-name"><a class="a-head" href="index.php?control=Cart"><span class="icon-name" id="spanGH">GIỎ HÀNG</span></a></span>
                 </ul>
             </li>
         </div>
