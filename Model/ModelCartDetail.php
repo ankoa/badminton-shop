@@ -105,13 +105,11 @@ class ModelCartDetail {
     
 
     // Phương thức để cập nhật thông tin chi tiết giỏ hàng trong cơ sở dữ liệu
-    public function updateCartDetail($cartDetailID, $cartID, $productID, $quantity, $price) {
+    public function updateQuantityCartDetail($cartID, $productID, $variantID, $quantity, $price) {
         $query = "UPDATE cartdetail 
-                  SET cartID = '$cartID', 
-                      productID = '$productID', 
-                      quantity = '$quantity', 
+                  SET quantity = '$quantity', 
                       price = '$price' 
-                  WHERE cartDetailID = '$cartDetailID'";
+                  WHERE cartID = '$cartID' AND productID = '$productID' AND variantID = '$variantID'";
         return $this->db->update($query);
     }
 

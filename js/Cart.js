@@ -32,6 +32,18 @@ function delProductCart(cartID, productID, variantID) {
     };
 
     // Gửi yêu cầu AJAX đến tệp PHP để xử lý
-    xhttp.open("GET", "addCart.php?productID=" + productID + "&variantID=" + variantID + "&cartID=" + cartID, true);
+    xhttp.open("GET", "addCart.php?productID=" + productID + "&variantID=" + variantID + "&cartID=" + cartID + quantity + "&action=delele", true);
+    xhttp.send();
+}
+
+function ChangeQuantityProductCart(cartID, productID, variantID, quantity) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+        }
+    };
+
+    // Gửi yêu cầu AJAX đến tệp PHP để xử lý
+    xhttp.open("GET", "addCart.php?productID=" + productID + "&variantID=" + variantID + "&cartID=" + cartID + "&quantity=" + quantity + "&action=quantity", true);
     xhttp.send();
 }
