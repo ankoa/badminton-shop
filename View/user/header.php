@@ -207,37 +207,70 @@ $total_price_cart=0;
 </div>
 
 <script>
+    // var popupCart = document.querySelector('.popup-cart');
+    // var showItem = document.querySelector('.show-item');
+
+    // // Thêm sự kiện khi di chuột qua biểu tượng giỏ hàng
+    // showItem.addEventListener('mouseover', function(event) {
+    //     popupCart.style.display = 'block'; // Hiển thị pop-up
+    // });
+
+    // // Thêm sự kiện khi di chuột ra khỏi biểu tượng giỏ hàng
+    // showItem.addEventListener('mouseleave', function(event) {
+    //     const toElement = event.toElement || event.relatedTarget;
+    //     // Kiểm tra xem con trỏ đi ra khỏi phần tử popupCart
+    //     if (!popupCart.contains(toElement) || !showItem.contains(toElement)) {
+    //         popupCart.style.display = "none"; // Ẩn pop-up
+    //     }
+    // });
+
+    // // Thêm sự kiện khi mousedown để theo dõi việc kéo chuột
+    // document.addEventListener('mousedown', function(event) {
+    //     // Kiểm tra xem sự kiện mousedown có xảy ra bên trong popupCart hoặc showItem hay không
+    //     if (popupCart.contains(event.target) || showItem.contains(event.target)) {
+    //         isDragging = true; // Đánh dấu là đang kéo chuột
+    //     } else {
+    //         isDragging = false; // Đánh dấu là không đang kéo chuột
+    //         popupCart.style.display = "none"; // Ẩn pop-up
+    //     }
+    // });
+
+    // // Thêm sự kiện khi mouseup để cập nhật trạng thái của việc kéo chuột
+    // document.addEventListener('mouseup', function(event) {
+    //     isDragging = false; // Khi nhả chuột, đánh dấu là không đang kéo chuột
+    // });
+    
     var popupCart = document.querySelector('.popup-cart');
     var showItem = document.querySelector('.show-item');
+    var hoverTimeout;
 
     // Thêm sự kiện khi di chuột qua biểu tượng giỏ hàng
     showItem.addEventListener('mouseover', function(event) {
-        popupCart.style.display = 'block'; // Hiển thị pop-up
+        clearTimeout(hoverTimeout);
+        popupCart.style.display = 'block';
     });
 
     // Thêm sự kiện khi di chuột ra khỏi biểu tượng giỏ hàng
     showItem.addEventListener('mouseleave', function(event) {
-        const toElement = event.toElement || event.relatedTarget;
-        // Kiểm tra xem con trỏ đi ra khỏi phần tử popupCart
-        if (!popupCart.contains(toElement) || !showItem.contains(toElement)) {
-            popupCart.style.display = "none"; // Ẩn pop-up
-        }
+        hoverTimeout = setTimeout(function() {
+            popupCart.style.display = "none";
+        }, 200);
     });
 
-    // Thêm sự kiện khi mousedown để theo dõi việc kéo chuột
+    // Thêm sự kiện khi di chuột vào popupCart
+    popupCart.addEventListener('mouseenter', function(event) {
+        clearTimeout(hoverTimeout);
+    });
+
+    // Thêm sự kiện khi di chuột ra khỏi popupCart
+    popupCart.addEventListener('mouseleave', function(event) {
+        popupCart.style.display = "none";
+    });
+
+    // Thêm sự kiện khi mousedown để ẩn popupCart
     document.addEventListener('mousedown', function(event) {
-        // Kiểm tra xem sự kiện mousedown có xảy ra bên trong popupCart hoặc showItem hay không
-        if (popupCart.contains(event.target) || showItem.contains(event.target)) {
-            isDragging = true; // Đánh dấu là đang kéo chuột
-        } else {
-            isDragging = false; // Đánh dấu là không đang kéo chuột
-            popupCart.style.display = "none"; // Ẩn pop-up
+        if (!popupCart.contains(event.target) && !showItem.contains(event.target)) {
+            popupCart.style.display = "none";
         }
     });
-
-    // Thêm sự kiện khi mouseup để cập nhật trạng thái của việc kéo chuột
-    document.addEventListener('mouseup', function(event) {
-        isDragging = false; // Khi nhả chuột, đánh dấu là không đang kéo chuột
-    });
-    
 </script>
