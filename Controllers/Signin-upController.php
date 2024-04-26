@@ -54,7 +54,33 @@
 
                 } 
             }
-        } else{
+        } 
+        else if($_POST['action'] == 'infor-user'){
+            if(isset($_POST['formName']) && isset($_POST['formPassword']) && isset($_POST['formPhone']) && isset($_POST['formEmail'])) {
+                $username = $_POST['formName'];
+                $password = $_POST['formPassword'];
+                $phone = $_POST['formPhone'];
+                $email = $_POST['formEmail'];
+                if(!empty($username) && !empty($password) && !empty($phone) && !empty($email)) {
+                    $checkError = false;
+                    if($modeluser->checkExistingUsername($username)!=false|| $modeluser->checkExistingEmail($email)!=false || $modeluser->checkPhoneNumberFormat($phone)==false) {
+                        $checkError = true;
+                    }
+                    if(!$checkError){ 
+                        $usernameold = $_SESSION['username'];
+                        $update_user = $modeluser->updateUser($modeluser->getUIDByUserName($usernameold),$username, $password, 2, $username, $email, $phone, 0, 'normal', 1);
+                        $_SESSION['username'] = $username;
+                        echo json_encode(array(
+                            'message' => "Sửa thông tin thành công",
+                            'status' => 1
+                        ));
+                        exit;
+                    }
+                }
+            }
+        }
+        
+        else{
             if(isset($_POST['formName']) && isset($_POST['formPassword']) && isset($_POST['formPhone']) && isset($_POST['formEmail'])) {
                 $username = $_POST['formName'];
                 $password = $_POST['formPassword'];
@@ -95,7 +121,7 @@
                 ));
             } */
         
-    }
+            }
     }    
     ?>
     

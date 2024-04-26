@@ -1,6 +1,6 @@
 <?php
 require_once 'database.php';
-require_once '..\Model\Entity\User.php';
+require_once __DIR__ . '/Entity/User.php';
 class ModelUser {
     protected $db;
 
@@ -61,6 +61,14 @@ class ModelUser {
     }
 
     public function updateUser($userID, $username, $password, $roleID, $name, $mail, $phoneNumber, $point, $type, $status) {
+        // Kiểm tra xem userID có tồn tại trong CSDL không
+        $existingUser = $this->getUserByID($userID);
+        if (!$existingUser) {
+            // userID không tồn tại, không thể cập nhật
+            return false;
+        }
+    
+        // Tiếp tục thực hiện câu lệnh update
         if (!empty($password)) {
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
             $query = "UPDATE user 
@@ -88,10 +96,11 @@ class ModelUser {
         }
         return $this->db->update($query);
     }
+    
 
     public function deleteUser($userID) {
         $query = "UPDATE FROM user SET status=0 WHERE userID = '$userID'";
-        return $this->db->delete($query);
+        return $this->db->update($query);
     }
 
     public function authenticate($username, $password) {
@@ -125,6 +134,19 @@ class ModelUser {
             return null;
         }
     }
+    public function getUserDataByUsername($username) {
+        $query = "SELECT * FROM user WHERE username = '$username' AND status != 0";
+        $result = $this->db->select($query);
+        
+        if ($result && $result->num_rows > 0) {
+            return $result->fetch_assoc(); // Trả về mảng thông tin người dùng
+        } else {
+            return null;
+        }
+    }
+    
+    
+    
     public function checkExistingUsername($username) {
         $query = "SELECT COUNT(*) AS count FROM user WHERE username = '$username'";
         $result = $this->db->select($query);
