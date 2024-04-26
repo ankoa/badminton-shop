@@ -2,9 +2,12 @@
     session_start();
     require_once(__DIR__ . '/../Model/ModelUser.php');
     require_once(__DIR__ . '/../Model/ModelRole.php');
+    require_once(__DIR__ . '/../Model/ModelCartDetail.php');
+    require_once(__DIR__ . '/../Model/Entity/CartDetail.php');
     if(isset($_POST['action'])) {
         $modeluser = new ModelUser();
         $modelrole = new ModelRole();
+        $modelCartDetail = new ModelCartDetail();
         if($_POST['action'] == 'signin') {
             if(isset($_POST['username']) && isset($_POST['password'])) {     
                 $username = $_POST['username'];
@@ -13,7 +16,6 @@
                     $authenticated_user = $modeluser->authenticate($username, $password);
                     if($authenticated_user){ 
                         $authenticated_role = $modeluser->getRoleUsetByID($modeluser->getUIDByUserName($username));   
-                        
                         if($authenticated_role ==1){
                             $_SESSION['login'] = true;
                             $_SESSION['type'] = 'admin';
@@ -43,7 +45,6 @@
                             ));
                             exit;   
                         }
-                        
                     } else {
                         echo json_encode(array(
                             'message' => "Tên người dùng hoặc mật khẩu không chính xác!",

@@ -265,10 +265,10 @@ if ($catalog->getName() == "Racket") {
                                     <?php foreach ($listVariantDetails as $variantDetail) : ?>
                                         <?php if ($variantDetail->getQuantity() > 0) : ?>
                                             <div class="swatch-element color-<?php echo $variantDetail->getSpeed(); ?>" data-value="<?php echo $variantDetail->getSpeed(); ?>" data-value_2="<?php echo $variantDetail->getSpeed(); ?>">
-                                                <input id="color-<?php echo $variantDetail->getSpeed(); ?>" type="radio" name="color" value="<?php echo $variantDetail->getSpeed(); ?>">
+                                                <input id="color-<?php echo $variantDetail->getSpeed(); ?>" type="radio" name="version" value="<?php echo $variantDetail->getVariantID(); ?>">
                                             <?php else : ?>
                                                 <div class="swatch-element soldout color-<?php echo $variantDetail->getSpeed(); ?>" data-value="<?php echo $variantDetail->getSpeed(); ?>" data-value_2="<?php echo $variantDetail->getSpeed(); ?>">
-                                                    <input disabled id="color-<?php echo $variantDetail->getSpeed(); ?>" type="radio" name="color" value="<?php echo $variantDetail->getSpeed(); ?>">
+                                                    <input disabled id="color-<?php echo $variantDetail->getSpeed(); ?>" type="radio" name="version" value="<?php echo $variantDetail->getVariantID(); ?>">
                                                 <?php endif; ?>
                                                 <label for="color-<?php echo $variantDetail->getSpeed(); ?>">
                                                     <?php echo $variantDetail->getSpeed(); ?>
@@ -341,7 +341,7 @@ if ($catalog->getName() == "Racket") {
                                                                         endif; ?> color-<?php echo $color; ?>" data-value="<?php echo $color; ?>" data-value_2="<?php echo $color; ?>">
                                                 <input <?php if ($modelVariantDetail->getVariantQuantityByColor($listVariantDetails, $color) <= 0) :
                                                             echo "disabled";
-                                                        endif; ?> id="color-<?php echo $color; ?>" type="radio" name="color" value="<?php echo $color; ?>">
+                                                        endif; ?> id="color-<?php echo $color; ?>" type="radio" name="version" value="<?php echo $variantDetail->getVariantID(); ?>">
                                                 <label for="color-<?php echo $color; ?>">
                                                     <?php echo $color; ?>
                                                     <img class="crossed-out" src="https://cdn.shopvnb.com/themes/images/soldout.png" alt="<?php echo $color; ?>">
@@ -363,9 +363,9 @@ if ($catalog->getName() == "Racket") {
                                 <div class="flex-quantity">
                                     <div class="custom custom-btn-number show">
                                         <div class="input_number_product">
-                                            <button class="btn_num num_1 button button_qty" onclick="var result = document.getElementById('qtym'); var qtypro = result.value; if( !isNaN( qtypro ) &amp; &amp; qtypro > 1 ) result.value--;return false;" type="button">-</button>
-                                            <input type="text" id="qtym" name="so_luong" value="1" maxlength="3" class="form-control prd_quantity" onkeypress="if ( isNaN(this.value + String.fromCharCode(event.keyCode) )) return false;" onchange="if(this.value == 0)this.value=1;">
-                                            <button class="btn_num num_2 button button_qty" onclick="var result = document.getElementById('qtym'); var qtypro = result.value; if( !isNaN( qtypro )) result.value++;return false;" type="button"><span>+</span></button>
+                                            <button class="btn_num num_1 button button_qty" onclick="var result = document.getElementById('qtym'); var qtypro = parseInt(result.value); if (!isNaN(qtypro) && qtypro > 1) result.value = qtypro - 1; return false;" type="button">-</button>
+                                            <input type="text" id="qtym" name="so_luong" value="1" maxlength="3" class="form-control prd_quantity" onkeypress="if (isNaN(this.value + String.fromCharCode(event.keyCode))) return false;" onchange="if(this.value == 0) this.value=1;">
+                                            <button class="btn_num num_2 button button_qty" onclick="var result = document.getElementById('qtym'); var qtypro = parseInt(result.value); if (!isNaN(qtypro)) result.value = qtypro + 1; return false;" type="button"><span>+</span></button>
                                         </div>
                                     </div>
 
@@ -444,6 +444,7 @@ if ($catalog->getName() == "Racket") {
     <div id="login-data-get" data-login="<?php echo isset($_SESSION['login']) ? htmlspecialchars(json_encode($_SESSION['login'])) : 'false'; ?>"></div>
     <div id="product-data-quantity" data-quantity="<?php echo htmlspecialchars(json_encode($product)); ?>"></div>
     <div id="product-data-user" data-user="<?php echo htmlspecialchars(json_encode($_SESSION['username'])); ?>"></div>
+    <div id="catalog-data" data-catalog="<?php echo htmlspecialchars(json_encode($catalog->getName())); ?>"></div>
 </body>
 
 </html>

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web dụng cụ thể thao cầu lông</title>
+    <link rel="stylesheet" href="../View/css/style.css">
     <?php
     if(isset($_GET['control'])) {
         if($_GET['control']=="ProductCategory") {
@@ -22,7 +23,7 @@
     }
         
     ?>
-    <link rel="stylesheet" href="../View/css/style.css">
+    
     <link rel="stylesheet" href="../View/css/homepage.css">
     <link rel="stylesheet" href="../View/css/footer.css">
     <link rel="stylesheet" href="../View/css/slider.css">
