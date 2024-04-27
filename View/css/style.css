@@ -290,31 +290,12 @@ header{
 
 }
 
-/* .popup-cart {
-    position: absolute;
-    background-color: #fff;
-    top: 50px;
-    right: 0;
-    padding: 16px;
-    font-size: 0.813rem;
-    line-height: 0.938rem;
-    font-weight: 500;
-    color: black;
-    width: 330px;
-    cursor: default;
-    transform: scale(0);
-    transform-origin: 100% top;
-    opacity: 0;
-    transition: all 0.3s;
-    box-shadow: 0 0 5px 1px #888888;
-    display: none;
-} */
-
 .popup-cart {
     display: none; /* Ẩn pop-up mặc định */
     position: fixed; /* Đảm bảo pop-up hiển thị trên tất cả các phần tử khác */
+    top: 80px; /* Đặt pop-up ở phía trên của trang */
     top: 100%; /* Đặt pop-up ở phía trên của trang */
-    left: 0; /* Đặt pop-up ở phía trái của trang */
+    right: 80px; /* Đặt pop-up ở phía trái của trang */
     background-color: white; /* Màu nền với độ mờ */
     padding: 20px; /* Thêm padding để nội dung không bị dính vào mép */
     z-index: 9999; /* Đảm bảo pop-up hiển thị trên tất cả các phần tử khác */
@@ -325,11 +306,7 @@ header{
     border-radius: 10px;
 }
 
-<<<<<<< Updated upstream
 /* .popup-cart::before {
-=======
-.popup-cart::before {
->>>>>>> Stashed changes
     content: "";
     border-width: 8px 10px;
     border-style: solid;
@@ -346,19 +323,13 @@ header{
     position: absolute;
     bottom: 100%;
     right: 0;
-<<<<<<< Updated upstream
 } */
 
-.icon-item .show-item:hover + .popup-cart {
-=======
-}
-
-.show-item:hover .popup-cart {
->>>>>>> Stashed changes
+/* .icon-item .show-item:hover + .popup-cart {
     transform: scale(1);
-    /* opacity: 1; */
+    opacity: 1;
     display: block;
-}
+} */
 
 .title-cart-head {
     border-top-left-radius: 10px;
@@ -523,12 +494,11 @@ img {
 
 .popup-cart .ajaxcart-footer .cart-subtotal .cart-col-6 {
     width: 50%;
-    float: left;
+    padding-right: -20px;
 }
 
 .popup-cart .ajaxcart-footer .cart-subtotal .cart-totle {
     width: 50%;
-    float: left;
     text-align: right;
 }
 
