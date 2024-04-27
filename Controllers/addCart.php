@@ -22,13 +22,15 @@ if (isset($_GET['productID']) && isset($_GET['username']) && isset($_GET['varian
         $username = $_GET['username'];
         $userID = $modeluser->getUIDByUserName($username);
         $modelcartdetail->addCartDetail($userID, $productID, $variantID, $quantity, $price);
-        echo "k trung";
+        echo count($modelcartdetail->getCartDetailByCartID($userID));
     } else {
         $product = $modelproduct->getProductByID($_GET['productID']);
+        $username = $_GET['username'];
+        $userID = $modeluser->getUIDByUserName($username);
         $quantity = $_GET['quantity'] + $modelcartdetail->getQuantityCartDetail($_GET['productID'], $_GET['variantID']);
         $price = $product->getPrice() * $quantity;
         $modelcartdetail->updateAddCartDetail($modeluser->getUIDByUserName($_GET['username']), $_GET['productID'], $_GET['variantID'], $quantity, $price);
-        echo 'trung';
+        echo count($modelcartdetail->getCartDetailByCartID($userID));
     }
     $catalog = $modelCatalog->getCatalogByID($_GET['productID']);
 }else if(isset($_GET['action'])) {

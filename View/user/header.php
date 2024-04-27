@@ -144,53 +144,55 @@ $total_price_cart=0;
                 <div class="title-cart-head">Giỏ hàng</div>
                 <div class="cart-body">
                     <div class="ajaxcart-row">
-                    <?php 
-                        require_once('../Model/ModelVariantDetail.php');
-                        require_once('../Model/ModelUser.php');
-                        require_once('../Model/ModelProduct.php');
-                        require_once('../Model/ModelCartDetail.php');
-                        $modelVariantDetail = new ModelVariantDetail();
-                        $modelUser = new ModelUser();
-                        $modelProduct = new ModelProduct();
-                        $modelCartDetail = new ModelCartDetail();
-                        $cartDetails=$modelCartDetail->getCartDetailByCartID($modelUser->getUIDByUserName($_SESSION['username']));
-                        foreach ($cartDetails  as $cartDetail) {
-                            $variantDetail = $modelVariantDetail->getVariantByID(($cartDetail)->getVariantID());
-                            $product = $modelProduct->getProductByID(($cartDetail)->getProductID());
-                            $total_price_cart+=$product->getPrice();
-                            echo "
-                            <div class='cart-product'>
-                        <a href='#' class='cart-image' title='" . $product->getName() . "'><img width='80' height='80' src='../View/images/product/GiayNam.png' 
-                        alt='" . $product->getName() . "'></a>
-                        <div class='cart-info'>
-                            <div class='cart-name'>
-                                <a href='#' class='' title='" . $product->getName() . "'>" . $product->getName() . "</a>";
-                            if ($variantDetail->getColor() != null)
-                                echo "<span class='variant-title'>Màu: " . $variantDetail->getColor() . "</span>";
-                            if ($variantDetail->getWeight() != null && $variantDetail->getGrip() != null)
-                                echo "<span class='variant-title'>Bản: " . ($variantDetail->getWeight().''.$variantDetail->getGrip()) . "</span>";
-                            if ($variantDetail->getSize() != null)
-                                echo "<span class='variant-title'>Size: " . $variantDetail->getSize() . "</span>";
-                            if ($variantDetail->getSpeed() != null)
-                                echo "<span class='variant-title'>Tốc độ: " . $variantDetail->getSpeed() . "</span>";
-                            echo "
-                    </div>
-                    <div class='grid'>
-                        <div class='cart-item-name'>
-                            <div class='input-group-btn'>
-                                <button class='qty-minus' onclick='var result = document.getElementById(\"qtym\"); var qtypro = parseInt(result.value); if (!isNaN(qtypro) && qtypro > 1) result.value = qtypro - 1; return false;' type='button'>-</button>
-                                <input type='text' id='qtym' name='so_luong' value='1' maxlength='3' class='in' onkeypress='if (isNaN(this.value + String.fromCharCode(event.keyCode))) return false;' onchange='if(this.value == 0) this.value=1;'>
-                                <button class='qty-plus' onclick='var result = document.getElementById(\"qtym\"); var qtypro = parseInt(result.value); if (!isNaN(qtypro)) result.value = qtypro + 1; return false;' type='button'><span>+</span></button>
-                            </div>
-                        </div>
-                        <div class='cart-prices'>
-                            <span class='cart-price'>" . number_format($product->getPrice(), 0, '.', '.') . "₫</span>
-                        </div>
-                    </div>
-                </div>
-            </div>";
-                        }
-                        ?>
+                    <?php
+                                                    if(isset($_SESSION['username'])) {
+                                                        require_once('../Model/ModelVariantDetail.php');
+                                                        require_once('../Model/ModelUser.php');
+                                                        require_once('../Model/ModelProduct.php');
+                                                        require_once('../Model/ModelCartDetail.php');
+                                                        $modelVariantDetail = new ModelVariantDetail();
+                                                        $modelUser = new ModelUser();
+                                                        $modelProduct = new ModelProduct();
+                                                        $modelCartDetail = new ModelCartDetail();
+                                                        $cartDetails = $modelCartDetail->getCartDetailByCartID($modelUser->getUIDByUserName($_SESSION['username']));
+                                                        foreach ($cartDetails  as $cartDetail) {
+                                                            $variantDetail = $modelVariantDetail->getVariantByID(($cartDetail)->getVariantID());
+                                                            $product = $modelProduct->getProductByID(($cartDetail)->getProductID());
+                                                            $total_price_cart += $product->getPrice();
+                                                        echo "<div id='" . $modelUser->getUIDByUserName($_SESSION['username']) . "_" . $product->getProductID() . "_" . $variantDetail->getVariantID() ."'>
+                                                        <a title='Xóa' class='remove-item-cart' href='javascript:void(0);' onclick='delProductCart(" . $modelUser->getUIDByUserName($_SESSION['username']) . ", " . $product->getProductID() . ", " . $cartDetail->getVariantID() . ")'><img class='svg-inline' src='../View/images/x-close.svg'></a>
+                                                        <div class='cart-product'>
+                                                            <a href='#' class='cart-image' title='" . $product->getName() . "'><img width='80' height='80' src='../View/images/product/GiayNam.png' alt='" . $product->getName() . "'></a>
+                                                            <div class='cart-info'>
+                                                                <div class='cart-name'>
+                                                                <a href='#' class='' title='" . $product->getName() . "'>" . $product->getName() . "</a>";
+                                                                    if ($variantDetail->getColor() != null)
+                                                                        echo "<span class='variant-title'>Màu: " . $variantDetail->getColor() . "</span>";
+                                                                    if ($variantDetail->getWeight() != null && $variantDetail->getGrip() != null)
+                                                                        echo "<span class='variant-title'>Bản: " . ($variantDetail->getWeight() . ' ' . $variantDetail->getGrip()) . "</span>";
+                                                                    if ($variantDetail->getSize() != null)
+                                                                        echo "<span class='variant-title'>Size: " . $variantDetail->getSize() . "</span>";
+                                                                    if ($variantDetail->getSpeed() != null)
+                                                                        echo "<span class='variant-title'>Tốc độ: " . $variantDetail->getSpeed() . "</span>";
+                                                                    echo "
+                                                                </div>
+                                                                <div class='grid'>
+                                                                    <div class='cart-item-name'>
+                                                                        <div class='input-group-btn'>
+                                                                            <button class='qty-minus' onclick='var result = document.getElementById(\"qtym" . $product->getProductID() . '_'. $variantDetail->getVariantID() . "\"); var qtypro = parseInt(result.value); if (!isNaN(qtypro) && qtypro > 1) result.value = qtypro - 1; ChangeQuantityProductCart(" . $modelUser->getUIDByUserName($_SESSION['username']) .", " . $product->getProductID() . ",". $variantDetail->getVariantID() . ", qtypro - 1); return false;' type='button'>-</button>
+                                                                            <input type='text' id='qtym" . $product->getProductID() .'_'. $variantDetail->getVariantID() . "' name='so_luong' value='" . $cartDetail->getQuantity() . "' maxlength='3' class='in' onkeypress='if (isNaN(this.value + String.fromCharCode(event.keyCode))) return false;' onchange='if(this.value == 0) this.value=1;'>
+                                                                            <button class='qty-plus' onclick='var result = document.getElementById(\"qtym" . $product->getProductID() .'_'. $variantDetail->getVariantID() . "\"); var qtypro = parseInt(result.value); if (!isNaN(qtypro)) result.value = qtypro + 1; ChangeQuantityProductCart(" . $modelUser->getUIDByUserName($_SESSION['username']) .", " . $product->getProductID() . ",". $variantDetail->getVariantID() . ", qtypro + 1); return false;' type='button'><span>+</span></button>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class='cart-prices'>
+                                                                        <span class='cart-price'>" . number_format($product->getPrice(), 0, '.', '.') . "₫</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div></div>";
+                                                    }
+                                                    }
+                                                ?>
 
             
         </div>
@@ -199,7 +201,7 @@ $total_price_cart=0;
                     <div class="ajaxcart-subtotal">
                         <div class="cart-subtotal">
                             <div class="cart-col-6">Tổng tiền:</div>
-                            <div class="text-right cart-totle"><span class="total-price"><?php echo number_format($total_price_cart , 0, '.', '.'); ?>₫</span></div>
+                            <div class="text-right cart-totle"><span class="total-price"><?php if (isset($_SESSION['username'])) echo number_format($modelCartDetail->getTotalPriceCart($modelUser->getUIDByUserName($_SESSION['username'])), 0, '.', '.'); else echo "0" ?>₫</span></div>
                         </div>
                     </div>
                     <div class="cart-btn-proceed-checkout-dt ">
