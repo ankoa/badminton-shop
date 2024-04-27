@@ -325,7 +325,11 @@ header{
     border-radius: 10px;
 }
 
+<<<<<<< Updated upstream
 /* .popup-cart::before {
+=======
+.popup-cart::before {
+>>>>>>> Stashed changes
     content: "";
     border-width: 8px 10px;
     border-style: solid;
@@ -342,9 +346,15 @@ header{
     position: absolute;
     bottom: 100%;
     right: 0;
+<<<<<<< Updated upstream
 } */
 
 .icon-item .show-item:hover + .popup-cart {
+=======
+}
+
+.show-item:hover .popup-cart {
+>>>>>>> Stashed changes
     transform: scale(1);
     /* opacity: 1; */
     display: block;
