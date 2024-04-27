@@ -34,11 +34,14 @@ if (isset($_GET['productID']) && isset($_GET['username']) && isset($_GET['varian
 }else if(isset($_GET['action'])) {
     if($_GET['action']=="delete") {
         $modelcartdetail->deleteProductCartDetail($_GET['cartID'], $_GET['productID'], $_GET['variantID']);
+        echo $modelcartdetail->getTotalPriceCart($_GET['cartID']);
     } elseif($_GET['action']=="quantity") {
         if($_GET['quantity']>0) {
             $product=$modelproduct->getProductByID($_GET['productID']);
             $modelcartdetail->updateQuantityCartDetail($_GET['cartID'], $_GET['productID'], $_GET['variantID'], $_GET['quantity'], $product->getPrice()*$_GET['quantity']);
+            
         }
+        echo $modelcartdetail->getTotalPriceCart($_GET['cartID']);
     } 
 } else {
     echo json_encode([]);
