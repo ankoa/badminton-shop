@@ -76,9 +76,9 @@ $total_price_cart=0;
 
             </li>
         </div>
-        <div class="icon-item">
+        <div class="icon-item" id="hover-cart">
             <li href="index.php?control=Cart">
-                <ul class="show-item"> 
+                <ul class="show-item" onmouseover="showTarget()" onmouseout="hideTarget()"> 
                         <a class="a-head" href="index.php?control=Cart"><i class="fa-solid fa-cart-arrow-down" style="color: #e95221;"></i></a>
                         <span class="icon-name"><a class="a-head" href="index.php?control=Cart"><span class="icon-name" id="spanGH">GIỎ HÀNG</span></a></span>
                 </ul>
@@ -138,7 +138,8 @@ $total_price_cart=0;
     <li> <a class="titlemenu" href="index.php?control=ContactCategory">LIÊN HỆ</a></li>
 </div>
 
-<form action class="popup-cart">
+<form action class="popup-cart" onmouseover="showTarget()" onmouseout="hideTarget()">
+
                 <div class="title-cart-head">Giỏ hàng</div>
                 <div class="cart-body">
                     <div class="ajaxcart-row">
@@ -233,20 +234,26 @@ $(document).ready(function() {
 });
 </script> -->
 <script>
-    const popupCart = document.querySelector('.popup-cart');
-    const showItem = document.querySelector('.show-item');
+function showTarget() {
+        var targetElement = document.querySelector('.popup-cart');
+        
+        var siuElement = document.getElementById('hover-cart');
+        var targetElement = document.querySelector('.popup-cart');
+        var siuRect = siuElement.getBoundingClientRect();
+        var windowWidth = window.innerWidth;
 
-    // Thêm sự kiện khi di chuột qua biểu tượng giỏ hàng
-    showItem.addEventListener('mouseover', function(event) {
-        popupCart.style.display = 'block'; // Hiển thị pop-up
-    });
+        if(windowWidth<=1300) {
 
-    // Thêm sự kiện khi di chuột ra khỏi biểu tượng giỏ hàng
-    showItem.addEventListener('mouseleave', function(event) {
-        const toElement = event.toElement || event.relatedTarget;
-        // Kiểm tra xem con trỏ đi ra khỏi phần tử popupCart
-        if (!popupCart.contains(toElement) || showItem.contains(toElement)) {
-            popupCart.style.display = "none"; // Ẩn pop-up
+        } else {
+            targetElement.style.display = 'block';
+            targetElement.style.position = 'absolute';
+            targetElement.style.top = siuRect.top + 45 + 'px';
+            targetElement.style.left = (siuRect.right - 360) + 'px';
         }
-    });
+    }
+
+function hideTarget() {
+    var targetElement = document.querySelector('.popup-cart');
+    targetElement.style.display = 'none';
+}
 </script>
