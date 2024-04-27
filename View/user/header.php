@@ -4,87 +4,40 @@ $total_price_cart=0;
 ?>
 <div class="header_contentTop">
     <div class="left_header_contentTop">
-        <div class="logo">
-            <img src="../View/images/logo.png">
+            <div class="logo">
+                <img src="../View/images/logo.png">
+            </div>
+            <a href="#"> HOTLINE: 0123456789 | 0987654321 </a>
         </div>
-<<<<<<< HEAD
-        
         <div class="center_header_contentTop">
-        <form action="" method="POST" id="search_box" name="search_box">
-    <li class="search-box"> 
-        <input type="search" name="search_text" id="search_text" placeholder="Bạn muốn tìm gì !!!!" value=""> 
-        <button type="submit" name="search_button" id="search_button">Tìm kiếm</button>
-    </li>
-</form>
-<ul class="search-list" id="searchList">
-    <!-- Nơi hiển thị kết quả tìm kiếm -->
-</ul>
+            <form action="" method="POST" id="search_box" name="search_box">
+                <li class="search-box"> 
+                    <input type="search" name="search_text" id="search_text" placeholder="Bạn muốn tìm gì !!!!" value=""> 
+                    <button type="submit" name="search_button" id="search_button">Tìm kiếm</button>
+                </li>
+            </form>
+            <ul class="search-list" id="searchList">
+                <!-- Nơi hiển thị kết quả tìm kiếm -->
+            </ul>
 
-
-    </div>
+        </div>
 
         <div class="right_header_contentTop">
             <div class="icon-item">
                 <li>
-                     <a href="index.php?control=Cart">
-                        <i class="fa-solid fa-clipboard-list" style="color: #e95221;"></i>
+                    <i class="fa-solid fa-clipboard-list" style="color: #e95221;"></i>
                     <span class="icon-name">TRA CỨU</span>
                     <ul class="submenu_check" style="height: 30px;">
                             <li class="dropdown-item"  style="height: 100%;"> <a href="index.php?control=checkDonHang"> Kiểm tra đơn hàng </a></li>
                     </ul>
-                    </a>
                 </li>
             </div>
             <div class="icon-item">
                 <li>
                     <i class="fa-solid fa-user" style="color: #e95221;"></i>
                     <span class="icon-name" id="spanTK">
-                        <?php 
-                            if(isset($_SESSION['login'])){
-                                if ($_SESSION['login'] == true && !empty($_SESSION['username'])) {
-                                    echo strtoupper($_SESSION['username']);
-                                } else {
-                                    echo "TÀI KHOẢN";
-                                }
-                            }else {
-                                echo "TÀI KHOẢN";
-                            }
-                            
-                        ?>
-                    </span>
                     <?php 
-                        if(isset($_SESSION['login'])){
-                            if ($_SESSION['login'] == true && !empty($_SESSION['username'])) {
-                              
-                               echo '
-=======
-        <a href="#"> HOTLINE: 0123456789 | 0987654321 </a>
-    </div>
-
-    <div class="center_header_contentTop">
-
-        <li>
-            <input placeholder="Tìm kiếm..." type="text">
-            <i class="fa fa-search" aria-hidden="true" style="color: #e95221;"></i>
-        </li>
-
-    </div>
-    <div class="right_header_contentTop">
-        <div class="icon-item">
-            <li>
-                <i class="fa-solid fa-clipboard-list" style="color: #e95221;"></i>
-                <span class="icon-name">TRA CỨU</span>
-                <ul class="submenu_check">
-                    <li class="dropdown-item"> <a href="index.php?control=checkDonHang"> Kiểm tra đơn hàng </a></li>
-                </ul>
-            </li>
-        </div>
-        <div class="icon-item">
-            <li>
-                <i class="fa-solid fa-user" style="color: #e95221;"></i>
-                <span class="icon-name" id="spanTK">
-                    <?php
-                    if (isset($_SESSION['login'])) {
+                    if(isset($_SESSION['login'])){
                         if ($_SESSION['login'] == true && !empty($_SESSION['username'])) {
                             echo strtoupper($_SESSION['username']);
                         } else {
@@ -93,35 +46,30 @@ $total_price_cart=0;
                     } else {
                         echo "TÀI KHOẢN";
                     }
-
                     ?>
                 </span>
-                <?php
-                if (isset($_SESSION['login'])) {
+                <?php 
+                if(isset($_SESSION['login'])){
                     if ($_SESSION['login'] == true && !empty($_SESSION['username'])) {
-
                         echo '
->>>>>>> 10d4478d148ab83ee2d8f805cd48ae0e23120b4b
-                                    <ul class="submenu_user">
-                                        <li class="dropdown-item"> <a href="index.php?control=infor-user"> Thông tin </a></li>
-                                        <li class="dropdown-item"> <a href="index.php?control=logout"> Đăng xuất</a></li>
-                                    </ul>
-                                ';
+                        <ul class="submenu_user">
+                            <li class="dropdown-item"> <a href="index.php?control=infor-user"> Thông tin </a></li>
+                            <li class="dropdown-item"> <a href="index.php?control=logout"> Đăng xuất</a></li>
+                        </ul>
+                        ';
                     } else {
                         echo '
-                                   <ul class="submenu_user">
-                                       <li class="dropdown-item"> <a href="index.php?control=signin"> Đăng nhập </a></li>
-                                        <li class="dropdown-item"> <a href="index.php?control=signup"> Đăng kí</a></li>
-                                   </ul>
-                               ';
+                        <ul class="submenu_user">
+                            <li class="dropdown-item"> <a href="index.php?control=signin"> Đăng nhập </a></li>
+                            <li class="dropdown-item"> <a href="index.php?control=signup"> Đăng kí</a></li>
+                        </ul>';
                     }
                 } else {
                     echo '
-                                    <ul class="submenu_user">
-                                        <li class="dropdown-item"> <a href="index.php?control=signin"> Đăng nhập </a></li>
-                                         <li class="dropdown-item"> <a href="index.php?control=signup"> Đăng kí</a></li>
-                                    </ul>
-                                ';
+                    <ul class="submenu_user">
+                        <li class="dropdown-item"> <a href="index.php?control=signin"> Đăng nhập </a></li>
+                        <li class="dropdown-item"> <a href="index.php?control=signup"> Đăng kí</a></li>
+                    </ul>';
                 }
                 ?>
 
@@ -190,7 +138,7 @@ $total_price_cart=0;
     <li> <a class="titlemenu" href="index.php?control=ContactCategory">LIÊN HỆ</a></li>
 </div>
 
-            <form action class="popup-cart">
+<form action class="popup-cart">
                 <div class="title-cart-head">Giỏ hàng</div>
                 <div class="cart-body">
                     <div class="ajaxcart-row">
@@ -257,32 +205,8 @@ $total_price_cart=0;
                     </div>
                 </div>
             </form>
-<script>
-    const popupCart = document.querySelector('.popup-cart');
-    const showItem = document.querySelector('.show-item');
-
-    // Thêm sự kiện khi di chuột qua biểu tượng giỏ hàng
-    showItem.addEventListener('mouseover', function(event) {
-        popupCart.style.display = 'block'; // Hiển thị pop-up
-    });
-
-    // Thêm sự kiện khi di chuột ra khỏi biểu tượng giỏ hàng
-    showItem.addEventListener('mouseleave', function(event) {
-        const toElement = event.toElement || event.relatedTarget;
-        // Kiểm tra xem con trỏ đi ra khỏi phần tử popupCart
-        if (!popupCart.contains(toElement) || showItem.contains(toElement)) {
-            popupCart.style.display = "none"; // Ẩn pop-up
-        }
-    });
-
-    
-<<<<<<< HEAD
-        </li>
-        <li> <a class="titlemenu" href="index.php?control=IntroduceCategory">GIỚI THIỆU</a></li>
-        <li> <a class="titlemenu" href="index.php?control=ContactCategory">LIÊN HỆ</a></li>
-</div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
+<!-- <script>
 $(document).ready(function() {
     $('#search_box').on('submit', function(event) {
         event.preventDefault();
@@ -307,7 +231,22 @@ $(document).ready(function() {
         });
     });
 });
+</script> -->
+<script>
+    const popupCart = document.querySelector('.popup-cart');
+    const showItem = document.querySelector('.show-item');
+
+    // Thêm sự kiện khi di chuột qua biểu tượng giỏ hàng
+    showItem.addEventListener('mouseover', function(event) {
+        popupCart.style.display = 'block'; // Hiển thị pop-up
+    });
+
+    // Thêm sự kiện khi di chuột ra khỏi biểu tượng giỏ hàng
+    showItem.addEventListener('mouseleave', function(event) {
+        const toElement = event.toElement || event.relatedTarget;
+        // Kiểm tra xem con trỏ đi ra khỏi phần tử popupCart
+        if (!popupCart.contains(toElement) || showItem.contains(toElement)) {
+            popupCart.style.display = "none"; // Ẩn pop-up
+        }
+    });
 </script>
-=======
-</script>
->>>>>>> 10d4478d148ab83ee2d8f805cd48ae0e23120b4b

@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web dụng cụ thể thao cầu lông</title>
-    <link rel="stylesheet" href="../View/css/style.css">
     <?php
     if(isset($_GET['control'])) {
         if($_GET['control']=="ProductCategory") {
@@ -23,7 +22,7 @@
     }
         
     ?>
-    
+    <link rel="stylesheet" href="../View/css/style.css">
     <link rel="stylesheet" href="../View/css/homepage.css">
     <link rel="stylesheet" href="../View/css/footer.css">
     <link rel="stylesheet" href="../View/css/slider.css">
@@ -89,5 +88,34 @@
         </div>
     </div>
 <?php endif; ?>
+<?php 
+        if(isset($_GET['control'])){
+            $tmp = $_GET['control'];
+        }
+        else $tmp = '';
+        if($tmp=='signup'){
+            include("../View/user/pages/signup.php");
+        }
+        else if($tmp=='signin'){
+            include("../View/user/pages/signin.php");
+        }
+        else if($tmp=='infor-user'){
+            include("../View/user/pages/infor_user.php");        
+        }
+        else if($tmp=='logout'){
 
+            
+            //Neu nguoi dung da dang nhap thanh cong, thi huy bien session
+            if (isset($_SESSION['login'])) 
+            {echo $_SESSION['login'];
+                unset($_SESSION['login']);
+            }
+            echo '<script>window.location.href = "index.php";</script>';
+        }
+        /*require_once(__DIR__ . '/../Model/ModelUser.php');
+        $modeluser = new ModelUser();
+        $add_user = $modeluser->addUser(1, 111, 1, 111, "a@gmail.com", "0364985452", 0, 'normal', 1);
+        echo $add_user;
+        require_once(__DIR__ . '/../Model/check-email.php');*/
+    ?>
 </html> 

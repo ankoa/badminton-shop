@@ -46,7 +46,7 @@
 ?>
 
 <?php 
-        if(isset($_GET['control'])){
+        /* if(isset($_GET['control'])){
             $tmp = $_GET['control'];
         }
         else $tmp = '';
@@ -68,7 +68,7 @@
                 unset($_SESSION['login']);
             }
             echo '<script>window.location.href = "index.php";</script>';
-        }
+        } */
         /*require_once(__DIR__ . '/../Model/ModelUser.php');
         $modeluser = new ModelUser();
         $add_user = $modeluser->addUser(1, 111, 1, 111, "a@gmail.com", "0364985452", 0, 'normal', 1);
