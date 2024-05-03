@@ -96,7 +96,7 @@ header{
     color: #000;
 }
 .icon-item > li i{
-   font-size: 20px;
+   font-size: 25px;
    position: relative;
 }
 .icon-name {
@@ -294,7 +294,6 @@ header{
     display: none; /* Ẩn pop-up mặc định */
     position: fixed; /* Đảm bảo pop-up hiển thị trên tất cả các phần tử khác */
     top: 80px; /* Đặt pop-up ở phía trên của trang */
-    top: 100%; /* Đặt pop-up ở phía trên của trang */
     right: 80px; /* Đặt pop-up ở phía trái của trang */
     background-color: white; /* Màu nền với độ mờ */
     padding: 20px; /* Thêm padding để nội dung không bị dính vào mép */
@@ -305,31 +304,6 @@ header{
     padding: 0px;
     border-radius: 10px;
 }
-
-/* .popup-cart::before {
-    content: "";
-    border-width: 8px 10px;
-    border-style: solid;
-    border-color: transparent transparent #fff transparent;
-    position: absolute;
-    bottom: 100%;
-    right: 10px;
-}
-
-.popup-cart::after {
-    content: "";
-    width: 90px;
-    height: 10px;
-    position: absolute;
-    bottom: 100%;
-    right: 0;
-} */
-
-/* .icon-item .show-item:hover + .popup-cart {
-    transform: scale(1);
-    opacity: 1;
-    display: block;
-} */
 
 .title-cart-head {
     border-top-left-radius: 10px;
@@ -494,11 +468,12 @@ img {
 
 .popup-cart .ajaxcart-footer .cart-subtotal .cart-col-6 {
     width: 50%;
-    padding-right: -20px;
+    float: left;
 }
 
 .popup-cart .ajaxcart-footer .cart-subtotal .cart-totle {
     width: 50%;
+    float: left;
     text-align: right;
 }
 
@@ -530,4 +505,10 @@ img {
 .popup-cart .ajaxcart-footer .cart-btn-proceed-checkout-dt button:hover {
     background-color: #ffffff; /* Màu nền khi trỏ vào button */
     color: #e95221;
+}
+
+@media only screen and (max-width: 1300px) {
+    .icon-name {
+        display: none;
+    }
 }

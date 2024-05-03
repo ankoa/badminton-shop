@@ -78,17 +78,11 @@ $total_price_cart=0;
 
             </li>
         </div>
-
         <div class="icon-item" id="hover-cart">
             <li href="index.php?control=Cart">
                 <ul class="show-item" onmouseover="showTarget()" onmouseout="hideTarget()"> 
                         <a class="a-head" href="index.php?control=Cart"><i class="fa-solid fa-cart-arrow-down" style="color: #e95221;"></i></a>
                         <span class="icon-name"><a class="a-head" href="index.php?control=Cart"><span class="icon-name" id="spanGH">GIỎ HÀNG</span></a></span>
-        <!-- <div class="icon-item">
-            <li>
-                <ul class="show-item"> 
-                        <i class="fa-solid fa-cart-arrow-down" style="color: #e95221;"></i>
-                        <span class="icon-name"><a class="a-head" href="index.php?control=Cart">Giỏ Hàng</a></span>                     -->
                 </ul>
             </li>
         </div>
@@ -213,95 +207,32 @@ $total_price_cart=0;
                     </div>
                 </div>
             </form>
-
-                        <div class="popup-cart">
-                            <div class="title-cart-head">Giỏ hàng</div>
-                                <div class="cart-body">
-                                    <div class="ajaxcart-row">
-                                    <?php 
-                                        require_once('../Model/ModelVariantDetail.php');
-                                        require_once('../Model/ModelUser.php');
-                                        require_once('../Model/ModelProduct.php');
-                                        require_once('../Model/ModelCartDetail.php');
-                                        $modelVariantDetail = new ModelVariantDetail();
-                                        $modelUser = new ModelUser();
-                                        $modelProduct = new ModelProduct();
-                                        $modelCartDetail = new ModelCartDetail();
-                                        $cartDetails=$modelCartDetail->getCartDetailByCartID($modelUser->getUIDByUserName($_SESSION['username']));
-                                        foreach ($cartDetails  as $cartDetail) {
-                                            $variantDetail = $modelVariantDetail->getVariantByID(($cartDetail)->getVariantID());
-                                            $product = $modelProduct->getProductByID(($cartDetail)->getProductID());
-                                            $total_price_cart+=$product->getPrice();
-                                            echo "
-                                            <div class='cart-product'>
-                                        <a href='#' class='cart-image' title='" . $product->getName() . "'><img width='80' height='80' src='../View/images/product/GiayNam.png' 
-                                        alt='" . $product->getName() . "'></a>
-                                        <div class='cart-info'>
-                                            <div class='cart-name'>
-                                                <a href='#' class='' title='" . $product->getName() . "'>" . $product->getName() . "</a>";
-                                                if ($variantDetail->getColor() != null)
-                                                    echo "<span class='variant-title'>Màu: " . $variantDetail->getColor() . "</span>";
-                                                if ($variantDetail->getWeight() != null && $variantDetail->getGrip() != null)
-                                                    echo "<span class='variant-title'>Bản: " . ($variantDetail->getWeight().''.$variantDetail->getGrip()) . "</span>";
-                                                if ($variantDetail->getSize() != null)
-                                                    echo "<span class='variant-title'>Size: " . $variantDetail->getSize() . "</span>";
-                                                if ($variantDetail->getSpeed() != null)
-                                                    echo "<span class='variant-title'>Tốc độ: " . $variantDetail->getSpeed() . "</span>";
-                                                echo "
-                                            </div>
-                                            <div class='grid'>
-                                                <div class='cart-item-name'>
-                                                    <div class='input-group-btn'>
-                                                        <button class='qty-minus' onclick='var result = document.getElementById(\"qtym\"); var qtypro = parseInt(result.value); if (!isNaN(qtypro) && qtypro > 1) result.value = qtypro - 1; return false;' type='button'>-</button>
-                                                        <input type='text' id='qtym' name='so_luong' value='1' maxlength='3' class='in' onkeypress='if (isNaN(this.value + String.fromCharCode(event.keyCode))) return false;' onchange='if(this.value == 0) this.value=1;'>
-                                                        <button class='qty-plus' onclick='var result = document.getElementById(\"qtym\"); var qtypro = parseInt(result.value); if (!isNaN(qtypro)) result.value = qtypro + 1; return false;' type='button'><span>+</span></button>
-                                                    </div>
-                                                </div>
-                                                <div class='cart-prices'>
-                                                    <span class='cart-price'>" . number_format($product->getPrice(), 0, '.', '.') . "₫</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>";
-                                                }
-                                                ?>
-                            
-                                </div>
-                            </div>
-                                <div class="ajaxcart-footer">
-                                    <div class="ajaxcart-subtotal">
-                                        <div class="cart-subtotal">
-                                            <div class="cart-col-6">Tổng tiền:</div>
-                                            <div class="text-right cart-totle"><span class="total-price"><?php echo number_format($total_price_cart , 0, '.', '.'); ?>₫</span></div>
-                                        </div>
-                                    </div>
-                                    <div class="cart-btn-proceed-checkout-dt ">
-                                        <button onclick="location.href='/gio-hang/thanh-toan'" type="button" class="button btn btn-default cart-btn-proceed-checkout" id="btn-proceed-checkout" title="Thanh toán">Đặt hàng</button>
-                                    </div>
-                                </div>
-                        </div>
 <script>
-    var siuElement = document.getElementById('hover-cart');
-    var targetElement = document.querySelector('.popup-cart');
-    var hoverTimeout;
-
-    var siuRect = siuElement.getBoundingClientRect();
-
-    targetElement.style.position = 'absolute';
-    targetElement.style.top = siuRect.top+ 50 + 'px';
 
     function showTarget() {
-    var targetElement = document.querySelector('.popup-cart');
-    clearTimeout(hoverTimeout);
-    targetElement.style.display = 'block';
-}
+        var targetElement = document.querySelector('.popup-cart');
+        
+        var siuElement = document.getElementById('hover-cart');
+        var targetElement = document.querySelector('.popup-cart');
+        var siuRect = siuElement.getBoundingClientRect();
+        var windowWidth = window.innerWidth;
 
-function hideTarget() {
-    var targetElement = document.querySelector('.popup-cart');
-    hoverTimeout = setTimeout(function () {
+        if(windowWidth<=1300) {
+
+        } else {
+            targetElement.style.display = 'block';
+            targetElement.style.position = 'absolute';
+            targetElement.style.top = siuRect.top + 45 + 'px';
+            targetElement.style.left = (siuRect.right - 360) + 'px';
+        }
+
+        
+    }
+
+    function hideTarget() {
+        var targetElement = document.querySelector('.popup-cart');
         targetElement.style.display = 'none';
-    }, 100);
-}
+    }
 
     
 </script>
