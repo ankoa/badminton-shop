@@ -39,7 +39,7 @@
 </div>
 <!-- Đăng nhập vào admin -->
 <?php
-/*     if (isset($_SESSION['login']) && $_SESSION['type'] == 'admin') 
+    /* if (isset($_SESSION['login']) && $_SESSION['type'] == 'admin') 
     {
          echo '<script>window.location.href = "Badminton_Admin.php";</script>';
     } */

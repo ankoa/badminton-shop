@@ -201,7 +201,7 @@ header{
     margin-top: 20px;
     transform: translateX(-350px);
     visibility: hidden;
-    z-index: 1;
+    z-index: 1000;
     background: #ffffff;
     border-radius: 10px;
 }   
@@ -309,53 +309,64 @@ html {
 }
 
 /* SEARCH */
-.search-box {
-    padding: 10px; /* Khoảng cách giữa nội dung và viền của thẻ li */
-    border: 1px solid #ccc; /* Đường viền cho thẻ li (nếu cần) */
-    display: flex; /* Sử dụng flexbox để căn giữa nội dung */
-    align-items: center; /* Căn giữa nội dung theo chiều dọc */
-    height: 40px;
-    width: 360px;
-    border-radius: 20px;
-    background: #eceded;
-}
-
-.search-box input {
-    border: none; /* Loại bỏ viền cho input */
-    outline: none; /* Loại bỏ đường viền khi focus */
-    flex: 1; /* Input mở rộng để lấp đầy không gian còn lại */
-    margin-right: 10px; /* Khoảng cách giữa input và icon */
-    width: 100%;
-    height: 100%;
-    background: #eceded;
-
-}
-
-.search-list {
-    list-style-type: none; /* Loại bỏ dấu đầu dòng của danh sách */
-    padding: 0; /* Xóa padding mặc định của danh sách */
-    margin-top: 10px; /* Khoảng cách giữa ô tìm kiếm và danh sách */
-}
-
 .search-list li {
-    padding: 8px; /* Padding cho mỗi phần tử trong danh sách */
-    border-bottom: 1px solid #ccc; /* Đường viền phân tách các sản phẩm */
-    cursor: pointer; /* Đổi con trỏ thành dấu nhấn khi di chuột qua sản phẩm */
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
 }
 
 .search-list li:hover {
-    background-color: #f0f0f0; /* Màu nền khi di chuột qua sản phẩm */
+    background-color: #ddd;
+}
+.search-container {
+    position: relative;
+    
+    
+}
+.search-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    background-color: #f1f1f1;
+    width: calc(100% - 2px); /* Đảm bảo dropdown rộng bằng ô search */
+    max-height: 150px; /* Giới hạn số lượng kết quả và chiều cao dropdown */
+    overflow-y: auto; /* Hiển thị thanh cuộn khi cần */
+    border: 1px solid #ccc;
+    border-top: none;
+    display: none; /* Mặc định ẩn dropdown */
+    z-index: 1000; /* Đảm bảo hiển thị trên các phần tử khác */
+    margin-top: 50px;
+    width: 400px;
+    transform: translateX(-423px);
 }
 
-/* Định dạng văn bản trong danh sách sản phẩm */
-.search-list li a {
-    text-decoration: none; /* Loại bỏ đường gạch chân của liên kết */
-    color: #333; /* Màu văn bản */
+.search-list li {
+    padding: 10px;
+    cursor: pointer;
+    background: #ffffff;
 }
 
-.search-list li a:hover {
-    text-decoration: underline; /* Gạch chân dưới khi di chuột qua liên kết */
+.search-list li:hover {
+    background-color: #ddd;
 }
+
+#search_box{
+    display: flex;
+}
+#search_text{
+    margin: 5px;
+    text-align: center;
+    border-radius: 5px;
+    height: 40px;
+    width: 400px;
+    border: 1px solid #a1a1a1;
+}
+ .search-container i{
+    transform: translateX(-40px);
+}
+
+
 .bodywrap {
     width: 100px;
     height: 100px;

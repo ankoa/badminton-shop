@@ -10,15 +10,18 @@ $total_price_cart=0;
             <a href="#"> HOTLINE: 0123456789 | 0987654321 </a>
         </div>
         <div class="center_header_contentTop">
-            <form action="" method="POST" id="search_box" name="search_box">
-                <li class="search-box"> 
+                <form action="" method="POST" id="search_box" name="search_box">
+                <div class="search-container">
                     <input type="search" name="search_text" id="search_text" placeholder="Bạn muốn tìm gì !!!!" value=""> 
-                    <button type="submit" name="search_button" id="search_button">Tìm kiếm</button>
-                </li>
+                    <i class="fa fa-search" aria-hidden="true" style="color: #e95221;"></i> 
+                </div>
+                <div>
+                     <ul class="search-list" id="searchList">
+                    <!-- Nơi hiển thị kết quả tìm kiếm -->
+                    </ul>
+                </div>
+               
             </form>
-            <ul class="search-list" id="searchList">
-                <!-- Nơi hiển thị kết quả tìm kiếm -->
-            </ul>
 
         </div>
 
@@ -112,7 +115,7 @@ $total_price_cart=0;
                     } else $temp = "Giày cầu lông ";
                     echo '
                                 <li> 
-                                    <a href="index.php?control=ProductCategory&id=1">' . $temp . '</a> 
+                                    <a href="index.php?control=ProductCategory&id='.$catalog->getCatalogID().'">' . $temp . '</a> 
                                     <ul class="menu_item">';
                     $brandIDs = $modelBrand->suggestBrandIDsForCatalog($catalog->getCatalogID());
                     foreach ($brandIDs as $brandID) {
@@ -207,32 +210,62 @@ $total_price_cart=0;
                 </div>
             </form>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- <script>
-$(document).ready(function() {
-    $('#search_box').on('submit', function(event) {
-        event.preventDefault();
-        var searchText = $('#search_text').val().trim();
+<script>
+var searchInput = document.getElementById('search_text');
+searchInput.addEventListener('input', function() {
+    var keyword = this.value.trim(); 
 
-        $.ajax({
-            type: 'POST',
-            url: '../../Controllers/search_products.php', // Đường dẫn đúng đến file PHP
-            data: { search_text: searchText },
-            dataType: 'json',
-            success: function(response) {
-                console.log(response);
-                var outputHtml = '';
-                response.forEach(function(product) {
-                    outputHtml += '<li>' + product.name + ' - ' + product.description + '</li>';
-                });
-                $('#searchList').html(outputHtml);
-            },
-            error: function(xhr, status, error) {
-                console.error(xhr.responseText);
+    if (keyword !== '') {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var products = JSON.parse(this.responseText);
+
+                displayProductNames(products, keyword);
             }
-        });
-    });
+        };
+        xhttp.open("GET", "search_products.php", true);
+        xhttp.send();
+    } else {
+        hideProductNames();
+    }
 });
-</script> -->
+
+function displayProductNames(products, keyword) {
+    var searchList = document.getElementById('searchList');
+    searchList.innerHTML = ''; 
+
+    var filteredProducts = products.filter(function(product) {
+        return product.name.toLowerCase().includes(keyword.toLowerCase());
+    });
+
+    var maxResults = 5;
+    for (var i = 0; i < filteredProducts.length && i < maxResults; i++) {
+        var li = document.createElement('li');
+        var link = document.createElement('a'); 
+        link.textContent = `${filteredProducts[i].name} - Giá: ${filteredProducts[i].price}`; 
+        link.href = "index.php?control=ProductDetail&productID=" + filteredProducts[i].productID; 
+        li.appendChild(link);
+        searchList.appendChild(li);
+    }
+
+    if (filteredProducts.length > 0) {
+        searchList.style.display = 'block';
+    } else {
+        searchList.style.display = 'none';
+    }
+}
+
+
+
+// Ẩn dropdown khi click ra ngoài ô search
+document.addEventListener('click', function(e) {
+    if (!document.getElementById('search_container').contains(e.target)) {
+        hideProductNames();
+    }
+});
+
+</script>
 <script>
 function showTarget() {
         var targetElement = document.querySelector('.popup-cart');

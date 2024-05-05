@@ -103,12 +103,12 @@
             include("../View/user/pages/infor_user.php");        
         }
         else if($tmp=='logout'){
-
-            
             //Neu nguoi dung da dang nhap thanh cong, thi huy bien session
             if (isset($_SESSION['login'])) 
-            {echo $_SESSION['login'];
+            {
                 unset($_SESSION['login']);
+                unset($_SESSION['username']);
+                unset($_SESSION['type']);
             }
             echo '<script>window.location.href = "index.php";</script>';
         }

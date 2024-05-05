@@ -106,10 +106,12 @@ class ModelUser {
     public function authenticate($username, $password) {
         $user = $this->getUserByUsername($username);
         if ($user instanceof User) {
-            if ($password ==$user->getPassword()) {
+            $storedPassword = $user->getPassword();
+            if (password_verify($password, $storedPassword)) {
                 return true;
             }
         }
+        
         return false;
     }
     public function getUserByUsername($username) {

@@ -133,24 +133,24 @@ if (isset($_SESSION['username'])) {
 }
 ?>
     <script>
-       document.getElementById("toggle-password").addEventListener("click", function() {
-    var passwordField = document.getElementById("form-Password");
-    var passwordVisibleField = document.getElementById("form-Password-Visible");
+        document.getElementById("toggle-password").addEventListener("click", function() {
+        var passwordField = document.getElementById("form-Password");
+        var passwordVisibleField = document.getElementById("form-Password-Visible");
 
-    if (passwordField.style.display === "none") {
-        passwordField.style.display = "block";
-        passwordVisibleField.style.display = "none";
-        this.classList.remove("fa-eye-slash");
-        this.classList.add("fa-eye");
-    } else {
-        passwordField.style.display = "none";
-        passwordVisibleField.style.display = "block";
-        this.classList.remove("fa-eye");
-        this.classList.add("fa-eye-slash");
-    }
+        if (passwordField.style.display === "none") {
+            passwordField.style.display = "block";
+            passwordVisibleField.style.display = "none";
+            this.classList.remove("fa-eye-slash");
+            this.classList.add("fa-eye");
+        } else {
+            passwordField.style.display = "none";
+            passwordVisibleField.style.display = "block";
+            this.classList.remove("fa-eye");
+            this.classList.add("fa-eye-slash");
+        }
 });
 
-    </script>';
+    </script>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="../js/jquery.validate.min.js" defer></script>

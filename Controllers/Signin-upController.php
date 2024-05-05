@@ -27,21 +27,31 @@
                             exit;
                         } elseif($authenticated_role == 2){
                             $_SESSION['login'] = true;
-                            $_SESSION['type'] = 'customer';
+                            $_SESSION['type'] = 'manager';
                             $_SESSION['username'] = $username;
                             echo json_encode(array(
-                                'message' => "Đăng nhập thành công - nhân viên",
+                                'message' => "Đăng nhập thành công - manager",
                                 'status' => 2
                             ));
                             exit;   
                         }
                         elseif($authenticated_role == 3){
                             $_SESSION['login'] = true;
-                            $_SESSION['type'] = 'customer';
+                            $_SESSION['type'] = 'saler';
                             $_SESSION['username'] = $username;
                             echo json_encode(array(
-                                'message' => "Đăng nhập thành công - customer",
+                                'message' => "Đăng nhập thành công - saler",
                                 'status' => 3
+                            ));
+                            exit;   
+                        }
+                        elseif($authenticated_role == 4){
+                            $_SESSION['login'] = true;
+                            $_SESSION['type'] = 'tester';
+                            $_SESSION['username'] = $username;
+                            echo json_encode(array(
+                                'message' => "Đăng nhập thành công - tester",
+                                'status' => 4
                             ));
                             exit;   
                         }
@@ -69,7 +79,7 @@
                     }
                     if(!$checkError){ 
                         $usernameold = $_SESSION['username'];
-                        $update_user = $modeluser->updateUser($modeluser->getUIDByUserName($usernameold),$username, $password, 2, $username, $email, $phone, 0, 'normal', 1);
+                        $update_user = $modeluser->updateUser($modeluser->getUIDByUserName($usernameold),$username, $password, 4, $username, $email, $phone, 0, 'normal', 1);
                         $_SESSION['username'] = $username;
                         echo json_encode(array(
                             'message' => "Sửa thông tin thành công",
@@ -93,10 +103,12 @@
                         $checkError = true;
                     }
                     if(!$checkError){ 
-                        
-                        $add_user = $modeluser->addUser($username, $password, 2, $username, $email, $phone, 0, 'normal', 1);
+                        $hashpass = password_hash($password, PASSWORD_DEFAULT);
+                        $add_user = $modeluser->addUser($username, $hashpass, 4, $username, $email, $phone, 0, 'normal', 1);
                         if ($add_user == 1) {
                             $_SESSION['login'] = true;
+                            $_SESSION['type'] = 'tester';
+                            $_SESSION['username'] = $username;
                             echo json_encode(array(
                                 'message' => "Đăng kí thành công",
                                 'status' => 1

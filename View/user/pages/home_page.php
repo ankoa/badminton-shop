@@ -187,23 +187,26 @@
     </div>
     <div class="product-containerHomepage">
         <div class="product">
-            <a href="index.php?id=1" title="Vợt Cầu Lông">
+            <a href="index.php?control=ProductCategory&id=2" title="Vợt Cầu Lông">
                 <img src="https://cdn.shopvnb.com/img/400x400/uploads/danh_muc/thumb/1.1.webp" alt="Vợt Cầu Lông">
                 <h3>VỢT CẦU LÔNG</h3>
             </a>
             
         </div>
         <div class="product">
-            <img src="https://cdn.shopvnb.com/img/400x400/uploads/danh_muc/thumb/2_1.webp" alt="Lưới">
-            <h3>LƯỚI</h3>
+            <a href="index.php?control=ProductCategory&id=2" title="Vợt Cầu Lông">
+                <img src="https://cdn.shopvnb.com/img/400x400/uploads/danh_muc/thumb/2_1.webp" alt="Lưới">
+                <h3>LƯỚI</h3> </a>
         </div>
         <div class="product">
+        <a href="index.php?control=ProductCategory&id=2" title="Vợt Cầu Lông">
             <img src="https://cdn.shopvnb.com/img/400x400/uploads/danh_muc/thumb/7.webp" alt="Quả Cầu Lông">
-            <h3>QUẢ CẦU LÔNG</h3>
+            <h3>QUẢ CẦU LÔNG</h3> </a>
         </div>
         <div class="product">
+        <a href="index.php?control=ProductCategory&id=2" title="Vợt Cầu Lông">
             <img src="https://cdn.shopvnb.com/img/400x400/uploads/danh_muc/thumb/2_1.webp" alt="Giày Cầu Lông">
-            <h3>GiÀY CẦU LÔNG</h3>
+            <h3>GiÀY CẦU LÔNG</h3> </a>
         </div>
     </div>
 </section>
