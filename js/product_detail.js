@@ -7,7 +7,7 @@ const initSlider = () => {
 
     // Function to slide images
     const slideImages = (direction) => {
-        const scrollAmount = direction === -1 ? -imageWidth - 18 : imageWidth + 18;
+        const scrollAmount = direction === -1 ? -imageWidth - 80 : imageWidth + 80;
         imageList.scrollBy({ left: scrollAmount, behavior: "smooth" });
     };
 
@@ -142,15 +142,20 @@ function addCart() {
 
                 xhttp.onreadystatechange = function () {
                     if (this.readyState == 4 && this.status == 200) {
-                        var catalogData = this.responseText;
-                        console.log(catalogData);
-                        if(catalogData=="Racket") {
-                            document.getElementById("product-new-price").innerHTML = "<b>" + formatPrice(product.price) + "₫</b><span>Màu: "+selectedColor+" Bản: "+selectedVariant+"</span>";
-                        } else if(catalogData=="Shoes") {
-                            document.getElementById("product-new-price").innerHTML = "<b>" + formatPrice(product.price) + "₫</b><span>Màu: "+selectedColor+" Size: "+selectedVariant+"</span>";
-                        } else if(catalogData=="Shuttle") {
+                        var totalcartproduct = document.querySelector('.count_item_pr');
+                        totalcartproduct.innerHTML= JSON.parse(this.responseText);
+                        var tmp = document.querySelector('.total-price');
+                        var totalprice = parseInt(tmp.innerHTML.replace(/\./g, '').replace(/₫/g, ''));
+                        totalprice+=product.price*quantity;
+                        tmp.innerHTML=formatPrice(totalprice)+ "₫";
+                        var catalogData = product.catalogID;
+                        if(catalogData==1) {
+                            document.getElementById("product-new-price").innerHTML = "<b>" + formatPrice(product.price) + "₫</b><span>Màu: "+selectedColor+", Bản: "+selectedVariant+"</span>";
+                        } else if(catalogData==4) {
+                            document.getElementById("product-new-price").innerHTML = "<b>" + formatPrice(product.price) + "₫</b><span>Màu: "+selectedColor+", Size: "+selectedVariant+"</span>";
+                        } else if(catalogData==3) {
                             document.getElementById("product-new-price").innerHTML = "<b>" + formatPrice(product.price) + "₫</b><span>Tốc độ: "+selectedVariant+"</span>";
-                        } else if(catalogData=="String") {
+                        } else if(catalogData==2) {
                             document.getElementById("product-new-price").innerHTML = "<b>" + formatPrice(product.price) + "₫</b><span>Màu: "+selectedVariant+"</span>";
                         }
                         document.getElementById('popup-cart-mobile').classList.add('active');
