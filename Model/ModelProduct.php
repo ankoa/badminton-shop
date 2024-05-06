@@ -30,7 +30,8 @@ class ModelProduct
                     $row['description'],
                     $row['status'],
                     $row['price'],
-                    $row['discount']
+                    $row['discount'],
+                    $row['url_image']
                 );
                 $products[] = $product;
             }
@@ -56,7 +57,8 @@ class ModelProduct
                     $row['description'],
                     $row['status'],
                     $row['price'],
-                    $row['discount']
+                    $row['discount'],
+                    $row['url_image']
                 );
                 $products[] = $product;
             }
@@ -81,7 +83,8 @@ class ModelProduct
                     $row['description'],
                     $row['status'],
                     $row['price'],
-                    $row['discount']
+                    $row['discount'],
+                    $row['url_image']
                 );
                 $products[] = $product;
             }
@@ -106,7 +109,8 @@ class ModelProduct
                     $row['description'],
                     $row['status'],
                     $row['price'],
-                    $row['discount']
+                    $row['discount'],
+                    $row['url_image']
                 );
                 $products[] = $product;
             }
@@ -131,7 +135,8 @@ class ModelProduct
                     $row['description'],
                     $row['status'],
                     $row['price'],
-                    $row['discount']
+                    $row['discount'],
+                    $row['url_image']
                 );
                 $products[] = $product;
             }
@@ -156,7 +161,8 @@ class ModelProduct
                     $row['description'],
                     $row['status'],
                     $row['price'],
-                    $row['discount']
+                    $row['discount'],
+                    $row['url_image']
                 );
                 $products[] = $product;
             }
@@ -180,8 +186,8 @@ class ModelProduct
                 $row['description'],
                 $row['status'],
                 $row['price'],
-                $row['discount']
-
+                $row['discount'],
+                $row['url_image']
             );
             return $product;
         }
@@ -217,7 +223,8 @@ class ModelProduct
                     $row['description'],
                     $row['status'],
                     $row['price'],
-                    $row['discount']
+                    $row['discount'],
+                    $row['url_image']
                 );
                 $products[] = $product;
             }
@@ -241,7 +248,8 @@ class ModelProduct
                     $row['description'],
                     $row['status'],
                     $row['price'],
-                    $row['discount']
+                    $row['discount'],
+                    $row['url_image']
                 );
                 $products[] = $product;
             }

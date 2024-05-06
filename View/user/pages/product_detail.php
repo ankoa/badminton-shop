@@ -41,7 +41,28 @@ foreach ($listvariants as $variant) {
     $listVariantDetails[] = $variantDetail;
     echo $variantDetail->getSize();
 }
-$imagePaths = explode(",", reset($listVariantDetails)->getListImage());
+
+$string = $product->getUrl();
+
+// Tạo mảng để lưu kết quả
+$result = array();
+
+// Tách chuỗi theo dấu chấm phẩy để lấy ra các phần tử riêng biệt
+$parts = explode(";", $string);
+
+foreach ($parts as $part) {
+    // Tách từng phần tử thành tên và các số
+    $temp = explode(":", $part);
+
+    // Lưu tên làm key (viết thường) và các số làm value vào mảng kết quả
+    if (isset($temp[0]) && isset($temp[1])) {
+        $result[trim(strtolower($temp[0]))] = explode(",", $temp[1]);
+    }
+}
+$imagePaths = array_values($result)[0];
+print_r($imagePaths);
+
+
 if ($catalog->getName() == "Racket") {
 } else if ($catalog->getName() == "Shoes") {
     usort($listVariantDetails, function ($a, $b) {
@@ -132,17 +153,18 @@ if ($catalog->getName() == "Racket") {
                             chevron_left
                         </button>
                         <ul class="image-list" id="image-list">
-                            <img class="image-item" src=<?php echo reset($imagePaths); ?> alt="img-1" />
+
                             <script>
                                 // Đảm bảo rằng biến imagePaths đã được định nghĩa trước
                                 const imagePaths = <?php echo json_encode($imagePaths); ?>;
-
+                                const productID= <?php echo json_encode($productID); ?>;
+                                console.log(imagePaths);
                                 // Lặp qua mỗi đường dẫn hình ảnh và chèn chúng vào danh sách
-                                imagePaths.forEach((path, index) => {
+                                for(var i=0;i<imagePaths.length;i++) {
                                     // Tạo một thẻ img và đặt thuộc tính src và alt
                                     const image = document.createElement('img');
-                                    image.src = path;
-                                    image.alt = `Image ${index + 1}`; // Tùy chỉnh alt nếu cần
+                                    image.src = "../View/images/product/<?php echo $productID ;?>/<?php echo array_keys($result)[0] ;?>/<?php echo $productID ;?>."+imagePaths[i]+".png";
+                                    image.alt = `Image ${i + 1}`; // Tùy chỉnh alt nếu cần
                                     image.classList.add('image-item');
 
                                     // Chọn ul danh sách hình ảnh
@@ -154,9 +176,11 @@ if ($catalog->getName() == "Racket") {
                                     } else {
                                         console.error(`UL with id 'image-list' not found.`);
                                     }
-                                });
+                                }
+
                             </script>
                         </ul>
+                        
                         <button id="next-slide" class="slide-button material-symbols-rounded">
                             chevron_right
                         </button>

@@ -36,6 +36,7 @@ function getAll($id)
                 'price' => $variant['price'],
                 'discount' => $variant['discount'],
                 'status' => $variant['status'],
+                'url' => $variant['url_image'],
             );
         }
         $result->close(); // Đóng kết quả truy vấn
@@ -76,6 +77,7 @@ function loadPage($page, $productsPerPage, $id)
                 'price' => $variant['price'],
                 'discount' => $variant['discount'],
                 'status' => $variant['status'],
+                'url' => $variant['url_image'],
             );
         }
         $result->close(); // Đóng kết quả truy vấn
