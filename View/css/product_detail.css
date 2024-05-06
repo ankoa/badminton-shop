@@ -145,8 +145,8 @@ a,.text-link {
 }
 
 .slider-wrapper .image-list .image-item {
-  width: auto;
-  height: auto;
+  width: 60px;
+  height: 100px;
   object-fit: cover;
   cursor: pointer;
   display: block;
@@ -553,14 +553,14 @@ svg {
 
 img {
   border: 0 none;
-  max-width: 100%;
+  max-width: 60px;
   height: auto;
 }
 
 img {
   vertical-align: middle;
   border-style: none;
-  max-width: 100%;
+  max-width: 60px;
   height: auto;
 }
 
