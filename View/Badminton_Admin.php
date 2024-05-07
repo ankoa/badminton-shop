@@ -37,80 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 </script>
 
-    <script>
-   function thongKe(event) {
-    event.preventDefault(); // Prevent the default form behavior
-
-    var startDate = document.getElementById('datestart2').value;
-    var endDate = document.getElementById('dateend2').value;
-
-    // Create an AJAX request to your PHP script
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'doanhso.php', true);
-    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            var salesData = JSON.parse(this.responseText);
-
-            // Get the canvas element where the chart will be drawn
-            var ctx = document.getElementById('salesChart').getContext('2d');
-
-            // Define the chart data and options
-            var chartData = {
-                labels: salesData.labels,
-                datasets: [{
-                    label: 'Doanh số thu được',
-                    data: salesData.sales,
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1
-                }]
-            };
-
-            var chartOptions = {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            };
-
-            // Create the chart
-            var myChart = new Chart(ctx, {
-                type: 'bar',
-                data: chartData,
-                options: chartOptions
-            });
-
-            // Get the table element
-            var table = document.getElementById('quanlydoanhso');
-
-            // Clear the table
-            while (table.rows.length > 1) {
-                table.deleteRow(1);
-            }
-
-            // Populate the table with sales data
-            for (var i = 0; i < salesData.labels.length; i++) {
-                var row = table.insertRow(-1); // Insert a new row at the end of the table
-                var cell1 = row.insertCell(0); // Insert a new cell in the row
-                var cell2 = row.insertCell(1); // Insert a new cell in the row
-                var cell3 = row.insertCell(2); // Insert a new cell in the row
-
-                cell1.innerHTML = salesData.labels[i]; // Set the cell content (date)
-                cell2.innerHTML = 'N/A'; // Set the cell content (quantity sold)
-                cell3.innerHTML = salesData.sales[i]; // Set the cell content (sales amount)
-            }
-        }
-    };
-
-    // Send the form data in the AJAX request
-    var formData = 'startDate=' + startDate + '&endDate=' + endDate;
-    xhr.send(formData);
-}
-</script>
-
-<script>
+ <script>
  // JavaScript để hiển thị và ẩn popup
  function showPopup() {
         var popup = document.getElementById('popup');
@@ -138,8 +65,206 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         xhr.send();
     
 }
+function changeTransactionStatus(transactionID, currentStatus) {
+    // Xác định trạng thái mới dựa trên trạng thái hiện tại
+    var newStatus = '';
+    if (currentStatus === 'Chờ duyệt') {
+        newStatus = 'Đã duyệt';
+    } else {
+        newStatus = 'Chờ duyệt';
+    }
 
-    </script>
+    // Tạo một yêu cầu AJAX để cập nhật trạng thái
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'update_transaction_status.php?transactionID=' + encodeURIComponent(transactionID) + '&status=' + encodeURIComponent(newStatus), true);
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var response = xhr.responseText.trim();
+            console.log(response);
+            if (response === 'success') {
+                alert('Cập nhật trạng thái thành công!');
+                window.location.reload();
+            } else {
+                alert('Cập nhật trạng thái thất bại!');
+            }
+        }
+    };
+
+    // Gửi yêu cầu
+    xhr.send();
+}
+
+
+
+var myChart; // Khai báo biến myChart ở ngoài hàm
+
+function thongKe(event) {
+    event.preventDefault(); // Prevent the default form behavior
+
+    var startDate = document.getElementById('datestart2').value;
+    var endDate = document.getElementById('dateend2').value;
+
+    // Create an AJAX request to your PHP script
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'doanhso.php?startDate=' + encodeURIComponent(startDate) + '&endDate=' + encodeURIComponent(endDate), true);
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            console.log
+            var salesData = JSON.parse(this.responseText);
+
+            // Get the canvas element where the chart will be drawn
+            var ctx = document.getElementById('salesChart').getContext('2d');
+             // Destroy the old charts if they exist
+             if (myChart) {
+                myChart.destroy();
+            }
+            // Define the chart data and options
+            var chartData = {
+                labels: salesData.labels,
+                datasets: [{
+                    label: 'Doanh số thu được',
+                    data: salesData.sales,
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            };
+
+            var chartOptions = {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            };
+
+            // Create the chart using the existing myChart variable
+            myChart = new Chart(ctx, {
+                type: 'bar',
+                data: chartData,
+                options: chartOptions
+            });
+
+            // Get the table element
+            var table = document.getElementById('quanlydoanhso');
+
+            // Clear the table
+            while (table.rows.length > 1) {
+                table.deleteRow(1);
+            }
+
+            // Populate the table with sales data
+            for (var i = 0; i < salesData.labels.length; i++) {
+                var row = table.insertRow(-1); // Insert a new row at the end of the table
+                var cell1 = row.insertCell(0); // Insert a new cell in the row
+                var cell2 = row.insertCell(1); // Insert a new cell in the row
+            
+                cell1.innerHTML = salesData.labels[i];
+                cell2.innerHTML = salesData.sales[i];
+            }
+
+            // Calculate total sales
+            var totalSales = salesData.sales.reduce((a, b) => a + b, 0);
+
+            // Add a new row to display total sales
+            var totalRow = table.insertRow(-1);
+            var totalCell1 = totalRow.insertCell(0);
+            var totalCell2 = totalRow.insertCell(1);
+           
+            totalCell1.innerHTML = "Tổng";
+            totalCell2.innerHTML = totalSales;
+        }
+    };
+
+    // Send the request
+    xhr.send();
+}
+
+function thongKeByBrand(event) {
+    event.preventDefault(); // Prevent the default form behavior
+
+    var startDate = document.getElementById('datestart2').value;
+    var endDate = document.getElementById('dateend2').value;
+
+    // Create an AJAX request to your new PHP script
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'doanhsotheohang.php?startDate=' + encodeURIComponent(startDate) + '&endDate=' + encodeURIComponent(endDate), true);
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var salesData = JSON.parse(this.responseText);
+
+            // Get the canvas element where the chart will be drawn
+            var ctx = document.getElementById('salesChart').getContext('2d');
+            // Destroy the old chart if they exist
+            if (myChart) {
+                myChart.destroy();
+            }
+
+            // Check if there is no sales data
+            if (salesData.labels.length === 0) {
+               alert('Không có doanh thu để hiển thị');
+                return;
+            } else {
+  
+            }
+
+            // Define the chart data and options
+            var chartData = {
+                labels: salesData.labels, // This will now be brand IDs
+                datasets: [{
+                    label: 'Tổng doanh số',
+                    data: salesData.totalSales, // This will now be total sales by brand
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            };
+
+            var chartOptions = {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            };
+
+            // Create the chart using the existing myChart variable
+            myChart = new Chart(ctx, {
+                type: 'bar', // Change this to 'bar' to better represent sales by brand
+                data: chartData,
+                options: chartOptions
+            });
+
+            // Get the table element
+            var table = document.getElementById('quanlydoanhso');
+
+            // Clear the table
+            while (table.rows.length > 1) {
+                table.deleteRow(1);
+            }
+
+            // Populate the table with sales data
+            for (var i = 0; i < salesData.labels.length; i++) {
+                var row = table.insertRow(-1); // Insert a new row at the end of the table
+                var cell1 = row.insertCell(0); // Insert a new cell in the row
+                var cell2 = row.insertCell(1); // Insert a new cell in the row
+                cell1.innerHTML = salesData.labels[i]; // This will now be brand ID
+                cell2.innerHTML = salesData.totalSales[i]; // This will now be total sales for the brand
+            }
+        }
+    };
+
+    // Send the request
+    xhr.send();
+}
+
+
+
 
 
 </script>
@@ -188,38 +313,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </thead>
         </table>
     </div>
-    <div id="doanhso-content" class="content-section">
-
-
-
-
-        <!-- Quản lý doanh số -->
-        <h1 style="padding-left: 10%;"> TÌM KIẾM THEO NGÀY</h1>
-        <table class="tabledoanhso" id="quanlydoanhso" cellpadding="50" cellspacing="100">
-            <thead>
-                <tr>
-                    <th>Hãng</th>
-                    <th>Số lượng bán</th>
-                    <th>Doanh số thu được</th>
-                </tr>
-            </thead>
-        </table>
-        <form id="frmdoanhso">
-            <div class="containbox">
-                <label for="datestart">Ngày bắt đầu:</label>
-                <input type="date" id="datestart2">
-            </div>
-            <div class="containbox">
-                <label for="dateend">Ngày kết thúc:</label>
-                <input type="date" id="dateend2">
-            </div>
-            <button type="submit" style="margin-top: 10px; margin-left: 10px;" onclick="thongKe();"> Tìm kiếm </button>
-            <h2 id="tongdoanhso"> </h2>
-
-
-        </form>
-    </div>
-
+       <div id="doanhso-content" class="content-section">
+            <form id="frmdoanhso">
+                <h1 style="padding-left: 10%;"> TÌM KIẾM THEO NGÀY</h1>
+                <div class="containbox">
+                    <label for="datestart">Ngày bắt đầu:</label>
+                    <input type="date" id="datestart2">
+                </div>
+                <div class="containbox">
+                    <label for="dateend">Ngày kết thúc:</label>
+                    <input type="date" id="dateend2">
+                </div>
+                <button type="submit" style="margin-top: 10px; margin-left: 10px;" onclick="thongKe(event);"> Thống kê doanh số  </button>
+                <button type="submit" style="margin-top: 10px; margin-left: 10px;" onclick="thongKeByBrand(event);"> Thống kê doanh số theo hãng </button>
+                    <h2 id="tongdoanhso">  </h2>
+                    <canvas id="salesChart" width="400" height="400"></canvas>
+                    <table class="tabledoanhso" id="quanlydoanhso" cellpadding="50" cellspacing="100"> 
+                        
+                        <thead>
+                    <tr>
+                        <th>Ngày</th>
+                        <th>Doanh số thu được</th>
+                    </tr>
+                    </thead>
+                    </table>
+                
+            </form>        
+        </div>
 
 
 
@@ -488,7 +608,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
 
-          <div id="hoadon-content" class="content-section">
+          
+        <div id="hoadon-content" class="content-section">
       
 
        
@@ -513,7 +634,9 @@ if ($transactions) {
                 <th>Note</th>
                 <th>Time</th>
                 <th>Address</th>
+                <th>Status</th>
                 <th>Detail</th>
+                <th>Action</th>
             </tr>";
 
     // Duyệt qua từng giao dịch và in ra thông tin
@@ -524,7 +647,8 @@ if ($transactions) {
             $transaction['total'],
             $transaction['note'],
             $transaction['time'],
-            $transaction['address']
+            $transaction['address'],
+            $transaction['status']
         );
         echo "<tr>
         <td>" . $transactionObj->getTransactionID() . "</td>
@@ -532,7 +656,10 @@ if ($transactions) {
         <td>" . $transactionObj->getNote() . "</td>
         <td>" . $transactionObj->getTime() . "</td>
         <td>" . $transactionObj->getAddress() . "</td>
+        <td>" . $transactionObj->getStatus() . "</td>
         <td><button onclick='showTransactionDetails(\"" . $transactionObj->getTransactionID() . "\")'>Chi tiết</button></td>
+        <td><button onclick='changeTransactionStatus(\"" . $transactionObj->getTransactionID() . "\", \"" . $transactionObj->getStatus() . "\")'>Chuyển trạng thái</button></td>;
+
     </tr>";
     
 
