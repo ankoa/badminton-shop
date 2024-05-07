@@ -7,7 +7,7 @@ const initSlider = () => {
 
     // Function to slide images
     const slideImages = (direction) => {
-        const scrollAmount = direction === -1 ? -imageWidth - 80 : imageWidth + 80;
+        const scrollAmount = imageList.clientWidth * direction;
         imageList.scrollBy({ left: scrollAmount, behavior: "smooth" });
     };
 

@@ -16,6 +16,10 @@ header{
     display: block;
     justify-content: space-between;
 }
+.container {
+    padding-right: 45px;
+    padding-left: 45px;
+}
 .header_contentTop{
     display: flex;
     justify-content: space-between;
@@ -234,7 +238,7 @@ header{
 
 }
 #main{
-    height: 80%;
+    height: auto;
     width: 100%;
 }
 
