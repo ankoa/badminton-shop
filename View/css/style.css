@@ -16,6 +16,10 @@ header{
     display: block;
     justify-content: space-between;
 }
+.container {
+    padding-right: 45px;
+    padding-left: 45px;
+}
 .header_contentTop{
     display: flex;
     justify-content: space-between;
@@ -236,8 +240,12 @@ header{
 
 }
 #main{
+/* <<<<<<< HEAD
     height: 85%;
-    width: 100%;
+======= */
+    height: auto;
+/* >>>>>>> 3912cbcf9b66e5e45df85c0c51a756359cfa82b8
+ */    width: 100%;
 }
 
 .footer{

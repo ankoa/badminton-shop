@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web dụng cụ thể thao cầu lông</title>
+<!-- <<<<<<< HEAD
+=======
+    <link rel="stylesheet" href="../View/css/style.css">
+    <link href="https://cdn.shopvnb.com/themes/css/breadcrumb_style.scss.css" rel="stylesheet" type="text/css" />
+>>>>>>> 3912cbcf9b66e5e45df85c0c51a756359cfa82b8 -->
     <?php
     if(isset($_GET['control'])) {
         if($_GET['control']=="ProductCategory") {
@@ -42,7 +47,24 @@
 
 <body>
     <div class="wrapper" id="wrapper" >
-        
+        <?php
+        if(isset($_GET['control'])) {
+            if($_GET['control']=="ProductCategory") {
+                include("../View/user/bread-crumb.php");
+            } else if($_GET['control']=="ProductDetail") {
+                include("../View/user/bread-crumb.php");
+            } else if($_GET['control']=="checkDonHang") {
+                include("../View/user/bread-crumb.php");
+            } else if($_GET['control']=="IntroduceCategory") {
+                include("../View/user/bread-crumb.php");
+            } else if($_GET['control']=="Cart") {
+                include("../View/user/bread-crumb.php");
+            }
+        } else {
+            
+        }
+            
+        ?>
         <?php
             include("../Controllers/main.php");
             include("../View/user/footer.php");
