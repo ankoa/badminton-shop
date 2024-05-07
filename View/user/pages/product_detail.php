@@ -117,7 +117,6 @@ if ($catalog->getName() == "Racket") {
                                 // Đảm bảo rằng biến imagePaths đã được định nghĩa trước
                                 const imagePaths = <?php echo json_encode($imagePaths); ?>;
                                 const productID= <?php echo json_encode($productID); ?>;
-                                console.log(imagePaths);
                                 // Lặp qua mỗi đường dẫn hình ảnh và chèn chúng vào danh sách
                                 for(var i=0;i<imagePaths.length;i++) {
                                     // Tạo một thẻ img và đặt thuộc tính src và alt
@@ -428,6 +427,12 @@ if ($catalog->getName() == "Racket") {
     <div id="product-data-quantity" data-quantity="<?php echo htmlspecialchars(json_encode($product)); ?>"></div>
     <div id="product-data-user" data-user="<?php echo htmlspecialchars(json_encode($_SESSION['username'])); ?>"></div>
     <div id="catalog-data" data-catalog="<?php echo htmlspecialchars(json_encode($catalog->getName())); ?>"></div>
+    <div id="image-list-data" data-array=""></div>
+    <script>
+        var myArray = <?php echo json_encode($result) ?>;
+        var divElement = document.getElementById("image-list-data");
+        divElement.dataset.array = JSON.stringify(myArray);
+    </script>
 </body>
 
 </html>
