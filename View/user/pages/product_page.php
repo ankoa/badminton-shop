@@ -9,8 +9,15 @@ require_once __DIR__ . '/../../../Model/ModelVariantDetail.php';
 $modelCatalog = new ModelCatalog();
 // Khởi tạo đối tượng ModelProduct
 $modelProduct = new ModelProduct();
-$catalogID = $_GET['id'];
-$catalog = $modelCatalog->getCatalogByID($catalogID);
+if(isset($catalogID)){
+    $catalogID = $_GET['id'];
+    $catalog = $modelCatalog->getCatalogByID($catalogID);
+}else $catalog = null;
+if(isset($textname)){
+    $textname = $_GET['name'];
+    $listproduct = $modelProduct->searchProductsByName($textname);
+}
+
 
 // Lấy thông tin sản phẩm từ cơ sở dữ liệu dựa trên productID
 $productID = 16;

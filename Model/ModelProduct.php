@@ -303,4 +303,28 @@ class ModelProduct
         $query = "DELETE FROM product WHERE productID = '$productID'";
         return $this->db->delete($query);
     }
+    public function searchProductsByName($searchString)
+{
+    $query = "SELECT * FROM product WHERE name LIKE '%$searchString%'";
+    $result = $this->db->select($query);
+    $products = [];
+    if ($result && $result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $product = new Product(
+                $row['productID'],
+                $row['brandID'],
+                $row['catalogID'],
+                $row['name'],
+                $row['description'],
+                $row['status'],
+                $row['price'],
+                $row['discount'],
+                $row['url_image']
+            );
+            $products[] = $product;
+        }
+    }
+    return $products;
+}
+
 }
