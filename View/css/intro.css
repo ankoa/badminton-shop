@@ -7,9 +7,9 @@
 }
 
 .time-post-r{
-    margin-top:-18px;
+    margin-top: -18px;
     padding-bottom: 20px;
-    padding-right: 62%;
+    padding-right: 260px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -37,14 +37,14 @@
 }
 
 .right-content{
-    width: 65%; 
+    width: 60%; 
     float: right; 
     box-sizing: border-box; 
     padding-right: 15%;
 }
 
 .left-content{
-    width: auto; 
+    max-width: auto; 
     float: left; 
     box-sizing: content-box; 
     padding-left: 20%; 
@@ -119,8 +119,8 @@
 }
 
 .svg-inline{
-    width: 15px;
-    height: 15px;
+    width: 20px;
+    height: 18px;
     margin-top: -5px;
     margin-right: 2px;
 }
