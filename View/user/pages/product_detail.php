@@ -425,7 +425,7 @@ if ($catalog->getName() == "Racket") {
     <div id="product-data-get" data-product="<?php echo htmlspecialchars(json_encode($product)); ?>"></div>
     <div id="login-data-get" data-login="<?php echo isset($_SESSION['login']) ? htmlspecialchars(json_encode($_SESSION['login'])) : 'false'; ?>"></div>
     <div id="product-data-quantity" data-quantity="<?php echo htmlspecialchars(json_encode($product)); ?>"></div>
-    <div id="product-data-user" data-user="<?php echo htmlspecialchars(json_encode($_SESSION['username'])); ?>"></div>
+    <div id="product-data-user" data-user="<?php echo isset($_SESSION['username']) ? htmlspecialchars(json_encode($_SESSION['username'])) : 'null'; ?>"></div>
     <div id="catalog-data" data-catalog="<?php echo htmlspecialchars(json_encode($catalog->getName())); ?>"></div>
     <div id="image-list-data" data-array=""></div>
     <script>

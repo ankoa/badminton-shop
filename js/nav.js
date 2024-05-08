@@ -43,7 +43,7 @@ getAllByCatalogAndBrand()
 
 
 
-function loadPage(page, productsPerPage, id) {
+function loadPage(page, productsPerPage, id, brandID) {
     var xhttp = new XMLHttpRequest();
 
     xhttp.onreadystatechange = function () {
@@ -54,7 +54,6 @@ function loadPage(page, productsPerPage, id) {
                 var inputString = listVariantDetails[i].url;
                 var darkNavyRegex = /^[^:]+/;
                 var match = inputString.match(darkNavyRegex);
-                console.log(match);
                 htmlContent += `<div class="col-6 col-md-3">
                     <div class="item_product_main">
                         <div class="product-thumbnail">
@@ -87,7 +86,10 @@ function loadPage(page, productsPerPage, id) {
         }
     };
 
-    xhttp.open("GET", "ProductNavController.php?page=" + parseInt(page) + "&productsPerPage=" + parseInt(productsPerPage) + "&id=" + parseInt(id), true);
+    if(brandID == null)
+        xhttp.open("GET", "ProductNavController.php?page=" + parseInt(page) + "&productsPerPage=" + parseInt(productsPerPage) + "&id=" + parseInt(id), true);
+    else
+        xhttp.open("GET", "ProductNavController.php?page=" + parseInt(page) + "&productsPerPage=" + parseInt(productsPerPage) + "&id=" + parseInt(id) + "&brandID=" + parseInt(brandID), true);
     xhttp.send();
 }
 
@@ -95,15 +97,17 @@ function loadPageFilter(page, productsPerPage) {
 
     var offset = (page - 1) * productsPerPage;
     var productsOnCurrentPage = filterArray.slice(offset, offset + productsPerPage);
-
     var htmlContent = '';
     for (var i = 0; i < productsOnCurrentPage.length; i++) {
+        var inputString = productsOnCurrentPage[i].url;
+        var darkNavyRegex = /^[^:]+/;
+        var match = inputString.match(darkNavyRegex);
         htmlContent += `<div class="col-6 col-md-3">
                     <div class="item_product_main">
                         <div class="product-thumbnail">
                             <a class="product_overlay" href="index.php?control=ProductDetail&productID=`+ productsOnCurrentPage[i].productID + `" title=""></a>
                             <a class="image_thumb" href="index.php?control=ProductDetail&productID=`+ productsOnCurrentPage[i].productID + `" title="">
-                                <img width="300" height="300" class="lazyload loaded" src="https://cdn.shopvnb.com/img/300x300/uploads/gallery/vot-cau-long-victor-brave-sword-ltd-pro-noi-dia-taiwan-jpg-4_1711143954.webp" data-src="https://cdn.shopvnb.com/img/300x300/uploads/gallery/vot-cau-long-victor-brave-sword-ltd-pro-noi-dia-taiwan-jpg-4_1711143954.webp" alt="Vợt Cầu Lông Victor Brave Sword LTD Pro (Nội Địa Taiwan)" data-was-processed="true">
+                                <img width="300" height="300" class="lazyload loaded" src="../View/images/product/`+ productsOnCurrentPage[i].productID + `/`+ match + `/`+ productsOnCurrentPage[i].productID + `.1.png" data-src="https://cdn.shopvnb.com/img/300x300/uploads/gallery/vot-cau-long-victor-brave-sword-ltd-pro-noi-dia-taiwan-jpg-4_1711143954.webp" alt="Vợt Cầu Lông Victor Brave Sword LTD Pro (Nội Địa Taiwan)" data-was-processed="true">
                             </a>
                         </div>
                         <div class="product-info">
@@ -153,7 +157,7 @@ function loadNavFilter() {
 }
 
 
-function loadNav(productsPerPage, id) {
+function loadNav(productsPerPage, id, brandID) {
     var xhttp = new XMLHttpRequest();
 
     xhttp.onreadystatechange = function () {
@@ -163,11 +167,11 @@ function loadNav(productsPerPage, id) {
 
             for (var i = 1; i <= totalPages; i++) {
                 if (i == 1) {
-                    htmlContent += '<li onclick="loadPage(' + i + ', ' + productsPerPage + ', ' + id + ')" class="current-page active" data-page="' + i + '" data-products-per-page="' + productsPerPage + '">';
+                    htmlContent += '<li onclick="loadPage(' + i + ', ' + productsPerPage + ', ' + id + ', ' + brandID + ')" class="current-page active" data-page="' + i + '" data-products-per-page="' + productsPerPage + '">';
                     htmlContent += '<a>' + i + '</a>';
                     htmlContent += '</li>';
                 } else {
-                    htmlContent += '<li onclick="loadPage(' + i + ', ' + productsPerPage + ', ' + id + ')" data-page="' + i + '" data-products-per-page="' + productsPerPage + '">';
+                    htmlContent += '<li onclick="loadPage(' + i + ', ' + productsPerPage + ', ' + id + ', ' + brandID + ')" data-page="' + i + '" data-products-per-page="' + productsPerPage + '">';
                     htmlContent += '<a>' + i + '</a>';
                     htmlContent += '</li>';
                 }
@@ -176,8 +180,11 @@ function loadNav(productsPerPage, id) {
             document.getElementById("number-page").innerHTML = htmlContent;
         }
     };
-
-    xhttp.open("GET", "ProductNavController.php?id=" + id + "&productsPerPage=" + productsPerPage, true);
+    
+    if(brandID==null)
+        xhttp.open("GET", "ProductNavController.php?id=" + id + "&productsPerPage=" + productsPerPage, true);
+    else
+        xhttp.open("GET", "ProductNavController.php?id=" + id + "&productsPerPage=" + productsPerPage + "&brandID=" + brandID, true);
     xhttp.send();
 }
 
@@ -187,8 +194,8 @@ function loadPerPage() {
     var productsPerPage = document.getElementById("mySelect").value;
     var id = getIdFromUrl();
 
-    loadPage(1, productsPerPage, id);
-    loadNav(productsPerPage, id);
+    loadPage(1, productsPerPage, id, getBrandIdFromUrl());
+    loadNav(productsPerPage, id, getBrandIdFromUrl());
 }
 
 function loadPerPageFilter() {
@@ -208,8 +215,8 @@ window.addEventListener("load", function () {
     var id = getIdFromUrl();
 
     // Gọi loadPage và loadNav với id và số 6
-    loadNav(8, id);
-    loadPage(1, 8, id);
+    loadNav(8, id, getBrandIdFromUrl());
+    loadPage(1, 8, id, getBrandIdFromUrl());
 
     if (countFilter == 0) {
         document.getElementById("filter-container").classList.add("hide");
@@ -217,6 +224,17 @@ window.addEventListener("load", function () {
 
     uncheckAllInputs()
 });
+
+function getBrandIdFromUrl() {
+    // Lấy đường dẫn URL hiện tại
+    var url = window.location.href;
+
+    // Phân tích đường dẫn URL để lấy tham số id
+    var urlParams = new URLSearchParams(new URL(url).search);
+    var id = urlParams.get('brandID');
+
+    return id;
+}
 
 function getIdFromUrl() {
     // Lấy đường dẫn URL hiện tại
@@ -301,7 +319,7 @@ function clearAllFiltered() {
     filterContainerElement.classList.add("hide");
 
     loadNav(getProductPerPage(),getIdFromUrl());
-    loadPage(1,getProductPerPage(),getIdFromUrl());
+    loadPage(1,getProductPerPage(),getIdFromUrl(), getBrandIdFromUrl());
 }
 
 function sapXep(arr, key) {
@@ -449,8 +467,8 @@ $(document).ready(function () {
             var id = getIdFromUrl();
 
             // Gọi loadPage và loadNav với id và số 6
-            loadNav(8, id);
-            loadPage(1, 8, id);
+            loadNav(8, id, getBrandIdFromUrl());
+            loadPage(1, 8, id, getBrandIdFromUrl());
 
             if (countFilter == 0) {
                 document.getElementById("filter-container").classList.add("hide");
