@@ -1,43 +1,53 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="stylesheet" href="./bootstrap-5.3.2-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="./css/Badminton_Admin.css">
+    <link rel="stylesheet" href="./Badminton_Admin.css">
+
     <title>Admin</title>
-</head>
-    <?php
+    <script>
+      function showContent(contentId) {
+     
+     var contentSections = document.getElementsByClassName('content-section');
+     for (var i = 0; i < contentSections.length; i++) {
+         contentSections[i].style.display = 'none';
+     }
 
-require_once __DIR__ . '../../Model/ModelTransaction.php';
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $startDate = $_POST['startDate'];
-    $endDate = $_POST['endDate'];
+  
+     var selectedContent = document.getElementById(contentId);
+     if (selectedContent) 
+         selectedContent.style.display = 'block';}
 
-    // Tạo một đối tượng ModelTransaction và gọi hàm displayTotalSales
-    $modelTransaction = new ModelTransaction();
-    $modelTransaction->displayTotalSales($startDate, $endDate);
+ // Function to save the current content section to localStorage
+function saveCurrentContent(contentId) {
+    localStorage.setItem('currentContent', contentId);
 }
-?>
-<script>
-    function showContent(contentId) {
 
+// Function to show the content section based on localStorage data
+function restoreContent() {
+    var currentContent = localStorage.getItem('currentContent');
+    if (currentContent) {
         var contentSections = document.getElementsByClassName('content-section');
         for (var i = 0; i < contentSections.length; i++) {
             contentSections[i].style.display = 'none';
         }
-
-
-        var selectedContent = document.getElementById(contentId);
-        if (selectedContent)
+        var selectedContent = document.getElementById(currentContent);
+        if (selectedContent) {
             selectedContent.style.display = 'block';
-
+        }
     }
-</script>
+}
 
- <script>
+// Call restoreContent() when the page is loaded to restore the previous content section
+window.onload = restoreContent;
+
+        </script>
+
+<script>
  // JavaScript để hiển thị và ẩn popup
  function showPopup() {
         var popup = document.getElementById('popup');
@@ -186,134 +196,288 @@ function thongKeByBrand(event) {
     event.preventDefault(); // Prevent the default form behavior
 
     var startDate = document.getElementById('datestart2').value;
-    var endDate = document.getElementById('dateend2').value;
+        var endDate = document.getElementById('dateend2').value;
 
-    // Create an AJAX request to your new PHP script
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'doanhsotheohang.php?startDate=' + encodeURIComponent(startDate) + '&endDate=' + encodeURIComponent(endDate), true);
+        // Create an AJAX request to your new PHP script
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'doanhsotheohang.php?startDate=' + encodeURIComponent(startDate) + '&endDate=' + encodeURIComponent(endDate), true);
 
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            var salesData = JSON.parse(this.responseText);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                var salesData = JSON.parse(this.responseText);
 
-            // Get the canvas element where the chart will be drawn
-            var ctx = document.getElementById('salesChart').getContext('2d');
-            // Destroy the old chart if they exist
-            if (myChart) {
-                myChart.destroy();
-            }
-
-            // Check if there is no sales data
-            if (salesData.labels.length === 0) {
-               alert('Không có doanh thu để hiển thị');
-                return;
-            } else {
-  
-            }
-
-            // Define the chart data and options
-            var chartData = {
-                labels: salesData.labels, // This will now be brand IDs
-                datasets: [{
-                    label: 'Tổng doanh số',
-                    data: salesData.totalSales, // This will now be total sales by brand
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
-                }]
-            };
-
-            var chartOptions = {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
+                // Get the canvas element where the chart will be drawn
+                var ctx = document.getElementById('salesChart').getContext('2d');
+                // Destroy the old chart if they exist
+                if (myChart) {
+                    myChart.destroy();
                 }
-            };
 
-            // Create the chart using the existing myChart variable
-            myChart = new Chart(ctx, {
-                type: 'bar', // Change this to 'bar' to better represent sales by brand
-                data: chartData,
-                options: chartOptions
-            });
+                // Check if there is no sales data
+                if (salesData.labels.length === 0) {
+                alert('Không có doanh thu để hiển thị');
+                    return;
+                } else {
+    
+                }
 
-            // Get the table element
-            var table = document.getElementById('quanlydoanhso');
+                // Define the chart data and options
+                var chartData = {
+                    labels: salesData.labels, // This will now be brand IDs
+                    datasets: [{
+                        label: 'Tổng doanh số',
+                        data: salesData.totalSales, // This will now be total sales by brand
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                };
 
-            // Clear the table
-            while (table.rows.length > 1) {
-                table.deleteRow(1);
+                var chartOptions = {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                };
+
+                // Create the chart using the existing myChart variable
+                myChart = new Chart(ctx, {
+                    type: 'bar', // Change this to 'bar' to better represent sales by brand
+                    data: chartData,
+                    options: chartOptions
+                });
+
+                // Get the table element
+                var table = document.getElementById('quanlydoanhso');
+
+                // Clear the table
+                while (table.rows.length > 1) {
+                    table.deleteRow(1);
+                }
+
+                // Populate the table with sales data
+                for (var i = 0; i < salesData.labels.length; i++) {
+                    var row = table.insertRow(-1); // Insert a new row at the end of the table
+                    var cell1 = row.insertCell(0); // Insert a new cell in the row
+                    var cell2 = row.insertCell(1); // Insert a new cell in the row
+                    cell1.innerHTML = salesData.labels[i]; // This will now be brand ID
+                    cell2.innerHTML = salesData.totalSales[i]; // This will now be total sales for the brand
+                }
             }
+        };
 
-            // Populate the table with sales data
-            for (var i = 0; i < salesData.labels.length; i++) {
-                var row = table.insertRow(-1); // Insert a new row at the end of the table
-                var cell1 = row.insertCell(0); // Insert a new cell in the row
-                var cell2 = row.insertCell(1); // Insert a new cell in the row
-                cell1.innerHTML = salesData.labels[i]; // This will now be brand ID
-                cell2.innerHTML = salesData.totalSales[i]; // This will now be total sales for the brand
-            }
-        }
-    };
-
-    // Send the request
-    xhr.send();
-}
+        // Send the request
+        xhr.send();
+    }
 
 
 
+    </script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-
-</script>
-     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<body>
-    <div>
+    </head>
+    <body>
+        <div>
         <div class="top_header">
-
+        
         </div>
-    </div>
-
-    <div id="menu">
+        </div>
+        
+        <div id="menu">
         <ul>
-            <li class="icon"><i class="fa-solid fa-house"></i><a href="#" onclick="showContent('home-content')">Trang chủ </a></li>
-            <li class="icon" id="taikhoan"><i class="fa-solid fa-user"></i><a href="#" onclick="showContent('taikhoan-content')">Quản lý tài khoản</a></li>
-            <li class="icon" id="doanhso"><i class="fa-solid fa-chart-simple"></i><a href="#" onclick="showContent('doanhso-content')">Doanh số</a></li>
-            <li class="icon" id="sanpham"><i class="fa-solid fa-laptop"></i><a href="#" onclick="showContent('sanpham-content')">Quản lý sản phẩm</a></li>
-            <li class="icon" id="hoadon"><i class="fa-solid fa-receipt"></i><a href="#" onclick="showContent('hoadon-content')">Quản lý hóa đơn</a></li>
-            <li class="icon" id="dangxuat"><i class="fa-solid fa-right-from-bracket"></i><a href="#" onclick="logout()">Đăng xuất</a></li>
-
-        </ul>
-    </div>
-    <div id="home-content" class="content-section">
-        <div class="selling-products">
-            <h1 class="text-center headerad">QUẢN LÝ CỬA HÀNG CẦU LÔNG</h1>
-            <div class="item-selling-products" id="item-selling-products">
-            </div>
+                   <li class="icon" ><i class="fa-solid fa-house"></i><a href="#" onclick="saveCurrentContent('home-content'); showContent('home-content')">Trang chủ </a></li>
+                    <li class="icon" id="taikhoan"><i class="fa-solid fa-user"></i><a href="#" onclick="saveCurrentContent('taikhoan-content');showContent('taikhoan-content')">Quản lý tài khoản</a></li>
+                    <li class="icon" id="sanpham"><i class="fa-solid fa-laptop"></i><a href="#" onclick="saveCurrentContent('sanpham-content');showContent('sanpham-content')">Quản lý sản phẩm</a></li>
+                    <li class="icon" id="loaisanpham"><i class="fa-solid fa-laptop"></i><a href="#" onclick="saveCurrentContent('loaisanpham-content');showContent('loaisanpham-content')">Quản lý loại sản phẩm</a></li>
+                    <li class="icon" id="hoadon"><i class="fa-solid fa-receipt"></i><a href="#" onclick="saveCurrentContent('hoadon-content');showContent('hoadon-content')">Quản lý hóa đơn</a></li>
+                    <li class="icon" id="doanhso"><i class="fa-solid fa-chart-simple"></i><a href="#" onclick="saveCurrentContent('doanhso-content');showContent('doanhso-content')">Doanh số</a></li>
+                    <li class="icon" id="dangxuat"><i class="fa-solid fa-right-from-bracket"></i><a href="#"  onclick="logout()">Đăng xuất</a></li>
+                    
+                </ul>
         </div>
-    </div>
+        <div id="home-content" class="content-section"> 
+                <div class="selling-products">
+                    <h1 class="text-center headerad">QUẢN LÝ CỬA HÀNG CẦU LÔNG</h1>
+                    <div class="item-selling-products" id="item-selling-products">
+                
 
+                
+                        </div>
+                </div>   
+            </div>
+        
 
-
-
-    <!-- Quản lý tài khoản -->
     <div id="taikhoan-content" class="content-section">
-        <h1 class="headerad">QUẢN LÝ TÀI KHOẢN</h1>
-        <table class="tabletk" id="quanlytkTable" cellpadding="50" cellspacing="100">
-            <thead>
-                <tr>
-                    <th>Email</th>
-                    <th>Mật khẩu</th>
-                    <th>Ngày đăng ký</th>
-                    <th>Quyền</th>
-                    <th>Xóa</th>
-                </tr>
-            </thead>
-        </table>
+        <div class="headerad">Quản lý tài khoản</div>
+        <?php
+
+    require_once __DIR__ . '../../Model/ModelUser.php'; 
+
+    $modelUser = new ModelUser();
+
+    // Get all users
+    $users = $modelUser->getAllUsers();
+
+
+        // Check if there are any users
+        if ($users) {
+            // Print table header
+            echo "<table border='1'>
+                    <tr>
+                        <th>User ID</th>
+                        <th>Username</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>Point</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>";
+
+            // Loop through each user and print their information
+            foreach ($users as $user) {
+                echo "<tr>
+                    <td>" . $user['userID'] . "</td>
+                    <td>" . $user['username'] . "</td>
+                    <td>" . $user['name'] . "</td>
+                    <td>" . $user['mail'] . "</td>
+                    <td>" . $user['phoneNumber'] . "</td>
+                    <td>" . $user['point'] . "</td>
+                    <td>" . $user['type'] . "</td>
+                    <td>" . $user['status'] . "</td>
+                    <td><button onclick='editUser(\"" . $user['userID'] . "\")'>Edit</button></td>
+                </tr>";
+            }
+
+            // Close the table tag
+            echo "</table>";
+        } else {
+            // If there are no users, print a message
+            echo "No users found.";
+        }
+
+
+
+
+    ?>
     </div>
-       <div id="doanhso-content" class="content-section">
+          <div id="loaisanpham-content" class="content-section">
+                <div class="headerad"> QUẢN LÝ LOẠI SẢN PHẨM</div>
+        
+    <?php
+    require_once __DIR__ . '/../Model/ModelBrand.php';
+
+    $modelBrand = new ModelBrand();
+
+    $brands = $modelBrand->getAllBrands();
+    if ($brands) {
+        echo "<table border='1'>
+                <tr>
+                    <th>Brand ID</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>";
+        foreach ($brands as $brand) {
+            // Assuming $modelBrand->getAllBrands() returns an array of objects of type Brand
+            echo "<tr>
+                    <td>" . $brand->getBrandID() . "</td>
+                    <td>" . $brand->getName() . "</td>
+                    <td>" . $brand->getDescription() . "</td>
+                    <td>" . $brand->getStatus() . "</td>
+                    <td>
+                    <form method='get'>
+                    <input type='hidden' name='brand_id' value='" . $brand->getBrandID() . "'>
+                    <button type='submit' name='delete_brand'>Ngừng kinh doanh</button>
+                    </td>
+                </tr>";
+        }
+        echo "</table>";
+    }
+    ?>
+            <?php
+    require_once __DIR__ . '/../Model/ModelBrand.php';
+
+    // Function to add a new brand
+    function addBrand($name, $description, $status) {
+        $modelBrand = new ModelBrand();
+        return $modelBrand->addBrand($name, $description, $status);
+    }
+
+    
+    // Check if the form is submitted
+    if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['add_brand']) && isset($_GET['productBrand']) && isset($_GET['motatxt'])) {
+        $name = $_GET['productBrand'];
+        $description = $_GET['motatxt'];
+        $status = '1';
+        
+        // Call the function to add the brand
+        $result = addBrand($name, $description, $status);
+        
+        if ($result) {
+            // Brand added successfully
+            // You can redirect or show a success message here
+            echo "<script>alert('Thêm loại sản phẩm thành công!');</script>";
+            echo "<script>window.location.href = 'http://localhost/badminton-shop-main/View/Badminton_Admin.php';</script>"; // 
+        
+        
+
+        } else {
+            // Failed to add brand
+            // You can redirect or show an error message here
+            echo "<script>alert('Thêm loại sản phẩm thất bại');</script>";
+            echo "<script>window.location.href = 'http://localhost/badminton-shop-main/View/Badminton_Admin.php';</script>"; // 
+
+        }
+    }
+    function deleteBrand($brandID) {
+        $modelBrand = new ModelBrand();
+    
+        return $modelBrand->deleteBrand($brandID);
+    }
+
+    if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['delete_brand']) && isset($_GET['brand_id'])) {
+        $brandID = $_GET['brand_id'];
+        
+
+        $result = deleteBrand($brandID);
+        
+        if ($result) {
+     
+            echo "<script>alert('Xóa loại sản phẩm thành công!');</script>";
+            echo "<script>window.location.href = 'http://localhost/badminton-shop-main/View/Badminton_Admin.php';</script>"; 
+        } else {
+            // Failed to delete brand
+            // You can redirect or show an error message here
+            echo "<script>alert('Xóa loại sản phẩm thất bại');</script>";
+            echo "<script>window.location.href = 'http://localhost/badminton-shop-main/View/Badminton_Admin.php';</script>"; 
+        }
+    }
+    
+    ?>
+    <form id="frmnhaploaisp" method="get">
+        <h1 style="color: red;"> Thêm loại sản phẩm </h1>
+        <div class="containbox">
+            <label for="productName">Tên loại phẩm:</label>
+            <input type="text" id="productBrand" name="productBrand">
+        </div>
+        <div class="containbox">
+            <label for="productName">Mô tả:</label>
+            <input type="text" id="motatxt" name="motatxt">
+        </div>
+        <div class="containbox">
+            <button type="submit" name="add_brand">Thêm loại sản phẩm</button>
+        </div>
+    </form>
+
+        </div>
+
+        <div id="doanhso-content" class="content-section">
             <form id="frmdoanhso">
                 <h1 style="padding-left: 10%;"> TÌM KIẾM THEO NGÀY</h1>
                 <div class="containbox">
@@ -340,7 +504,7 @@ function thongKeByBrand(event) {
                 
             </form>        
         </div>
-
+        </div>
 
 
 
@@ -605,14 +769,17 @@ function thongKeByBrand(event) {
         </div>
     </div>
 
-
-
-
-          
-        <div id="hoadon-content" class="content-section">
-      
-
-       
+       <div id="hoadon-content" class="content-section">
+        <div class="headerad"> QUẢN LÝ HÓA ĐƠN</div>
+   
+        <div class="containbox">
+                    <label for="datestart">Ngày bắt đầu:</label>
+                    <input type="date" id="datestart1">
+                </div>
+                <div class="containbox">
+                    <label for="dateend">Ngày kết thúc:</label>
+                    <input type="date" id="dateend1x">
+                </div>
 
         <?php
     
@@ -683,7 +850,5 @@ if ($transactions) {
         <div id="dangxuat-content" class="content-section"></div>
     </div>
 
-    </div>
-</body>
-
+    </body>
 </html>
