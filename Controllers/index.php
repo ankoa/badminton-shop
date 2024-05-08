@@ -22,6 +22,10 @@
         } else if($_GET['control']=="Cart") {
             echo '<script src="../js/Cart.js"> defer</script>';
         }
+        else if($_GET['control']=="ContactCategory") {
+            echo '<link rel="stylesheet" href="../View/css/contact.css">';
+        }
+        
     } else {
         echo '<link rel="stylesheet" href="../View/css/slider.css"> <script src="../js/slider.js" defer></script>';
     }

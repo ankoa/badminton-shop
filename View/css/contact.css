@@ -1,3 +1,8 @@
+.wrapper {
+    height: fit-content !important; /* Ghi đè chiều cao */
+    display: block !important; /* Ghi đè kiểu hiển thị */
+}
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;

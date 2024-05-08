@@ -256,6 +256,9 @@ function displayProductNames(products, keyword) {
     } else {
         searchList.style.display = 'none';
     }
+    if(products==null){
+        searchList.style.display = 'none';
+    }
 }
 
 

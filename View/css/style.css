@@ -347,6 +347,7 @@ html {
     margin-top: 50px;
     width: 400px;
     transform: translateX(-423px);
+    border-radius: 5px;
 }
 
 .search-list li {
@@ -375,12 +376,12 @@ html {
 }
 
 
-.bodywrap {
+/* .bodywrap {
     width: 100px;
     height: 100px;
     background-color: red;
-    transition: all 0.3s ease; /* Thêm transition để smooth transition khi hover */
-}
+    transition: all 0.3s ease;
+} */
 .popup-cart {
     display: none; /* Ẩn pop-up mặc định */
     position: fixed; /* Đảm bảo pop-up hiển thị trên tất cả các phần tử khác */
