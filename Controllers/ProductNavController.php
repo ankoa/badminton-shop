@@ -11,7 +11,7 @@ $modelCatalog = new ModelBrand();
 $modelVariant = new ModelBrand();
 $modelVariantDetail = new ModelBrand();
 
-function getAll($id)
+function getAll($id, $brandID)
 {
     $mysqli = new mysqli("localhost", "root", "", "badmintonweb");
 
@@ -20,8 +20,14 @@ function getAll($id)
         exit();
     }
 
-    $strSQL = "SELECT * FROM  product 
-    WHERE catalogID= $id";
+    if($brandID==null) {
+        $strSQL = "SELECT * FROM  product 
+        WHERE catalogID= $id";
+    } else {
+        $strSQL = "SELECT * FROM  product 
+        WHERE catalogID= $id AND brandID = $brandID";
+    }
+    
 
     $result = $mysqli->query($strSQL); // Thực thi truy vấn SQL
 
@@ -37,6 +43,7 @@ function getAll($id)
                 'discount' => $variant['discount'],
                 'status' => $variant['status'],
                 'url' => $variant['url_image'],
+                'timeCreated' => $variant['timeCreated'],
             );
         }
         $result->close(); // Đóng kết quả truy vấn
@@ -78,6 +85,7 @@ function loadPage($page, $productsPerPage, $id)
                 'discount' => $variant['discount'],
                 'status' => $variant['status'],
                 'url' => $variant['url_image'],
+                'timeCreated' => $variant['timeCreated'],
             );
         }
         $result->close(); // Đóng kết quả truy vấn
@@ -119,6 +127,7 @@ function loadPage2($page, $productsPerPage, $id, $brandID)
                 'discount' => $variant['discount'],
                 'status' => $variant['status'],
                 'url' => $variant['url_image'],
+                'timeCreated' => $variant['timeCreated'],
             );
         }
         $result->close(); // Đóng kết quả truy vấn
@@ -257,7 +266,10 @@ if (isset($_GET['filter']) && isset($_GET['selectedFilters'])) {
     $selectedFilters = $_GET['selectedFilters'];
     $id = $_GET['id'];
     $modelProduct = new ModelProduct();
-    $listProducts = $modelProduct->getProductByCatalogID($id);
+    if(isset($_GET['brandID']))
+        $listProducts = $modelProduct->getProductByBrandIDAndCatalogID($id, $_GET['brandID']);
+    else
+        $listProducts = $modelProduct->getProductByCatalogID($id);
     $thuong_hieu = [];
     $color = [];
     $speed = [];
@@ -443,7 +455,13 @@ if (isset($_GET['filter']) && isset($_GET['selectedFilters'])) {
 
 } else if (isset($_GET['getAll'])) {
     $id = $_GET['id'];
-    $list = getAll($id);
+    if(isset($_GET['brandID'])) {
+        $brandID = $_GET['brandID'];
+        $list = getAll($id, $brandID);
+    } else {
+        $list = getAll($id, null);
+    }
+    
     echo json_encode($list);
 } else {
     // Nếu không có dữ liệu được gửi, trả về một mảng trống dưới dạng chuỗi JSON

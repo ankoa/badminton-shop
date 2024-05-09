@@ -31,7 +31,8 @@ class ModelProduct
                     $row['status'],
                     $row['price'],
                     $row['discount'],
-                    $row['url_image']
+                    $row['url_image'],
+                    $row['timeCreated']
                 );
                 $products[] = $product;
             }
@@ -58,7 +59,8 @@ class ModelProduct
                     $row['status'],
                     $row['price'],
                     $row['discount'],
-                    $row['url_image']
+                    $row['url_image'],
+                    $row['timeCreated']
                 );
                 $products[] = $product;
             }
@@ -84,7 +86,8 @@ class ModelProduct
                     $row['status'],
                     $row['price'],
                     $row['discount'],
-                    $row['url_image']
+                    $row['url_image'],
+                    $row['timeCreated']
                 );
                 $products[] = $product;
             }
@@ -110,7 +113,8 @@ class ModelProduct
                     $row['status'],
                     $row['price'],
                     $row['discount'],
-                    $row['url_image']
+                    $row['url_image'],
+                    $row['timeCreated']
                 );
                 $products[] = $product;
             }
@@ -136,7 +140,8 @@ class ModelProduct
                     $row['status'],
                     $row['price'],
                     $row['discount'],
-                    $row['url_image']
+                    $row['url_image'],
+                    $row['timeCreated']
                 );
                 $products[] = $product;
             }
@@ -162,7 +167,8 @@ class ModelProduct
                     $row['status'],
                     $row['price'],
                     $row['discount'],
-                    $row['url_image']
+                    $row['url_image'],
+                    $row['timeCreated']
                 );
                 $products[] = $product;
             }
@@ -187,7 +193,8 @@ class ModelProduct
                 $row['status'],
                 $row['price'],
                 $row['discount'],
-                $row['url_image']
+                $row['url_image'],
+                $row['timeCreated']
             );
             return $product;
         }
@@ -224,7 +231,8 @@ class ModelProduct
                     $row['status'],
                     $row['price'],
                     $row['discount'],
-                    $row['url_image']
+                    $row['url_image'],
+                    $row['timeCreated']
                 );
                 $products[] = $product;
             }
@@ -249,7 +257,33 @@ class ModelProduct
                     $row['status'],
                     $row['price'],
                     $row['discount'],
-                    $row['url_image']
+                    $row['url_image'],
+                    $row['timeCreated']
+                );
+                $products[] = $product;
+            }
+        }
+        return $products;
+    }
+
+    public function getProductByBrandIDAndCatalogID($catalogID, $brandID)
+    {
+        $query = "SELECT * FROM product WHERE brandID = '$brandID' AND catalogID = '$catalogID'";
+        $result = $this->db->select($query);
+        $products = [];
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $product = new Product(
+                    $row['productID'],
+                    $row['brandID'],
+                    $row['catalogID'],
+                    $row['name'],
+                    $row['description'],
+                    $row['status'],
+                    $row['price'],
+                    $row['discount'],
+                    $row['url_image'],
+                    $row['timeCreated']
                 );
                 $products[] = $product;
             }

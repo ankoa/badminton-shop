@@ -2,6 +2,22 @@ countFilter = 0;
 filterArray = [];
 selectedFilters = {};
 
+window.addEventListener("load", function () {
+    // Lấy id từ đường dẫn URL
+    var id = getIdFromUrl();
+
+    // Gọi loadPage và loadNav với id và số 6
+    loadNav(8, id, getBrandIdFromUrl());
+    loadPage(1, 8, id, getBrandIdFromUrl());
+
+    if (countFilter == 0) {
+        document.getElementById("filter-container").classList.add("hide");
+    }
+    getAllByCatalogAndBrand();
+    uncheckAllInputs();
+    console.log(filterArray);
+});
+
 function uncheckAllInputs() {
     // Lấy tất cả các phần tử input trên trang
     var inputs = document.querySelectorAll('input[type="checkbox"]');
@@ -20,14 +36,18 @@ function getAllByCatalogAndBrand() {
             if (this.readyState == 4) {
                 if (this.status == 200) {
                     var listVariantDetails = JSON.parse(this.responseText);
-                    resolve(listVariantDetails); // Trả về dữ liệu khi hoàn thành
+                    filterArray = listVariantDetails;
+                    console.log(filterArray);
+                    resolve(listVariantDetails);
                 } else {
-                    reject(new Error("Yêu cầu thất bại")); // Báo lỗi nếu yêu cầu không thành công
+                    reject(new Error("Yêu cầu thất bại"));
                 }
             }
         };
-
-        xhttp.open("GET", "ProductNavController.php?getAll=true&id="+getIdFromUrl(), true);
+        if(getBrandIdFromUrl()!=null)
+            xhttp.open("GET", "ProductNavController.php?getAll=true&id="+getIdFromUrl()+"&brandID="+getBrandIdFromUrl(), true);
+        else
+            xhttp.open("GET", "ProductNavController.php?getAll=true&id="+getIdFromUrl(), true);
         xhttp.send();
     });
 }
@@ -210,20 +230,7 @@ function getProductPerPage() {
     return productsPerPage;
 }
 
-window.addEventListener("load", function () {
-    // Lấy id từ đường dẫn URL
-    var id = getIdFromUrl();
 
-    // Gọi loadPage và loadNav với id và số 6
-    loadNav(8, id, getBrandIdFromUrl());
-    loadPage(1, 8, id, getBrandIdFromUrl());
-
-    if (countFilter == 0) {
-        document.getElementById("filter-container").classList.add("hide");
-    }
-
-    uncheckAllInputs()
-});
 
 function getBrandIdFromUrl() {
     // Lấy đường dẫn URL hiện tại
@@ -322,6 +329,14 @@ function clearAllFiltered() {
     loadPage(1,getProductPerPage(),getIdFromUrl(), getBrandIdFromUrl());
 }
 
+function formatTime(timeString) {
+    const parts = timeString.split(' ');
+    const dateParts = parts[0].split('-');
+    const timeParts = parts[1].split(':');
+    return `${dateParts[0]}/${dateParts[1]}/${dateParts[2]} ${timeParts[0]}:${timeParts[1]}:${timeParts[2]}`;
+}
+
+
 function sapXep(arr, key) {
     if (key == 'alpha-asc') {
         return arr.sort(function (a, b) {
@@ -340,18 +355,24 @@ function sapXep(arr, key) {
             return b.price - a.price;
         });
     } else if (key == 'created-desc') {
-
+        console.log(arr);
+        return arr.sort(function (a, b) {
+            return new Date(formatTime(b.timeCreated)) - new Date(formatTime(a.timeCreated));
+        });
     } else if (key == 'created-asc') {
-
+        return arr.sort(function (a, b) {
+            return new Date(formatTime(a.timeCreated)) - new Date(formatTime(b.timeCreated));
+        });
     }
 }
 
-function sortby(key) {
+
+function sortby(key) {console.log(filterArray);
     if (filterArray.length <= 0) {
         getAllByCatalogAndBrand()
     }
     sapXep(filterArray, key);
-    console.log(filterArray);
+    
     loadNavFilter();
     loadPageFilter(1,getProductPerPage());
 
@@ -371,9 +392,9 @@ function sortby(key) {
                         } else if (key == 'price-desc') {
                             document.getElementById('keysort').innerHTML='Giá giảm dần';
                         } else if (key == 'created-desc') {
-                    
+                            document.getElementById('keysort').innerHTML='Hàng mới nhất';
                         } else if (key == 'created-asc') {
-                    
+                            document.getElementById('keysort').innerHTML='Hàng cũ nhất';
                         }
     
 }
@@ -417,19 +438,30 @@ $(document).ready(function () {
 
 
         if (checkedCount > 0) {
-            // Gửi yêu cầu lọc đến máy chủ bằng AJAX
-            $.ajax({
-                url: "ProductNavController.php", // Đường dẫn tới file xử lý yêu cầu lọc trên máy chủ
-                type: "GET",
-                data: {
+            if(getBrandIdFromUrl()!=null) {
+                var requestData = {
+                    selectedFilters,
+                    filter: true,
+                    productsPerPage: getProductPerPage(),
+                    id: getIdFromUrl(),
+                    brandID: getBrandIdFromUrl()
+                };
+            } else {
+                var requestData = {
                     selectedFilters,
                     filter: true,
                     productsPerPage: getProductPerPage(),
                     id: getIdFromUrl()
-                }, // Truyền object chứa thông tin các bộ lọc đã chọn
+                };
+            }
+            
+            // Gửi yêu cầu lọc đến máy chủ bằng AJAX
+            $.ajax({
+                url: "ProductNavController.php", // Đường dẫn tới file xử lý yêu cầu lọc trên máy chủ
+                type: "GET",
+                data: requestData, // Truyền object chứa thông tin các bộ lọc đã chọn
                 success: function (response) {
                     filterArray = JSON.parse(response);
-                    console.log(response);
                     var totalPages = Math.ceil(filterArray.length / getProductPerPage());
                     //console.log(filterArray.length);
                     var htmlContent = '';
@@ -465,11 +497,10 @@ $(document).ready(function () {
         } else {
             // Lấy id từ đường dẫn URL
             var id = getIdFromUrl();
-
             // Gọi loadPage và loadNav với id và số 6
             loadNav(8, id, getBrandIdFromUrl());
             loadPage(1, 8, id, getBrandIdFromUrl());
-
+            getAllByCatalogAndBrand();
             if (countFilter == 0) {
                 document.getElementById("filter-container").classList.add("hide");
             }

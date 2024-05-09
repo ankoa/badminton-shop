@@ -4,14 +4,14 @@ class Product {
     public $brandID;
     public $catalogID;
     public $name;
-    public $timecreated;
+    public $timeCreated;
     public $url;
     public $description;
     public $status;
     public $price;
     public $discount;
 
-    public function __construct($productID, $brandID, $catalogID, $name, $description, $status, $price, $discount,$url) {
+    public function __construct($productID, $brandID, $catalogID, $name, $description, $status, $price, $discount,$url, $timeCreated) {
 
         $this->productID = $productID;
         $this->brandID = $brandID;
@@ -22,6 +22,7 @@ class Product {
         $this->price = $price;
         $this->discount = $discount;
         $this->url = $url;
+        $this->timeCreated = $timeCreated;
     }
 
     public function getProductID() {
@@ -30,6 +31,13 @@ class Product {
 
     public function setProductID($productID) {
         $this->productID = $productID;
+    }
+    public function getTimecreated() {
+        return $this->timeCreated;
+    }
+
+    public function setTimecreated($timeCreated) {
+        $this->timeCreated = $timeCreated;
     }
     public function getUrl() {
         return $this->url;
