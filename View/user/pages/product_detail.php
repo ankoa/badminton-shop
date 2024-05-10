@@ -39,7 +39,6 @@ foreach ($listvariants as $variant) {
     $variantDetail = $modelVariantDetail->getVariantByID($variantID);
     // Thêm chi tiết biến thể vào mảng $listVariantDetails
     $listVariantDetails[] = $variantDetail;
-    echo $variantDetail->getSize();
 }
 
 $string = $product->getUrl();
