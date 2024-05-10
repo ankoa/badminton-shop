@@ -19,7 +19,7 @@
     </section>
     </div>
     <div class= "section_service">
-        <div class="container">
+        <div class="container_homepage">
             <div class="box_service">
                 <div class="promo-item">
                     <div class="icon-service">
