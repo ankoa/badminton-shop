@@ -9,7 +9,7 @@ require_once __DIR__ . '/../../../Model/ModelVariantDetail.php';
 $modelCatalog = new ModelCatalog();
 // Khởi tạo đối tượng ModelProduct
 $modelProduct = new ModelProduct();
-if(isset($catalogID)){
+if(isset($_GET['id'])){
     $catalogID = $_GET['id'];
     $catalog = $modelCatalog->getCatalogByID($catalogID);
  }/*else $catalog = null;

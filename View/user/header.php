@@ -274,9 +274,6 @@ $total_price_cart = 0;
             link.style.textDecoration = 'underline';
             li.appendChild(link);
             searchList.appendChild(li);
-            link.addEventListener('click', function() {
-                console.log("Link clicked!");
-            });
         } else {
             searchList.style.display = 'none';
         }

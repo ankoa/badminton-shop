@@ -426,6 +426,7 @@ a,.text-link {
   text-align: center;
   border-radius: 5px;
   line-height: 30px;
+  color: black;
 }
 
 .swatch .swatch-element label {
@@ -548,7 +549,7 @@ svg {
 }
 
 
-img {
+.image-list img {
   vertical-align: middle;
   border-style: none;
   max-width: 60px !important;

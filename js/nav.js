@@ -1,7 +1,6 @@
 countFilter = 0;
-filterArray = [];
-fullArray = [];
-fullProduct = [];
+var filterArray = [];
+var fullArray = [];
 selectedFilters = {};
 
 window.addEventListener("load", function () {
@@ -11,15 +10,12 @@ window.addEventListener("load", function () {
     } else {
         // Lấy id từ đường dẫn URL
         var id = getIdFromUrl();
-        console.log(fullProduct);
-
         // Gọi loadPage và loadNav với id và số 6
         loadNav(8, id, getBrandIdFromUrl());
         loadPage(1, 8, id, getBrandIdFromUrl());
-
-        if (countFilter == 0) {
-            document.getElementById("filter-container").classList.add("hide");
-        }
+    }
+    if (countFilter == 0) {
+        document.getElementById("filter-container").classList.add("hide");
     }
     getAllByCatalogAndBrand();
     console.log(filterArray);
@@ -65,6 +61,13 @@ function loadSearch() {
                 filterArray = listVariantDetails;
                 loadNavFilter();
                 loadPageFilter(1,8);
+                document.getElementById("page-config").innerHTML = '<label for="mySelect">Item per page: </label>' +
+                            '<select name="mySelect" id="mySelect" onchange="loadPerPageFilter()">' +
+                            '<option value="4">4</option>' +
+                            '<option value="8" selected>8</option>' +
+                            '<option value="12">12</option>' +
+                            '<option value="16">16</option>' +
+                            '</select>';
             } else {
                 reject(new Error("Yêu cầu thất bại"));
             }
@@ -352,7 +355,7 @@ function clearAllFiltered() {
     var keysort = document.getElementById('keysort').innerText;
     filterArray = fullArray;
     if (keysort != "Mặc định") {
-        filterArray = fullArray;
+        //filterArray = fullArray;
         if (keysort == "A → Z")
             sortby('alpha-asc');
         else if (keysort == "Z → A")
