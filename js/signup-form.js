@@ -55,7 +55,6 @@ $.ajax({
         if (response.status == 0) {
             $(".error-message").text(response.message);
         } else {
-            console.log("OK");
             window.location.href = 'index.php';
         }
     } catch (error) {

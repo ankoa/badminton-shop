@@ -1,5 +1,5 @@
 <footer class="footer">
-    <div class="row">
+    <div class="row_footer">
         <div class="boxcenter">
           <div class="boxfooter1">
               <h3>TÌM CỬA HÀNG</h3>
@@ -29,5 +29,5 @@
           </div>
         </div>
     </div>
-    <div class="row textcenter"> Công ty TNHH Thương mại và dịch vụ kỹ thuật............. </div>
+    <div class="row_footer_textcenter"> <p>Công ty TNHH Thương mại và dịch vụ kỹ thuật.............</p>  </div>
 </footer>

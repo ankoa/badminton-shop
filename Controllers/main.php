@@ -6,6 +6,7 @@
         }
         else $tmp = '';
         if($tmp=='ProductCategory'){
+            $id = $_GET['id'];
             include("../View/user/pages/product_page.php");
         }
         else if($tmp=='SaleOffCategory'){
@@ -36,18 +37,16 @@
         
 
 </div>
+<!-- Đăng nhập vào admin -->
 <?php
-/*session_start();
-    if (!isset($_SESSION['login']) || $_SESSION['login'] !== true) 
+    /* if (isset($_SESSION['login']) && $_SESSION['type'] == 'admin') 
     {
-        include("../View/user/pages/signin.php");
-        exit;
-    }*/
-
+         echo '<script>window.location.href = "Badminton_Admin.php";</script>';
+    } */
 ?>
 
 <?php 
-        if(isset($_GET['control'])){
+        /* if(isset($_GET['control'])){
             $tmp = $_GET['control'];
         }
         else $tmp = '';
@@ -56,6 +55,9 @@
         }
         else if($tmp=='signin'){
             include("../View/user/pages/signin.php");
+        }
+        else if($tmp=='infor-user'){
+            include("../View/user/pages/infor_user.php");
         }
         else if($tmp=='logout'){
 
@@ -66,11 +68,24 @@
                 unset($_SESSION['login']);
             }
             echo '<script>window.location.href = "index.php";</script>';
-        }
+        } */
         /*require_once(__DIR__ . '/../Model/ModelUser.php');
         $modeluser = new ModelUser();
         $add_user = $modeluser->addUser(1, 111, 1, 111, "a@gmail.com", "0364985452", 0, 'normal', 1);
         echo $add_user;
         require_once(__DIR__ . '/../Model/check-email.php');*/
     ?>
-    
+        <?php 
+            /*session_start(); // Đảm bảo session đã được khởi tạo*/
+            require_once('../Model/ModelUser.php');
+
+            // Kiểm tra và gán giá trị cho $_SESSION['username']
+            $username = isset($_SESSION['username']) ? $_SESSION['username'] : '';
+            
+            // Truy vấn thông tin người dùng từ cơ sở dữ liệu
+            if (!empty($username)) {
+                $modeluser = new ModelUser();
+                $user = $modeluser->getUserByUsername($username);
+            }
+            
+    ?>

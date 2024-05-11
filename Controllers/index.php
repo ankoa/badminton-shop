@@ -19,15 +19,19 @@
         } else if($_GET['control']=="Cart") {
             echo '<script src="../js/Cart.js"> defer</script>';
         }
+        else if($_GET['control']=="ContactCategory") {
+            echo '<link rel="stylesheet" href="../View/css/contact.css">';
+        }
+        
     } else {
         echo '<link rel="stylesheet" href="../View/css/slider.css"> <script src="../js/slider.js" defer></script>';
     }
         
     ?>
-    
+    <link rel="stylesheet" href="../View/css/style.css">
     <link rel="stylesheet" href="../View/css/homepage.css">
     <link rel="stylesheet" href="../View/css/footer.css">
-    
+    <link rel="stylesheet" href="../View/css/slider.css">
     <link rel="stylesheet" href="../View/css/signup-menu.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
@@ -68,6 +72,7 @@
         ?>
     </div>
      <script src="../js/backToHome-button.js" defer></script>
+     <script src="../js/search-engine.js" defer></script>
     </body>
 </div>
 
@@ -106,5 +111,34 @@
         </div>
     </div>
 <?php endif; ?>
-
+<?php 
+        if(isset($_GET['control'])){
+            $tmp = $_GET['control'];
+        }
+        else $tmp = '';
+        if($tmp=='signup'){
+            include("../View/user/pages/signup.php");
+        }
+        else if($tmp=='signin'){
+            include("../View/user/pages/signin.php");
+        }
+        else if($tmp=='infor-user'){
+            include("../View/user/pages/infor_user.php");        
+        }
+        else if($tmp=='logout'){
+            //Neu nguoi dung da dang nhap thanh cong, thi huy bien session
+            if (isset($_SESSION['login'])) 
+            {
+                unset($_SESSION['login']);
+                unset($_SESSION['username']);
+                unset($_SESSION['type']);
+            }
+            echo '<script>window.location.href = "index.php";</script>';
+        }
+        /*require_once(__DIR__ . '/../Model/ModelUser.php');
+        $modeluser = new ModelUser();
+        $add_user = $modeluser->addUser(1, 111, 1, 111, "a@gmail.com", "0364985452", 0, 'normal', 1);
+        echo $add_user;
+        require_once(__DIR__ . '/../Model/check-email.php');*/
+    ?>
 </html> 

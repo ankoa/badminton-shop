@@ -4,6 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        .form-password {
+            position: relative;
+        }
+        .fa-solid.fa-eye {
+            color: #e95221; /* Màu sắc của icon */
+            cursor: pointer; /* Đổi con trỏ chuột khi hover */
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            z-index: 1;
+            font-size: 1.8rem;
+        }
+        .fa-solid.fa-eye-slash {
+            color: #e95221; /* Màu sắc của icon */
+            cursor: pointer; /* Đổi con trỏ chuột khi hover */
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            z-index: 1;
+            font-size: 1.8rem;
+        }
         .signin {
             background-color: #fff;
             border-radius: 10px;
@@ -65,6 +88,8 @@
                     </div>
                     <div class="form-password">
                         <input type="password" class="form-input" placeholder="Password" id="form-Password" name="formPassword">
+                        <i class="fa-solid fa-eye" id="toggle-password" style="color: #e95221;"></i>
+
                     </div>
                     <div class="form-phone">
                         <input type="text" class="form-input" placeholder="Phone" id="form-Phone" name="formPhone">
@@ -82,6 +107,22 @@
                 </form>
             </div>
     </div>
+    <script>
+        // JavaScript để thay đổi thuộc tính type của input password
+        document.getElementById("toggle-password").addEventListener("click", function() {
+            var passwordField = document.getElementById("form-Password");
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                this.classList.remove("fa-eye");
+                this.classList.add("fa-eye-slash");
+            } else {
+                passwordField.type = "password";
+                this.classList.remove("fa-eye-slash");
+                this.classList.add("fa-eye");
+            }
+        });
+    </script>';
+
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="../js/jquery.validate.min.js" defer></script>
     <script type="text/javascript" src="../js/signup-form.js" defer></script>

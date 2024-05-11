@@ -2,40 +2,45 @@
 session_start();
 $total_price_cart=0;
 ?>
-
-
 <div class="header_contentTop">
     <div class="left_header_contentTop">
-        <div class="logo">
-            <img src="../View/images/logo.png">
+            <div class="logo">
+                <img src="../View/images/logo.png">
+            </div>
+            <a href="#"> HOTLINE: 0123456789 | 0987654321 </a>
         </div>
-        <a href="#"> HOTLINE: 0123456789 | 0987654321 </a>
-    </div>
+        <div class="center_header_contentTop">
+                <form action="" method="POST" id="search_box" name="search_box">
+                <div class="search-container">
+                    <input type="search" name="search_text" id="search_text" placeholder="Bạn muốn tìm gì !!!!" value=""> 
+                    <i class="fa fa-search" aria-hidden="true" style="color: #e95221;"></i> 
+                </div>
+                <div>
+                     <ul class="search-list" id="searchList">
+                    <!-- Nơi hiển thị kết quả tìm kiếm -->
+                    </ul>
+                </div>
+               
+            </form>
 
-    <div class="center_header_contentTop">
-
-        <li>
-            <input placeholder="Tìm kiếm..." type="text">
-            <i class="fa fa-search" aria-hidden="true" style="color: #e95221;"></i>
-        </li>
-
-    </div>
-    <div class="right_header_contentTop">
-        <div class="icon-item">
-            <li>
-                <i class="fa-solid fa-clipboard-list" style="color: #e95221;"></i>
-                <span class="icon-name">TRA CỨU</span>
-                <ul class="submenu_check">
-                    <li class="dropdown-item"> <a href="index.php?control=checkDonHang"> Kiểm tra đơn hàng </a></li>
-                </ul>
-            </li>
         </div>
-        <div class="icon-item">
-            <li>
-                <i class="fa-solid fa-user" style="color: #e95221;"></i>
-                <span class="icon-name" id="spanTK">
-                    <?php
-                    if (isset($_SESSION['login'])) {
+
+        <div class="right_header_contentTop">
+            <div class="icon-item">
+                <li>
+                    <i class="fa-solid fa-clipboard-list" style="color: #e95221;"></i>
+                    <span class="icon-name">TRA CỨU</span>
+                    <ul class="submenu_check" style="height: 30px;">
+                            <li class="dropdown-item"  style="height: 100%;"> <a href="index.php?control=checkDonHang"> Kiểm tra đơn hàng </a></li>
+                    </ul>
+                </li>
+            </div>
+            <div class="icon-item">
+                <li>
+                    <i class="fa-solid fa-user" style="color: #e95221;"></i>
+                    <span class="icon-name" id="spanTK">
+                    <?php 
+                    if(isset($_SESSION['login'])){
                         if ($_SESSION['login'] == true && !empty($_SESSION['username'])) {
                             echo strtoupper($_SESSION['username']);
                         } else {
@@ -44,34 +49,30 @@ $total_price_cart=0;
                     } else {
                         echo "TÀI KHOẢN";
                     }
-
                     ?>
                 </span>
-                <?php
-                if (isset($_SESSION['login'])) {
+                <?php 
+                if(isset($_SESSION['login'])){
                     if ($_SESSION['login'] == true && !empty($_SESSION['username'])) {
-
                         echo '
-                                    <ul class="submenu_user">
-                                        <li class="dropdown-item"> <a href="index.php?control=infor-user"> Thông tin </a></li>
-                                        <li class="dropdown-item"> <a href="index.php?control=logout"> Đăng xuất</a></li>
-                                    </ul>
-                                ';
+                        <ul class="submenu_user">
+                            <li class="dropdown-item"> <a href="index.php?control=infor-user"> Thông tin </a></li>
+                            <li class="dropdown-item"> <a href="index.php?control=logout"> Đăng xuất</a></li>
+                        </ul>
+                        ';
                     } else {
                         echo '
-                                   <ul class="submenu_user">
-                                       <li class="dropdown-item"> <a href="index.php?control=signin"> Đăng nhập </a></li>
-                                        <li class="dropdown-item"> <a href="index.php?control=signup"> Đăng kí</a></li>
-                                   </ul>
-                               ';
+                        <ul class="submenu_user">
+                            <li class="dropdown-item"> <a href="index.php?control=signin"> Đăng nhập </a></li>
+                            <li class="dropdown-item"> <a href="index.php?control=signup"> Đăng kí</a></li>
+                        </ul>';
                     }
                 } else {
                     echo '
-                                    <ul class="submenu_user">
-                                        <li class="dropdown-item"> <a href="index.php?control=signin"> Đăng nhập </a></li>
-                                         <li class="dropdown-item"> <a href="index.php?control=signup"> Đăng kí</a></li>
-                                    </ul>
-                                ';
+                    <ul class="submenu_user">
+                        <li class="dropdown-item"> <a href="index.php?control=signin"> Đăng nhập </a></li>
+                        <li class="dropdown-item"> <a href="index.php?control=signup"> Đăng kí</a></li>
+                    </ul>';
                 }
                 ?>
 
@@ -114,7 +115,7 @@ $total_price_cart=0;
                     } else $temp = "Giày cầu lông ";
                     echo '
                                 <li> 
-                                    <a href="">' . $temp . '</a> 
+                                    <a href="index.php?control=ProductCategory&id='.$catalog->getCatalogID().'">' . $temp . '</a> 
                                     <ul class="menu_item">';
                     $brandIDs = $modelBrand->suggestBrandIDsForCatalog($catalog->getCatalogID());
                     foreach ($brandIDs as $brandID) {
@@ -140,7 +141,8 @@ $total_price_cart=0;
     <li> <a class="titlemenu" href="index.php?control=ContactCategory">LIÊN HỆ</a></li>
 </div>
 
-            <form action class="popup-cart" onmouseover="showTarget()" onmouseout="hideTarget()">
+<form action class="popup-cart" onmouseover="showTarget()" onmouseout="hideTarget()">
+
                 <div class="title-cart-head">Giỏ hàng</div>
                 <div class="cart-body">
                     <div class="ajaxcart-row">
@@ -209,9 +211,68 @@ $total_price_cart=0;
                     </div>
                 </div>
             </form>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+var searchInput = document.getElementById('search_text');
+searchInput.addEventListener('input', function() {
+    var keyword = this.value.trim(); 
 
-    function showTarget() {
+    if (keyword !== '') {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var products = JSON.parse(this.responseText);
+
+                displayProductNames(products, keyword);
+            }
+        };
+        xhttp.open("GET", "search_products.php", true);
+        xhttp.send();
+    } else {
+        hideProductNames();
+    }
+});
+
+function displayProductNames(products, keyword) {
+    var searchList = document.getElementById('searchList');
+    searchList.innerHTML = ''; 
+
+    var filteredProducts = products.filter(function(product) {
+        return product.name.toLowerCase().includes(keyword.toLowerCase());
+    });
+
+    var maxResults = 5;
+    for (var i = 0; i < filteredProducts.length && i < maxResults; i++) {
+        var li = document.createElement('li');
+        var link = document.createElement('a'); 
+        link.textContent = `${filteredProducts[i].name} - Giá: ${filteredProducts[i].price}`; 
+        link.href = "index.php?control=ProductDetail&productID=" + filteredProducts[i].productID; 
+        li.appendChild(link);
+        searchList.appendChild(li);
+    }
+
+    if (filteredProducts.length > 0) {
+        searchList.style.display = 'block';
+    } else {
+        searchList.style.display = 'none';
+    }
+    if(products==null){
+        searchList.style.display = 'none';
+    }
+}
+
+
+
+// Ẩn dropdown khi click ra ngoài ô search
+document.addEventListener('click', function(e) {
+    if (!document.getElementById('search_container').contains(e.target)) {
+        hideProductNames();
+    }
+});
+
+</script>
+<script>
+function showTarget() {
         var targetElement = document.querySelector('.popup-cart');
         
         var siuElement = document.getElementById('hover-cart');
@@ -227,14 +288,10 @@ $total_price_cart=0;
             targetElement.style.top = siuRect.top + 45 + 'px';
             targetElement.style.left = (siuRect.right - 360) + 'px';
         }
-
-        
     }
 
-    function hideTarget() {
-        var targetElement = document.querySelector('.popup-cart');
-        targetElement.style.display = 'none';
-    }
-
-    
+function hideTarget() {
+    var targetElement = document.querySelector('.popup-cart');
+    targetElement.style.display = 'none';
+}
 </script>
