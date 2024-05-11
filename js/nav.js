@@ -313,8 +313,27 @@ function clearAllFiltered() {
     var filterContainerElement = document.getElementById("filter-container");
     filterContainerElement.classList.add("hide");
 
-    loadNav(getProductPerPage(), getIdFromUrl());
-    loadPage(1, getProductPerPage(), getIdFromUrl(), getBrandIdFromUrl());
+    var keysort = document.getElementById('keysort').innerText;
+    filterArray = fullArray;
+    if (keysort != "Mặc định") {
+        filterArray = fullArray;
+        if (keysort == "A → Z")
+            sortby('alpha-asc');
+        else if (keysort == "Z → A")
+            sortby('alpha-desc');
+        else if (keysort == "Giá tăng dần")
+            sortby('price-asc');
+        else if (keysort == "Giá giảm dần")
+            sortby('price-desc');
+        else if (keysort == "Hàng mới nhất")
+            sortby('created-asc');
+        else if (keysort == "Hàng cũ nhất")
+            sortby('created-desc');
+    } else {
+        loadNav(getProductPerPage(), getIdFromUrl());
+        loadPage(1, getProductPerPage(), getIdFromUrl(), getBrandIdFromUrl());
+    }
+    
 }
 
 function formatTime(timeString) {
@@ -451,6 +470,7 @@ $(document).ready(function () {
                 success: function (response) {
                     var keysort = document.getElementById('keysort').innerText;
                     filterArray = JSON.parse(response);
+                    console.log(filterArray);
                     if (keysort != "Mặc định") {
                         if (keysort == "A → Z")
                             sortby('alpha-asc');

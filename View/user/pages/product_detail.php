@@ -34,9 +34,11 @@ $listvariants = $modelVariant->getListVariantByProductID($productID);
 $modelVariantDetail = new ModelVariantDetail();
 $listVariantDetails = [];
 
+$totalQuantity = 0;
 foreach ($listvariants as $variant) {
     $variantID = $variant->getVariantID();
     $variantDetail = $modelVariantDetail->getVariantByID($variantID);
+    $totalQuantity += $variantDetail->getQuantity();
     // Thêm chi tiết biến thể vào mảng $listVariantDetails
     $listVariantDetails[] = $variantDetail;
 }
@@ -169,7 +171,7 @@ if ($catalog->getName() == "Racket") {
                     <span class="line">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
                     <span class="mb-break" id="tinhtrang">
                         <script>
-                            const racket = <?php echo json_encode(reset($listVariantDetails)); ?>;
+                            const racket = <?php echo json_encode($totalQuantity); ?>;
                             if (racket && racket.quantity <= 0) {
                                 document.getElementById('tinhtrang').innerHTML = '<span class="brand-title">Tình trạng: </span><span class="a-vendor">Hết hàng</span>';
                             } else {
