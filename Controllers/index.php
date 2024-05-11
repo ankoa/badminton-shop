@@ -4,11 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web dụng cụ thể thao cầu lông</title>
-<!-- <<<<<<< HEAD
-=======
     <link rel="stylesheet" href="../View/css/style.css">
     <link href="https://cdn.shopvnb.com/themes/css/breadcrumb_style.scss.css" rel="stylesheet" type="text/css" />
->>>>>>> 3912cbcf9b66e5e45df85c0c51a756359cfa82b8 -->
     <?php
     if(isset($_GET['control'])) {
         if($_GET['control']=="ProductCategory") {
