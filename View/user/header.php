@@ -213,8 +213,10 @@ $total_price_cart = 0;
     </div>
 </form>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="../js/nav.js"></script>
 <script>
     var searchInput = document.getElementById('search_text');
+    var result = [];
     searchInput.addEventListener('input', function() {
         var keyword = this.value.trim();
 
@@ -223,7 +225,6 @@ $total_price_cart = 0;
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
                     var products = JSON.parse(this.responseText);
-
                     displayProductNames(products, keyword);
                 }
             };
@@ -233,6 +234,10 @@ $total_price_cart = 0;
             hideProductNames();
         }
     });
+
+    function seeAll() {
+        searchProduct(search);
+    }
 
     function hideProductNames() {
         var searchList = document.getElementById('searchList');
@@ -247,6 +252,8 @@ $total_price_cart = 0;
             return product.name.toLowerCase().includes(keyword.toLowerCase());
         });
 
+        result =filteredProducts;
+
         var maxResults = 5;
         for (var i = 0; i < filteredProducts.length && i < maxResults; i++) {
             var li = document.createElement('li');
@@ -259,6 +266,17 @@ $total_price_cart = 0;
 
         if (filteredProducts.length > 0) {
             searchList.style.display = 'block';
+            var li = document.createElement('li');
+            var link = document.createElement('a');
+            link.textContent = 'Xem tất cả';
+            link.href = "index.php?control=ProductCategory&search="+keyword;
+            link.style.fontWeight = 'bold';
+            link.style.textDecoration = 'underline';
+            li.appendChild(link);
+            searchList.appendChild(li);
+            link.addEventListener('click', function() {
+                console.log("Link clicked!");
+            });
         } else {
             searchList.style.display = 'none';
         }

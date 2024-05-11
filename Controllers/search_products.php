@@ -7,8 +7,13 @@ foreach ($products as $product) {
     $productInfo[] = [
         'productID' => $product->getProductID(),
         'name' => $product->getName(),
-        'price' => $product->getPrice()
-
+        'price' => $product->getPrice(),
+        'brandID' => $product->getBrandID(),
+        'catalogID' => $product->getCatalogID(),
+        'discount' => $product->getDiscount(),
+        'status' => $product->getStatus(),
+        'url' => $product->getUrl(),
+        'timeCreated' => $product->getTimecreated(),
     ];
 }
 

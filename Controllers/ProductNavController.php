@@ -53,6 +53,46 @@ function getAll($id, $brandID)
     return $variantsArray; // Trả về mảng kết quả
 }
 
+function getAllProduct($searchKeyword = null)
+{
+    $mysqli = new mysqli("localhost", "root", "", "badmintonweb");
+
+    if ($mysqli->connect_errno) {
+        echo "Failed to connect to MySQL: " . $mysqli->connect_error;
+        exit();
+    }
+
+    $strSQL = "SELECT * FROM  product";
+
+    if ($searchKeyword) {
+        $strSQL .= " WHERE LOWER(name) LIKE '%" . $mysqli->real_escape_string(strtolower($searchKeyword)) . "%'";
+    }    
+
+    $result = $mysqli->query($strSQL); // Thực thi truy vấn SQL
+
+    $variantsArray = [];
+    if ($result) {
+        while ($variant = $result->fetch_assoc()) {
+            $variantsArray[] = array(
+                'productID' => $variant['productID'],
+                'brandID' => $variant['brandID'],
+                'catalogID' => $variant['catalogID'],
+                'name' => $variant['name'],
+                'price' => $variant['price'],
+                'discount' => $variant['discount'],
+                'status' => $variant['status'],
+                'url' => $variant['url_image'],
+                'timeCreated' => $variant['timeCreated'],
+            );
+        }
+        $result->close(); // Đóng kết quả truy vấn
+    }
+
+    $mysqli->close();
+    return $variantsArray; // Trả về mảng kết quả
+}
+
+
 function loadPage($page, $productsPerPage, $id)
 {
     $mysqli = new mysqli("localhost", "root", "", "badmintonweb");
@@ -465,7 +505,11 @@ if (isset($_GET['filter']) && isset($_GET['selectedFilters'])) {
     }
     
     echo json_encode($list);
-} else {
+} else if (isset($_GET['getAllProduct'])) {
+    $products = getAllProduct($_GET['search']);
+    echo json_encode($products);
+}
+else {
     // Nếu không có dữ liệu được gửi, trả về một mảng trống dưới dạng chuỗi JSON
     echo json_encode([]);
 }

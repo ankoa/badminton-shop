@@ -321,10 +321,19 @@ html {
     padding: 10px;
     border-bottom: 1px solid #ccc;
     cursor: pointer;
+    background: #ffffff;
+}
+
+.search-list li:last-child {
+    text-align: center;
 }
 
 .search-list li:hover {
     background-color: #ddd;
+}
+
+.search-list li a:hover {
+    color: #E95221; /* Change text color to orange on hover */
 }
 .search-container {
     position: relative;
@@ -350,11 +359,6 @@ html {
     border-radius: 5px;
 }
 
-.search-list li {
-    padding: 10px;
-    cursor: pointer;
-    background: #ffffff;
-}
 
 .search-list li:hover {
     background-color: #ddd;

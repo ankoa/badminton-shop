@@ -1,23 +1,30 @@
 countFilter = 0;
 filterArray = [];
 fullArray = [];
+fullProduct = [];
 selectedFilters = {};
 
 window.addEventListener("load", function () {
-    // Lấy id từ đường dẫn URL
-    var id = getIdFromUrl();
+    uncheckAllInputs();
+    if(getSearchFromUrl() != null) {
+        loadSearch();
+    } else {
+        // Lấy id từ đường dẫn URL
+        var id = getIdFromUrl();
+        console.log(fullProduct);
 
-    // Gọi loadPage và loadNav với id và số 6
-    loadNav(8, id, getBrandIdFromUrl());
-    loadPage(1, 8, id, getBrandIdFromUrl());
+        // Gọi loadPage và loadNav với id và số 6
+        loadNav(8, id, getBrandIdFromUrl());
+        loadPage(1, 8, id, getBrandIdFromUrl());
 
-    if (countFilter == 0) {
-        document.getElementById("filter-container").classList.add("hide");
+        if (countFilter == 0) {
+            document.getElementById("filter-container").classList.add("hide");
+        }
     }
     getAllByCatalogAndBrand();
-    uncheckAllInputs();
     console.log(filterArray);
 });
+
 
 function uncheckAllInputs() {
     // Lấy tất cả các phần tử input trên trang
@@ -47,6 +54,24 @@ function getAllByCatalogAndBrand() {
         else
             xhttp.open("GET", "ProductNavController.php?getAll=true&id=" + getIdFromUrl(), true);
         xhttp.send();
+}
+
+function loadSearch() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4) {
+            if (this.status == 200) {
+                var listVariantDetails = JSON.parse(this.responseText);
+                filterArray = listVariantDetails;
+                loadNavFilter();
+                loadPageFilter(1,8);
+            } else {
+                reject(new Error("Yêu cầu thất bại"));
+            }
+        }
+    };
+    xhttp.open("GET", "ProductNavController.php?getAllProduct=true&search="+getSearchFromUrl(), true);
+    xhttp.send();
 }
 
 function loadPage(page, productsPerPage, id, brandID) {
@@ -236,6 +261,17 @@ function getIdFromUrl() {
     // Phân tích đường dẫn URL để lấy tham số id
     var urlParams = new URLSearchParams(new URL(url).search);
     var id = urlParams.get('id');
+
+    return id;
+}
+
+function getSearchFromUrl() {
+    // Lấy đường dẫn URL hiện tại
+    var url = window.location.href;
+
+    // Phân tích đường dẫn URL để lấy tham số id
+    var urlParams = new URLSearchParams(new URL(url).search);
+    var id = urlParams.get('search');
 
     return id;
 }

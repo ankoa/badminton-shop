@@ -6,7 +6,6 @@
         }
         else $tmp = '';
         if($tmp=='ProductCategory'){
-            $id = $_GET['id'];
             include("../View/user/pages/product_page.php");
         }
         else if($tmp=='SaleOffCategory'){
