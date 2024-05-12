@@ -1,5 +1,5 @@
 window.onload = function() {
-    changePage();
+    
     const urlParams = new URLSearchParams(window.location.search);
     if (window.location.pathname === '/badminton-shop/Controllers/index.php' && urlParams.get('control') === 'checkDonHang') {
         AllCustomerOrder();
@@ -7,7 +7,6 @@ window.onload = function() {
         handleCustomerOrder();
         handleAllCustomerOrder();
         renderCustomerOrderDetail();
-        
     }
     
 };
@@ -60,7 +59,7 @@ async function AllCustomerOrder() {
             olist += `
                 <tr class="order-item__product-list">
                 <td class="order-item" data-transaction-id="${item.transactionID}">
-                    <a href="#" class="order-link">${item.transactionID}</a>
+                    <a href="#" onclick="openDetailModal('${item.transactionID}')" class="order-link">${item.transactionID}</a>
                 </td>
                 <td>${item.time}</td>
                 <td>${item.pay}</td>
@@ -175,6 +174,9 @@ function renderCustomerOrderDetail() {
     $(document).on('click', '.order-item__product-list', async function() {
         try {
             const orderId = $(this).closest('tr').find('.order-item').data('transaction-id');
+            console.log(orderId);
+            //const urlParams = new URLSearchParams(window.location.search);
+            // const orderId = urlParams.get('id'); // Lấy giá trị của tham số id từ URL
             console.log(orderId);
             const order = await getOrder(orderId);
             // console.log(order);
@@ -311,14 +313,16 @@ function renderCustomerOrderDetail() {
     })
 }
 
-function changePage(){
-    $(document).ready(function() {
-        // Bắt sự kiện click vào liên kết
-        $('.order-link').click(function(event) {
-            event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
-            var orderId = $(this).closest('.order-item').data('transaction-id');
-            // Chuyển hướng đến trang detail.php với orderId
-            window.location.href = '../View/user/pages/detailTransaction_page.php?orderId=' + orderId;
-        });
-    });
+function openDetailModal(orderId) {
+    var modal = document.getElementById("detailModal");
+    var detailFrame = document.getElementById("detailFrame");
+    detailFrame.src = "index.php?control='DetailOrder'&id=" + orderId;
+    modal.style.display = "block";
 }
+
+// Đóng modal
+function closeDetailModal() {
+    var modal = document.getElementById("detailModal");
+    modal.style.display = "none";
+}
+

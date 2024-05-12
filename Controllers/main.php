@@ -20,6 +20,9 @@
         else if($tmp=='checkDonHang'){
             include("../View/user/pages/orderTransaction_page.php");
         }
+        else if($tmp=='DetailOrder'){
+            include("../View/user/pages/detailTransaction_page.php");
+        }
         else if($tmp=='ProductDetail'){
             include("../View/user/pages/product_detail.php");
         }
