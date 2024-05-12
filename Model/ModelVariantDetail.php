@@ -117,7 +117,11 @@ class ModelVariantDetail {
     
 
     public function getListShoesSize() {
-        $query = "SELECT DISTINCT(size) FROM variantdetail WHERE size IS NOT NULL AND STATUS !=0;";
+        $query = "SELECT DISTINCT vd.size 
+              FROM variantdetail vd 
+              INNER JOIN variant v ON vd.variantID = v.variantID 
+              INNER JOIN product p ON v.productID = p.productID 
+              WHERE vd.size IS NOT NULL AND vd.size != 0 AND p.catalogID=4 AND vd.status != 0;";
         $result = $this->db->select($query);
         $variants = [];
         if ($result) {
