@@ -66,7 +66,7 @@ require_once '..\Model\Entity\Transaction.php';
             try {
                 $query = "SELECT * FROM transaction
                     WHERE userID = '$ma_kh' 
-                    AND (transactionID = '$search' OR transport = '%$search%')
+                    AND transactionID = '$search'
                 ";
                 $result = $this->db->select($query);
                 $arrHoaDon = array();

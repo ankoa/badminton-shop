@@ -11,7 +11,9 @@
         } else if($_GET['control']=="ProductDetail") {
             echo '<link rel="stylesheet" href="../View/css/product_detail.css"> <script src="../js/product_detail.js" defer></script>';
         } else if($_GET['control']=="checkDonHang") {
-            echo '<link rel="stylesheet" href="../View/css/checktranscation.css"> <script type="text/javascript" src="../js/User.js"> </script> <script type="text/javascript" src="../js/Transaction.js"></script>';
+            echo '<link rel="stylesheet" href="../View/css/checktranscation.css">   <script type="text/javascript" src="../js/User.js"></script>
+                                                                                    <script type="text/javascript" src="../js/OrderTransaction.js"></script>
+                                                                                    <script type="text/javascript" src="../js/Transaction.js"></script>';
         } else if($_GET['control']=="IntroduceCategory") {
             echo '<script src="../js/Introduce.js"> defer</script> <link rel="stylesheet" href="../View/css/intro.css">';
         }

@@ -1,128 +1,16 @@
 window.onload = function() {
-    //handleSearch();
-    //handleCustomerOrder();
-    handleAllCustomerOrder();
+    changePage();
     const urlParams = new URLSearchParams(window.location.search);
     if (window.location.pathname === '/badminton-shop/Controllers/index.php' && urlParams.get('control') === 'checkDonHang') {
         AllCustomerOrder();
+        filterEndUserOrderStatus();
+        handleCustomerOrder();
+        handleAllCustomerOrder();
+        renderCustomerOrderDetail();
+        
     }
     
 };
-
-function searchTransactionsByPhone(phoneNumber) {   
-    // Gửi yêu cầu AJAX đến tệp PHP xử lý
-    $.ajax({
-        url: '../Controllers/TransactionController.php', // Đặt đường dẫn tới tệp PHP xử lý
-        method: 'POST',
-        data: { action: 'findPhone', phoneNumber }, // Dữ liệu gửi đi, trong trường này là số điện thoại
-        dataType: 'json', // Định dạng dữ liệu trả về là JSON
-        success: data => {
-            console.log(data)
-             var html="";
-            // //Xử lý kết quả thành công
-            if (data && data.length > 0) {
-                data.forEach((item,index) => {
-                    html+=`
-                    <tr>
-                    <td>
-                        <span class="detail">
-                        <a href="../View/user/pages/orderTransaction2_page.php?id=${item.transactionID}" title>${item.transactionID}</a>
-                        </span>
-                    </td>
-                    <td>${item.time}</td>
-                    <td>${item.pay}</td>
-                    <td>${item.transport}</td>
-                    <td>${item.total}</td>
-                    </tr>`
-                });      
-            }       
-            $('#show-listHoaDon').html(html);
-        },
-    })
-}  
-
-function searchTransactionsByCode(TransactionID) {
-    $.ajax({
-        url: '../Controllers/TransactionController.php',
-        method: 'POST',
-        data: { action: 'findTranCode', TransactionID },
-        dataType: 'json',
-        success: data => {
-            var html="";
-            if (data.length > 0) {
-                data.forEach((order,index) => {
-                    html+=`
-                        <tr>
-                        <td>
-                            <span class="detail">
-                            <a href="../View/user/pages/orderTransaction2_page.php?id=${order.transactionID}" title>${order.transactionID}</a>
-                            </span>
-                        </td>
-                        <td>${order.time}</td>
-                        <td>${order.pay}</td>
-                        <td>${order.transport}</td>
-                        <td>${order.total}</td>
-                        </tr>
-
-                    `;
-                    // getProductByCode(item['productID'],index); // Gọi hàm lấy thông tin sản phẩm dựa trên ProductID
-                    // $('#Total').text(item.total);
-                    const orderDetails = getChiTietHoaDon(order.transactionID)
-                    orderDetails.forEach(product => {
-                        html += `
-                            <div class="order-container">
-                                <div class="header">
-                                    <h1>Đặt hàng thành công</h1>
-                                    <button class="close-button">X</button>
-                                </div>
-                                <div class="order-details">
-                                    <div class="product-info">
-                                        <img src="${product.url_image}">
-                                    <div>
-                                        <h2>${product.name}</h2>
-                                        <p>${product.description}</p>
-                                    </div>
-                                    </div>
-                                    <div class="price-info">
-                                    <span>${product.quantity}</span>
-                                    <span>${product.price}</span>
-                                    </div>
-                                </div>
-                                <div class="total">
-                                    <h3>Tổng tiền: ${product.total_amount}</h3>
-                                </div>
-                            </div>
-                        `
-                    })
-                });   
-            } 
-            $('#show-list2').html(html);
-        }
-    });
-} 
-
-function handleSearch(){
-    // Sử dụng hàm khi cần tìm kiếm
-    $(document).on('click', '.btn-search', e=>{
-        // Lấy số điện thoại từ trường nhập
-        var TransactionID = $('#tra-cuu').val();
-
-        // Kiểm tra nếu số điện thoại không rỗng
-        if (TransactionID.trim() !== '') {
-            // Gọi hàm searchTransactionsByPhone để tìm kiếm
-            searchTransactionsByPhone(TransactionID);
-        }
-    }) 
-}
-  
-// var modal = document.getElementById('id01');
-
-// // When the user clicks anywhere outside of the modal, close it
-// window.onclick = function(event) {
-//     if (event.target == modal) {
-//         modal.style.display = "none";
-//     }
-// }
 
 function getOrder(id) {
     return new Promise((resolve, reject) => {
@@ -152,43 +40,27 @@ function getAllCustomerOrder(ma_kh) {
 
 async function AllCustomerOrder() {
     const user = username;
-    //console.log(user);
     const customerId = await getUserID(user);
-    console.log(customerId);
-    const status = $('.order-filter__item.active').find('input').val();
-    console.log(status);
-    const orders = await getCustomerOrder(customerId, status);
-    console.log(orders);
+    const search = $('.order-filter__item.active').find('input').val();
+    const orders = await getAllCustomerOrder(customerId);
     let olist = ''
+    let filteredOrders = [];
 
-    $('#combobox_right').html(`
-        <div class="order_container">
-            <div class="order-filter">
-                <a class="order-filter__item ${status === '' ? 'active' : ''}">
-                    <span>Tất cả</span>
-                    <input type="hidden" value="" >
-                </a>
-                <a class="order-filter__item ${status === 'Đang vận chuyển' ? 'active' : ''}">
-                    <span>Đang vận chuyển</span>
-                    <input type="hidden" value="Đang vận chuyển" >
-                </a>
-                <a class="order-filter__item ${status === 'Đang đóng gói' ? 'active' : ''}">
-                    <span>Đang đóng gói</span>
-                    <input type="hidden" value="Đang đóng gói" >
-                </a>
-            </div>
-        </div>
-    `)
+    if (search === 'Đang vận chuyển') {
+        filteredOrders = orders.filter(item => item.transport === 'Đang vận chuyển');
+    } else if (search === 'Đã giao hàng') {
+        filteredOrders = orders.filter(item => item.transport === 'Đã giao hàng');
+    } else {
+        filteredOrders = orders; // Hiển thị tất cả đơn hàng nếu không có tìm kiếm hoặc tìm kiếm không phù hợp
+    }
 
-    if (orders && orders.length > 0) {
-        orders.forEach((item) => {
+    if (filteredOrders.length > 0) {
+        filteredOrders.forEach((item) => {
             
             olist += `
-                <tr>
-                <td>
-                    <span class="detail">
-                    <a href="../View/user/pages/orderTransaction2_page.php?id=${item.transactionID}" title>${item.transactionID}</a>
-                    </span>
+                <tr class="order-item__product-list">
+                <td class="order-item" data-transaction-id="${item.transactionID}">
+                    <a href="#" class="order-link">${item.transactionID}</a>
                 </td>
                 <td>${item.time}</td>
                 <td>${item.pay}</td>
@@ -201,6 +73,34 @@ async function AllCustomerOrder() {
         olist += `<div class="order-empty"><h3>Chưa có đơn hàng</h3><img src="server/src/assets/images/order-empty.png"></div>`
     }
     $('#showlist').html(olist);
+
+    $('#combobox__right').html(`
+        <div class="order__container">
+            <div class="order-filter">
+                <a class="order-filter__item ${search === '' ? 'active' : ''}">
+                    <span>Tất cả</span>
+                    <input type="hidden" value="" >
+                </a>
+                <a class="order-filter__item ${search === 'Đang vận chuyển' ? 'active' : ''}">
+                    <span>Đang vận chuyển</span>
+                    <input type="hidden" value="Đang vận chuyển" >
+                </a>
+                <a class="order-filter__item ${search === 'Đã giao hàng' ? 'active' : ''}">
+                    <span>Đã giao hàng</span>
+                    <input type="hidden" value="Đã giao hàng" >
+                </a>
+            </div>
+        </div>
+    `)
+}
+
+function filterEndUserOrderStatus() {
+    $(document).on('click', '.order-filter__item', function() {
+        $(this).siblings().removeClass('active')
+        $(this).addClass('active')
+        // $("#currentpage").val(1)
+        AllCustomerOrder()
+    })
 }
 
 function handleAllCustomerOrder() {
@@ -269,4 +169,156 @@ function handleCustomerOrder() {
         $(this).addClass('active')
         CustomerOrder()
     })
+}
+
+function renderCustomerOrderDetail() {
+    $(document).on('click', '.order-item__product-list', async function() {
+        try {
+            const orderId = $(this).closest('tr').find('.order-item').data('transaction-id');
+            console.log(orderId);
+            const order = await getOrder(orderId);
+            // console.log(order);
+            const orderDetails = await getOrderTransaction(orderId);
+            console.log(orderDetails);
+            //const address = await getThongTinNhanHang(order.ma_ttnh)
+            let html = ''
+
+            // let html = `
+            //     <div class="order-detail_address">
+            //         <h3>Địa chỉ nhận hàng</h3>
+            //         <div class="order-detail__address-info">
+            //             <div class="order-detail__address-info-item">
+            //                 <label>Người nhận:</label>
+            //                 <span>${address.ho_ten}</span>
+            //             </div>
+            //             <div class="order-detail__address-info-item">
+            //                 <label>Số điện thoại:</label>
+            //                 <span>${address.so_dien_thoai}</span>
+            //             </div>
+            //             <div class="order-detail__address-info-item">
+            //                 <label>Ngày đặt hàng:</label>
+            //                 <span>${convertDate(order.ngay_tao)}</span>
+            //             </div>
+            //             <div class="order-detail__address-info-item">
+            //                 <label>Địa chỉ:</label>
+            //                 <span>${address.dia_chi}</span>
+            //             </div>
+            //             ${order.ghi_chu ? `
+            //                 <div class="order-detail__address-info-item">
+            //                     <label>Ghi chú:</label>
+            //                     <span>${order.ghi_chu}</span>
+            //                 </div>
+            //             ` : ''}
+            //         </div>
+            //     </div>
+            //     <div class="order-detail__products">
+            //         <h3>Sản phẩm</h3>
+            //         <div class="order-detail__product-list">
+            // `
+
+            orderDetails.forEach((orderDetail, index) => {
+                //console.log(orderDetail)
+                // html += `
+                //     <a href="index.php?san-pham&id=${orderDetail.ma_sp}" class="order-detail__product-item">
+                //         <div class="order-detail__product-info">
+                //             <img src="${orderDetail.hinh_anh}" class="order-detail__product-img">
+                //             <div class="order-detail__product-info-detail">
+                //                 <div class="order-detail__product-name">
+                //                     <span>
+                //                         ${orderDetail.ten_sp}
+                //                         ${orderDetail.ten_chip.replaceAll(' ', '-')}
+                //                         ${orderDetail.ten_card.replaceAll(' ', '-')}
+                //                         ${orderDetail.ram}/${orderDetail.rom}
+                //                     </span>
+                //                 </div>
+                //                 <div>
+                //                     <div class="order-detail__product-color">Màu sắc: ${orderDetail.ten_mau}</div>
+                //                     <div class="order-detail__product-quantity">x${orderDetail.so_luong}</div>
+                //                 </div>
+                //             </div>
+                //         </div>
+                //         <div class="order-detail__product-price">
+                //             <span>₫${formatCurrency(orderDetail.gia_sp)}</span>
+                //         </div>
+                //     </a>
+                // `
+
+                html += `
+                        <div class="order-details">
+                            <div class="product-info">
+                                <img src="${orderDetail.url_image}">
+                            <div>
+                                <h2>${orderDetail.name}</h2>
+                            </div>
+                            </div>
+                            <div class="price-info">
+                            <span>${orderDetail.quantity}</span>
+                            <span>${orderDetail.price}</span>
+                            </div>
+                        </div>
+                        <div class="total">
+                            <h3>Tổng tiền: ${orderDetail.total_amount}</h3>
+                        </div>
+                        `
+                index !== orderDetails.length - 1 ? html += '<div class="line"></div>' : ''
+            })
+
+            $('#order-detail-modal').html(html);
+            // html += '</div></div>'
+
+            // $('#order-detail-modal .modal-title').html(`Chi tiết đơn hàng <b>${order.ma_hd}</b>`)
+            // $('#order-detail-modal .modal-body').html(html)
+            // $('#order-detail-modal .modal-footer').html(`
+            //     <div class="order-detail__total">
+            //         <div class="order-detail__total-row">
+            //             <div class="order-detail__total-label">
+            //                 <span>Tổng tiền sản phẩm</span>
+            //             </div>
+            //             <div class="order-detail__total-price">
+            //                 <span>₫${formatCurrency(order.tong_tien)}</span>
+            //             </div>
+            //         </div>
+            //         <div class="order-detail__total-row">
+            //             <div class="order-detail__total-label">
+            //                 <span>Giảm giá khuyến mãi</span>
+            //             </div>
+            //             <div class="order-detail__total-price">
+            //                 <span>${order.khuyen_mai > 0 ? `-₫${order.khuyen_mai}` : '₫0'}</span>
+            //             </div>
+            //         </div>
+            //         <div class="order-detail__total-row final">
+            //             <div class="order-detail__total-label">
+            //                 <span>Thành tiền</span>
+            //             </div>
+            //             <div class="order-detail__total-price">
+            //                 <span>₫${formatCurrency(order.thanh_tien)}</span>
+            //             </div>
+            //         </div>
+            //         <div class="order-detail__payment">
+            //             <div class="order-detail__total-label">
+            //                 <span>Phương thức thanh toán</span>
+            //             </div>
+            //             <div class="order-detail__total-price">
+            //                 <span>${order.hinh_thuc}</span>
+            //             </div>
+            //         </div>
+            //     </div>
+            // `)
+        } catch (error) {
+            console.log(error)
+            alert('Có lỗi xảy ra, vui lòng thử lại sau!')
+        }
+    })
+}
+
+function changePage(){
+    $(document).ready(function() {
+        // Bắt sự kiện click vào liên kết
+        $('.order-link').click(function(event) {
+            event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
+            var orderId = $(this).closest('.order-item').data('transaction-id');
+            // Chuyển hướng đến trang detail.php với orderId
+            window.location.href = '../View/user/pages/detailTransaction_page.php?orderId=' + orderId;
+        });
+    });
 }

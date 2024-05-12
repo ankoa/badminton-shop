@@ -19,8 +19,8 @@
     }
 
     $CTHD = new ModelOrderTransaction();
-    $action = $_POST['action'];
-    // $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : null;
+    // $action = $_POST['action'];
+    $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : null;
 
     switch ($action){
         // case 'getcthd':
@@ -29,7 +29,7 @@
         //     break;
         case 'get-cthd':
             $ma_hd = $_POST['id_transaction'];
-            $CTHD->getOrderTransactionByOrderID($ma_hd);
+            echo json_encode($CTHD->getOrderTransactionByOrderID($ma_hd));
             break;
         // case 'add':
         //     $obj = json_decode(json_encode($_POST['cthd']));

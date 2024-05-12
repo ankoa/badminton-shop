@@ -6,11 +6,11 @@
     <title>Tìm kiếm mã đơn hàng</title>
     <script> var username = "<?php echo $_SESSION['username']; ?>"; </script>
     <style>
-      .combobox_right {
+      .combobox__right {
         background-color: #fff;
       }
 
-      .order_container {
+      .order__container {
         background-color: white;
         padding-right: 15px;
       }
@@ -49,11 +49,10 @@
         color: var(--primary-color);
       }
 
-      .order-filter__item:hover span {
+      .order-filter__item span {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        border-bottom: 2px solid red;
       }
     </style>
 </head>
@@ -73,7 +72,7 @@
             <input type="text" class="tra-cuu" name="tra-cuu" placeholder="Nhập vào đây"><br>
             <button class="btn-search" type="button">Tra cứu đơn hàng</button>
         </form>
-        <div id="combobox_right"></div>
+        <div id="combobox__right"></div>
         <div class="col-md-8 col-xs-12">
             <div class="userbox">
                 <table class="table table-striped table-hover">
@@ -124,8 +123,5 @@
     </div>
 </section>
 
-    
-  <!-- <script type="text/javascript" src="../js/Transaction.js"></script>
-  <script type="text/javascript" src="../js/User.js"></script> -->
 </body>
 </html>

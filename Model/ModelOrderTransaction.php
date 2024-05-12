@@ -29,7 +29,7 @@ class ModelOrderTransaction {
         try{
             $query = "SELECT cthd.*, pro.name , pro.price, pro.description, pro.url_image FROM ordertransaction cthd
             JOIN product pro ON cthd.productID = pro.productID
-            WHERE cthd.orderID = '$orderID'
+            WHERE cthd.transactionID = '$orderID'
             ";
 
             $result = $this->db->select($query);

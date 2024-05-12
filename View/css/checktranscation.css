@@ -49,7 +49,7 @@ input {
   color: white;
 }
 
-.combobox_right {
+/* .combobox_right {
   background-color: #fff;
 }
 
@@ -66,7 +66,7 @@ input {
   overflow: hidden;
 }
 
-.order-filter__item {
+.order-filter_item {
   align-items: center;
   background: #fff;
   border-bottom: 2px solid rgba(0, 0, 0, .09);
@@ -86,17 +86,16 @@ input {
   user-select: none;
 }
 
-.order-filter__item.active {
+.order-filter_item.active {
   border-color: var(--primary-color);
   color: var(--primary-color);
 }
 
-.order-filter__item:hover span {
+.order-filter_item span {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  border-bottom: 2px solid red;
-}
+} */
 
 .thong-tin-don-hang {
   width: 100%; /* chiều rộng của phần thông tin đơn hàng là 100% chiều rộng của container */
