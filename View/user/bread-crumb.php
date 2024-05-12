@@ -1,38 +1,19 @@
 <section class="bread-crumb">
-            <div class="container">
-                <ul class="breadcrumb" itemscope="" itemtype="http://schema.org/BreadcrumbList">
-                    <li class="home" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-                        <a href="https://shopvnb.com" title="Trang chủ" itemprop="item"><span itemprop="name">Trang chủ</span></a>
-                        <meta itemprop="position" content="0">
-                        <span class="mr_lr">&nbsp;<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" class="svg-inline--fa fa-chevron-right fa-w-10">
-                                <path fill="currentColor" d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" class=""></path>
-                            </svg>&nbsp;</span>
-                    </li>
-
-                    <li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-
-                        <a itemprop="item" href="giay-cau-long.html" title="Giày Cầu Lông"><span itemprop="name">Giày
-                                Cầu Lông</span></a>
-
-                        <meta itemprop="position" content="1">
-                        <span class="mr_lr">&nbsp;<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" class="svg-inline--fa fa-chevron-right fa-w-10">
-                                <path fill="currentColor" d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" class=""></path>
-                            </svg>&nbsp;</span>
-                    </li>
-                    <li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-
-                        <a itemprop="item" href="giay-cau-long-mizuno.html" title="Giày Cầu Lông Mizuno"><span itemprop="name">Giày Cầu Lông Mizuno</span></a>
-
-                        <meta itemprop="position" content="2">
-                        <span class="mr_lr">&nbsp;<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" class="svg-inline--fa fa-chevron-right fa-w-10">
-                                <path fill="currentColor" d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" class=""></path>
-                            </svg>&nbsp;</span>
-                    </li>
-                    <li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-                        <strong itemprop="name">
-                            Vợt Cầu Lông Yonex Astrox 100zz                        </strong>
-                        <meta itemprop="position" content="3">
-                    </li>
-                </ul>
-            </div>
-        </section>
+    <div class="container">
+        <ul class="breadcrumb" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+            <?php include('linkHome.php'); ?>
+            <?php if (isset($_GET['control']) && $_GET['control'] == "ProductCategory" && !isset($_GET['search'])) include('linkProduct.php');
+            else include('linkMenu.php'); ?>
+            <?php if (isset($_GET['brandID'])) include('linkProductBrand.php'); ?>
+            <?php if (isset($_GET['productID'])) include('linkProductName.php'); ?>
+            <?php
+            if (isset($_GET['control']) && $_GET['control'] == "ProductCategory" && isset($_GET['search'])) {
+                echo '<li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                <strong itemprop="name">Tìm kiếm sản phẩm [' . $_GET['search'] . ']</strong>
+                <meta itemprop="position" content="3">
+        </li>';
+            }
+            ?>
+        </ul>
+    </div>
+</section>

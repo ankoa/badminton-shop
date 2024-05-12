@@ -13,7 +13,11 @@
         } else if($_GET['control']=="ProductDetail") {
             echo '<link rel="stylesheet" href="../View/css/product_detail.css"> <script src="../js/product_detail.js" defer></script>';
         } else if($_GET['control']=="checkDonHang") {
-            echo '<link rel="stylesheet" href="../View/css/checktranscation.css"> <script src="../js/Transaction.js"> defer</script>';
+            echo '<link rel="stylesheet" href="../View/css/checktranscation.css">   <script type="text/javascript" src="../js/User.js"></script>
+                                                                                    <script type="text/javascript" src="../js/OrderTransaction.js"></script>
+                                                                                    <script type="text/javascript" src="../js/Transaction.js"></script>';
+        } else if($_GET['control']=="DetailOrder") {
+            echo '<script src="../js/Transaction.js"> defer</script> <link rel="stylesheet" href="../View/css/detail.css">';
         } else if($_GET['control']=="IntroduceCategory") {
             echo '<script src="../js/Introduce.js"> defer</script> <link rel="stylesheet" href="../View/css/intro.css">';
         } else if($_GET['control']=="Cart") {
@@ -59,6 +63,8 @@
             } else if($_GET['control']=="IntroduceCategory") {
                 include("../View/user/bread-crumb.php");
             } else if($_GET['control']=="Cart") {
+                include("../View/user/bread-crumb.php");
+            } else if($_GET['control']=="ContactCategory") {
                 include("../View/user/bread-crumb.php");
             }
         } else {
