@@ -93,7 +93,7 @@ $total_price_cart = 0;
 <div class="header_contentBottom">
     <li> <a class="titlemenu" href="index.php">TRANG CHỦ</a> </li>
     <li>
-        <a class="titlemenu" href="index.php?control=ProductCategory&id=1">SẢN PHẨM</a>
+        <a class="titlemenu" >SẢN PHẨM</a>
         <ul class="submenu">
             <?php
             require_once('../Model/ModelCatalog.php');
@@ -213,12 +213,19 @@ $total_price_cart = 0;
     </div>
 </form>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="../js/nav.js"></script>
 <script>
     var searchInput = document.getElementById('search_text');
     var result = [];
     searchInput.addEventListener('input', function() {
-        var keyword = this.value.trim();
+        searchProduct(this);
+    });
+
+    searchInput.addEventListener('click', function() {
+        searchProduct(this);
+    });
+
+    function searchProduct(c) {
+        var keyword = c.value.trim();
 
         if (keyword !== '') {
             var xhttp = new XMLHttpRequest();
@@ -233,10 +240,6 @@ $total_price_cart = 0;
         } else {
             hideProductNames();
         }
-    });
-
-    function seeAll() {
-        searchProduct(search);
     }
 
     function hideProductNames() {
@@ -286,12 +289,13 @@ $total_price_cart = 0;
 
     // Ẩn dropdown khi click ra ngoài ô search
     document.addEventListener('click', function(e) {
-        if (!document.getElementById('search_container').contains(e.target)) {
+        if (!document.getElementById('searchList').contains(e.target) && !document.getElementById('search_box').contains(e.target)) {
             hideProductNames();
+        } else {
+
         }
     });
-</script>
-<script>
+
     function showTarget() {
         var targetElement = document.querySelector('.popup-cart');
 

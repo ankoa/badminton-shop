@@ -94,9 +94,7 @@ if ($catalog->getName() == "Racket") {
     </link>
     <link href="https://cdn.shopvnb.com/themes/css/breadcrumb_style.scss.css" rel="stylesheet" type="text/css" />
     <link rel="preload" as='style' type="text/css" href="https://cdn.shopvnb.com/themes/css/breadcrumb_style.scss.css">
-    <link rel="stylesheet" href="../../css/product_detail.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,0,0" />
-    <script src="../../../js/product_detail.js" defer></script>
     <title>test</title>
 </head>
 

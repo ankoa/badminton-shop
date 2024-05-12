@@ -551,7 +551,6 @@ svg {
 
 .image-list img {
   vertical-align: middle;
-  border-style: none;
   max-width: 60px !important;
   height: auto;
 }
