@@ -1,12 +1,13 @@
 window.onload = function() {
-    
+     renderCustomerOrderDetail();
     const urlParams = new URLSearchParams(window.location.search);
     if (window.location.pathname === '/badminton-shop/Controllers/index.php' && urlParams.get('control') === 'checkDonHang') {
         AllCustomerOrder();
         filterEndUserOrderStatus();
         handleCustomerOrder();
         handleAllCustomerOrder();
-        renderCustomerOrderDetail();
+        //renderCustomerOrderDetail();
+        loadMiniForm();
     }
     
 };
@@ -55,11 +56,10 @@ async function AllCustomerOrder() {
 
     if (filteredOrders.length > 0) {
         filteredOrders.forEach((item) => {
-            
             olist += `
                 <tr class="order-item__product-list">
                 <td class="order-item" data-transaction-id="${item.transactionID}">
-                    <a href="#" onclick="openDetailModal('${item.transactionID}')" class="order-link">${item.transactionID}</a>
+                    <a href="#" class="order-link">${item.transactionID}</a>
                 </td>
                 <td>${item.time}</td>
                 <td>${item.pay}</td>
@@ -175,9 +175,6 @@ function renderCustomerOrderDetail() {
         try {
             const orderId = $(this).closest('tr').find('.order-item').data('transaction-id');
             console.log(orderId);
-            //const urlParams = new URLSearchParams(window.location.search);
-            // const orderId = urlParams.get('id'); // Lấy giá trị của tham số id từ URL
-            console.log(orderId);
             const order = await getOrder(orderId);
             // console.log(order);
             const orderDetails = await getOrderTransaction(orderId);
@@ -220,31 +217,6 @@ function renderCustomerOrderDetail() {
 
             orderDetails.forEach((orderDetail, index) => {
                 //console.log(orderDetail)
-                // html += `
-                //     <a href="index.php?san-pham&id=${orderDetail.ma_sp}" class="order-detail__product-item">
-                //         <div class="order-detail__product-info">
-                //             <img src="${orderDetail.hinh_anh}" class="order-detail__product-img">
-                //             <div class="order-detail__product-info-detail">
-                //                 <div class="order-detail__product-name">
-                //                     <span>
-                //                         ${orderDetail.ten_sp}
-                //                         ${orderDetail.ten_chip.replaceAll(' ', '-')}
-                //                         ${orderDetail.ten_card.replaceAll(' ', '-')}
-                //                         ${orderDetail.ram}/${orderDetail.rom}
-                //                     </span>
-                //                 </div>
-                //                 <div>
-                //                     <div class="order-detail__product-color">Màu sắc: ${orderDetail.ten_mau}</div>
-                //                     <div class="order-detail__product-quantity">x${orderDetail.so_luong}</div>
-                //                 </div>
-                //             </div>
-                //         </div>
-                //         <div class="order-detail__product-price">
-                //             <span>₫${formatCurrency(orderDetail.gia_sp)}</span>
-                //         </div>
-                //     </a>
-                // `
-
                 html += `
                         <div class="order-details">
                             <div class="product-info">
@@ -313,16 +285,16 @@ function renderCustomerOrderDetail() {
     })
 }
 
-function openDetailModal(orderId) {
-    var modal = document.getElementById("detailModal");
-    var detailFrame = document.getElementById("detailFrame");
-    detailFrame.src = "index.php?control='DetailOrder'&id=" + orderId;
-    modal.style.display = "block";
-}
-
-// Đóng modal
-function closeDetailModal() {
-    var modal = document.getElementById("detailModal");
-    modal.style.display = "none";
+function loadMiniForm(){
+    $(document).ready(function() {
+        $(document).on('click', '.order-link', function(e) {
+            e.preventDefault();
+            $('.order-container1').show();
+        });
+    
+        $('.close-button').click(function() {
+            $('.order-container1').hide();
+        });
+    });
 }
 

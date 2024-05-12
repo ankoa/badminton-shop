@@ -14,8 +14,9 @@
             echo '<link rel="stylesheet" href="../View/css/checktranscation.css">   <script type="text/javascript" src="../js/User.js"></script>
                                                                                     <script type="text/javascript" src="../js/OrderTransaction.js"></script>
                                                                                     <script type="text/javascript" src="../js/Transaction.js"></script>';
-        } else if($_GET['control']=="DetailOrder") {
-            echo '<script src="../js/Transaction.js"> defer</script> <link rel="stylesheet" href="../View/css/detail.css">';
+        // } else if($_GET['control']=="DetailOrder") {
+        //     echo '<link rel="stylesheet" href="../View/css/detail.css"> <script type="text/javascript" src="../js/Transaction.js"></script>
+        //                                                                 <script type="text/javascript" src="../js/OrderTransaction.js"></script>';
         } else if($_GET['control']=="IntroduceCategory") {
             echo '<script src="../js/Introduce.js"> defer</script> <link rel="stylesheet" href="../View/css/intro.css">';
         }

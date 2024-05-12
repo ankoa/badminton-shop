@@ -1,29 +1,64 @@
-
-<div id="detailModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeDetailModal()">&times;</span>
-        <iframe id="detailFrame" src="" frameborder="0"></iframe>
-        <div class="order-container">
-            <div class="header">
-                <h1>Đặt hàng thành công</h1>
-                <button class="close-button">X</button>
-            </div>
-            <div id="order-detail-modal"></div>
-        </div>
-    </div>
-</div>
-
-<script>
-    function openDetailModal(orderId) {
-        var modal = document.getElementById("detailModal");
-        var detailFrame = document.getElementById("detailFrame");
-        detailFrame.src = "detail.php?id=" + orderId;
-        modal.style.display = "block";
-    }
-
-    // Đóng modal
-    function closeDetailModal() {
-        var modal = document.getElementById("detailModal");
-        modal.style.display = "none";
-    }
+<script> var ID = "<?php 
+    if(isset($_GET['id'])) {
+        $orderId = $_GET['id'];
+        echo $orderId;
+    } ?>"; 
 </script>
+<style>
+    .order-container { 
+        max-width: 800px; 
+        margin: 20px auto; 
+        background: white; 
+        border-radius: 8px; 
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+        padding: 20px; 
+    }
+    
+    .header { 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        margin-bottom: 20px; 
+    }
+
+    .close-button { 
+        background: none; 
+        border: none; 
+        font-size: 24px; 
+        cursor: pointer; 
+    } 
+
+    .order-details {
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+    } 
+
+    .product-info { 
+        display: flex;
+        align-items: center; 
+    } 
+
+    .product-info img { 
+        margin-right: 15px; 
+    } 
+
+    .price-info { 
+        font-size: 18px;
+        font-weight: bold; 
+    } 
+
+    .total { 
+        text-align: right; 
+        margin-top: 20px; 
+    }
+</style>
+
+
+<div class="order-container">
+    <div class="header">
+        <h1>Đặt hàng thành công</h1>
+        <button class="close-button">X</button>
+    </div>
+    <div id="order-detail-modal"></div>
+</div>
