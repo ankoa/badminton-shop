@@ -157,7 +157,7 @@
                             <table class="product-table">
                                 <tbody>
                                     <?php
-                                    // if (isset($_SESSION['username'])) {
+                                     if (isset($_SESSION['username'])) {
                                         require_once('../Model/ModelUser.php');
                                         require_once('../Model/ModelProduct.php');
                                         require_once('../Model/ModelCartDetail.php');
@@ -190,7 +190,7 @@
                                             echo '<td class="product-price text-right">' . number_format($price) . ' ₫ </td>';
                                             echo '</tr>';
                                         }
-                                    // }
+                                     }
                                     ?>
 
                                     <!-- <tr class="product product-has-image clearfix">
@@ -244,12 +244,12 @@
                                     Chủ TK: Kim Duy Long<br>
                                     (Nội dung chuyển khoản: Tên + Số ĐT đặt hàng)
                                 </p>
-                                <img src="" alt="QR Code">
+                                <img src="QRbank.png" alt="QR Code">
                             </div>
                         </div>
                     </div>
                     <div class="footer">
-                        <a href="http://localhost/badminton-shop2/Controllers/index.php?control=Cart" class="back-btn">&lt; Quay về giỏ hàng</a>
+                        <a href="http://localhost/badminton-shop/Controllers/index.php?control=Cart" class="back-btn">&lt; Quay về giỏ hàng</a>
                         <button type="submit" class="submit-btn">ĐẶT HÀNG</button>
                     </div>
                 </div>
