@@ -1,6 +1,6 @@
 window.onload = function() {
     //handleSearch();
-    handleCustomerOrder();
+    //handleCustomerOrder();
     handleAllCustomerOrder();
     const urlParams = new URLSearchParams(window.location.search);
     if (window.location.pathname === '/badminton-shop/Controllers/index.php' && urlParams.get('control') === 'checkDonHang') {
@@ -156,7 +156,8 @@ async function AllCustomerOrder() {
     const customerId = await getUserID(user);
     console.log(customerId);
     const status = $('.order-filter__item.active').find('input').val();
-    const orders = await getAllCustomerOrder(customerId);
+    console.log(status);
+    const orders = await getCustomerOrder(customerId, status);
     console.log(orders);
     let olist = ''
 

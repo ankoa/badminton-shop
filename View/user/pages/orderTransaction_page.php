@@ -5,6 +5,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tìm kiếm mã đơn hàng</title>
     <script> var username = "<?php echo $_SESSION['username']; ?>"; </script>
+    <style>
+      .combobox_right {
+        background-color: #fff;
+      }
+
+      .order_container {
+        background-color: white;
+        padding-right: 15px;
+      }
+
+      .order-filter {
+        background-color: #fff;
+        border-top-left-radius: 2px;
+        border-top-right-radius: 2px;
+        display: flex;
+        margin-bottom: 12px;
+        overflow: hidden;
+      }
+
+      .order-filter__item {
+        align-items: center;
+        background: #fff;
+        border-bottom: 2px solid rgba(0, 0, 0, .09);
+        color: rgba(0, 0, 0, .8);
+        cursor: pointer;
+        display: flex;
+        flex: 1;
+        font-size: 16px;
+        justify-content: center;
+        line-height: 19px;
+        overflow: hidden;
+        padding: 16px 0;
+        text-align: center;
+        transition: color .2s;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      .order-filter__item.active {
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+      }
+
+      .order-filter__item:hover span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        border-bottom: 2px solid red;
+      }
+    </style>
 </head>
 <body>
 <section class="layout-info-find">
