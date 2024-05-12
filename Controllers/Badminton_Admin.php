@@ -363,7 +363,7 @@ function thongKeByBrand(event) {
             <li class="icon" id="doanhso"><i class="fa-solid fa-chart-simple"></i><a href="#" onclick="showContent('doanhso-content')">Doanh số</a></li>
             <li class="icon" id="sanpham"><i class="fa-solid fa-laptop"></i><a href="#" onclick="showContent('sanpham-content')">Quản lý sản phẩm</a></li>
             <li class="icon" id="hoadon"><i class="fa-solid fa-receipt"></i><a href="#" onclick="showContent('hoadon-content')">Quản lý hóa đơn</a></li>
-            <li class="icon" id="dangxuat"><i class="fa-solid fa-right-from-bracket"></i><a href="#" onclick="logout()">Đăng xuất</a></li>
+            <li class="icon" id="dangxuat"><i class="fa-solid fa-right-from-bracket"></i><a href="Badminton_Admin.php#" onclick="logout()">Đăng xuất</a></li>
 
         </ul>
     </div>
@@ -451,6 +451,38 @@ function thongKeByBrand(event) {
       <div class="col-md-12">
         <!-- Form để chứa các thành phần quản lý tài khoản -->
         <form id="managementForm">
+        <div class="form-row align-items-center">
+            <div class="col-md-3">
+              <!-- Nhãn quản lý sản phẩm -->
+              <label class="form-check-label" for="productRole">Quyền:</label>
+            </div>
+            <div class="col-md-9">
+              <!-- Các nút switch quản lý sản phẩm -->
+              <div class="row rowfunction">
+                <div class="col-md-4">
+                  <div class="form-check form-switch mt-3">
+                    <input class="form-check-input" type="checkbox" id="addProductSwitch">
+                    <label class="form-check-label" for="addProductSwitch">Xem</label>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-check form-switch mt-3">
+                    <input class="form-check-input" type="checkbox" id="editProductSwitch">
+                    <label class="form-check-label" for="editProductSwitch">Thêm</label>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-check form-switch mt-3">
+                    <input class="form-check-input" type="checkbox" id="deleteProductSwitch">
+                    <label class="form-check-label" for="deleteProductSwitch">Sửa</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
           <div class="form-row align-items-center">
             <div class="col-md-3">
               <!-- Nhãn quản lý sản phẩm -->

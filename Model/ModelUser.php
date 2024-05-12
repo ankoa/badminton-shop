@@ -107,13 +107,15 @@ class ModelUser {
         $user = $this->getUserByUsername($username);
         if ($user instanceof User) {
             $storedPassword = $user->getPassword();
-            if (password_verify($password, $storedPassword)) {
+            // Kiểm tra mật khẩu trực tiếp
+            if ($password === $storedPassword) {
                 return true;
             }
         }
         
         return false;
     }
+    
     public function getUserByUsername($username) {
         $query = "SELECT * FROM user WHERE username = '$username' AND status != 0";
         $result = $this->db->select($query);
