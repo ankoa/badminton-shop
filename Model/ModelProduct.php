@@ -295,4 +295,14 @@ class ModelProduct
         $query = "DELETE FROM product WHERE productID = '$productID'";
         return $this->db->delete($query);
     }
+    public function getProductNameByID($productID)
+    {
+        $query = "SELECT name FROM product WHERE productID = '$productID'";
+        $result = $this->db->select($query);
+        if ($result && $result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row['name'];
+        }
+        return null;
+    }
 }
