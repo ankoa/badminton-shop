@@ -93,7 +93,7 @@ $total_price_cart = 0;
 <div class="header_contentBottom">
     <li> <a class="titlemenu" href="index.php">TRANG CHỦ</a> </li>
     <li>
-        <a class="titlemenu" >SẢN PHẨM</a>
+        <a class="titlemenu" href="#">SẢN PHẨM</a>
         <ul class="submenu">
             <?php
             require_once('../Model/ModelCatalog.php');
