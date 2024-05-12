@@ -188,6 +188,17 @@ class ModelUser {
             return false;
         }
     }
+    public function getUserCountByRoleID($roleID) {
+        $query = "SELECT COUNT(*) AS userCount FROM user WHERE roleID = '$roleID' AND status != 0";
+        $result = $this->db->select($query);
+        if ($result) {
+            $row = $result->fetch_assoc();
+            return $row['userCount'];
+        } else {
+            return 0; // Trả về 0 nếu có lỗi hoặc không có người dùng nào có vai trò tương ứng
+        }
+    }
+    
 
 }
 

@@ -4,13 +4,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./bootstrap-5.3.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../View//bootstrap-5.3.2-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="../View/css/Badminton_Admin.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <title>Admin</title>
+    <style>
+    /* Style for the modal form */
+    #editRoleForm {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        /* transform: translate(-50%, -40%);  */
+        width: 100%;
+        max-width: 100%;
+        height: 95%;
+    }
+    #Role-background {
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(87, 84, 84, .4);
+        z-index: 10005;
+        align-items: center;
+        justify-content: center;
+    }
+    .Role {
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 2.5rem; 
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 60%; 
+        max-width: 35rem; 
+        height: 60%;
+    }
+    .closeformrole {
+        cursor: pointer;
+        position: absolute;
+        right: 4%;
+        top: 4%;
+        width: 48px;
+        height: 48px;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 35px;
+        font-weight: 500;
+    }
+    .rowfunction{
+        margin-bottom: 10px;
+    }
+
+</style>
 </head>
 <?php
-
 require_once __DIR__ . '../../Model/ModelTransaction.php';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $startDate = $_POST['startDate'];
@@ -21,6 +77,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $modelTransaction->displayTotalSales($startDate, $endDate);
 }
 ?>
+
+<!-- Script JavaScript -->
+<script>
+    function openPermissionForm() {
+        var form = document.getElementById('permissionForm');
+        if (form.style.display === 'none' || form.style.display === '') {
+            form.style.display = 'block';
+        } else {
+            form.style.display = 'none';
+        }
+    }
+
+    function addPermissions() {
+        // Xử lý thêm quyền vào nhóm quyền tương ứng
+        // Sử dụng AJAX để gửi dữ liệu form lên server và xử lý dữ liệu ở phía server
+        return false; // Để ngăn form submit mặc định
+    }
+
+    function editXuLy(roleID) {
+        var form = document.getElementById('permissionForm');
+        if (form.style.display === 'none' || form.style.display === '') {
+            form.style.display = 'block';
+            form.style.zIndex = 1000;
+        } else {
+            form.style.display = 'none';
+        }
+    }
+</script>
 <script>
     function showContent(contentId) {
 
@@ -262,11 +346,6 @@ function thongKeByBrand(event) {
     // Send the request
     xhr.send();
 }
-
-
-
-
-
 </script>
      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <body>
@@ -279,6 +358,7 @@ function thongKeByBrand(event) {
     <div id="menu">
         <ul>
             <li class="icon"><i class="fa-solid fa-house"></i><a href="#" onclick="showContent('home-content')">Trang chủ </a></li>
+            <li class="icon" id="phanquyen"><i class="fa-solid fa-people-roof"></i><a href="#" onclick="showContent('phanquyen-content')">Phân quyền</a></li>
             <li class="icon" id="taikhoan"><i class="fa-solid fa-user"></i><a href="#" onclick="showContent('taikhoan-content')">Quản lý tài khoản</a></li>
             <li class="icon" id="doanhso"><i class="fa-solid fa-chart-simple"></i><a href="#" onclick="showContent('doanhso-content')">Doanh số</a></li>
             <li class="icon" id="sanpham"><i class="fa-solid fa-laptop"></i><a href="#" onclick="showContent('sanpham-content')">Quản lý sản phẩm</a></li>
@@ -296,7 +376,214 @@ function thongKeByBrand(event) {
     </div>
 
 
+<!-- Quản lý nhóm quyền -->
+<div id="phanquyen-content" class="content-section">
+    <h1 class="headerad">PHÂN QUYỀN</h1>
+    <div>
+        <div class="col-md-4">
+            <label style="margin-right: 10px;">Danh sách nhóm quyền</label>
+            <button type="button" class="btn btn-primary mt-3" data-toggle="modal" data-target="#addModal" style="width: 100px; padding: 6px;">
+                Thêm mới
+            </button>
+        </div>
 
+        <div class="table-responsive" style="margin-top: 20px;">
+            <table class="table table-striped" id="quanlyPQTable" style="text-align: center;">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col" class="text-center">Mã nhóm quyền</th>
+                        <th scope="col" class="text-center">Tên nhóm quyền</th>
+                        <th scope="col" class="text-center">Số lượng người dùng</th>
+                        <th scope="col" class="text-center">Chức năng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    require_once __DIR__ . '../../Model/ModelRole.php';
+                    require_once __DIR__ . '../../Model/ModelUser.php';
+
+                    $modelRole = new ModelRole();
+                    $modelUser = new ModelUser();
+
+                    $roles = $modelRole->getAllRoles();
+
+                    if ($roles) {
+                        foreach ($roles as $role) {
+                            echo '<tr style="height: 50px;">';
+                            echo "<td class=\"text-center\">" . $role['roleID'] . "</td>";
+                            echo "<td class=\"text-center\">" . $role['roleName'] . "</td>";
+
+                            // Lấy số lượng người dùng cho từng nhóm quyền
+                            $userCount = $modelUser->getUserCountByRoleID($role['roleID']);
+                            echo "<td class=\"text-center\">" . $userCount . "</td>";
+
+                            echo '<td class="d-flex justify-content-evenly">';
+                            echo '<button style="width: fit-content; background-color: white; border: none;" type="button" class="btn btn-outline-primary" onclick="showEditForm('. $role['roleID'] .')">';
+                            echo '<i class="fas fa-wrench" style="font-size: 25px; color: orange;"></i>';
+                            echo '</button>';
+                            echo '</td>';
+
+                            echo "</tr>";
+                        }
+                    } else {
+                        echo "<tr><td colspan='4'>Không có dữ liệu</td></tr>";
+                    }
+                    ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="editRoleForm" style="display: none;">
+    <div id="Role-background">
+    <div class="Role">
+    <a class="closeformrole" onclick="displaySignMenu('none')">
+          <i class="fa-solid fa-xmark"></i></a>
+  <div class="container mt-5">
+  <div class="row">
+      <div class="col-md-3"></div> <!-- Thêm cột trống ở bên trái -->
+      <div class="col-md-6 text-center"> <!-- Cột chứa nhãn "Nhóm quyền" -->
+        <h3 class="mb-4">Nhóm quyền</h3>
+      </div>
+      <div class="col-md-3"></div> <!-- Thêm cột trống ở bên phải -->
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <!-- Form để chứa các thành phần quản lý tài khoản -->
+        <form id="managementForm">
+          <div class="form-row align-items-center">
+            <div class="col-md-3">
+              <!-- Nhãn quản lý sản phẩm -->
+              <label class="form-check-label" for="productManagement">Sản phẩm:</label>
+            </div>
+            <div class="col-md-9">
+              <!-- Các nút switch quản lý sản phẩm -->
+              <div class="row rowfunction">
+                <div class="col-md-4">
+                  <div class="form-check form-switch mt-3">
+                    <input class="form-check-input" type="checkbox" id="addProductSwitch">
+                    <label class="form-check-label" for="addProductSwitch">Thêm</label>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-check form-switch mt-3">
+                    <input class="form-check-input" type="checkbox" id="editProductSwitch">
+                    <label class="form-check-label" for="editProductSwitch">Sửa</label>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-check form-switch mt-3">
+                    <input class="form-check-input" type="checkbox" id="deleteProductSwitch">
+                    <label class="form-check-label" for="deleteProductSwitch">Xóa</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Các thành phần quản lý loại sản phẩm -->
+          <div class="form-row align-items-center mt-3">
+            <div class="col-md-3">
+              <label class="form-check-label" for="categoryManagement">Loại sản phẩm:</label>
+            </div>
+            <div class="col-md-9">
+            <div class="row rowfunction">
+                <div class="col-md-4">
+                  <div class="form-check form-switch mt-3">
+                    <input class="form-check-input" type="checkbox" id="addCategorySwitch">
+                    <label class="form-check-label" for="addCategorySwitch">Thêm</label>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-check form-switch mt-3">
+                    <input class="form-check-input" type="checkbox" id="editCategorySwitch">
+                    <label class="form-check-label" for="editCategorySwitch">Sửa</label>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-check form-switch mt-3">
+                    <input class="form-check-input" type="checkbox" id="deleteCategorySwitch">
+                    <label class="form-check-label" for="deleteCategorySwitch">Xóa</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Các thành phần quản lý hóa đơn -->
+          <div class="form-row align-items-center mt-3">
+            <div class="col-md-3">
+              <label class="form-check-label" for="invoiceManagement">Hóa đơn:</label>
+            </div>
+            <div class="col-md-9">
+            <div class="row rowfunction">
+                <div class="col-md-4">
+                  <div class="form-check form-switch mt-3">
+                    <input class="form-check-input" type="checkbox" id="addInvoiceSwitch">
+                    <label class="form-check-label" for="addInvoiceSwitch">Thêm</label>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-check form-switch mt-3">
+                    <input class="form-check-input" type="checkbox" id="editInvoiceSwitch">
+                    <label class="form-check-label" for="editInvoiceSwitch">Sửa</label>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-check form-switch mt-3">
+                    <input class="form-check-input" type="checkbox" id="deleteInvoiceSwitch">
+                    <label class="form-check-label" for="deleteInvoiceSwitch">Xóa</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Các thành phần quản lý doanh thu -->
+          <div class="form-row align-items-center mt-3">
+            <div class="col-md-3">
+              <label class="form-check-label" for="revenueManagement">Doanh thu:</label>
+            </div>
+            <div class="col-md-9">
+            <div class="row rowfunction">
+                <div class="col-md-4">
+                  <div class="form-check form-switch mt-3">
+                    <input class="form-check-input" type="checkbox" id="viewRevenueSwitch">
+                    <label class="form-check-label" for="viewRevenueSwitch">Xem</label>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-check form-switch mt-3">
+                    <input class="form-check-input" type="checkbox" id="exportRevenueSwitch">
+                    <label class="form-check-label" for="exportRevenueSwitch">Xuất</label>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-check form-switch mt-3">
+                    <input class="form-check-input" type="checkbox" id="analyzeRevenueSwitch">
+                    <label class="form-check-label" for="analyzeRevenueSwitch">Phân tích</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary mt-4">Lưu</button>
+        </form>
+        <!-- Kết thúc form -->
+      </div>
+    </div>
+    </div>
+  </div>
+  </div>
+  </div>
+  <script>
+    // Hàm hiển thị form chỉnh sửa
+    function showEditForm(id) {
+        var form = document.getElementById("editRoleForm");
+        // Hiển thị form
+        form.style.display = "block";
+    }
+</script>
 
     <!-- Quản lý tài khoản -->
     <div id="taikhoan-content" class="content-section">
@@ -648,7 +935,8 @@ if ($transactions) {
             $transaction['note'],
             $transaction['time'],
             $transaction['address'],
-            $transaction['status']
+            $transaction['pay'],
+            $transaction['transport']
         );
         echo "<tr>
         <td>" . $transactionObj->getTransactionID() . "</td>
@@ -656,9 +944,9 @@ if ($transactions) {
         <td>" . $transactionObj->getNote() . "</td>
         <td>" . $transactionObj->getTime() . "</td>
         <td>" . $transactionObj->getAddress() . "</td>
-        <td>" . $transactionObj->getStatus() . "</td>
+        <td>" . $transactionObj->getTransport() . "</td>
         <td><button onclick='showTransactionDetails(\"" . $transactionObj->getTransactionID() . "\")'>Chi tiết</button></td>
-        <td><button onclick='changeTransactionStatus(\"" . $transactionObj->getTransactionID() . "\", \"" . $transactionObj->getStatus() . "\")'>Chuyển trạng thái</button></td>;
+        <td><button onclick='changeTransactionStatus(\"" . $transactionObj->getTransactionID() . "\", \"" . $transactionObj->getTransport() . "\")'>Chuyển trạng thái</button></td>;
 
     </tr>";
     

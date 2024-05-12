@@ -6,14 +6,17 @@ class Transaction {
     public $note;
     public $time;
     public $address;
-
-    public function __construct($transactionID, $userID, $total, $note, $time, $address) {
+    public $pay;
+    public $transport;
+    public function __construct($transactionID, $userID, $total, $note, $time, $address, $pay, $transport) {
         $this->transactionID = $transactionID;
         $this->userID = $userID;
         $this->total = $total;
         $this->note = $note;
         $this->time = $time;
         $this->address = $address;
+        $this->pay = $pay;
+        $this->transport = $transport;
     }
 
     // Getter và setter cho transactionID
@@ -68,6 +71,20 @@ class Transaction {
 
     public function setAddress($address) {
         $this->address = $address;
+    }
+    public function getPay() {
+        return $this->pay;
+    }
+
+    public function setPay($pay) {
+        $this->pay = $pay;
+    }
+    public function getTransport() {
+        return $this->transport;
+    }
+
+    public function setTransport($transport) {
+        $this->transport = $transport;
     }
 }
 
