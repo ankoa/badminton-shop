@@ -5,6 +5,10 @@ selectedFilters = {};
 
 window.addEventListener("load", function () {
     uncheckAllInputs();
+    if(getBrandIdFromUrl()!=null) {
+        disableInputsByGroup("Hãng");
+        document.getElementById("filter-th-"+getBrandIdFromUrl()).checked=true;
+    }
     if(getSearchFromUrl() != null) {
         loadSearch();
     } else {
@@ -31,6 +35,17 @@ function uncheckAllInputs() {
         input.checked = false;
     });
 }
+
+function disableInputsByGroup(groupName) {
+    // Lấy tất cả các phần tử input trên trang
+    var inputs = document.querySelectorAll('input[type="checkbox"][data-group="' + groupName + '"]');
+
+    // Lặp qua mỗi phần tử và vô hiệu hóa (disable) nó
+    inputs.forEach(function(input) {
+        input.disabled = true;
+    });
+}
+
 
 function getAllByCatalogAndBrand() {
         var xhttp = new XMLHttpRequest();
@@ -369,8 +384,14 @@ function clearAllFiltered() {
         else if (keysort == "Hàng cũ nhất")
             sortby('created-desc');
     } else {
-        loadNav(getProductPerPage(), getIdFromUrl());
-        loadPage(1, getProductPerPage(), getIdFromUrl(), getBrandIdFromUrl());
+        if(getSearchFromUrl()!=null) {
+            loadNavFilter();
+            loadPageFilter(1,getProductPerPage());
+        } else {
+            loadNav(getProductPerPage(), getIdFromUrl());
+            loadPage(1, getProductPerPage(), getIdFromUrl(), getBrandIdFromUrl());
+        }
+        
     }
     
 }
@@ -480,9 +501,10 @@ $(document).ready(function () {
             }
         }
 
+        
+
+        if(getBrandIdFromUrl()!=null) checkedCount-=1;
         console.log(selectedFilters);
-
-
         if (checkedCount > 0) {
             if (getBrandIdFromUrl() != null) {
                 var requestData = {
@@ -509,7 +531,6 @@ $(document).ready(function () {
                 success: function (response) {
                     var keysort = document.getElementById('keysort').innerText;
                     filterArray = JSON.parse(response);
-                    console.log(filterArray);
                     if (keysort != "Mặc định") {
                         if (keysort == "A → Z")
                             sortby('alpha-asc');
@@ -559,6 +580,7 @@ $(document).ready(function () {
         } else {
             var keysort = document.getElementById('keysort').innerText;
             filterArray = fullArray;
+
             if (keysort != "Mặc định") {
                 if (keysort == "A → Z")
                     sortby('alpha-asc');

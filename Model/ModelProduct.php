@@ -41,11 +41,14 @@ class ModelProduct
         return $products;
     }
 
-    public function getListProductBySpeed($speed)
+    public function getListProductBySpeed($speed, $brandID)
     {
         $query = "SELECT *
         FROM product p, variantdetail vd, variant v
         WHERE p.productID=v.productID and v.variantID=vd.variantID and vd.speed=$speed";
+        if ($brandID !== null) {
+            $query .= " AND p.brandID='$brandID'";
+        }
         $result = $this->db->select($query);
         $products = [];
         if ($result && $result->num_rows > 0) {
@@ -68,11 +71,14 @@ class ModelProduct
         return $products;
     }
 
-    public function getListProductBySize($size)
+    public function getListProductBySize($size, $brandID)
     {
         $query = "SELECT *
         FROM product p, variantdetail vd, variant v
         WHERE p.productID=v.productID and v.variantID=vd.variantID and vd.size=$size";
+        if ($brandID !== null) {
+            $query .= " AND p.brandID='$brandID'";
+        }
         $result = $this->db->select($query);
         $products = [];
         if ($result && $result->num_rows > 0) {
@@ -95,12 +101,16 @@ class ModelProduct
         return $products;
     }
 
-    public function getListProductByWeight($weight)
+    public function getListProductByWeight($weight, $brandID)
 {
     $query = "SELECT DISTINCT p.productID, p.brandID, p.catalogID, p.name, p.description, p.status, p.price, p.discount, p.url_image, p.timeCreated
     FROM product p, variantdetail vd, variant v
     WHERE p.productID=v.productID and v.variantID=vd.variantID and vd.weight='$weight'";
     
+    if ($brandID !== null) {
+        $query .= " AND p.brandID='$brandID'";
+    }
+
     $result = $this->db->select($query);
     $products = [];
     
@@ -126,11 +136,14 @@ class ModelProduct
 }
 
 
-    public function getListProductByColor($color)
+    public function getListProductByColor($color, $brandID)
     {
         $query = "SELECT *
         FROM product p, variantdetail vd, variant v
         WHERE p.productID=v.productID and v.variantID=vd.variantID and p.catalogID=2 and vd.color='$color'";
+        if ($brandID !== null) {
+            $query .= " AND p.brandID='$brandID'";
+        }
         $result = $this->db->select($query);
         $products = [];
         if ($result && $result->num_rows > 0) {
@@ -153,11 +166,17 @@ class ModelProduct
         return $products;
     }
 
-    public function getListProductByGrip($grip)
+    public function getListProductByGrip($grip, $brandID)
 {
     $query = "SELECT DISTINCT p.productID, p.brandID, p.catalogID, p.name, p.description, p.status, p.price, p.discount, p.url_image, p.timeCreated
         FROM product p, variantdetail vd, variant v
         WHERE p.productID=v.productID and v.variantID=vd.variantID and vd.grip='$grip'";
+
+    // Nếu $brandID không null, thêm điều kiện tìm kiếm theo brandID vào câu truy vấn
+    if ($brandID !== null) {
+        $query .= " AND p.brandID='$brandID'";
+    }
+
     $result = $this->db->select($query);
     $products = [];
     if ($result && $result->num_rows > 0) {
@@ -179,6 +198,7 @@ class ModelProduct
     }
     return $products;
 }
+
 
 
     // Lấy thông tin sản phẩm dựa trên ID
@@ -342,6 +362,17 @@ class ModelProduct
         $query = "DELETE FROM product WHERE productID = '$productID'";
         return $this->db->delete($query);
     }
+    public function getProductNameByID($productID)
+    {
+        $query = "SELECT name FROM product WHERE productID = '$productID'";
+        $result = $this->db->select($query);
+        if ($result && $result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row['name'];
+        }
+        return null;
+    }
+    
     public function searchProductsByName($searchString)
 {
     $query = "SELECT * FROM product WHERE name LIKE '%$searchString%'";

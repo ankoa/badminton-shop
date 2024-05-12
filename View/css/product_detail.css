@@ -136,7 +136,7 @@ a,.text-link {
 }
 
 .img-chosen-border {
-  border: 1px solid #E95221;
+  border: 1px solid #E95221 !important;
 }
 
 .slider-wrapper .image-list::-webkit-scrollbar {
@@ -156,7 +156,7 @@ a,.text-link {
 
 .description {
   width: 80%;
-  height: 600px;
+  height: auto;
   margin-left: 10%;
   margin-top: 40px;
 }
@@ -552,6 +552,7 @@ svg {
   vertical-align: middle;
   max-width: 60px !important;
   height: auto;
+  border: 1px solid #ebebeb;
 }
 
 .popup-cart-mobile .media-content .body_content {
