@@ -10,16 +10,17 @@ require_once '..\Model\Entity\Transaction.php';
         
         // Phương thức để lấy tất cả các giao dịch từ cơ sở dữ liệu
         public function getAllTransactions() {
-            $query = "SELECT * FROM `transaction`";
-            $result = $this->db->select($query);
-            if ($result) {
-                $transactions = [];
-                while ($row = $result->fetch_assoc()) {
-                    $transactions[] = $row;
+            try {
+                $query = "SELECT * FROM transaction";
+                $result = $this->db->select($query);
+                $arrHoaDon = array();
+                while($row = mysqli_fetch_assoc($result)) {
+                    $arrHoaDon[] = $row;
                 }
-                return $transactions;
-            } else {
-                return false;
+                return $arrHoaDon;
+            } catch (Exception $e) {
+                echo 'Error:'. $e->getMessage();
+                return null;
             }
         }
     

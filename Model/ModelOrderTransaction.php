@@ -10,27 +10,37 @@ class ModelOrderTransaction {
 
     // Phương thức để lấy tất cả các giao dịch đơn hàng từ cơ sở dữ liệu
     public function getAllOrderTransactions() {
-        $query = "SELECT * FROM `ordertransaction` WHERE status != 0";
-        $result = $this->db->select($query);
-        if ($result) {
-            $orderTransactions = [];
-            while ($row = $result->fetch_assoc()) {
-                $orderTransactions[] = $row;
+        try {
+            $query = "SELECT * FROM ordertransaction";
+            $result = $this->db->select($query);
+            $arrAllOrderTransactions = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $arrAllOrderTransactions = $row;
             }
-            return $orderTransactions;
-        } else {
-            return false;
+            return $arrAllOrderTransactions;
+        } catch (Exception $e) {
+            echo 'Error:'. $e->getMessage();
+            return null;
         }
     }
 
     // Phương thức để lấy thông tin giao dịch đơn hàng bằng ID đơn hàng
     public function getOrderTransactionByOrderID($orderID) {
-        $query = "SELECT * FROM `ordertransaction` WHERE orderID = '$orderID' AND status != 0";
-        $result = $this->db->select($query);
-        if ($result) {
-            return $result->fetch_assoc();
-        } else {
-            return false;
+        try{
+            $query = "SELECT cthd.*, pro.name , pro.price, pro.description, pro.url_image FROM ordertransaction cthd
+            JOIN product pro ON cthd.productID = pro.productID
+            WHERE cthd.transactionID = '$orderID'
+            ";
+
+            $result = $this->db->select($query);
+            $arr = [];
+            while ($row = mysqli_fetch_assoc($result)) {
+                $arr[] = $row;
+            }
+            return $arr;
+        } catch (Exception $e) {
+            echo 'Error:'. $e->getMessage();
+            return null;
         }
     }
 
