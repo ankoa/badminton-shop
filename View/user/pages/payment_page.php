@@ -1,3 +1,12 @@
+<?php
+require_once __DIR__ . '/../../../Model/ModelProduct.php';
+require_once __DIR__ . '/../../../Model/ModelUser.php';
+require_once __DIR__ . '/../../../Model/ModelCartDetail.php';
+$modelUser = new ModelUser();
+$modelProduct = new ModelProduct();
+$modelCartDetail = new ModelCartDetail();
+$cartDetails = $modelCartDetail->getCartDetailByCartID($modelUser->getUIDByUserName($_SESSION['username']));
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -157,41 +166,41 @@
                             <table class="product-table">
                                 <tbody>
                                     <?php
-                                     if (isset($_SESSION['username'])) {
-                                        require_once('../Model/ModelUser.php');
-                                        require_once('../Model/ModelProduct.php');
-                                        require_once('../Model/ModelCartDetail.php');
-                                        $modelUser = new ModelUser();
-                                        $modelProduct = new ModelProduct();
-                                        $modelCartDetail = new ModelCartDetail();
-                                        $cartDetails = $modelCartDetail->getCartDetailByCartID($modelUser->getUIDByUserName('2'));
-                                        foreach ($cartDetails  as $cartDetail) {
-                                            
-                                            $quantity = $cartDetail->getQuantity();
-                                            $productID = $cartDetail->getProductID();
-                                            $price = $cartDetail->getPrice();
+                                    //  if (isset($_SESSION['username'])) {
+                                    // require_once('../Model/ModelUser.php');
+                                    // require_once('../Model/ModelProduct.php');
+                                    // require_once('../Model/ModelCartDetail.php');
+                                    // $modelUser = new ModelUser();
+                                    // $modelProduct = new ModelProduct();
+                                    // $modelCartDetail = new ModelCartDetail();
+                                    // $cartDetails = $modelCartDetail->getCartDetailByCartID($modelUser->getUIDByUserName('2'));
+                                    foreach ($cartDetails  as $cartDetail) {
 
-                                            
-                                            $productName = $modelProduct->getProductNameByID($productID);
+                                        $quantity = $cartDetail->getQuantity();
+                                        $productID = $cartDetail->getProductID();
+                                        $price = $cartDetail->getPrice();
 
-                                            
-                                            echo '<tr class="product product-has-image clearfix">';
-                                            echo '<td>';
-                                            echo '<div class="product-thumbnail">';
-                                            echo '<div class="product-thumbnail__wrapper">';
-                                            echo '<img src="" class="product-thumbnail__image" />';
-                                            echo '</div>';
-                                            echo '<span class="product-thumbnail__quantity" aria-hidden="true">' . $quantity . '</span>';
-                                            echo '</div>';
-                                            echo '</td>';
-                                            echo '<td class="product-info">';
-                                            echo '<span class="product-info-name">' . $productName . '</span>';
-                                            echo '</td>';
-                                            echo '<td class="product-price text-right">' . number_format($price) . ' ₫ </td>';
-                                            echo '</tr>';
-                                        }
-                                     }
-                                    ?>
+
+                                        $productName = $modelProduct->getProductNameByID($productID);
+
+
+                                        echo '<tr class="product product-has-image clearfix">';
+                                        echo '<td>';
+                                        echo '<div class="product-thumbnail">';
+                                        echo '<div class="product-thumbnail__wrapper">';
+                                        echo '<img src="" class="product-thumbnail__image" />';
+                                        echo '</div>';
+                                        echo '<span class="product-thumbnail__quantity" aria-hidden="true">' . $quantity . '</span>';
+                                        echo '</div>';
+                                        echo '</td>';
+                                        echo '<td class="product-info">';
+                                        echo '<span class="product-info-name">' . $productName . '</span>';
+                                        echo '</td>';
+                                        echo '<td class="product-price text-right">' . number_format($price) . ' ₫ </td>';
+                                        echo '</tr>';
+                                    }
+                                    //  }
+                                    ?> 
 
                                     <!-- <tr class="product product-has-image clearfix">
                                         <td>

@@ -1,3 +1,8 @@
+.wrapper {
+    height: fit-content !important; /* Ghi đè chiều cao */
+    display: block !important; /* Ghi đè kiểu hiển thị */
+}
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -8,7 +13,6 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    padding: 20px;
 }
 
 .left-side {

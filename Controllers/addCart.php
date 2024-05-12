@@ -22,23 +22,28 @@ if (isset($_GET['productID']) && isset($_GET['username']) && isset($_GET['varian
         $username = $_GET['username'];
         $userID = $modeluser->getUIDByUserName($username);
         $modelcartdetail->addCartDetail($userID, $productID, $variantID, $quantity, $price);
-        echo "k trung";
+        echo count($modelcartdetail->getCartDetailByCartID($userID));
     } else {
         $product = $modelproduct->getProductByID($_GET['productID']);
+        $username = $_GET['username'];
+        $userID = $modeluser->getUIDByUserName($username);
         $quantity = $_GET['quantity'] + $modelcartdetail->getQuantityCartDetail($_GET['productID'], $_GET['variantID']);
         $price = $product->getPrice() * $quantity;
         $modelcartdetail->updateAddCartDetail($modeluser->getUIDByUserName($_GET['username']), $_GET['productID'], $_GET['variantID'], $quantity, $price);
-        echo 'trung';
+        echo count($modelcartdetail->getCartDetailByCartID($userID));
     }
     $catalog = $modelCatalog->getCatalogByID($_GET['productID']);
 }else if(isset($_GET['action'])) {
     if($_GET['action']=="delete") {
         $modelcartdetail->deleteProductCartDetail($_GET['cartID'], $_GET['productID'], $_GET['variantID']);
+        echo $modelcartdetail->getTotalPriceCart($_GET['cartID']);
     } elseif($_GET['action']=="quantity") {
         if($_GET['quantity']>0) {
             $product=$modelproduct->getProductByID($_GET['productID']);
             $modelcartdetail->updateQuantityCartDetail($_GET['cartID'], $_GET['productID'], $_GET['variantID'], $_GET['quantity'], $product->getPrice()*$_GET['quantity']);
+            
         }
+        echo $modelcartdetail->getTotalPriceCart($_GET['cartID']);
     } 
 } else {
     echo json_encode([]);

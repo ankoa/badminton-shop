@@ -1,15 +1,15 @@
 .footer{
     float: left;
     width: 100%;
-    min-height:100px;
+    height: 15%;
     background-color: black;
-    
+    display: block;
 }
-.row{
+.row_footer{
     float: left;
+    height: 10%;
     width: 100%;
-    margin-bottom: 20px;
-    padding-top: 20px;
+    margin-top: 20px;
     
 }
 .boxcenter{
@@ -19,28 +19,37 @@
 
 }
 .boxfooter1{
+    margin-top: 20px;
     width: 25%;
     float: left;
     color:aliceblue;
 }
 .boxfooter2{
+    margin-top: 20px;
     width: 25%;
     float: left;
     color:aliceblue;
 }
 .boxfooter3{
+    margin-top: 20px;
     width: 25%;
     float: left;
     color:aliceblue;
 }
 .boxfooter4{
+    margin-top: 20px;
     width: 25%;
     float: left;
     color:aliceblue;
 }
-.textcenter{
+.row_footer_textcenter{
+    height: 5%;
+    margin-top: 180px; 
     color:aliceblue;
     text-align: center;
+}
+.row_footer_textcenter p{
+    margin-top: 15px; 
 }
 .mr{
     font-size: 12px;

@@ -9,8 +9,15 @@ require_once __DIR__ . '/../../../Model/ModelVariantDetail.php';
 $modelCatalog = new ModelCatalog();
 // Khởi tạo đối tượng ModelProduct
 $modelProduct = new ModelProduct();
-$catalogID = $_GET['id'];
-$catalog = $modelCatalog->getCatalogByID($catalogID);
+if(isset($_GET['id'])){
+    $catalogID = $_GET['id'];
+    $catalog = $modelCatalog->getCatalogByID($catalogID);
+ }/*else $catalog = null;
+if(isset($textname)){
+    $textname = $_GET['name'];
+    $listproduct = $modelProduct->searchProductsByName($textname);
+} */
+
 
 // Lấy thông tin sản phẩm từ cơ sở dữ liệu dựa trên productID
 $productID = 16;
@@ -37,8 +44,6 @@ $listVariantDetails = [];
 
 <!DOCTYPE html>
 <html lang="en">
-
-
 <div class="nav-container">
     <div class="nav-row">
         <aside class="dqdt-sidebar">
@@ -56,7 +61,6 @@ $listVariantDetails = [];
                             </div>
                             <div class="filter-container__selected-filter-list">
                                 <ul id="filter">
-
                                 </ul>
                             </div>
                         </div>
@@ -143,14 +147,14 @@ $listVariantDetails = [];
                                     <ul class="filter-thong_so-trong-luong">
                                         <li class="filter-item filter-item--check-box filter-item--green">
                                             <label data-filter="filter-trong-luong-2u-90-94g" for="filter-trong-luong-2u-90-94g" class="filter-trong-luong-2u-90-94g">
-                                                <input checked="false" type="checkbox" id="filter-trong-luong-2u-90-94g" onchange="toggleFilter(this);" data-group="Trọng Lượng" data-field="trong-luong" data-text="2U: 90 - 94g" value="2U" data-operator="OR">
+                                                <input checked="false" type="checkbox" id="filter-trong-luong-2u-90-94g" onchange="toggleFilter(this);" data-group="Trọng Lượng" data-field="weight" data-text="2U: 90 - 94g" value="2U" data-operator="OR">
                                                 <i class="fa"></i>
                                                 2U: 90 - 94g
                                             </label>
                                         </li>
                                         <li class="filter-item filter-item--check-box filter-item--green ">
                                             <label data-filter="filter-trong-luong-3u-85-89g" for="filter-trong-luong-3u-85-89g" class="filter-trong-luong-3u-85-89g">
-                                                <input checked="false" type="checkbox" id="filter-trong-luong-3u-85-89g" onchange="toggleFilter(this);" data-group="Trọng Lượng" data-field="trong-luong" data-text="3U: 85 - 89g" value="3U" data-operator="OR">
+                                                <input checked="false" type="checkbox" id="filter-trong-luong-3u-85-89g" onchange="toggleFilter(this);" data-group="Trọng Lượng" data-field="weight" data-text="3U: 85 - 89g" value="3U" data-operator="OR">
                                                 <i class="fa"></i>
                                                 3U: 85 - 89g
                                             </label>
@@ -158,7 +162,7 @@ $listVariantDetails = [];
 
                                         <li class="filter-item filter-item--check-box filter-item--green ">
                                             <label data-filter="filter-trong-luong-4u-80-84g" for="filter-trong-luong-4u-80-84g" class="filter-trong-luong-4u-80-84g">
-                                                <input checked="false" type="checkbox" id="filter-trong-luong-4u-80-84g" onchange="toggleFilter(this);" data-group="Trọng Lượng" data-field="trong-luong" data-text="4U: 80 - 84g" value="4U" data-operator="OR">
+                                                <input checked="false" type="checkbox" id="filter-trong-luong-4u-80-84g" onchange="toggleFilter(this);" data-group="Trọng Lượng" data-field="weight" data-text="4U: 80 - 84g" value="4U" data-operator="OR">
                                                 <i class="fa"></i>
                                                 4U: 80 - 84g
                                             </label>
@@ -166,7 +170,7 @@ $listVariantDetails = [];
 
                                         <li class="filter-item filter-item--check-box filter-item--green ">
                                             <label data-filter="filter-trong-luong-5u-75-79g" for="filter-trong-luong-5u-75-79g" class="filter-trong-luong-5u-75-79g">
-                                                <input checked="false" type="checkbox" id="filter-trong-luong-5u-75-79g" onchange="toggleFilter(this);" data-group="Trọng Lượng" data-field="trong-luong" data-text="5U: 75 - 79g" value="5U" data-operator="OR">
+                                                <input checked="false" type="checkbox" id="filter-trong-luong-5u-75-79g" onchange="toggleFilter(this);" data-group="Trọng Lượng" data-field="weight" data-text="5U: 75 - 79g" value="5U" data-operator="OR">
                                                 <i class="fa"></i>
                                                 5U: 75 - 79g
                                             </label>
@@ -174,7 +178,7 @@ $listVariantDetails = [];
 
                                         <li class="filter-item filter-item--check-box filter-item--green ">
                                             <label data-filter="filter-trong-luong-f-70-74g" for="filter-trong-luong-f-70-74g" class="filter-trong-luong-f-70-74g">
-                                                <input checked="false" type="checkbox" id="filter-trong-luong-f-70-74g" onchange="toggleFilter(this);" data-group="Trọng Lượng" data-field="trong-luong" data-text="F: 70 - 74g" value="F" data-operator="OR">
+                                                <input checked="false" type="checkbox" id="filter-trong-luong-f-70-74g" onchange="toggleFilter(this);" data-group="Trọng Lượng" data-field="weight" data-text="F: 70 - 74g" value="F" data-operator="OR">
                                                 <i class="fa"></i>
                                                 F: 70 - 74g
                                             </label>
@@ -182,7 +186,7 @@ $listVariantDetails = [];
 
                                         <li class="filter-item filter-item--check-box filter-item--green ">
                                             <label data-filter="filter-trong-luong-2f-65-69g" for="filter-trong-luong-2f-65-69g" class="filter-trong-luong-2f-65-69g">
-                                                <input checked="false" type="checkbox" id="filter-trong-luong-2f-65-69g" onchange="toggleFilter(this);" data-group="Trọng Lượng" data-field="trong-luong" data-text="2F: 65 - 69g" value="2F" data-operator="OR">
+                                                <input checked="false" type="checkbox" id="filter-trong-luong-2f-65-69g" onchange="toggleFilter(this);" data-group="Trọng Lượng" data-field="weight" data-text="2F: 65 - 69g" value="2F" data-operator="OR">
                                                 <i class="fa"></i>
                                                 2F: 65 - 69g
                                             </label>
@@ -273,8 +277,6 @@ $listVariantDetails = [];
                                                 </label>
                                             </li>
                                         <?php endforeach; ?>
-
-
                                     </ul>
                                 </div>
                             </aside>
@@ -289,7 +291,16 @@ $listVariantDetails = [];
 
         <div class="block-collection">
             <div class="section-box-bg">
-                <h1 class="title-page d-md-block d-none">Vợt Cầu Lông</h1>
+                <h1 class="title-page d-md-block" id="title-page-nav">Vợt Cầu Lông</h1>
+                <script>
+                    var title = <?php echo json_encode($catalog->getName()) ?>;
+                    var catalog = <?php if(isset($_GET['id'])) echo json_encode($catalogID); else echo "null";?>;
+                    if(catalog!=null) {
+                        document.getElementById('title-page-nav').innerHTML=title;
+                    } else {
+                        document.getElementById('title-page-nav').innerHTML="Search result";
+                    }
+                </script>
                 <div class="category-product">
                     <div id="sort-by">
                         <label class="left"><img width="16" height="16" alt="Sắp xếp" src="https://cdn.shopvnb.com/themes/images/sort.png">Sắp xếp: </label>

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web dụng cụ thể thao cầu lông</title>
     <link rel="stylesheet" href="../View/css/style.css">
+    <link href="https://cdn.shopvnb.com/themes/css/breadcrumb_style.scss.css" rel="stylesheet" type="text/css" />
     <?php
     if(isset($_GET['control'])) {
         if($_GET['control']=="ProductCategory") {
@@ -18,15 +19,19 @@
         } else if($_GET['control']=="Cart") {
             echo '<script src="../js/Cart.js"> defer</script>';
         }
+        else if($_GET['control']=="ContactCategory") {
+            echo '<link rel="stylesheet" href="../View/css/contact.css">';
+        }
+        
     } else {
         echo '<link rel="stylesheet" href="../View/css/slider.css"> <script src="../js/slider.js" defer></script>';
     }
         
     ?>
-    
+    <link rel="stylesheet" href="../View/css/style.css">
     <link rel="stylesheet" href="../View/css/homepage.css">
     <link rel="stylesheet" href="../View/css/footer.css">
-    
+    <link rel="stylesheet" href="../View/css/slider.css">
     <link rel="stylesheet" href="../View/css/signup-menu.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
@@ -43,13 +48,33 @@
 
 <body>
     <div class="wrapper" id="wrapper" >
-        
+        <?php
+        if(isset($_GET['control'])) {
+            if($_GET['control']=="ProductCategory") {
+                include("../View/user/bread-crumb.php");
+            } else if($_GET['control']=="ProductDetail") {
+                include("../View/user/bread-crumb.php");
+            } else if($_GET['control']=="checkDonHang") {
+                include("../View/user/bread-crumb.php");
+            } else if($_GET['control']=="IntroduceCategory") {
+                include("../View/user/bread-crumb.php");
+            } else if($_GET['control']=="Cart") {
+                include("../View/user/bread-crumb.php");
+            } else if($_GET['control']=="ContactCategory") {
+                include("../View/user/bread-crumb.php");
+            }
+        } else {
+            
+        }
+            
+        ?>
         <?php
             include("../Controllers/main.php");
             include("../View/user/footer.php");
         ?>
     </div>
      <script src="../js/backToHome-button.js" defer></script>
+     <script src="../js/search-engine.js" defer></script>
     </body>
 </div>
 
@@ -65,7 +90,7 @@
                 </span>
             </div>
             <div class="media-content bodycart-mobile">
-                <div class="thumb-1x1"><img src="/img/180x180//uploads/gallery/vot-cau-long-yonex-nanoflare-700-cyan-xach-tay_1710293307.webp" alt="Vợt cầu lông Yonex Nanoflare 700 Cyan - Xách tay"></div>
+                <div class="thumb-1x1" id="thumb-1x1"><img src="" alt="Vợt cầu lông Yonex Nanoflare 700 Cyan - Xách tay"></div>
                 <div class="body_content">
                     <h4 class="product-title" id="product-title">Vợt cầu lông Yonex Nanoflare 700 Cyan - Xách tay</h4>
                     <div class="product-new-price" id="product-new-price"><b>3.400.000 ₫</b><span>Size: 4U5</span></div>
@@ -88,5 +113,34 @@
         </div>
     </div>
 <?php endif; ?>
-
+<?php 
+        if(isset($_GET['control'])){
+            $tmp = $_GET['control'];
+        }
+        else $tmp = '';
+        if($tmp=='signup'){
+            include("../View/user/pages/signup.php");
+        }
+        else if($tmp=='signin'){
+            include("../View/user/pages/signin.php");
+        }
+        else if($tmp=='infor-user'){
+            include("../View/user/pages/infor_user.php");        
+        }
+        else if($tmp=='logout'){
+            //Neu nguoi dung da dang nhap thanh cong, thi huy bien session
+            if (isset($_SESSION['login'])) 
+            {
+                unset($_SESSION['login']);
+                unset($_SESSION['username']);
+                unset($_SESSION['type']);
+            }
+            echo '<script>window.location.href = "index.php";</script>';
+        }
+        /*require_once(__DIR__ . '/../Model/ModelUser.php');
+        $modeluser = new ModelUser();
+        $add_user = $modeluser->addUser(1, 111, 1, 111, "a@gmail.com", "0364985452", 0, 'normal', 1);
+        echo $add_user;
+        require_once(__DIR__ . '/../Model/check-email.php');*/
+    ?>
 </html> 

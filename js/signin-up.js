@@ -5,6 +5,7 @@ function displaySignMenu(input) {
     }
     else {
       backgroundLogin.style.display = "none";
+      window.location.href = "index.php";
     }
   
   }
