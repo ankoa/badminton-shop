@@ -61,7 +61,6 @@ $listVariantDetails = [];
                             </div>
                             <div class="filter-container__selected-filter-list">
                                 <ul id="filter">
-
                                 </ul>
                             </div>
                         </div>
@@ -278,8 +277,6 @@ $listVariantDetails = [];
                                                 </label>
                                             </li>
                                         <?php endforeach; ?>
-
-
                                     </ul>
                                 </div>
                             </aside>
@@ -294,7 +291,16 @@ $listVariantDetails = [];
 
         <div class="block-collection">
             <div class="section-box-bg">
-                <h1 class="title-page d-md-block d-none">Vợt Cầu Lông</h1>
+                <h1 class="title-page d-md-block" id="title-page-nav">Vợt Cầu Lông</h1>
+                <script>
+                    var title = <?php echo json_encode($catalog->getName()) ?>;
+                    var catalog = <?php if(isset($_GET['id'])) echo json_encode($catalogID); else echo "null";?>;
+                    if(catalog!=null) {
+                        document.getElementById('title-page-nav').innerHTML=title;
+                    } else {
+                        document.getElementById('title-page-nav').innerHTML="Search result";
+                    }
+                </script>
                 <div class="category-product">
                     <div id="sort-by">
                         <label class="left"><img width="16" height="16" alt="Sắp xếp" src="https://cdn.shopvnb.com/themes/images/sort.png">Sắp xếp: </label>

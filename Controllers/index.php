@@ -60,6 +60,8 @@
                 include("../View/user/bread-crumb.php");
             } else if($_GET['control']=="Cart") {
                 include("../View/user/bread-crumb.php");
+            } else if($_GET['control']=="ContactCategory") {
+                include("../View/user/bread-crumb.php");
             }
         } else {
             
