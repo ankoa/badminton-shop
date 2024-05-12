@@ -10,16 +10,17 @@ require_once '..\Model\Entity\Transaction.php';
     
         // Phương thức để lấy tất cả các giao dịch từ cơ sở dữ liệu
         public function getAllTransactions() {
-            $query = "SELECT * FROM `transaction`";
-            $result = $this->db->select($query);
-            if ($result) {
-                $transactions = [];
-                while ($row = $result->fetch_assoc()) {
-                    $transactions[] = $row;
+            try {
+                $query = "SELECT * FROM transaction";
+                $result = $this->db->select($query);
+                $arrHoaDon = array();
+                while($row = mysqli_fetch_assoc($result)) {
+                    $arrHoaDon[] = $row;
                 }
-                return $transactions;
-            } else {
-                return false;
+                return $arrHoaDon;
+            } catch (Exception $e) {
+                echo 'Error:'. $e->getMessage();
+                return null;
             }
         }
     
@@ -47,10 +48,59 @@ require_once '..\Model\Entity\Transaction.php';
             }
         }
 
+        public function getTransaction($id) {
+            try {
+                $query = "SELECT * FROM transaction WHERE transactionID = '$id'";
+                $result = $this->db->select($query);
+                if ($row = mysqli_fetch_assoc($result)) {
+                    return $row;
+                }
+                return null;
+            } catch (Exception $e) {
+                echo 'Error:'. $e->getMessage();
+                return null;
+            }
+        }
+
+        public function getTransactionByCustomer($ma_kh, $search) {
+            try {
+                $query = "SELECT * FROM transaction
+                    WHERE userID = '$ma_kh' 
+                    AND (transactionID = '$search' OR transport = '%$search%')
+                ";
+                $result = $this->db->select($query);
+                $arrHoaDon = array();
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $arrHoaDon[] = $row;
+                }
+                return $arrHoaDon;
+            } catch (Exception $e) {
+                echo 'Error:'. $e->getMessage();
+                return null;
+            }
+        }
+        
+        public function getAllTransactionByCustomer($ma_kh) {
+            try {
+                $query = "SELECT * FROM transaction
+                    WHERE userID = '$ma_kh' 
+                ";
+                $result = $this->db->select($query);
+                $arrHoaDon = array();
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $arrHoaDon[] = $row;
+                }
+                return $arrHoaDon;
+            } catch (Exception $e) {
+                echo 'Error:'. $e->getMessage();
+                return null;
+            }
+        }
+
         public function getTransactionByPhone($phoneNumber) {
             //$Phonenumber = $this->db->escape_string($Phonenumber);
             $query = "Select * from transaction where transaction.userID in 
-            (select user.userID from user where phoneNumber like '$phoneNumber')";
+            (select user.userID from user where phoneNumber = '$phoneNumber')";
             $result = $this->db->select($query);
             if ($result && $result->num_rows > 0) {
                 // Initialize an array to store transactions
