@@ -34,14 +34,35 @@ $listvariants = $modelVariant->getListVariantByProductID($productID);
 $modelVariantDetail = new ModelVariantDetail();
 $listVariantDetails = [];
 
+$totalQuantity = 0;
 foreach ($listvariants as $variant) {
     $variantID = $variant->getVariantID();
     $variantDetail = $modelVariantDetail->getVariantByID($variantID);
+    $totalQuantity += $variantDetail->getQuantity();
     // Thêm chi tiết biến thể vào mảng $listVariantDetails
     $listVariantDetails[] = $variantDetail;
-    echo $variantDetail->getSize();
 }
-$imagePaths = explode(",", reset($listVariantDetails)->getListImage());
+
+$string = $product->getUrl();
+
+// Tạo mảng để lưu kết quả
+$result = array();
+
+// Tách chuỗi theo dấu chấm phẩy để lấy ra các phần tử riêng biệt
+$parts = explode(";", $string);
+
+foreach ($parts as $part) {
+    // Tách từng phần tử thành tên và các số
+    $temp = explode(":", $part);
+
+    // Lưu tên làm key (viết thường) và các số làm value vào mảng kết quả
+    if (isset($temp[0]) && isset($temp[1])) {
+        $result[trim(strtolower($temp[0]))] = explode(",", $temp[1]);
+    }
+}
+$imagePaths = array_values($result)[0];
+
+
 if ($catalog->getName() == "Racket") {
 } else if ($catalog->getName() == "Shoes") {
     usort($listVariantDetails, function ($a, $b) {
@@ -73,54 +94,12 @@ if ($catalog->getName() == "Racket") {
     </link>
     <link href="https://cdn.shopvnb.com/themes/css/breadcrumb_style.scss.css" rel="stylesheet" type="text/css" />
     <link rel="preload" as='style' type="text/css" href="https://cdn.shopvnb.com/themes/css/breadcrumb_style.scss.css">
-    <link rel="stylesheet" href="../../css/product_detail.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,0,0" />
-    <script src="../../../js/product_detail.js" defer></script>
     <title>test</title>
 </head>
 
 <body>
     <div class="bodywrap">
-        <section class="bread-crumb">
-            <div class="container">
-                <ul class="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList">
-                    <li class="home" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                        <a href="https://shopvnb.com" title="Trang chủ" itemprop="item" href=""><span itemprop="name">Trang chủ</span></a>
-                        <meta itemprop="position" content="0" />
-                        <span class="mr_lr">&nbsp;<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" class="svg-inline--fa fa-chevron-right fa-w-10">
-                                <path fill="currentColor" d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" class=""></path>
-                            </svg>&nbsp;</span>
-                    </li>
-
-                    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-
-                        <a itemprop="item" href="giay-cau-long.html" title="Giày Cầu Lông"><span itemprop="name">Giày
-                                Cầu Lông</span></a>
-
-                        <meta itemprop="position" content="1" />
-                        <span class="mr_lr">&nbsp;<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" class="svg-inline--fa fa-chevron-right fa-w-10">
-                                <path fill="currentColor" d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" class=""></path>
-                            </svg>&nbsp;</span>
-                    </li>
-                    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-
-                        <a itemprop="item" href="giay-cau-long-mizuno.html" title="Giày Cầu Lông Mizuno"><span itemprop="name">Giày Cầu Lông Mizuno</span></a>
-
-                        <meta itemprop="position" content="2" />
-                        <span class="mr_lr">&nbsp;<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" class="svg-inline--fa fa-chevron-right fa-w-10">
-                                <path fill="currentColor" d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" class=""></path>
-                            </svg>&nbsp;</span>
-                    </li>
-                    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                        <strong itemprop="name">
-                            <?php echo $product->getName(); ?>
-                        </strong>
-                        <meta itemprop="position" content="3" />
-                    </li>
-                </ul>
-            </div>
-        </section>
-
         <div class="product-container">
             <div class="product-img">
                 <div class="big-img">
@@ -132,17 +111,17 @@ if ($catalog->getName() == "Racket") {
                             chevron_left
                         </button>
                         <ul class="image-list" id="image-list">
-                            <img class="image-item" src=<?php echo reset($imagePaths); ?> alt="img-1" />
+
                             <script>
                                 // Đảm bảo rằng biến imagePaths đã được định nghĩa trước
                                 const imagePaths = <?php echo json_encode($imagePaths); ?>;
-
+                                const productID= <?php echo json_encode($productID); ?>;
                                 // Lặp qua mỗi đường dẫn hình ảnh và chèn chúng vào danh sách
-                                imagePaths.forEach((path, index) => {
+                                for(var i=0;i<imagePaths.length;i++) {
                                     // Tạo một thẻ img và đặt thuộc tính src và alt
                                     const image = document.createElement('img');
-                                    image.src = path;
-                                    image.alt = `Image ${index + 1}`; // Tùy chỉnh alt nếu cần
+                                    image.src = "../View/images/product/<?php echo $productID ;?>/<?php echo array_keys($result)[0] ;?>/<?php echo $productID ;?>."+imagePaths[i]+".png";
+                                    image.alt = `Image ${i + 1}`; // Tùy chỉnh alt nếu cần
                                     image.classList.add('image-item');
 
                                     // Chọn ul danh sách hình ảnh
@@ -154,9 +133,11 @@ if ($catalog->getName() == "Racket") {
                                     } else {
                                         console.error(`UL with id 'image-list' not found.`);
                                     }
-                                });
+                                }
+
                             </script>
                         </ul>
+                        
                         <button id="next-slide" class="slide-button material-symbols-rounded">
                             chevron_right
                         </button>
@@ -188,7 +169,7 @@ if ($catalog->getName() == "Racket") {
                     <span class="line">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
                     <span class="mb-break" id="tinhtrang">
                         <script>
-                            const racket = <?php echo json_encode(reset($listVariantDetails)); ?>;
+                            const racket = <?php echo json_encode($totalQuantity); ?>;
                             if (racket && racket.quantity <= 0) {
                                 document.getElementById('tinhtrang').innerHTML = '<span class="brand-title">Tình trạng: </span><span class="a-vendor">Hết hàng</span>';
                             } else {
@@ -443,8 +424,14 @@ if ($catalog->getName() == "Racket") {
     <div id="product-data-get" data-product="<?php echo htmlspecialchars(json_encode($product)); ?>"></div>
     <div id="login-data-get" data-login="<?php echo isset($_SESSION['login']) ? htmlspecialchars(json_encode($_SESSION['login'])) : 'false'; ?>"></div>
     <div id="product-data-quantity" data-quantity="<?php echo htmlspecialchars(json_encode($product)); ?>"></div>
-    <div id="product-data-user" data-user="<?php echo htmlspecialchars(json_encode($_SESSION['username'])); ?>"></div>
+    <div id="product-data-user" data-user="<?php echo isset($_SESSION['username']) ? htmlspecialchars(json_encode($_SESSION['username'])) : 'null'; ?>"></div>
     <div id="catalog-data" data-catalog="<?php echo htmlspecialchars(json_encode($catalog->getName())); ?>"></div>
+    <div id="image-list-data" data-array=""></div>
+    <script>
+        var myArray = <?php echo json_encode($result) ?>;
+        var divElement = document.getElementById("image-list-data");
+        divElement.dataset.array = JSON.stringify(myArray);
+    </script>
 </body>
 
 </html>

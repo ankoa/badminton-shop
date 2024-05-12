@@ -7,7 +7,7 @@ const initSlider = () => {
 
     // Function to slide images
     const slideImages = (direction) => {
-        const scrollAmount = direction === -1 ? -imageWidth - 18 : imageWidth + 18;
+        const scrollAmount = imageList.clientWidth * direction;
         imageList.scrollBy({ left: scrollAmount, behavior: "smooth" });
     };
 
@@ -77,6 +77,8 @@ const initSlider = () => {
 window.addEventListener("resize", initSlider);
 
 window.addEventListener("load", function () {
+    const imageList = document.querySelector(".slider-wrapper .image-list");
+    console.log(imageList.scrollLeft);
     initSlider();
     document.getElementById("tab1").click();
     document.getElementById("tab1").style.display = 'block';
@@ -96,14 +98,12 @@ window.addEventListener("load", function () {
     var productDataElement = document.getElementById('product-data-get');
     var product = JSON.parse(productDataElement.dataset.product);
     document.getElementById("product-title").innerHTML = product.name;
-    
-
 
 });
 
 function addCart() {
     var loginDataDiv = document.getElementById("login-data-get");
-    
+
     var productDataElement = document.getElementById('product-data-get');
     var product = JSON.parse(productDataElement.dataset.product);
     var quantity = document.getElementById('qtym').value;
@@ -133,25 +133,52 @@ function addCart() {
                     break;
                 }
             }
-            
+
             if (selectedVariant == null) {
                 alert("Vui lòng chọn phiên bản cần mua");
             } else {
-                
+
                 var xhttp = new XMLHttpRequest();
 
                 xhttp.onreadystatechange = function () {
                     if (this.readyState == 4 && this.status == 200) {
-                        var catalogData = this.responseText;
-                        console.log(catalogData);
-                        if(catalogData=="Racket") {
-                            document.getElementById("product-new-price").innerHTML = "<b>" + formatPrice(product.price) + "₫</b><span>Màu: "+selectedColor+" Bản: "+selectedVariant+"</span>";
-                        } else if(catalogData=="Shoes") {
-                            document.getElementById("product-new-price").innerHTML = "<b>" + formatPrice(product.price) + "₫</b><span>Màu: "+selectedColor+" Size: "+selectedVariant+"</span>";
-                        } else if(catalogData=="Shuttle") {
-                            document.getElementById("product-new-price").innerHTML = "<b>" + formatPrice(product.price) + "₫</b><span>Tốc độ: "+selectedVariant+"</span>";
-                        } else if(catalogData=="String") {
-                            document.getElementById("product-new-price").innerHTML = "<b>" + formatPrice(product.price) + "₫</b><span>Màu: "+selectedVariant+"</span>";
+                        var totalcartproduct = document.querySelector('.count_item_pr');
+                        totalcartproduct.innerHTML = JSON.parse(this.responseText);
+                        var tmp = document.querySelector('.total-price');
+                        var totalprice = parseInt(tmp.innerHTML.replace(/\./g, '').replace(/₫/g, ''));
+                        totalprice += product.price * quantity;
+                        tmp.innerHTML = formatPrice(totalprice) + "₫";
+                        var catalogData = product.catalogID;
+                        var inputElement = document.querySelector('input[value="'+selectedVariant+'"]');
+                        if (inputElement) {
+                            // Lấy id của input
+                            var inputId = inputElement.id;
+                        
+                            // Tạo attribute for của label tương ứng với id của input
+                            var labelFor = inputId;
+                        
+                            // Lấy label bằng cách sử dụng attribute for
+                            var labelElement = document.querySelector('label[for="' + labelFor + '"]');
+                        
+                            // Kiểm tra xem label có tồn tại không
+                            if (labelElement) {
+                                // Lấy nội dung của label
+                                var labelText = labelElement.innerText.trim();
+                        
+                            } else {
+                                console.log("Không tìm thấy label tương ứng với input có giá trị là 2.");
+                            }
+                        } else {
+                            console.log("Không tìm thấy input có giá trị là 2.");
+                        }
+                        if (catalogData == 1) {
+                            document.getElementById("product-new-price").innerHTML = "<b>" + formatPrice(product.price) + "₫</b><span>Màu: " + selectedColor + ", Bản: " + labelText + "</span>";
+                        } else if (catalogData == 4) {
+                            document.getElementById("product-new-price").innerHTML = "<b>" + formatPrice(product.price) + "₫</b><span>Màu: " + selectedColor + ", Size: " + labelText + "</span>";
+                        } else if (catalogData == 3) {
+                            document.getElementById("product-new-price").innerHTML = "<b>" + formatPrice(product.price) + "₫</b><span>Tốc độ: " + labelText + "</span>";
+                        } else if (catalogData == 2) {
+                            document.getElementById("product-new-price").innerHTML = "<b>" + formatPrice(product.price) + "₫</b><span>Màu: " + labelText  + "</span>";
                         }
                         document.getElementById('popup-cart-mobile').classList.add('active');
                         document.getElementById('full-cover').style.opacity = "0.5";
@@ -160,7 +187,7 @@ function addCart() {
                 };
 
                 // Gửi yêu cầu AJAX đến tệp PHP để xử lý
-                xhttp.open("GET", "addCart.php?productID=" + product.productID + "&variantID=" + selectedVariant + "&quantity=" + quantity+ "&username=" + loginUserObject  + "&price=" + product.price*quantity, true);
+                xhttp.open("GET", "addCart.php?productID=" + product.productID + "&variantID=" + selectedVariant + "&quantity=" + quantity + "&username=" + loginUserObject + "&price=" + product.price * quantity, true);
                 xhttp.send();
             }
         } else {
@@ -186,6 +213,85 @@ function formatPrice(price) {
 // Function to load version by color using AJAX
 function loadVersion(productID, color) {
     var xhttp = new XMLHttpRequest();
+    var imagePaths = JSON.parse(document.getElementById("image-list-data").dataset.array);
+    var productDataElement = document.getElementById('product-data-get');
+    var product = JSON.parse(productDataElement.dataset.product);
+    const imageList = document.querySelector(".slider-wrapper .image-list");
+    
+    imagePaths = imagePaths[color.toLowerCase()];
+
+    const bigImageContainer = document.querySelector('.big-img');
+    const bigImage = document.createElement('img');
+    bigImage.src = "../View/images/product/"+productID+"/"+color+"/"+productID+".1.png";
+    document.getElementById("thumb-1x1").innerHTML = '<img src="../View/images/product/'+productID+'/'+color+'/'+productID+'.1.png" alt="'+productID+'">';
+    bigImage.style.maxWidth = '100%';
+    bigImage.style.maxHeight = '100%';
+    bigImage.style.objectFit = 'cover';
+    // Clear previous big image
+    bigImageContainer.innerHTML = '';
+    // Append new big image
+    bigImageContainer.appendChild(bigImage);
+    const container = document.getElementById("image-list");
+    container.innerHTML = '';
+
+    // Lặp qua mỗi đường dẫn hình ảnh và chèn chúng vào danh sách
+    for (var i = 0; i < imagePaths.length; i++) {
+        // Tạo một thẻ img và đặt thuộc tính src và alt
+        const image = document.createElement('img');
+        image.src = "../View/images/product/"+productID+"/"+color+"/"+productID+"." + imagePaths[i] + ".png";
+        image.alt = `Image `+i+1    ; // Tùy chỉnh alt nếu cần
+        image.classList.add('image-item');
+        // Kiểm tra xem danh sách có tồn tại không trước khi chèn hình vào
+        if (container) {
+            container.appendChild(image);
+        } else {
+            console.error(`UL with id 'image-list' not found.`);
+        }
+    }
+    console.log(imageList.scrollLeft);
+    imageList.scrollLeft = 0;
+
+    // Function to display the clicked image in the big-img container
+    const displayBigImage = (src) => {
+        const bigImage = document.createElement('img');
+        bigImage.src = src;
+        bigImage.style.maxWidth = '100%';
+        bigImage.style.maxHeight = '100%';
+        bigImage.style.objectFit = 'cover';
+        // Clear previous big image
+        bigImageContainer.innerHTML = '';
+        // Append new big image
+        bigImageContainer.appendChild(bigImage);
+    };
+
+    const handleClickOnImage = (event) => {
+        // Remove class .img-chosen-border from all images in the slider
+        imageList.querySelectorAll('.image-item').forEach(image => {
+            image.classList.remove('img-chosen-border');
+        });
+
+        // Add class .img-chosen-border to the clicked image
+        event.target.classList.add('img-chosen-border');
+
+        const clickedImageSrc = event.target.src;
+        displayBigImage(clickedImageSrc);
+    };
+
+    // Add event listener to images in the slider
+    imageList.querySelectorAll('.image-item').forEach(image => {
+        image.addEventListener('click', handleClickOnImage);
+    });
+
+    // Display the first image in the big-img container on page load
+    const firstImageSrc = imageList.querySelector('.image-item').src;
+    displayBigImage(firstImageSrc);
+
+    // Select the first image in the slider
+    const firstImage = imageList.querySelector('.image-item');
+
+    // Add class .img-chosen-border to the first image
+    firstImage.classList.add('img-chosen-border');
+
 
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {

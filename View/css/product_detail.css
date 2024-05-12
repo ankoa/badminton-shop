@@ -146,15 +146,12 @@ a,.text-link {
 
 .slider-wrapper .image-list .image-item {
   width: 60px;
-  height: 90%;
+  height: 100px;
   object-fit: cover;
   cursor: pointer;
+  display: block;
 }
 
-.slider-wrapper .image-list .image-item:first-child {
-  margin-left: -40px;
-  /* Adjust this value as needed */
-}
 
 
 
@@ -215,7 +212,7 @@ a,.text-link {
 }
 
 .special-price {
-  font-size: 22px;
+  font-size: 22px !important;
   font-weight: bold;
   color: #e8002d;
 }
@@ -429,6 +426,7 @@ a,.text-link {
   text-align: center;
   border-radius: 5px;
   line-height: 30px;
+  color: black;
 }
 
 .swatch .swatch-element label {
@@ -550,16 +548,10 @@ svg {
   max-height: 100%;
 }
 
-img {
-  border: 0 none;
-  max-width: 100%;
-  height: auto;
-}
 
-img {
+.image-list img {
   vertical-align: middle;
-  border-style: none;
-  max-width: 100%;
+  max-width: 60px !important;
   height: auto;
 }
 

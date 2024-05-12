@@ -72,13 +72,6 @@
         float: left;
     }
 
-    .svg-inline {
-        width: 15px;
-        height: 15px;
-        margin-top: -5px;
-        padding-top: 5px;
-        margin-right: 2px;
-    }
 
     .breadcrumb li .mr_lr {
         padding: 0px 3px;

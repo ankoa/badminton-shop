@@ -10,6 +10,10 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
+    padding-right: 45px;
+    padding-left: 45px;
+    max-width: 1349px;
+    margin-left: 5%;
 }
 
 .box_service {

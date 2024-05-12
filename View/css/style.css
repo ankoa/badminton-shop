@@ -3,7 +3,6 @@
     padding: 0;
     box-sizing: border-box;
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 14px;
 }
 li{
     list-style: none;
@@ -16,15 +15,19 @@ header{
     display: block;
     justify-content: space-between;
 }
+.container {
+    padding-right: 45px;
+    padding-left: 45px;
+}
 .header_contentTop{
     display: flex;
     justify-content: space-between;
-    padding: 10px 100px;
+    padding: 10px 35px;
 
     height: 65%;
 }
 .logo{
-    padding: 0 25px;
+    padding: 0 10px;
     cursor: pointer;
 }
 .left_header_contentTop{
@@ -46,7 +49,7 @@ header{
     align-items: center;
     
 }
-.center_header_contentTop > li{
+/* .center_header_contentTop > li{
     height: 30px;
     width: 360px;
     position: relative;
@@ -58,7 +61,7 @@ header{
     background: #eceded;
     border: none;
     border-radius: 20px;
-}
+} */
 .center_header_contentTop > li input::placeholder {
     text-align: left;
     padding-left: 20px; 
@@ -85,6 +88,8 @@ header{
     padding: 0 12px;
     font-size: 25px;
 }
+
+
 .icon-item {
     text-align: center;
     margin: 0 20px;
@@ -192,14 +197,14 @@ header{
 
 .submenu{
     position: absolute;
-    width: 650px;
-    height: 400px;
+    width: 850px;
+    height: auto;
     border: 1px solid #000;
     display: flex;
     margin-top: 20px;
-    transform: translateX(-300px);
+    transform: translateX(-350px);
     visibility: hidden;
-    z-index: 1;
+    z-index: 1000;
     background: #ffffff;
     border-radius: 10px;
 }   
@@ -234,8 +239,12 @@ header{
 
 }
 #main{
-    height: 80%;
-    width: 100%;
+/* <<<<<<< HEAD
+    height: 85%;
+======= */
+    height: auto;
+/* >>>>>>> 3912cbcf9b66e5e45df85c0c51a756359cfa82b8
+ */    width: 100%;
 }
 
 .footer{
@@ -243,6 +252,8 @@ header{
     width: 100%;
     background: #000;
 }
+/*back to top button */
+
 .back-to-top
 {
   width: 50px;
@@ -259,25 +270,30 @@ header{
   box-shadow: 0 4px 6px rgba(0, 0, 0, .6) ;
   transition: ease .3s;
   pointer-events: none;
+  right: 20px;
+  bottom: 20px;
 }
 
 .back-top-top-icon {
   width: 50px;
   line-height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
+  margin-top: 20px;
+
 }
 
-.back-to-top:hover .back-top-top-icon {
-  width: 55px;
-  line-height: 55px;
-}
-
+.back-top-top-icon:hover {
+    color: white; 
+  }
 .back-to-top:hover {
   cursor: pointer;
-  color: rgb(167, 49, 49);
+  color: white;
   font-size: 24px;
-  width: 55px;
-  height: 55px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   box-shadow: 0 4px 6px rgba(0, 0, 0, .8) ;
 
@@ -290,6 +306,85 @@ header{
 
 }
 
+.custom-img {
+    width: 36px;
+    height: 36px;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* SEARCH */
+.search-list li {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+    background: #ffffff;
+}
+
+.search-list li:last-child {
+    text-align: center;
+}
+
+.search-list li:hover {
+    background-color: #ddd;
+}
+
+.search-list li a:hover {
+    color: #E95221; /* Change text color to orange on hover */
+}
+.search-container {
+    position: relative;
+    
+    
+}
+.search-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    background-color: #f1f1f1;
+    width: calc(100% - 2px); /* Đảm bảo dropdown rộng bằng ô search */
+    max-height: 150px; /* Giới hạn số lượng kết quả và chiều cao dropdown */
+    overflow-y: auto; /* Hiển thị thanh cuộn khi cần */
+    border: 1px solid #ccc;
+    border-top: none;
+    display: none; /* Mặc định ẩn dropdown */
+    z-index: 1000; /* Đảm bảo hiển thị trên các phần tử khác */
+    margin-top: 50px;
+    width: 400px;
+    transform: translateX(-423px);
+    border-radius: 5px;
+}
+
+
+.search-list li:hover {
+    background-color: #ddd;
+}
+
+#search_box{
+    display: flex;
+}
+#search_text{
+    margin: 5px;
+    text-align: center;
+    border-radius: 5px;
+    height: 40px;
+    width: 400px;
+    border: 1px solid #a1a1a1;
+}
+ .search-container i{
+    transform: translateX(-40px);
+}
+
+
+/* .bodywrap {
+    width: 100px;
+    height: 100px;
+    background-color: red;
+    transition: all 0.3s ease;
+} */
 .popup-cart {
     display: none; /* Ẩn pop-up mặc định */
     position: fixed; /* Đảm bảo pop-up hiển thị trên tất cả các phần tử khác */
@@ -331,6 +426,7 @@ header{
     margin-top: -5px;
     padding-top: 5px;
     margin-right: 2px;
+    float: right
 }
 
 .cart-body {
@@ -400,6 +496,7 @@ img {
     display: block;
     color: #e95221;
     font-weight: 300;
+    float:right;
 }
 
 .popup-cart .cart_body .grid {

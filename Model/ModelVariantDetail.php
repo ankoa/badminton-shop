@@ -143,7 +143,7 @@ class ModelVariantDetail {
     }
 
     public function getListGrip() {
-        $query = "SELECT DISTINCT(grip) FROM variantdetail WHERE grip IS NOT NULL AND STATUS !=0;";
+        $query = "SELECT DISTINCT(grip) FROM variantdetail WHERE grip IS NOT NULL AND grip != '' AND STATUS !=0;";
         $result = $this->db->select($query);
         $variants = [];
         if ($result) {
