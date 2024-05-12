@@ -31,7 +31,8 @@ class ModelProduct
                     $row['status'],
                     $row['price'],
                     $row['discount'],
-                    $row['url_image']
+                    $row['url_image'],
+                    $row['timeCreated']
                 );
                 $products[] = $product;
             }
@@ -58,7 +59,8 @@ class ModelProduct
                     $row['status'],
                     $row['price'],
                     $row['discount'],
-                    $row['url_image']
+                    $row['url_image'],
+                    $row['timeCreated']
                 );
                 $products[] = $product;
             }
@@ -84,7 +86,8 @@ class ModelProduct
                     $row['status'],
                     $row['price'],
                     $row['discount'],
-                    $row['url_image']
+                    $row['url_image'],
+                    $row['timeCreated']
                 );
                 $products[] = $product;
             }
@@ -93,30 +96,35 @@ class ModelProduct
     }
 
     public function getListProductByWeight($weight)
-    {
-        $query = "SELECT *
-        FROM product p, variantdetail vd, variant v
-        WHERE p.productID=v.productID and v.variantID=vd.variantID and vd.weight='$weight'";
-        $result = $this->db->select($query);
-        $products = [];
-        if ($result && $result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                $product = new Product(
-                    $row['productID'],
-                    $row['brandID'],
-                    $row['catalogID'],
-                    $row['name'],
-                    $row['description'],
-                    $row['status'],
-                    $row['price'],
-                    $row['discount'],
-                    $row['url_image']
-                );
-                $products[] = $product;
-            }
+{
+    $query = "SELECT DISTINCT p.productID, p.brandID, p.catalogID, p.name, p.description, p.status, p.price, p.discount, p.url_image, p.timeCreated
+    FROM product p, variantdetail vd, variant v
+    WHERE p.productID=v.productID and v.variantID=vd.variantID and vd.weight='$weight'";
+    
+    $result = $this->db->select($query);
+    $products = [];
+    
+    if ($result && $result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $product = new Product(
+                $row['productID'],
+                $row['brandID'],
+                $row['catalogID'],
+                $row['name'],
+                $row['description'],
+                $row['status'],
+                $row['price'],
+                $row['discount'],
+                $row['url_image'],
+                $row['timeCreated']
+            );
+            $products[] = $product;
         }
-        return $products;
     }
+    
+    return $products;
+}
+
 
     public function getListProductByColor($color)
     {
@@ -136,7 +144,8 @@ class ModelProduct
                     $row['status'],
                     $row['price'],
                     $row['discount'],
-                    $row['url_image']
+                    $row['url_image'],
+                    $row['timeCreated']
                 );
                 $products[] = $product;
             }
@@ -145,30 +154,32 @@ class ModelProduct
     }
 
     public function getListProductByGrip($grip)
-    {
-        $query = "SELECT *
+{
+    $query = "SELECT DISTINCT p.productID, p.brandID, p.catalogID, p.name, p.description, p.status, p.price, p.discount, p.url_image, p.timeCreated
         FROM product p, variantdetail vd, variant v
         WHERE p.productID=v.productID and v.variantID=vd.variantID and vd.grip='$grip'";
-        $result = $this->db->select($query);
-        $products = [];
-        if ($result && $result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                $product = new Product(
-                    $row['productID'],
-                    $row['brandID'],
-                    $row['catalogID'],
-                    $row['name'],
-                    $row['description'],
-                    $row['status'],
-                    $row['price'],
-                    $row['discount'],
-                    $row['url_image']
-                );
-                $products[] = $product;
-            }
+    $result = $this->db->select($query);
+    $products = [];
+    if ($result && $result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $product = new Product(
+                $row['productID'],
+                $row['brandID'],
+                $row['catalogID'],
+                $row['name'],
+                $row['description'],
+                $row['status'],
+                $row['price'],
+                $row['discount'],
+                $row['url_image'],
+                $row['timeCreated']
+            );
+            $products[] = $product;
         }
-        return $products;
     }
+    return $products;
+}
+
 
     // Lấy thông tin sản phẩm dựa trên ID
     public function getProductByID($productID)
@@ -187,7 +198,8 @@ class ModelProduct
                 $row['status'],
                 $row['price'],
                 $row['discount'],
-                $row['url_image']
+                $row['url_image'],
+                $row['timeCreated']
             );
             return $product;
         }
@@ -224,7 +236,8 @@ class ModelProduct
                     $row['status'],
                     $row['price'],
                     $row['discount'],
-                    $row['url_image']
+                    $row['url_image'],
+                    $row['timeCreated']
                 );
                 $products[] = $product;
             }
@@ -249,7 +262,33 @@ class ModelProduct
                     $row['status'],
                     $row['price'],
                     $row['discount'],
-                    $row['url_image']
+                    $row['url_image'],
+                    $row['timeCreated']
+                );
+                $products[] = $product;
+            }
+        }
+        return $products;
+    }
+
+    public function getProductByBrandIDAndCatalogID($catalogID, $brandID)
+    {
+        $query = "SELECT * FROM product WHERE brandID = '$brandID' AND catalogID = '$catalogID'";
+        $result = $this->db->select($query);
+        $products = [];
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $product = new Product(
+                    $row['productID'],
+                    $row['brandID'],
+                    $row['catalogID'],
+                    $row['name'],
+                    $row['description'],
+                    $row['status'],
+                    $row['price'],
+                    $row['discount'],
+                    $row['url_image'],
+                    $row['timeCreated']
                 );
                 $products[] = $product;
             }

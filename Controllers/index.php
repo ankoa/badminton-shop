@@ -4,11 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web dụng cụ thể thao cầu lông</title>
-<!-- <<<<<<< HEAD
-=======
     <link rel="stylesheet" href="../View/css/style.css">
     <link href="https://cdn.shopvnb.com/themes/css/breadcrumb_style.scss.css" rel="stylesheet" type="text/css" />
->>>>>>> 3912cbcf9b66e5e45df85c0c51a756359cfa82b8 -->
     <?php
     if(isset($_GET['control'])) {
         if($_GET['control']=="ProductCategory") {
@@ -91,7 +88,7 @@
                 </span>
             </div>
             <div class="media-content bodycart-mobile">
-                <div class="thumb-1x1"><img src="/img/180x180//uploads/gallery/vot-cau-long-yonex-nanoflare-700-cyan-xach-tay_1710293307.webp" alt="Vợt cầu lông Yonex Nanoflare 700 Cyan - Xách tay"></div>
+                <div class="thumb-1x1" id="thumb-1x1"><img src="" alt="Vợt cầu lông Yonex Nanoflare 700 Cyan - Xách tay"></div>
                 <div class="body_content">
                     <h4 class="product-title" id="product-title">Vợt cầu lông Yonex Nanoflare 700 Cyan - Xách tay</h4>
                     <div class="product-new-price" id="product-new-price"><b>3.400.000 ₫</b><span>Size: 4U5</span></div>

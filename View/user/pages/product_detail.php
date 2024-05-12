@@ -34,12 +34,13 @@ $listvariants = $modelVariant->getListVariantByProductID($productID);
 $modelVariantDetail = new ModelVariantDetail();
 $listVariantDetails = [];
 
+$totalQuantity = 0;
 foreach ($listvariants as $variant) {
     $variantID = $variant->getVariantID();
     $variantDetail = $modelVariantDetail->getVariantByID($variantID);
+    $totalQuantity += $variantDetail->getQuantity();
     // Thêm chi tiết biến thể vào mảng $listVariantDetails
     $listVariantDetails[] = $variantDetail;
-    echo $variantDetail->getSize();
 }
 
 $string = $product->getUrl();
@@ -93,9 +94,7 @@ if ($catalog->getName() == "Racket") {
     </link>
     <link href="https://cdn.shopvnb.com/themes/css/breadcrumb_style.scss.css" rel="stylesheet" type="text/css" />
     <link rel="preload" as='style' type="text/css" href="https://cdn.shopvnb.com/themes/css/breadcrumb_style.scss.css">
-    <link rel="stylesheet" href="../../css/product_detail.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,0,0" />
-    <script src="../../../js/product_detail.js" defer></script>
     <title>test</title>
 </head>
 
@@ -170,7 +169,7 @@ if ($catalog->getName() == "Racket") {
                     <span class="line">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
                     <span class="mb-break" id="tinhtrang">
                         <script>
-                            const racket = <?php echo json_encode(reset($listVariantDetails)); ?>;
+                            const racket = <?php echo json_encode($totalQuantity); ?>;
                             if (racket && racket.quantity <= 0) {
                                 document.getElementById('tinhtrang').innerHTML = '<span class="brand-title">Tình trạng: </span><span class="a-vendor">Hết hàng</span>';
                             } else {
@@ -425,7 +424,7 @@ if ($catalog->getName() == "Racket") {
     <div id="product-data-get" data-product="<?php echo htmlspecialchars(json_encode($product)); ?>"></div>
     <div id="login-data-get" data-login="<?php echo isset($_SESSION['login']) ? htmlspecialchars(json_encode($_SESSION['login'])) : 'false'; ?>"></div>
     <div id="product-data-quantity" data-quantity="<?php echo htmlspecialchars(json_encode($product)); ?>"></div>
-    <div id="product-data-user" data-user="<?php echo htmlspecialchars(json_encode($_SESSION['username'])); ?>"></div>
+    <div id="product-data-user" data-user="<?php echo isset($_SESSION['username']) ? htmlspecialchars(json_encode($_SESSION['username'])) : 'null'; ?>"></div>
     <div id="catalog-data" data-catalog="<?php echo htmlspecialchars(json_encode($catalog->getName())); ?>"></div>
     <div id="image-list-data" data-array=""></div>
     <script>

@@ -99,8 +99,6 @@ window.addEventListener("load", function () {
     var product = JSON.parse(productDataElement.dataset.product);
     document.getElementById("product-title").innerHTML = product.name;
 
-
-
 });
 
 function addCart() {
@@ -151,14 +149,36 @@ function addCart() {
                         totalprice += product.price * quantity;
                         tmp.innerHTML = formatPrice(totalprice) + "₫";
                         var catalogData = product.catalogID;
+                        var inputElement = document.querySelector('input[value="'+selectedVariant+'"]');
+                        if (inputElement) {
+                            // Lấy id của input
+                            var inputId = inputElement.id;
+                        
+                            // Tạo attribute for của label tương ứng với id của input
+                            var labelFor = inputId;
+                        
+                            // Lấy label bằng cách sử dụng attribute for
+                            var labelElement = document.querySelector('label[for="' + labelFor + '"]');
+                        
+                            // Kiểm tra xem label có tồn tại không
+                            if (labelElement) {
+                                // Lấy nội dung của label
+                                var labelText = labelElement.innerText.trim();
+                        
+                            } else {
+                                console.log("Không tìm thấy label tương ứng với input có giá trị là 2.");
+                            }
+                        } else {
+                            console.log("Không tìm thấy input có giá trị là 2.");
+                        }
                         if (catalogData == 1) {
-                            document.getElementById("product-new-price").innerHTML = "<b>" + formatPrice(product.price) + "₫</b><span>Màu: " + selectedColor + ", Bản: " + selectedVariant + "</span>";
+                            document.getElementById("product-new-price").innerHTML = "<b>" + formatPrice(product.price) + "₫</b><span>Màu: " + selectedColor + ", Bản: " + labelText + "</span>";
                         } else if (catalogData == 4) {
-                            document.getElementById("product-new-price").innerHTML = "<b>" + formatPrice(product.price) + "₫</b><span>Màu: " + selectedColor + ", Size: " + selectedVariant + "</span>";
+                            document.getElementById("product-new-price").innerHTML = "<b>" + formatPrice(product.price) + "₫</b><span>Màu: " + selectedColor + ", Size: " + labelText + "</span>";
                         } else if (catalogData == 3) {
-                            document.getElementById("product-new-price").innerHTML = "<b>" + formatPrice(product.price) + "₫</b><span>Tốc độ: " + selectedVariant + "</span>";
+                            document.getElementById("product-new-price").innerHTML = "<b>" + formatPrice(product.price) + "₫</b><span>Tốc độ: " + labelText + "</span>";
                         } else if (catalogData == 2) {
-                            document.getElementById("product-new-price").innerHTML = "<b>" + formatPrice(product.price) + "₫</b><span>Màu: " + selectedVariant + "</span>";
+                            document.getElementById("product-new-price").innerHTML = "<b>" + formatPrice(product.price) + "₫</b><span>Màu: " + labelText  + "</span>";
                         }
                         document.getElementById('popup-cart-mobile').classList.add('active');
                         document.getElementById('full-cover').style.opacity = "0.5";
@@ -203,6 +223,7 @@ function loadVersion(productID, color) {
     const bigImageContainer = document.querySelector('.big-img');
     const bigImage = document.createElement('img');
     bigImage.src = "../View/images/product/"+productID+"/"+color+"/"+productID+".1.png";
+    document.getElementById("thumb-1x1").innerHTML = '<img src="../View/images/product/'+productID+'/'+color+'/'+productID+'.1.png" alt="'+productID+'">';
     bigImage.style.maxWidth = '100%';
     bigImage.style.maxHeight = '100%';
     bigImage.style.objectFit = 'cover';

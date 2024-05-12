@@ -212,7 +212,7 @@ a,.text-link {
 }
 
 .special-price {
-  font-size: 22px;
+  font-size: 22px !important;
   font-weight: bold;
   color: #e8002d;
 }
@@ -426,6 +426,7 @@ a,.text-link {
   text-align: center;
   border-radius: 5px;
   line-height: 30px;
+  color: black;
 }
 
 .swatch .swatch-element label {
@@ -547,16 +548,10 @@ svg {
   max-height: 100%;
 }
 
-img {
-  border: 0 none;
-  max-width: 60px;
-  height: auto;
-}
 
-img {
+.image-list img {
   vertical-align: middle;
-  border-style: none;
-  max-width: 60px;
+  max-width: 60px !important;
   height: auto;
 }
 
