@@ -42,9 +42,9 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 60%; 
-        max-width: 35rem; 
-        height: 60%;
+        width: 75%; 
+        max-width: 50rem; 
+        height: 75%;
     }
     .closeformrole {
         cursor: pointer;
@@ -62,6 +62,18 @@
     }
     .rowfunction{
         margin-bottom: 10px;
+    }
+    .long-label {
+        min-width: 150px; /* Đặt kích thước tối thiểu cho nhãn */
+        display: inline-block; /* Cho phép nhãn mở rộng theo nội dung */
+        margin-right: 40px;
+        margin-top: 2px;
+    }
+    .long-label1 {
+        min-width: 150px; /* Đặt kích thước tối thiểu cho nhãn */
+        display: inline-block; /* Cho phép nhãn mở rộng theo nội dung */
+        margin-right: 15px;
+        margin-top: 2px;
     }
 
 </style>
@@ -363,7 +375,34 @@ function thongKeByBrand(event) {
             <li class="icon" id="doanhso"><i class="fa-solid fa-chart-simple"></i><a href="#" onclick="showContent('doanhso-content')">Doanh số</a></li>
             <li class="icon" id="sanpham"><i class="fa-solid fa-laptop"></i><a href="#" onclick="showContent('sanpham-content')">Quản lý sản phẩm</a></li>
             <li class="icon" id="hoadon"><i class="fa-solid fa-receipt"></i><a href="#" onclick="showContent('hoadon-content')">Quản lý hóa đơn</a></li>
-            <li class="icon" id="dangxuat"><i class="fa-solid fa-right-from-bracket"></i><a href="Badminton_Admin.php#" onclick="logout()">Đăng xuất</a></li>
+            <li class="icon" id="dangxuat"><i class="fa-solid fa-right-from-bracket"></i><a href="#" onclick="logout(event)">Đăng xuất</a></li>
+
+<script>
+function logout(event) {
+    event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
+
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                // Xử lý phản hồi từ server
+                var response = JSON.parse(xhr.responseText);
+                if (response.status === 1) {
+                    // Đăng xuất thành công, chuyển hướng người dùng
+                    window.location.href = 'index.php'; 
+                } else {
+                    alert('Đăng xuất không thành công!');
+                }
+            } else {
+                alert('Đã có lỗi xảy ra. Vui lòng thử lại sau.');
+            }
+        }
+    };
+    xhr.open('GET', 'Logout_admin.php', true); // Tạo một file logout.php để xử lý đăng xuất
+    xhr.send();
+}
+
+</script>
 
         </ul>
     </div>
@@ -375,7 +414,12 @@ function thongKeByBrand(event) {
         </div>
     </div>
 
-
+    <script>
+    function closeEditRoleForm() {
+        var editRoleForm = document.getElementById("editRoleForm");
+        editRoleForm.style.display = "none";
+    }
+</script>
 <!-- Quản lý nhóm quyền -->
 <div id="phanquyen-content" class="content-section">
     <h1 class="headerad">PHÂN QUYỀN</h1>
@@ -412,32 +456,96 @@ function thongKeByBrand(event) {
                             echo '<tr style="height: 50px;">';
                             echo "<td class=\"text-center\">" . $role['roleID'] . "</td>";
                             echo "<td class=\"text-center\">" . $role['roleName'] . "</td>";
-
+                    
                             // Lấy số lượng người dùng cho từng nhóm quyền
                             $userCount = $modelUser->getUserCountByRoleID($role['roleID']);
                             echo "<td class=\"text-center\">" . $userCount . "</td>";
-
+                    
                             echo '<td class="d-flex justify-content-evenly">';
-                            echo '<button style="width: fit-content; background-color: white; border: none;" type="button" class="btn btn-outline-primary" onclick="showEditForm('. $role['roleID'] .')">';
-                            echo '<i class="fas fa-wrench" style="font-size: 25px; color: orange;"></i>';
-                            echo '</button>';
+                            echo '<i class="fas fa-wrench" style="font-size: 25px; color: orange;" onclick="showEditForm(' . $role['roleID'] . ')"></i>';
                             echo '</td>';
 
+                    
                             echo "</tr>";
                         }
                     } else {
                         echo "<tr><td colspan='4'>Không có dữ liệu</td></tr>";
                     }
+                    
                     ?>
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    function showEditForm(roleID){
+        var form = document.getElementById("editRoleForm");
+        form.style.display = "block";
+        $.ajax({
+            url: '../Controllers/process_edit_form.php',
+            type: 'GET',
+            data: $(this).serializeArray(),
+            success: function(response) {
+                var data = JSON.parse(response);
+                console.log(data);
+                console.log("roleID: ", roleID);
+console.log("functionID: d", 1);
+                for (var i = 0; i < data.length; i++) {
+                    var item = data[i];
+                    console.log(item.roleID);
+                    console.log(item.functionID);
+                    console.log(item.permissionName);
+                    console.log(roleID+"id"+item.roleID);
+                    if (item.roleID.trim()+"" == roleID+"" && item.functionID.trim()+"" == 1) {
+                        console.log("Matching roleID and functionID found.");
+                        console.log(item.permissionName);
+                        switch (item.permissionName) {
+                            case "show":
+                                console.log("Setting showAccountSwitch to default checked.");
+                                setDefaultCheckedStatus("showAccountSwitch");
+                                break;
+                            case "add":
+                                console.log("Setting addAccountSwitch to default checked.");
+                                setDefaultCheckedStatus("addAccountSwitch");
+                                break;
+                            case "update":
+                                console.log("Setting updateAccountSwitch to default checked.");
+                                setDefaultCheckedStatus("updateAccountSwitch");
+                                break;
+                            case "delete":
+                                console.log("Setting deleteAccountSwitch to default checked.");
+                                setDefaultCheckedStatus("deleteAccountSwitch");
+                                break;
+                            default:
+                                console.log("No matching permission found.");
+                                break;
+                        }
+                    } else {
+                        console.log("No matching roleID and functionID.");
+                    }
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(error); // Xử lý lỗi nếu có
+            }
+        });
+    }
+</script>
+<script>
+    function setDefaultCheckedStatus(checkboxId) {
+        var checkbox = document.getElementById(checkboxId);
+        if (checkbox) {
+            checkbox.checked = true; // Đặt trạng thái checked cho checkbox
+        }
+    }
+</script>
+
 <div id="editRoleForm" style="display: none;">
     <div id="Role-background">
     <div class="Role">
-    <a class="closeformrole" onclick="displaySignMenu('none')">
+    <a class="closeformrole" onclick="closeEditRoleForm()">
           <i class="fa-solid fa-xmark"></i></a>
   <div class="container mt-5">
   <div class="row">
@@ -449,158 +557,194 @@ function thongKeByBrand(event) {
     </div>
     <div class="row">
       <div class="col-md-12">
-        <!-- Form để chứa các thành phần quản lý tài khoản -->
+        <!-- Form để chứa các thành phần quản lý -->
         <form id="managementForm">
-        <div class="form-row align-items-center">
-            <div class="col-md-3">
-              <!-- Nhãn quản lý sản phẩm -->
-              <label class="form-check-label" for="productRole">Quyền:</label>
+    <div class="form-row align-items-center">
+        <!-- Quản lý Quyền -->
+        <div class="col-md-3">
+            <label class="form-check-label text-left long-label" for="RoleManagement">Quyền:</label>
+        </div>
+        <div class="col-md-2">
+            <div class="form-check form-switch mt-3">
+                <input class="form-check-input" type="checkbox" id="showRoleSwitch">
+                <label class="form-check-label" for="showRoleSwitch">Xem</label>
             </div>
-            <div class="col-md-9">
-              <!-- Các nút switch quản lý sản phẩm -->
-              <div class="row rowfunction">
-                <div class="col-md-4">
-                  <div class="form-check form-switch mt-3">
-                    <input class="form-check-input" type="checkbox" id="addProductSwitch">
-                    <label class="form-check-label" for="addProductSwitch">Xem</label>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="form-check form-switch mt-3">
-                    <input class="form-check-input" type="checkbox" id="editProductSwitch">
-                    <label class="form-check-label" for="editProductSwitch">Thêm</label>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="form-check form-switch mt-3">
-                    <input class="form-check-input" type="checkbox" id="deleteProductSwitch">
-                    <label class="form-check-label" for="deleteProductSwitch">Sửa</label>
-                  </div>
-                </div>
-              </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-check form-switch mt-3">
+                <input class="form-check-input" type="checkbox" id="addRoleSwitch">
+                <label class="form-check-label" for="addRoleSwitch">Thêm</label>
             </div>
-          </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-check form-switch mt-3">
+                <input class="form-check-input" type="checkbox" id="updateRoleSwitch">
+                <label class="form-check-label" for="updateRoleSwitch">Sửa</label>
+            </div>
+        </div>
+            <div class="col-md-2">
+                <div class="form-check form-switch mt-3">
+                    <input class="form-check-input" type="checkbox" id="deleteRoleSwitch">
+                    <label class="form-check-label" for="deleteRoleSwitch">Xóa</label>
+                </div>
+            </div>
+    </div>
+
+    <!-- Quản lý Tài khoản -->
+    <div class="form-row align-items-center mt-3">
+        <div class="col-md-3">
+            <label class="form-check-label text-left long-label" for="AccountManagement">Tài khoản:</label>
+        </div>
+        <div class="col-md-2">
+            <div class="form-check form-switch mt-3">
+                <input class="form-check-input" type="checkbox" id="showAccountSwitch">
+                <label class="form-check-label" for="showAccountSwitch">Xem</label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-check form-switch mt-3">
+                <input class="form-check-input" type="checkbox" id="addAccountSwitch">
+                <label class="form-check-label" for="addAccountSwitch">Thêm</label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-check form-switch mt-3">
+                <input class="form-check-input" type="checkbox" id="updateAccountSwitch">
+                <label class="form-check-label" for="updateAccountSwitch">Sửa</label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-check form-switch mt-3">
+                <input class="form-check-input" type="checkbox" id="deleteAccountSwitch">
+                <label class="form-check-label" for="deleteAccountSwitch">Xóa</label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Các thành phần quản lý sản phẩm -->
+    <div class="form-row align-items-center mt-3">
+        <div class="col-md-3">
+            <label class="form-check-label text-left long-label" for="productManagement">Sản phẩm:</label>
+        </div>
+        <div class="col-md-2">
+            <div class="form-check form-switch mt-3" >
+                <input class="form-check-input" type="checkbox" id="showProductSwitch">
+                <label class="form-check-label" for="showProductSwitch">Xem</label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-check form-switch mt-3">
+                <input class="form-check-input" type="checkbox" id="addProductSwitch">
+                <label class="form-check-label" for="addProductSwitch">Thêm</label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-check form-switch mt-3">
+                <input class="form-check-input" type="checkbox" id="updateProductSwitch">
+                <label class="form-check-label" for="updateProductSwitch">Sửa</label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-check form-switch mt-3">
+                <input class="form-check-input" type="checkbox" id="deleteProductSwitch">
+                <label class="form-check-label" for="deleteProductSwitch">Xóa</label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Các thành phần quản lý loại sản phẩm -->
+    <div class="form-row align-items-center mt-3">
+        <div class="col-md-3.1">
+            <label class="form-check-label text-left long-label1" for="categoryManagement">Loại sản phẩm:</label>
+        </div>
+        <div class="col-md-2">
+            <div class="form-check form-switch mt-3">
+                <input class="form-check-input" type="checkbox" id="showCategorySwitch">
+                <label class="form-check-label" for="showCategorySwitch">Xem</label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-check form-switch mt-3">
+                <input class="form-check-input" type="checkbox" id="addCategorySwitch">
+                <label class="form-check-label" for="addCategorySwitch">Thêm</label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-check form-switch mt-3">
+                <input class="form-check-input" type="checkbox" id="updateCategorySwitch">
+                <label class="form-check-label" for="updateCategorySwitch">Sửa</label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-check form-switch mt-3">
+                <input class="form-check-input" type="checkbox" id="deleteCategorySwitch">
+                <label class="form-check-label" for="deleteCategorySwitch">Xóa</label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Các thành phần quản lý hóa đơn -->
+    <div class="form-row align-items-center mt-3">
+        <div class="col-md-3">
+            <label class="form-check-label text-left long-label" for="invoiceManagement">Hóa đơn:</label>
+        </div>
+        <div class="col-md-2">
+            <div class="form-check form-switch mt-3">
+                <input class="form-check-input" type="checkbox" id="showInvoiceSwitch">
+                <label class="form-check-label" for="showInvoiceSwitch">Xem</label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-check form-switch mt-3">
+                <input class="form-check-input" type="checkbox" id="addInvoiceSwitch">
+                <label class="form-check-label" for="addInvoiceSwitch">Thêm</label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-check form-switch mt-3">
+                <input class="form-check-input" type="checkbox" id="updateInvoiceSwitch">
+                <label class="form-check-label" for="updateInvoiceSwitch">Sửa</label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-check form-switch mt-3">
+                <input class="form-check-input" type="checkbox" id="deleteInvoiceSwitch">
+                <label class="form-check-label" for="deleteInvoiceSwitch">Xóa</label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Các thành phần quản lý doanh thu -->
+    <div class="form-row align-items-center mt-3">
+        <div class="col-md-3">
+            <label class="form-check-label text-left long-label" for="revenueManagement">Doanh thu:</label>
+        </div>
+        <div class="col-md-2">
+            <div class="form-check form-switch mt-3">
+                <input class="form-check-input" type="checkbox" id="viewRevenueSwitch">
+                <label class="form-check-label" for="viewRevenueSwitch">Xem</label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-check form-switch mt-3">
+                <input class="form-check-input" type="checkbox" id="exportRevenueSwitch">
+                <label class="form-check-label" for="exportRevenueSwitch">Xuất</label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-check form-switch mt-3">
+                <input class="form-check-input" type="checkbox" id="analyzeRevenueSwitch">
+                <label class="form-check-label" for="analyzeRevenueSwitch">Phân tích</label>
+            </div>
+        </div>
+        <div class="col-md-2"></div> <!-- Ô trống -->
+    </div>
+
+    <!-- Nút Lưu -->
+    <button type="submit" class="btn btn-primary mt-4">Lưu</button>
+</form>
 
 
-
-          <div class="form-row align-items-center">
-            <div class="col-md-3">
-              <!-- Nhãn quản lý sản phẩm -->
-              <label class="form-check-label" for="productManagement">Sản phẩm:</label>
-            </div>
-            <div class="col-md-9">
-              <!-- Các nút switch quản lý sản phẩm -->
-              <div class="row rowfunction">
-                <div class="col-md-4">
-                  <div class="form-check form-switch mt-3">
-                    <input class="form-check-input" type="checkbox" id="addProductSwitch">
-                    <label class="form-check-label" for="addProductSwitch">Thêm</label>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="form-check form-switch mt-3">
-                    <input class="form-check-input" type="checkbox" id="editProductSwitch">
-                    <label class="form-check-label" for="editProductSwitch">Sửa</label>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="form-check form-switch mt-3">
-                    <input class="form-check-input" type="checkbox" id="deleteProductSwitch">
-                    <label class="form-check-label" for="deleteProductSwitch">Xóa</label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Các thành phần quản lý loại sản phẩm -->
-          <div class="form-row align-items-center mt-3">
-            <div class="col-md-3">
-              <label class="form-check-label" for="categoryManagement">Loại sản phẩm:</label>
-            </div>
-            <div class="col-md-9">
-            <div class="row rowfunction">
-                <div class="col-md-4">
-                  <div class="form-check form-switch mt-3">
-                    <input class="form-check-input" type="checkbox" id="addCategorySwitch">
-                    <label class="form-check-label" for="addCategorySwitch">Thêm</label>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="form-check form-switch mt-3">
-                    <input class="form-check-input" type="checkbox" id="editCategorySwitch">
-                    <label class="form-check-label" for="editCategorySwitch">Sửa</label>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="form-check form-switch mt-3">
-                    <input class="form-check-input" type="checkbox" id="deleteCategorySwitch">
-                    <label class="form-check-label" for="deleteCategorySwitch">Xóa</label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Các thành phần quản lý hóa đơn -->
-          <div class="form-row align-items-center mt-3">
-            <div class="col-md-3">
-              <label class="form-check-label" for="invoiceManagement">Hóa đơn:</label>
-            </div>
-            <div class="col-md-9">
-            <div class="row rowfunction">
-                <div class="col-md-4">
-                  <div class="form-check form-switch mt-3">
-                    <input class="form-check-input" type="checkbox" id="addInvoiceSwitch">
-                    <label class="form-check-label" for="addInvoiceSwitch">Thêm</label>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="form-check form-switch mt-3">
-                    <input class="form-check-input" type="checkbox" id="editInvoiceSwitch">
-                    <label class="form-check-label" for="editInvoiceSwitch">Sửa</label>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="form-check form-switch mt-3">
-                    <input class="form-check-input" type="checkbox" id="deleteInvoiceSwitch">
-                    <label class="form-check-label" for="deleteInvoiceSwitch">Xóa</label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Các thành phần quản lý doanh thu -->
-          <div class="form-row align-items-center mt-3">
-            <div class="col-md-3">
-              <label class="form-check-label" for="revenueManagement">Doanh thu:</label>
-            </div>
-            <div class="col-md-9">
-            <div class="row rowfunction">
-                <div class="col-md-4">
-                  <div class="form-check form-switch mt-3">
-                    <input class="form-check-input" type="checkbox" id="viewRevenueSwitch">
-                    <label class="form-check-label" for="viewRevenueSwitch">Xem</label>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="form-check form-switch mt-3">
-                    <input class="form-check-input" type="checkbox" id="exportRevenueSwitch">
-                    <label class="form-check-label" for="exportRevenueSwitch">Xuất</label>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="form-check form-switch mt-3">
-                    <input class="form-check-input" type="checkbox" id="analyzeRevenueSwitch">
-                    <label class="form-check-label" for="analyzeRevenueSwitch">Phân tích</label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <button type="submit" class="btn btn-primary mt-4">Lưu</button>
-        </form>
         <!-- Kết thúc form -->
       </div>
     </div>
@@ -608,14 +752,8 @@ function thongKeByBrand(event) {
   </div>
   </div>
   </div>
-  <script>
-    // Hàm hiển thị form chỉnh sửa
-    function showEditForm(id) {
-        var form = document.getElementById("editRoleForm");
-        // Hiển thị form
-        form.style.display = "block";
-    }
-</script>
+
+
 
     <!-- Quản lý tài khoản -->
     <div id="taikhoan-content" class="content-section">

@@ -12,14 +12,16 @@ class ModelPermission {
     public function getAllPermissions() {
         $query = "SELECT * FROM `permission`";
         $result = $this->db->select($query);
-        if ($result) {
+        if ($result && $result->num_rows > 0) {
             $permissions = [];
             while ($row = $result->fetch_assoc()) {
-                $permissions[] = $row;
+                // Tạo đối tượng Permission từ dữ liệu và thêm vào mảng
+                $permission = new Permission($row['roleID'], $row['functionID'], $row['permissionName']);
+                $permissions[] = $permission;
             }
             return $permissions;
         } else {
-            return false;
+            return []; // Trả về mảng rỗng nếu không có kết quả
         }
     }
 
@@ -58,6 +60,27 @@ class ModelPermission {
         $query = "DELETE FROM `permission` WHERE roleID = '$roleID' AND functionID = '$functionID'";
         return $this->db->delete($query);
     }
+    public function getPermissionByroleIDandfunctionID($roleID, $functionID) {
+        $query = "SELECT *
+                  FROM permission 
+                  WHERE roleID = '$roleID' AND functionID = '$functionID';";
+        $result = $this->db->select($query);
+        if ($result && $result->num_rows > 0) {
+            $permissions = [];
+            while ($row = $result->fetch_assoc()) {
+                // Tạo đối tượng Permission từ dữ liệu và thêm vào mảng
+                $permission = new Permission($row['roleID'], $row['functionID'], $row['permissionName']);
+                $permissions[] = $permission;
+            }
+            return $permissions;
+        } else {
+            return []; // Trả về mảng rỗng nếu không có kết quả
+        }
+    }
+    
 }
+
+
+
 
 ?>
