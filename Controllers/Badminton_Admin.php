@@ -489,15 +489,8 @@ function logout(event) {
             data: $(this).serializeArray(),
             success: function(response) {
                 var data = JSON.parse(response);
-                console.log(data);
-                console.log("roleID: ", roleID);
-console.log("functionID: d", 1);
                 for (var i = 0; i < data.length; i++) {
                     var item = data[i];
-                    console.log(item.roleID);
-                    console.log(item.functionID);
-                    console.log(item.permissionName);
-                    console.log(roleID+"id"+item.roleID);
                     if (item.roleID.trim()+"" == roleID+"" && item.functionID.trim()+"" == 1) {
                         console.log("Matching roleID and functionID found.");
                         console.log(item.permissionName);
@@ -517,6 +510,52 @@ console.log("functionID: d", 1);
                             case "delete":
                                 console.log("Setting deleteAccountSwitch to default checked.");
                                 setDefaultCheckedStatus("deleteAccountSwitch");
+                                break;
+                            default:
+                                console.log("No matching permission found.");
+                                break;
+                        }
+                    }
+                    if (item.roleID.trim()+"" == roleID+"" && item.functionID.trim()+"" == 2) {
+                        console.log("Matching roleID and functionID found.");
+                        console.log(item.permissionName);
+                        switch (item.permissionName) {
+                            case "show":
+                                setDefaultCheckedStatus("showProductSwitch");
+                                break;
+                            case "add":
+                                setDefaultCheckedStatus("addProductSwitch");
+                                break;
+                            case "update":
+                                setDefaultCheckedStatus("updateProductSwitch");
+                                break;
+                            case "delete":
+                                setDefaultCheckedStatus("deleteProductSwitch");
+                                break;
+                            default:
+                                console.log("No matching permission found.");
+                                break;
+                        }
+                    }
+                    if (item.roleID.trim()+"" == roleID+"" && item.functionID.trim()+"" == 3) {
+                        console.log("Matching roleID and functionID found.");
+                        console.log(item.permissionName);
+                        switch (item.permissionName) {
+                            case "show":
+                                console.log("Setting showAccountSwitch to default checked.");
+                                setDefaultCheckedStatus("showInvoiceSwitch");
+                                break;
+                            case "add":
+                                console.log("Setting addInvoiceSwitch to default checked.");
+                                setDefaultCheckedStatus("addInvoiceSwitch");
+                                break;
+                            case "update":
+                                console.log("Setting updateInvoiceSwitch to default checked.");
+                                setDefaultCheckedStatus("updateInvoiceSwitch");
+                                break;
+                            case "delete":
+                                console.log("Setting deleteInvoiceSwitch to default checked.");
+                                setDefaultCheckedStatus("deleteInvoiceSwitch");
                                 break;
                             default:
                                 console.log("No matching permission found.");
