@@ -216,17 +216,19 @@
         float: right;
     }
 
-    .cartheader .cart_body .grid {
-        display: flex;
+    .cartheader .cart-body .cart-info .grid {
+        display: inline-block;
+        max-width: 800px;
+        width: 400px;
     }
 
-    .cartheader .cart-body .grid .cart-item-name {
+    .cartheader .cart-body .cart-info .grid .cart-item-name {
         width: 50%;
         display: inline-block;
         padding-left: 50%;
     }
 
-    .cartheader .cart-body .grid .input-group-btn {
+    .cartheader .cart-body .cart-info .grid .input-group-btn {
         position: relative;
         white-space: nowrap;
         width: 1%;
@@ -234,12 +236,12 @@
         vertical-align: middle;
     }
 
-    .cartheader .cart-body .grid .input-group-btn button.qty-minus {
+    .cartheader .cart-body .cart-info .grid .input-group-btn button.qty-minus {
         border-radius: 15px 0 0 15px;
         width: 30px;
     }
 
-    .cartheader .cart-body .grid .input-group-btn input.in {
+    .cartheader .cart-body .cart-info .grid .input-group-btn input.in {
         display: inline-block;
         padding: 0;
         text-align: center;
@@ -256,19 +258,20 @@
         vertical-align: middle;
     }
 
-    .cartheader .cart-body .grid .input-group-btn button.qty-plus {
+    .cartheader .cart-body .cart-info .grid .input-group-btn button.qty-plus {
         border-radius: 0 15px 15px 0;
         width: 30px;
     }
 
-    .cartheader .cart-body .grid .cart-prices {
+    .cartheader .cart-body .cart-info .grid .cart-prices {
         width: 50%;
         text-align: right;
         vertical-align: middle;
         display: inline-block;
+        margin-left: 150px;
     }
 
-    .cartheader .cart-body .grid .cart-prices .cart-price {
+    .cartheader .cart-body .cart-info .grid .cart-prices .cart-price {
         font-weight: 500;
         display: block;
         font-size: 14px;
