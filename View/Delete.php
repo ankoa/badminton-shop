@@ -1,23 +1,18 @@
 <?php
 //  kết nối server
-require_once __DIR__. "./Connect.php";
-require_once __DIR__. "./Badminton_Admin.php";
+require_once  "../Model/database.php";
+require_once "./Badminton_Admin.php";
 
+$ModelProduct = new ModelProduct();
 
-// Lấy ID sản phẩm cần xóa
-$productID = $_GET['productID'];
-
-// Viết truy vấn SQL
-$sql = "DELETE FROM products WHERE productID='$productID'";
-
-// Thực thi truy vấn
-if ($conn->query($sql) === TRUE) {
-  echo "Xóa sản phẩm thành công!";
-  header("Location : Badminton_Admin.php");
-} else{
-    echo "Lỗi: " . $conn->error;
+if (isset($_GET['productID'])) {
+  // Lấy ID sản phẩm cần xóa
+  $ProductID = $_GET['productID'];
+  $result = $ModelProduct -> deleteProduct($ProductID);
+  if ($result->status == 200) {
+    echo "<script>alert('Xoá sản phẩm thành công!')</script>";
+    // header("Location: ./Badminton_Admin.php");
+} else {
+    echo "<script>alert('Không thể xoá sản phẩm:')</script> " . $result->message;
+}
   }
-
-  // Đóng kết nối
-  $conn->close();
-?>

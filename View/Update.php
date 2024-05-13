@@ -1,41 +1,27 @@
 <?php
 //  kết nối server
-require_once __DIR__. "./Connect.php";
-require_once __DIR__. "./Badminton_Admin.php";
+require_once "../Model/database.php";
+require_once "./Badminton_Admin.php";
+$ModelProduct = new ModelProduct();
 
 if($_SERVER['REQUEST_METHOD']=='POST'){
  // Lấy dữ liệu từ form
- $productName = $_POST['productName'];
- $productPrice = $_POST['productPrice'];
- $productBrand = $_POST['productBrand'];
- $productType = $_POST['productType'];
- $productWeight = $_POST['productWeight'];      
- $productSize = $_POST['productSize'];
- $productMaterial = $_POST['productMaterial'];
- $productImage = $_POST['productImage'];
- $productID = $_POST['productID'];
+ $name = $_POST['name'];
+ $price = $_POST['price'];
+ $discount = $_POST['discount'];
+ $description = $_POST['description'];
+ $image = $_POST['image'];      
 
- // Viết truy vấn SQL
- $sql = "UPDATE `products`  
- SET `productName`='$productName', 
- `productPrice`=$productPrice, 
- `productBrand`='$productBrand', 
- `productType`='$productType', 
- `productWeight`='$productWeight', 
- `productSize`='$productSize', 
- `productMaterial`='$productMaterial',
- `productImage`='$productImage'
- WHERE `productID`='$productID'";
-
- // Thực thi truy vấn
- if ($conn->query($sql) === TRUE) {
-   echo "Cập nhật sản phẩm thành công!";
-   header("Location : Badminton_Admin.php");
- } else {
-   echo "Lỗi: " . $conn->error;
- }
+  // Kiểm tra xem dữ liệu có hợp lệ không
+  if ($name && $price && $discount && $description && $image) {
+    // Tạo nhà cung cấp và xử lý kết quả
+    $result = $ModelProduct -> updateProduct($productID, $name, $price, $discount, $description, $image);
+    if ($result->status == 200) {
+        echo "<script>alert('Cập nhật nhà cung cấp thành công!')</script>";
+    } else {
+        echo "<script>alert('Không thể cập nhật nhà cung cấp: ')</script>" . $result->message;
+    }
+} else {
+    echo "<script>alert('Vui lòng nhập đầy đủ thông tin!')</script>";
 }
- // Đóng kết nối
- $conn->close();
-?>
-
+}
