@@ -6,14 +6,16 @@ $ModelProduct = new ModelProduct();
 
 if($_SERVER['REQUEST_METHOD']=='POST'){
  // Lấy dữ liệu từ form
+ $productID = $_POST['productID'];
  $name = $_POST['name'];
  $price = $_POST['price'];
  $discount = $_POST['discount'];
+ $status = $_POST['status'];
  $description = $_POST['description'];
  $image = $_POST['image'];      
 
   // Kiểm tra xem dữ liệu có hợp lệ không
-  if ($name && $price && $discount && $description && $image) {
+  if ($productID && $name && $price && $discount && $status && $description && $image) {
     // Tạo nhà cung cấp và xử lý kết quả
     $result = $ModelProduct -> updateProduct($productID, $name, $price, $discount, $status, $description, $image);
     if ($result->status == 200) {
