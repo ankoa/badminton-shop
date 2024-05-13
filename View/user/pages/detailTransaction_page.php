@@ -1,10 +1,10 @@
-<script> var ID = "<?php 
+ <script> var ID = "<?php 
     if(isset($_GET['id'])) {
         $orderId = $_GET['id'];
         echo $orderId;
     } ?>"; 
 </script>
-<style>
+<!--<style>
     .order-container { 
         max-width: 800px; 
         margin: 20px auto; 
@@ -61,4 +61,4 @@
         <button class="close-button">X</button>
     </div>
     <div id="order-detail-modal"></div>
-</div>
+</div> -->

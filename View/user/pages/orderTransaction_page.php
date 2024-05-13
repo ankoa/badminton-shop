@@ -56,6 +56,7 @@
       }
 
       .order-container1 { 
+        width: 700px;
         max-width: 800px; 
         margin: 20px auto; 
         background: white; 
@@ -63,7 +64,17 @@
         box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
         padding: 20px; 
         background: linear-gradient(to right, #ff7e5f, #feb47b);
-    }
+      }
+
+      .overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.5); /* Màu nền đen mờ */
+          z-index: 9998; /* Đảm bảo overlay hiển thị dưới form */
+      }
     
     .header { 
         display: flex; 
@@ -95,13 +106,29 @@
     } 
 
     .price-info { 
+        width: auto;
         font-size: 18px;
         font-weight: bold; 
     } 
 
-    .total { 
-        text-align: right; 
-        margin-top: 20px; 
+    .price-info .info-3 { 
+        margin-left: 40px; 
+    } 
+
+    .total-amount { 
+        padding-left: 80%;
+        text-align: left; 
+        margin-top: 10px; 
+        margin-bottom: 25px; 
+    }
+
+    .order-form {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 9999; /* Đảm bảo form hiển thị trên cùng */
+        display: none;
     }
     </style>
 </head>
@@ -172,19 +199,20 @@
     </div>
 </section>
 
-
+<div class="overlay" id="overlay"></div>
+<form class="order-form" id="orderForm">
 <div class="order-container1">
     <div class="header">
         <h1>Đặt hàng thành công</h1>
         <button class="close-button">X</button>
     </div>
     <div id="order-detail-modal"></div>
+    <div id="order-detail-receive"></div>
 </div>
-
+</form>
 
 </body>
 </html>
 
 <script>
-
 </script>

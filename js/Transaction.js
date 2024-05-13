@@ -1,12 +1,12 @@
 window.onload = function() {
-     renderCustomerOrderDetail();
+    // renderCustomerOrderDetail();
     const urlParams = new URLSearchParams(window.location.search);
     if (window.location.pathname === '/badminton-shop/Controllers/index.php' && urlParams.get('control') === 'checkDonHang') {
         AllCustomerOrder();
         filterEndUserOrderStatus();
         handleCustomerOrder();
         handleAllCustomerOrder();
-        //renderCustomerOrderDetail();
+        renderCustomerOrderDetail();
         loadMiniForm();
     }
     
@@ -178,7 +178,7 @@ function renderCustomerOrderDetail() {
             const order = await getOrder(orderId);
             // console.log(order);
             const orderDetails = await getOrderTransaction(orderId);
-            console.log(orderDetails);
+            //console.log(orderDetails);
             //const address = await getThongTinNhanHang(order.ma_ttnh)
             let html = ''
 
@@ -221,17 +221,18 @@ function renderCustomerOrderDetail() {
                         <div class="order-details">
                             <div class="product-info">
                                 <img src="${orderDetail.url_image}">
-                            <div>
-                                <h2>${orderDetail.name}</h2>
-                            </div>
+                                    <div>
+                                        <h2>${orderDetail.name}</h2>
+                                    </div>
                             </div>
                             <div class="price-info">
-                            <span>${orderDetail.quantity}</span>
-                            <span>${orderDetail.price}</span>
+                                <span>x</span>
+                                <span>${orderDetail.quantity}</span>
+                                <span class="info-3">${orderDetail.price} đ</span>
                             </div>
                         </div>
-                        <div class="total">
-                            <h3>Tổng tiền: ${orderDetail.total_amount}</h3>
+                        <div class="total-amount">
+                            <h3>Giá tổng: ${orderDetail.total_amount}</h3>
                         </div>
                         `
                 index !== orderDetails.length - 1 ? html += '<div class="line"></div>' : ''
@@ -242,7 +243,14 @@ function renderCustomerOrderDetail() {
 
             // $('#order-detail-modal .modal-title').html(`Chi tiết đơn hàng <b>${order.ma_hd}</b>`)
             // $('#order-detail-modal .modal-body').html(html)
-            // $('#order-detail-modal .modal-footer').html(`
+            $('#order-detail-receive').html(`
+                <div class="mt-4">
+                    <h3 class="font-semibold">Thông tin nhận hàng</h3>
+                    <p><strong>Người nhận:</strong> Nguyễn Văn A</p>
+                    <p><strong>Địa chỉ:</strong> ${order.address}</p>
+                    <p><strong>Số điện thoại:</strong> 0123456789</p>
+                </div>
+                `)
             //     <div class="order-detail__total">
             //         <div class="order-detail__total-row">
             //             <div class="order-detail__total-label">
@@ -289,12 +297,20 @@ function loadMiniForm(){
     $(document).ready(function() {
         $(document).on('click', '.order-link', function(e) {
             e.preventDefault();
-            $('.order-container1').show();
+            $('.order-form').show();
+            $('.overlay').show();
         });
     
         $('.close-button').click(function() {
-            $('.order-container1').hide();
+            $('.order-form').hide();
+            $('.overlay').hide();
         });
+        if ($('.order-form').is(':visible')) {
+            $('.overlay').show(); // Hiển thị overlay
+        } else {
+            $('.overlay').hide(); // Ẩn overlay
+        }
     });
+    
 }
 
