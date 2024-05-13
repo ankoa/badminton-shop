@@ -1,4 +1,5 @@
 <?php
+    session_start();
 require_once __DIR__ . '/../../../Model/ModelProduct.php';
 require_once __DIR__ . '/../../../Model/ModelUser.php';
 require_once __DIR__ . '/../../../Model/ModelCartDetail.php';

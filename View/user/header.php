@@ -208,7 +208,7 @@ $total_price_cart = 0;
             </div>
         </div>
         <div class="cart-btn-proceed-checkout-dt ">
-            <button onclick="location.href='/gio-hang/thanh-toan'" type="button" class="button btn btn-default cart-btn-proceed-checkout" id="btn-proceed-checkout" title="Thanh toán">Đặt hàng</button>
+            <button onclick="location.href='../View/user/pages/payment_page.php'" type="button" class="button btn btn-default cart-btn-proceed-checkout" id="btn-proceed-checkout" title="Thanh toán">Đặt hàng</button>
         </div>
     </div>
 </form>
