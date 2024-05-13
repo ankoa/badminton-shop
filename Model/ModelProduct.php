@@ -262,37 +262,56 @@ class ModelProduct
     }
 
     // Thêm sản phẩm mới vào cơ sở dữ liệu
-    // public function addProduct($product)
-    // {
-    //     $productID = $product->getProductID();
-    //     $brandID = $product->getBrandID();
-    //     $catalogID = $product->getCatalogID();
-    //     $name = $product->getName();
-
-    //     $description = $product->getDescription();
-
-    //     $query = "INSERT INTO product (productID, brandID, catalogID, name, description) VALUES ('$productID', '$brandID', '$catalogID', '$name', '$urlAvatar')";
-
-    //     return $this->db->insert($query);
-    // }
-
-    // Cập nhật thông tin sản phẩm trong cơ sở dữ liệu
-    public function updateProduct($product)
+    public function addProduct($name, $price, $discount, $status, $description, $image)
     {
-        $productID = $product->getProductID();
-        $brandID = $product->getBrandID();
-        $catalogID = $product->getCatalogID();
-        $name = $product->getName();
-        $description = $product->getDescription();
-
-        $query = "UPDATE product SET brandID = '$brandID', catalogID = '$catalogID', name = '$name', description = '$description' WHERE productID = '$productID'";
-        return $this->db->update($query);
+        $query =  "INSERT INTO `product` (`name`, `price`, `discount`, `status`, `description`, `image`) 
+          VALUES ('$name', '$price', '$discount', '$status', '$description', '$image')";
+        try {
+            $this->db->insert($query);
+            return (object) [
+                "status" => 200,
+                "message" => "Thêm nhà cung cấp thành công.",
+            ];
+        } catch (PDOException $error) {
+            return (object) [
+                "status" => 400,
+                "message" => "Error: " . $error->getMessage(),
+            ];
+        }
+    }
+    //Cập nhật thông tin sản phẩm trong cơ sở dữ liệu
+    public function updateProduct($productID, $name, $price, $discount, $status, $description, $image)
+    {
+        $query = "UPDATE `product` SET name = '$name', price = '$price', status = '$status', discount = '$discount', description = '$description', image = '$image' WHERE productID = '$productID'";
+        try {
+            $this->db->update($query);
+            return (object) [
+                "status" => 200,
+                "message" => "Cập nhật nhà cung cấp thành công.",
+            ];
+        } catch (PDOException $error) {
+            return (object) [
+                "status" => 400,
+                "message" => "Error: " . $error->getMessage(),
+            ];
+        }
     }
 
-    // Xóa sản phẩm khỏi cơ sở dữ liệu
+    //Xóa sản phẩm khỏi cơ sở dữ liệu
     public function deleteProduct($productID)
     {
-        $query = "DELETE FROM product WHERE productID = '$productID'";
-        return $this->db->delete($query);
+        $query = "DELETE FROM `product` WHERE productID = '$productID'";
+        try {
+            $this->db->delete($query);
+            return (object) [
+                "status" => 200,
+                "message" => "Xoá nhà cung cấp thành công.",
+            ];
+        } catch (PDOException $error) {
+            return (object) [
+                "status" => 400,
+                "message" => "Error: " . $error->getMessage(),
+            ];
+        }
     }
 }
