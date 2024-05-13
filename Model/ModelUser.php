@@ -107,7 +107,6 @@ class ModelUser {
         $user = $this->getUserByUsername($username);
         if ($user instanceof User) {
             $storedPassword = $user->getPassword();
-            // Kiểm tra mật khẩu trực tiếp
             if ($password === $storedPassword) {
                 return true;
             }

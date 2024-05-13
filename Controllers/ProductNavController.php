@@ -376,10 +376,12 @@ if (isset($_GET['filter']) && isset($_GET['selectedFilters'])) {
     // Lọc theo tốc độ
     if (count($speed) != 0) {
         $modelProduct = new $modelProduct();
-
+        $tmp=null;
+        if(isset($_GET['brandID']))
+            $tmp = $_GET['brandID'];
 
         foreach ($speed as $value) {
-            $listSpeed = $modelProduct->getListProductBySpeed($value);
+            $listSpeed = $modelProduct->getListProductBySpeed($value, $tmp);
             $filterSpeed = mergeArrays($filterSpeed, $listSpeed);
         }
 
@@ -392,10 +394,12 @@ if (isset($_GET['filter']) && isset($_GET['selectedFilters'])) {
     // Lọc theo size
     if (count($size) != 0) {
         $modelProduct = new $modelProduct();
-
+        $tmp=null;
+        if(isset($_GET['brandID']))
+            $tmp = $_GET['brandID'];
 
         foreach ($size as $value) {
-            $listSize = $modelProduct->getListProductBySize($value);
+            $listSize = $modelProduct->getListProductBySize($value, $tmp);
             $filterSize = mergeArrays($filterSize, $listSize);
         }
 
@@ -411,9 +415,11 @@ if (isset($_GET['filter']) && isset($_GET['selectedFilters'])) {
     if (count($grip) != 0) {
         $modelProduct = new $modelProduct();
 
-
+        $tmp=null;
+        if(isset($_GET['brandID']))
+            $tmp = $_GET['brandID'];
         foreach ($grip as $value) {
-            $listGrip = $modelProduct->getListProductByGrip($value);
+            $listGrip = $modelProduct->getListProductByGrip($value, $tmp);
             $filterGrip = mergeArrays($filterGrip, $listGrip);
         }
 
@@ -422,14 +428,15 @@ if (isset($_GET['filter']) && isset($_GET['selectedFilters'])) {
         else
             $final = $filterGrip;
     }
-
+    
     // Lọc theo weight
     if (count($weight) != 0) {
         $modelProduct = new $modelProduct();
-
-
+        $tmp=null;
+        if(isset($_GET['brandID']))
+            $tmp = $_GET['brandID'];
         foreach ($weight as $value) {
-            $listWeight = $modelProduct->getListProductByWeight($value);
+            $listWeight = $modelProduct->getListProductByWeight($value, $tmp);
             $filterWeight = mergeArrays($filterWeight, $listWeight);
         }
 
@@ -442,10 +449,12 @@ if (isset($_GET['filter']) && isset($_GET['selectedFilters'])) {
     // Lọc theo color
     if (count($color) != 0) {
         $modelProduct = new $modelProduct();
-
+        $tmp=null;
+        if(isset($_GET['brandID']))
+            $tmp = $_GET['brandID'];
 
         foreach ($color as $value) {
-            $listColor = $modelProduct->getListProductByColor($value);
+            $listColor = $modelProduct->getListProductByColor($value, $tmp);
             $filterColor = mergeArrays($filterColor, $listColor);
         }
 
@@ -461,9 +470,10 @@ if (isset($_GET['filter']) && isset($_GET['selectedFilters'])) {
 
     // Chuyển đổi dữ liệu thành chuỗi JSON để trả về cho JavaScript
     $jsonData = json_encode($final);
+    echo $jsonData;
 
     // In ra kết quả lọc được từ JavaScript
-    echo $jsonData;
+    
 } else if (isset($_GET['page']) && isset($_GET['productsPerPage']) && isset($_GET['id'])) {
     if (isset($_GET['brandID'])) {
         $page = $_GET['page'];

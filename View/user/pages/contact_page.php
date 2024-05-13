@@ -5,7 +5,115 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tạo Contact Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
 
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 20px;
+        }
+
+        .left-side {
+            flex: 1;
+            padding-left: 100px;
+            padding-right: 50px;
+        }
+
+        .right-side {
+            flex: 1;
+
+        }
+
+        h2 {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .contact-info {
+            margin-bottom: 20px;
+        }
+
+        .contact-info p {
+            margin: 5px 0;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
+        .branch-info {
+            margin-bottom: 20px;
+        }
+
+        .branch-info p {
+            margin: 5px 0;
+        }
+
+        .branch-info a {
+            text-decoration: none;
+            color: black;
+        }
+
+        .branch-info a:hover {
+            color: orange;
+        }
+
+        .branch-info a:hover span {
+            color: orange;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 5px;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="tel"] {
+            padding: 5px;
+            margin-bottom: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: calc(50% - 10px);
+        }
+
+        .form-group textarea {
+            padding: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: calc(100% - 10px);
+            height: 100px;
+            resize: none;
+        }
+
+        .submit-btn {
+            align-self: flex-end;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.1s;
+        }
+
+        .submit-btn:hover {
+            background-color: #ff7f0e;
+        }
+    </style>
 
     <link rel="stylesheet" href="../../css/contact.css">
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCw5V6J4vTdATROsdwRAG2A84Z_2ErVTqw&callback=initMap" async defer></script>
@@ -110,18 +218,7 @@
     </div>
 
     <script>
-        // function showMap(branchId) {
-        //     var address = document.getElementById(branchId).innerText;
-        //     var mapDiv = document.getElementById('map');
-        //     var iframe = document.createElement('iframe');
-        //     iframe.setAttribute('src', 'https://www.google.com/maps/embed/v1/place?q=' + encodeURIComponent(address));
-        //     iframe.setAttribute('width', '100%');
-        //     iframe.setAttribute('height', '400');
-        //     iframe.setAttribute('frameborder', '0');
-        //     iframe.setAttribute('style', 'border:0');
-        //     mapDiv.innerHTML = ''; 
-        //     mapDiv.appendChild(iframe);
-        // }
+        
         document.getElementById('contact-form').addEventListener('submit', function(event) {
             event.preventDefault();
 

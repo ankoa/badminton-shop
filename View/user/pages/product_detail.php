@@ -239,7 +239,7 @@ if ($catalog->getName() == "Racket") {
                         </div>
                     </fieldset>
                     <div class="form-product" id="test">
-                        <?php if ($catalog->getName() == 'Shuttle') : ?>
+                        <?php /* if ($catalog->getName() == 'Shuttle') : ?>
                             <div class="select-swatch">
                                 <div class="swatch clearfix">
                                     <div class="header">Chọn tốc độ: </div>
@@ -259,8 +259,8 @@ if ($catalog->getName() == "Racket") {
                                             <?php endforeach; ?>
                                             </div>
                                 </div>
-                            </div>
-                        <?php elseif ($catalog->getName() == 'Racket' || $catalog->getName() == 'Shoes') : ?>
+                            </div> */
+                        <?php if ($catalog->getName() == 'Racket' || $catalog->getName() == 'Shoes') : ?>
                             <div class="select-swatch">
                                 <div class="swatch clearfix">
                                     <div class="header">Chọn màu: </div>
@@ -297,7 +297,6 @@ if ($catalog->getName() == "Racket") {
                                     ?>
                                 </div>
                             </div>
-
                         <?php else : ?>
                             <div class="select-swatch">
                                 <div class="swatch clearfix">
