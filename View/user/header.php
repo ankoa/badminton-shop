@@ -160,14 +160,11 @@ $total_price_cart = 0;
                 foreach ($cartDetails  as $cartDetail) {
                     $variantDetail = $modelVariantDetail->getVariantByID(($cartDetail)->getVariantID());
                     $product = $modelProduct->getProductByID(($cartDetail)->getProductID());
-                    $inputString = $product->getUrl();
-                    $darkNavyRegex = '/^[^:]+/';
-                    preg_match($darkNavyRegex, $inputString, $match);
                     $total_price_cart += $product->getPrice();
                     echo "<div id='" . $modelUser->getUIDByUserName($_SESSION['username']) . "_" . $product->getProductID() . "_" . $variantDetail->getVariantID() . "'>
                                                         <a title='Xóa' class='remove-item-cart' href='javascript:void(0);' onclick='delProductCart(" . $modelUser->getUIDByUserName($_SESSION['username']) . ", " . $product->getProductID() . ", " . $cartDetail->getVariantID() . ")'><img class='svg-inline' src='../View/images/x-close.svg'></a>
                                                         <div class='cart-product'>
-                                                            <a href='#' class='cart-image' title='" . $product->getName() . "'><img width='80' height='80' src='../View/images/product/" . $product->getProductID() . "/" . $match[0] . "/" . $product->getProductID() . ".1.png' alt='" . $product->getName() . "'></a>
+                                                            <a href='#' class='cart-image' title='" . $product->getName() . "'><img width='80' height='80' src='../View/images/product/" . $product->getProductID() . "/" . $variantDetail->getColor() . "/" . $product->getProductID() . ".1.png' alt='" . $product->getName() . "'></a>
                                                             <div class='cart-info'>
                                                                 <div class='cart-name'>
                                                                 <a href='#' class='' title='" . $product->getName() . "'>" . $product->getName() . "</a>";

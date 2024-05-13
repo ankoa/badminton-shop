@@ -3,9 +3,11 @@
 require_once __DIR__ . '/../../../Model/ModelProduct.php';
 require_once __DIR__ . '/../../../Model/ModelUser.php';
 require_once __DIR__ . '/../../../Model/ModelCartDetail.php';
+require_once __DIR__ . '/../../../Model/ModelVariantDetail.php';
 $modelUser = new ModelUser();
 $modelProduct = new ModelProduct();
 $modelCartDetail = new ModelCartDetail();
+$modelVariantDetail = new ModelVariantDetail();
 $cartDetails = $modelCartDetail->getCartDetailByCartID($modelUser->getUIDByUserName($_SESSION['username']));
 ?>
 <!DOCTYPE html>
@@ -167,29 +169,21 @@ $cartDetails = $modelCartDetail->getCartDetailByCartID($modelUser->getUIDByUserN
                             <table class="product-table">
                                 <tbody>
                                     <?php
-                                    //  if (isset($_SESSION['username'])) {
-                                    // require_once('../Model/ModelUser.php');
-                                    // require_once('../Model/ModelProduct.php');
-                                    // require_once('../Model/ModelCartDetail.php');
-                                    // $modelUser = new ModelUser();
-                                    // $modelProduct = new ModelProduct();
-                                    // $modelCartDetail = new ModelCartDetail();
-                                    // $cartDetails = $modelCartDetail->getCartDetailByCartID($modelUser->getUIDByUserName('2'));
                                     foreach ($cartDetails  as $cartDetail) {
 
                                         $quantity = $cartDetail->getQuantity();
                                         $productID = $cartDetail->getProductID();
                                         $price = $cartDetail->getPrice();
-
+                                        $variantDetail = $modelVariantDetail->getVariantByID($cartDetail->getVariantID());
 
                                         $productName = $modelProduct->getProductNameByID($productID);
-
+                                        $product = $modelProduct->getProductByID($productID);
 
                                         echo '<tr class="product product-has-image clearfix">';
                                         echo '<td>';
                                         echo '<div class="product-thumbnail">';
                                         echo '<div class="product-thumbnail__wrapper">';
-                                        echo '<img src="" class="product-thumbnail__image" />';
+                                        echo '<img src="../../../View/images/product/' . $product->getProductID() . '/' . $variantDetail->getColor() . '/' . $product->getProductID() . '.1.png" alt="' . $product->getName() . '" class="product-thumbnail__image" />';
                                         echo '</div>';
                                         echo '<span class="product-thumbnail__quantity" aria-hidden="true">' . $quantity . '</span>';
                                         echo '</div>';
@@ -199,6 +193,7 @@ $cartDetails = $modelCartDetail->getCartDetailByCartID($modelUser->getUIDByUserN
                                         echo '</td>';
                                         echo '<td class="product-price text-right">' . number_format($price) . ' ₫ </td>';
                                         echo '</tr>';
+
                                     }
                                     //  }
                                     ?> 
@@ -254,7 +249,7 @@ $cartDetails = $modelCartDetail->getCartDetailByCartID($modelUser->getUIDByUserN
                                     Chủ TK: Kim Duy Long<br>
                                     (Nội dung chuyển khoản: Tên + Số ĐT đặt hàng)
                                 </p>
-                                <img src="QRbank.png" alt="QR Code">
+                                <img src="../../../View/images/QRbank.png" alt="QR Code">
                             </div>
                         </div>
                     </div>
