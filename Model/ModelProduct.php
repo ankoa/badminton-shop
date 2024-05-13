@@ -1,7 +1,7 @@
 <?php
 require_once 'database.php';
 
-require_once(__DIR__ . '/Entity/Product.php');
+require_once '../Model/Entity/Product.php';
 
 
 class ModelProduct
@@ -16,11 +16,11 @@ class ModelProduct
     // Lấy tất cả sản phẩm từ cơ sở dữ liệu
     public function getAllProducts()
     {
-        $query = "SELECT * FROM product";
+        $query = "SELECT * FROM `product`";
         $result = $this->db->select($query);
 
-        $products = [];
         if ($result && $result->num_rows > 0) {
+            $products = [];
             while ($row = $result->fetch_assoc()) {
                 $product = new Product(
                     $row['productID'],
@@ -30,7 +30,8 @@ class ModelProduct
                     $row['description'],
                     $row['status'],
                     $row['price'],
-                    $row['discount']
+                    $row['discount'],
+                    $row['image']
                 );
                 $products[] = $product;
             }
@@ -41,8 +42,7 @@ class ModelProduct
 
     public function getListProductBySpeed($speed)
     {
-        $query = "SELECT *
-        FROM product p, variantdetail vd, variant v
+        $query = "SELECT * FROM product p, variantdetail vd, variant v
         WHERE p.productID=v.productID and v.variantID=vd.variantID and vd.speed=$speed";
         $result = $this->db->select($query);
         $products = [];
@@ -56,7 +56,8 @@ class ModelProduct
                     $row['description'],
                     $row['status'],
                     $row['price'],
-                    $row['discount']
+                    $row['discount'],
+                    $row['image']
                 );
                 $products[] = $product;
             }
@@ -81,7 +82,8 @@ class ModelProduct
                     $row['description'],
                     $row['status'],
                     $row['price'],
-                    $row['discount']
+                    $row['discount'],
+                    $row['image']
                 );
                 $products[] = $product;
             }
@@ -106,7 +108,8 @@ class ModelProduct
                     $row['description'],
                     $row['status'],
                     $row['price'],
-                    $row['discount']
+                    $row['discount'],
+                    $row['image']
                 );
                 $products[] = $product;
             }
@@ -131,7 +134,8 @@ class ModelProduct
                     $row['description'],
                     $row['status'],
                     $row['price'],
-                    $row['discount']
+                    $row['discount'],
+                    $row['image']
                 );
                 $products[] = $product;
             }
@@ -156,7 +160,8 @@ class ModelProduct
                     $row['description'],
                     $row['status'],
                     $row['price'],
-                    $row['discount']
+                    $row['discount'],
+                    $row['image']
                 );
                 $products[] = $product;
             }
@@ -180,8 +185,8 @@ class ModelProduct
                 $row['description'],
                 $row['status'],
                 $row['price'],
-                $row['discount']
-
+                $row['discount'],
+                $row['image']
             );
             return $product;
         }
@@ -217,7 +222,8 @@ class ModelProduct
                     $row['description'],
                     $row['status'],
                     $row['price'],
-                    $row['discount']
+                    $row['discount'],
+                    $row['image']
                 );
                 $products[] = $product;
             }
@@ -241,7 +247,8 @@ class ModelProduct
                     $row['description'],
                     $row['status'],
                     $row['price'],
-                    $row['discount']
+                    $row['discount'],
+                    $row['image']
                 );
                 $products[] = $product;
             }
