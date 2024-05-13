@@ -1,10 +1,11 @@
 <?php
 //  kết nối server
-require_once __DIR__. "./Connect.php";
-require_once __DIR__. "./Badminton_Admin.php";
+require_once "../Model/database.php";
+require_once "../Model/ModelProduct.php";
+require_once "../View/Badminton_Admin.php";
 
 // Viết truy vấn SQL
-$sql = "SELECT * FROM products";
+$sql = "SELECT * FROM `product`";
 
 // Thực thi truy vấn
 $result = mysqli_query($conn,$sql);
@@ -16,14 +17,13 @@ if (mysqli_num_rows($result)) {
   while ($row = $result->fetch_assoc()) {
     echo "<tr>";
     echo "<td>" . $row["productID"] . "</td>";
-    echo "<td>" . $row["productName"] . "</td>";
-    echo "<td>" . $row["productPrice"] . "</td>";
-    echo "<td>" . $row["productBrand"] . "</td>";
-    echo "<td>" . $row["productType"] . "</td>";
-    echo "<td>" . $row["productWeight"] . "</td>";
-    echo "<td>" . $row["productSize"] . "</td>";
-    echo "<td>" . $row["productMaterial"] . "</td>";
-    echo "<td>" . $row["productImage"] . "</td>";
+    echo "<td>" . $row["brandID"] . "</td>";
+    echo "<td>" . $row["catalogID"] . "</td>";
+    echo "<td>" . $row["name"] . "</td>";
+    echo "<td>" . $row["price"] . "</td>";
+    echo "<td>" . $row["discount"] . "</td>";
+    echo "<td>" . $row["description"] . "</td>";
+    echo "<td>" . $row["image"] . "</td>";
     echo "</tr>";
   }
   echo "</table>";
@@ -31,7 +31,3 @@ if (mysqli_num_rows($result)) {
 } else {
   echo "Không có sản phẩm nào.";
 }
-
-// Đóng kết nối
-$conn->close();
-?>
