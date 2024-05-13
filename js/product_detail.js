@@ -183,6 +183,7 @@ function addCart() {
                         document.getElementById('popup-cart-mobile').classList.add('active');
                         document.getElementById('full-cover').style.opacity = "0.5";
                         document.getElementById('full-cover').style.pointerEvents = "none";
+                        generateCart();
                     }
                 };
 
@@ -203,7 +204,9 @@ function removeActiveTab() {
         tab.classList.remove("active");
         document.getElementById('full-cover').style.pointerEvents = "auto";
         document.getElementById('full-cover').style.opacity = "1";
+        
     }
+    location.reload();
 }
 
 function formatPrice(price) {
