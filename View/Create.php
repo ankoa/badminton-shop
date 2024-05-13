@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    $image = isset($_POST['image']) ? $_POST['image'] : null;
 
    if($name && $price && $discount && $description && $image){
-    $result = $ModelProduct -> addProduct($name, $price, $discount, $description, $image);
+    $result = $ModelProduct -> addProduct($name, $price, $discount, $status, $description, $image);
     if ($result->status == 200) {
       echo "<script>alert('Thêm sản phẩm thành công!')</script>";
       // header("Location: ./Badminton_Admin.php");
