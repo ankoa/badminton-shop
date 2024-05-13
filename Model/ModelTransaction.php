@@ -67,6 +67,7 @@ require_once '..\Model\Entity\Transaction.php';
                 $query = "SELECT * FROM transaction
                     WHERE userID = '$ma_kh' 
                     AND transactionID = '$search'
+                    AND status = 1
                 ";
                 $result = $this->db->select($query);
                 $arrHoaDon = array();
@@ -83,7 +84,8 @@ require_once '..\Model\Entity\Transaction.php';
         public function getAllTransactionByCustomer($ma_kh) {
             try {
                 $query = "SELECT * FROM transaction
-                    WHERE userID = '$ma_kh' 
+                    WHERE userID = '$ma_kh'
+                    AND status = 1 
                 ";
                 $result = $this->db->select($query);
                 $arrHoaDon = array();
@@ -119,6 +121,17 @@ require_once '..\Model\Entity\Transaction.php';
                 return false;
             }
         }
+
+        public function deleteHoaDon($ma_hd) {
+            try {
+                $query = "UPDATE transaction SET status = 0 WHERE transactionID = '$ma_hd'";
+                $result = $this->db->select($query);
+                return $result;
+            } catch (Exception $e) {
+                echo 'Error:'. $e->getMessage();
+                return false;
+            }
+        }
     
         // Phương thức để thêm một giao dịch mới vào cơ sở dữ liệu
         public function addTransaction($userID, $total, $note, $time, $address, $status) {
@@ -140,94 +153,97 @@ require_once '..\Model\Entity\Transaction.php';
             $query = "DELETE FROM `transaction` WHERE `transactionID` = '$transactionID'";
             return $this->db->delete($query);
         }
+
         // Phương thức để thống kê doanh số từ cơ sở dữ liệu
-    // Trong phương thức displayTotalSales của class ModelTransaction
-// Trong phương thức displayTotalSales của class ModelTransaction
-public function displayTotalSales($startDate, $endDate) {
-    $query = "SELECT DATE(`time`) as date, SUM(`total`) as totalSales 
-              FROM `transaction` 
-              WHERE `time` BETWEEN '$startDate' AND '$endDate' 
-              GROUP BY DATE(`time`)";
-    $result = $this->db->select($query);
-    if ($result && $result->num_rows > 0) {
-        $salesData = array(
-            'labels' => array(),
-            'sales' => array()
-        );
-        while ($row = $result->fetch_assoc()) {
-            $salesData['labels'][] = $row['date'];
-            // Chuyển đổi dữ liệu doanh số từ chuỗi sang số
-            $salesData['sales'][] = (float) $row['totalSales'];
+        // Trong phương thức displayTotalSales của class ModelTransaction
+        // Trong phương thức displayTotalSales của class ModelTransaction
+        public function displayTotalSales($startDate, $endDate) {
+            $query = "SELECT DATE(`time`) as date, SUM(`total`) as totalSales 
+                    FROM `transaction` 
+                    WHERE `time` BETWEEN '$startDate' AND '$endDate' 
+                    GROUP BY DATE(`time`)";
+            $result = $this->db->select($query);
+            if ($result && $result->num_rows > 0) {
+                $salesData = array(
+                    'labels' => array(),
+                    'sales' => array()
+                );
+                while ($row = $result->fetch_assoc()) {
+                    $salesData['labels'][] = $row['date'];
+                    // Chuyển đổi dữ liệu doanh số từ chuỗi sang số
+                    $salesData['sales'][] = (float) $row['totalSales'];
+                }
+                return $salesData;
+            } else {
+                return false;
+            }
         }
-        return $salesData;
-    } else {
-        return false;
-    }
-}
-// Phương thức để hiển thị chi tiết hóa đơn
-public function displayTransactionDetails($transactionID) {
-    $query = "SELECT * FROM `detail_transaction` WHERE `transactionID` = '$transactionID'";
-    $result = $this->db->select($query);
-    if ($result && $result->num_rows > 0) {
-        $details = [];
-        while ($row = $result->fetch_assoc()) {
-            $details[] = $row;
-        }
-        return $details;
-    } else {
-        return false;
-    }
-}
-public function updateTransactionStatus($transactionID, $newStatus) {
-    $sql = "UPDATE `transaction` SET `status` = '$newStatus' WHERE `transactionID` = $transactionID";
-    return $this->db->update($sql);
-}
 
-public function getTotalSales($startDate, $endDate) {
-    $query = "SELECT DATE(`time`) as date, SUM(`total`) as totalSales 
-              FROM `transaction` 
-              WHERE `time` BETWEEN '$startDate' AND '$endDate' 
-              GROUP BY DATE(`time`)";
-    $result = $this->db->select($query);
-    if ($result && $result->num_rows > 0) {
-        $totalSalesData = array(
-            'labels' => array(),
-            'totalSales' => array()
-        );
-        while ($row = $result->fetch_assoc()) {
-            $totalSalesData['labels'][] = $row['date'];
-            $totalSalesData['totalSales'][] = (float) $row['totalSales'];
+        // Phương thức để hiển thị chi tiết hóa đơn
+        public function displayTransactionDetails($transactionID) {
+            $query = "SELECT * FROM `detail_transaction` WHERE `transactionID` = '$transactionID'";
+            $result = $this->db->select($query);
+            if ($result && $result->num_rows > 0) {
+                $details = [];
+                while ($row = $result->fetch_assoc()) {
+                    $details[] = $row;
+                }
+                return $details;
+            } else {
+                return false;
+            }
         }
-        return $totalSalesData;
-    } else {
-        return false;
-    }
-}
-public function getTotalSalesByBrand($startDate, $endDate) {
-    $query = "SELECT b.name as brandName, SUM(dt.subtotal) as totalSales 
-              FROM detail_transaction dt
-              JOIN transaction t ON dt.transactionID = t.transactionID
-              JOIN product p ON dt.productID = p.productID
-              JOIN brand b ON p.brandID = b.brandID
-              WHERE t.time BETWEEN '$startDate' AND '$endDate'
-              GROUP BY b.name";
-    $result = $this->db->select($query);
-    if ($result && $result->num_rows > 0) {
-        $totalSalesData = array(
-            'labels' => array(),
-            'totalSales' => array()
-        );
-        while ($row = $result->fetch_assoc()) {
-            $totalSalesData['labels'][] = $row['brandName'];
-            $totalSalesData['totalSales'][] = (float) $row['totalSales'];
-        }
-        return $totalSalesData;
-    } else {
-        return false;
-    }
-}
 
+        public function updateTransactionStatus($transactionID, $newStatus) {
+            $sql = "UPDATE `transaction` SET `status` = '$newStatus' WHERE `transactionID` = $transactionID";
+            return $this->db->update($sql);
         }
+
+        public function getTotalSales($startDate, $endDate) {
+            $query = "SELECT DATE(`time`) as date, SUM(`total`) as totalSales 
+                    FROM `transaction` 
+                    WHERE `time` BETWEEN '$startDate' AND '$endDate' 
+                    GROUP BY DATE(`time`)";
+            $result = $this->db->select($query);
+            if ($result && $result->num_rows > 0) {
+                $totalSalesData = array(
+                    'labels' => array(),
+                    'totalSales' => array()
+                );
+                while ($row = $result->fetch_assoc()) {
+                    $totalSalesData['labels'][] = $row['date'];
+                    $totalSalesData['totalSales'][] = (float) $row['totalSales'];
+                }
+                return $totalSalesData;
+            } else {
+                return false;
+            }
+        }
+        public function getTotalSalesByBrand($startDate, $endDate) {
+            $query = "SELECT b.name as brandName, SUM(dt.subtotal) as totalSales 
+                    FROM detail_transaction dt
+                    JOIN transaction t ON dt.transactionID = t.transactionID
+                    JOIN product p ON dt.productID = p.productID
+                    JOIN brand b ON p.brandID = b.brandID
+                    WHERE t.time BETWEEN '$startDate' AND '$endDate'
+                    GROUP BY b.name";
+            $result = $this->db->select($query);
+            if ($result && $result->num_rows > 0) {
+                $totalSalesData = array(
+                    'labels' => array(),
+                    'totalSales' => array()
+                );
+                while ($row = $result->fetch_assoc()) {
+                    $totalSalesData['labels'][] = $row['brandName'];
+                    $totalSalesData['totalSales'][] = (float) $row['totalSales'];
+                }
+                return $totalSalesData;
+            } else {
+                return false;
+            }
+        }
+
+}
 
         
 
