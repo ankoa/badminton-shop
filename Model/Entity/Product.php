@@ -4,13 +4,13 @@ class Product {
     public $brandID;
     public $catalogID;
     public $name;
-
+    public $image;
     public $description;
     public $status;
     public $price;
     public $discount;
 
-    public function __construct($productID, $brandID, $catalogID, $name, $description, $status, $price, $discount) {
+    public function __construct($productID, $brandID, $catalogID, $name, $description, $status, $price, $discount, $image) {
 
         $this->productID = $productID;
         $this->brandID = $brandID;
@@ -20,6 +20,7 @@ class Product {
         $this->status = $status;
         $this->price = $price;
         $this->discount = $discount;
+        $this->image = $image;
     }
 
     public function getProductID() {
@@ -83,6 +84,12 @@ class Product {
 
     public function setDiscount($discount) {
         $this->discount = $discount;
+    }
+    public function getImage(){
+        return $this->image;
+    }
+    public function setImage($image){
+        $this->image = $image;
     }
 }
 
