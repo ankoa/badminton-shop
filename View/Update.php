@@ -15,7 +15,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
   // Kiểm tra xem dữ liệu có hợp lệ không
   if ($name && $price && $discount && $description && $image) {
     // Tạo nhà cung cấp và xử lý kết quả
-    $result = $ModelProduct -> updateProduct($productID, $name, $price, $discount, $description, $image);
+    $result = $ModelProduct -> updateProduct($productID, $name, $price, $discount, $status, $description, $image);
     if ($result->status == 200) {
         echo "<script>alert('Cập nhật nhà cung cấp thành công!')</script>";
     } else {
