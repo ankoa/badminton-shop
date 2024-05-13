@@ -107,7 +107,7 @@ class ModelUser {
         $user = $this->getUserByUsername($username);
         if ($user instanceof User) {
             $storedPassword = $user->getPassword();
-            if (password_verify($password, $storedPassword)) {
+            if ($password === $storedPassword) {
                 return true;
             }
         }
