@@ -217,7 +217,6 @@ function loadVersion(productID, color) {
     var productDataElement = document.getElementById('product-data-get');
     var product = JSON.parse(productDataElement.dataset.product);
     const imageList = document.querySelector(".slider-wrapper .image-list");
-    
     imagePaths = imagePaths[color.toLowerCase()];
 
     const bigImageContainer = document.querySelector('.big-img');
@@ -298,7 +297,6 @@ function loadVersion(productID, color) {
             var listVariantDetails = JSON.parse(this.responseText);
             var existingVersion = document.getElementById('version');
             if (existingVersion !== null) {
-                // Nếu phần tử đã tồn tại, có thể xóa nếu cần
                 existingVersion.parentNode.removeChild(existingVersion);
             }
             var htmlContent = '<div class="select-swatch"><div class="swatch clearfix"><div class="header">Chọn phiên bản: </div>';

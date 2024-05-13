@@ -429,7 +429,7 @@ if ($catalog->getName() == "Racket") {
     <script>
         var myArray = <?php echo json_encode($result) ?>;
         var divElement = document.getElementById("image-list-data");
-        divElement.dataset.array = JSON.stringify(myArray);
+        divElement.dataset.array = JSON.stringify(myArray).toLowerCase();
     </script>
 </body>
 
