@@ -513,114 +513,97 @@ function thongKeByBrand(event) {
         <h1 class="headerad"> QUẢN LÝ SẢN PHẨM</h1>
         <div class="row">
             <div class="col-lg-8">
-                <table class="table" style="width: 50;">
-                    <thead>
-                        <tr>
-                            <th class="text-center" scope="col">ID</th>
-                            <th class="text-center" scope="col">Tên</th>
-                            <th class="text-center" scope="col">Giá</th>
-                            <th class="text-center" scope="col">Thương hiệu</th>
-                            <th class="text-center" scope="col">Phân loại</th>
-                            <th class="text-center" scope="col">Trọng lượng</th>
-                            <th class="text-center" scope="col">Kích thước</th>
-                            <th class="text-center" scope="col">Chất liệu</th>
-                            <th class="text-center" scope="col">Hình ảnh</th>
-                            <th class="text-center" scope="col">Chỉnh sửa</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        require_once __DIR__ . "./Connect.php";
-                        // Truy vấn cơ sở dữ liệu để lấy danh sách sản phẩm
-                        $sql = "SELECT * FROM products";
-                        $result = $conn->query($sql);
+                <?php
+                require_once '../Model/ModelProduct.php';
+                require_once '../Model/ModelBrand.php';
+                require_once '../Model/ModelCatalog.php';
+                $ModelProduct = new ModelProduct();
+                $products = $ModelProduct->getAllProducts();
+                $ModelBrand = new ModelBrand();
+                $brands = $ModelBrand->getAllBrands();
+                $ModelCatalog = new ModelCatalog();
+                $catalogs = $ModelCatalog->getAllCatalogs();
+                if ($products) {
+                    echo ' <table class="table" style="width: 50;">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" scope="col">Mã sản phẩm</th>
+                                    <th class="text-center" scope="col">Mã thương hiệu</th>
+                                    <th class="text-center" scope="col">Mã danh mục</th>
+                                    <th class="text-center" scope="col">Sản phẩm</th>
+                                    <th class="text-center" scope="col">Giá</th>
+                                    <th class="text-center" scope="col">Giảm giá</th>
+                                    <th class="text-center" scope="col">Trạng thái</th>
+                                    <th class="text-center" scope="col">Mô tả</th>
+                                    <th class="text-center" scope="col">Hình ảnh</th>
+                                    <th class="text-center" scope="col">Chỉnh sửa</th>
+                                </tr>
+                            </thead>';
+                    foreach ($products as $product) {
+                        echo "
+                                <tbody>
+                                <tr>
+                                    <td class='text-center'>{$product->productID}</td>
+                                    <td class='text-center'>{$product->brandID}</td>
+                                    <td class='text-center'>{$product->catalogID}</td>
+                                    <td class='text-center'>{$product->name}</td>
+                                    <td class='text-center'>{$product->price} VNĐ</td>
+                                    <td class='text-center'>{$product->discount}%</td>
+                                    <td class='text-center'>{$product->status}</td>
+                                    <td class='text-center'>{$product->description}</td>
+                                    <td class='text-center'><img src='{$product->image}' alt='Hình ảnh' style='max-width: 100px; max-height: 100px;'></td>
+                                    <td style='display:flex; justify-content:space-around; width: 150px'>
+                                        <button id='openEditModal' data-productid = {$product->productID}>Cập nhật</button>
+                                        <button id='confirmDelete' data-productid = {$product->productID}>Xoá</button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            ";
+                    }
+                    echo "</table>";
+                }
+                ?>
 
-                        if (!$result) {
-                            die("Truy vấn không hợp lệ:" . $conn->error);
-                        }
-
-                        if ($result->num_rows > 0) {
-                            while ($row = $result->fetch_assoc()) {
-                                echo "
-                        <tr>
-                        <td class='text-center'>" . $row['productID'] . "</td>
-                        <td class='text-center'>" . $row['productName'] . "</td>
-                        <td class='text-center'>" . $row['productPrice'] . "</td>
-                        <td class='text-center'>" . $row['productBrand'] . "</td>
-                        <td class='text-center'>" . $row['productType'] . "</td>
-                        <td class='text-center'>" . $row['productWeight'] . "</td>
-                        <td class='text-center'>" . $row['productSize'] . "</td>
-                        <td class='text-center'>" . $row['productMaterial'] . "</td>
-                        <td class='text-center'><img style='width: 90px;height: 100px;' src='./images/product/7/" . $row['productImage'] . "'></td>
-                        <td >
-                        <a href='Update.php?" . $row['productID'] . "' id='openEditModal'><i class='fa-solid fa-wrench'></i></a>
-                        <a href='Delete.php?" . $row['productID'] . "'><i class='fa-solid fa-trash'></i></a>
-                        </td>
-                          </tr>
-                        ";
-                            }
-                        } else {
-                            echo "Không có sản phẩm nào";
-                        }
-                        ?>
-                    </tbody>
-                </table>
             </div>
             <div class="col-lg-1"></div>
             <div class="col-lg-3">
 
                 <form id="frmnhapsp" action="Create.php" method="POST">
                     <h1 style="color: black;text-align:center;"> Thêm sản phẩm </h1>
+
                     <div class="input-group input-group-sm mb-3">
-                        <label class="input-group-text" id="inputGroup-sizing-sm">Tên</label>
-                        <input type="text" name="productName" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                        <label class="input-group-text" id="inputGroup-sizing-sm">Tên sản phẩm</label>
+                        <input type="text" name="name" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                     </div>
 
                     <div class="input-group input-group-sm mb-3">
                         <label class="input-group-text" id="inputGroup-sizing-sm">Giá</label>
-                        <input type="text" name="productPrice" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                        <input type="text" name="price" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                     </div>
 
                     <div class="input-group input-group-sm mb-3">
-                        <label class="input-group-text" id="inputGroup-sizing-sm">Thương hiệu</label>
-                        <input type="text" name="productBrand" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                        <label class="input-group-text" id="inputGroup-sizing-sm">Giảm giá</label>
+                        <input type="text" name="discount" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                     </div>
 
                     <div class="input-group input-group-sm mb-3">
-                        <select name="productType" class="form-select form-select-sm" aria-label=".form-select-sm example">
-                            <label class="input-group-text" id="inputGroup-sizing-sm">Phân loại</label>
-                            <option selected>Chọn loại vợt</option>
-                            <option value="beginner">Vợt cho người mới</option>
-                            <option value="professional">Vợt chuyên nghiệp</option>
-                            <option value="newtech">Vợt công nghệ mới</option>
-                            <option value="light">Vợt nhẹ</option>
-                            <option value="medium">Vợt trung bình</option>
-                            <option value="heavy">Vợt nặng</option>
-                            <option value="female">Vợt nữ</option>
-                            <option value="children">Vợt trẻ em</option>
-                            <option value="new">Vợt đời mới</option>
-                            <option value="other">Khác</option>
+                        <select name="status" class="form-select form-select-sm" aria-label=".form-select-sm example">
+                            <label class="input-group-text" id="inputGroup-sizing-sm">Trạng thái</label>
+                            <option selected>Trạng thái</option>
+                            <option value="1">Hoạt động</option>
+                            <option value="0">Vô hiệu hoá</option>
                         </select>
                     </div>
 
                     <div class="input-group input-group-sm mb-3">
-                        <label class="input-group-text" id="inputGroup-sizing-sm">Trọng lượng</label>
-                        <input type="text" name="productWeight" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-                    </div>
-
-                    <div class="input-group input-group-sm mb-3">
-                        <label class="input-group-text" id="inputGroup-sizing-sm">Kích thước</label>
-                        <input type="text" name="productSize" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-                    </div>
-
-                    <div class="input-group input-group-sm mb-3">
-                        <label class="input-group-text" id="inputGroup-sizing-sm">Chất liệu</label>
-                        <input type="text" name="productMaterial" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                        <label class="input-group-text" id="inputGroup-sizing-sm">Mô tả</label>
+                        <input type="textarea" name="description" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                     </div>
 
                     <div class="containbox">
-                        Hình ảnh: <input type="file" name="productImage" id="productImageInput" accept="image/*">
+                        Hình ảnh: <input type="file" name="image" id="image" accept="image/*">
                     </div>
+
 
                     <div class="containbox">
                         <button type="submit" style="width:auto; height:auto;">Thêm sản phẩm</button>
@@ -632,143 +615,137 @@ function thongKeByBrand(event) {
         <!-- Đoạn js để popup bảng chỉnh sửa sản phẩm -->
         <script>
             // Mở popup chỉnh sửa sản phẩm khi bấm vào liên kết
-            document.getElementById("openEditModal").addEventListener("click", function(event) {
-                // Ngăn chặn hành động mặc định của liên kết
-                event.preventDefault();
-                document.getElementById("editModal").style.display = "block";
-            });
+            document.querySelectorAll('#openEditModal').forEach(button => {
+    button.addEventListener('click', function(event) {
+        event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
+        
+         // Hiển thị modal form
+         document.getElementById("editModal").style.display = "block";
+         
+        // Lấy các dữ liệu từ hàng chứa nút "Sửa" tương ứng
+        let productId = this.getAttribute('data-productid');
+        let row = this.closest('tr');
+        let productID = row.querySelector('td:nth-child(1)').innerText;
+        let productName = row.querySelector('td:nth-child(4)').innerText;
+        let productPrice = row.querySelector('td:nth-child(5)').innerText;
+        let productDiscount = row.querySelector('td:nth-child(6)').innerText;
+        let productStatus = row.querySelector('td:nth-child(7)').innerText;
+        let productDescription = row.querySelector('td:nth-child(8)').innerText;
+        let productImageSrc = row.querySelector('td:nth-child(9) img').getAttribute('src');
+        
+        // Gán giá trị cho các trường dữ liệu trong form
+
+        document.getElementById("productID").value = productID;
+        document.getElementById("name").value = productName;
+        document.getElementById("price").value = productPrice.replace(' VNĐ', '');
+        document.getElementById("discount").value = productDiscount.replace('%', '');
+        document.querySelector('select[name="status"]').value = productStatus;
+        document.getElementById("description").value = productDescription;
+        document.getElementById("existingImage").setAttribute('src', productImageSrc);
+        
+       
+    });
+});
+
+// Hàm đóng modal form
+function closeEditModal() {
+    document.getElementById("editModal").style.display = "none";
+}
+
+// Hàm xoá hình hiện tại
+function removeExistingImage() {
+    document.getElementById("existingImage").setAttribute('src', '');
+}
+
 
             // Đóng popup chỉnh sửa sản phẩm khi bấm vào nút "Đóng"
             function closeEditModal() {
                 document.getElementById("editModal").style.display = "none";
             }
 
-            // Xử lý lưu dữ liệu sản phẩm và sau đó đóng popup
-            function saveEditedProduct() {
-                // Lấy dữ liệu sản phẩm từ các trường input
-                var productName = document.getElementById("editProductName").value;
-                var productPrice = document.getElementById("editProductPrice").value;
-                var productBrand = document.getElementById("editProductBrand").value;
-                var productType = document.getElementById("editProductType").value;
-                var productWeight = document.getElementById("editProductWeight").value;
-                var productSize = document.getElementById("editProductSize").value;
-                var productMaterial = document.getElementById("editProductMaterial").value;
-                var productImage = document.getElementById("editProductImage").value;
-
-                // Tạo một đối tượng chứa dữ liệu sản phẩm
-                var productData = {
-                    productName: productName,
-                    productPrice: productPrice,
-                    productBrand: productBrand,
-                    productType: productType,
-                    productWeight: productWeight,
-                    productSize: productSize,
-                    productMaterial: productMaterial,
-                    productImage: productImage
-                };
-
-                // Gửi yêu cầu AJAX đến server để lưu dữ liệu sản phẩm
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", "Update.php", true);
-                xhr.setRequestHeader("Content-Type", "application/json");
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState === XMLHttpRequest.DONE) {
-                        if (xhr.status === 200) {
-                            // Xử lý phản hồi từ server nếu cần
-                            console.log("Dữ liệu sản phẩm đã được lưu thành công!");
-                            // Sau khi lưu dữ liệu, đóng popup
-                            closeEditModal();
-                        } else {
-                            console.error("Lỗi khi lưu dữ liệu sản phẩm: " + xhr.statusText);
-                        }
+            document.querySelectorAll('#confirmDelete').forEach(button => {
+                button.addEventListener('click', function() {
+                    // Lấy ID sản phẩm từ thuộc tính data-productid của button
+                    var ProductID = this.getAttribute('data-productid');
+                    // Hiển thị hộp thoại xác nhận
+                    var deleteConfirmation = confirm('Bạn có chắc chắn muốn xoá sản phẩm này không?');
+                    // Nếu người dùng chọn "OK"
+                    if (deleteConfirmation) {
+                        // Chuyển hướng đến trang Delete.php để xóa sản phẩm
+                        window.location.href = 'Delete.php?productID=' + ProductID;
                     }
-                };
-                xhr.send(JSON.stringify(productData));
-                // Sau khi lưu, đóng popup
-                closeEditModal();
+                });
+            });
 
-
-                //Xoá ảnh cũ
-                function removeExistingImage() {
-                    // Clear the existing image and reset the input field
-                    var existingImage = document.getElementById('existingImage');
-                    existingImage.src = '';
-
-                    var editProductImageInput = document.getElementById('editProductImageInput');
-                    editProductImageInput.value = '';
+            //Xoá ảnh cũ
+            function removeExistingImage() {
+                // Clear the existing image and reset the input field
+                var existingImage = document.getElementById('existingImage');
+                var deleteImageConfirmation = window.confirm("Bạn có muốn xoá ảnh cũ?");
+                if (deleteImageConfirmation) {
+                    existingImage.value = '';
                 }
+
+                //  var editProductImageInput = document.getElementById('editProductImageInput');
+                //  editProductImageInput.value = '';
             }
         </script>
 
         <!-- Bảng chỉnh sửa sản phẩm -->
+
         <div id="editModal" class="modal" style="background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">
-
-            <form class="modal-content" action="Update.php" method="POST" style="width:35%; margin-left:35%; margin-top:3%; border:solid 2px;" >
+            <form class="modal-content" action="Update.php" method="POST" style="width:35%; margin-left:35%; margin-top:3%; border:solid 2px;">
                 <span style="margin-left:95%" class="close" onclick="closeEditModal()">&times;</span>
-                <h1 style="text-align: center;">Chỉnh sửa sản phẩm</h1>
-                    <div class="input-group input-group-sm mb-3">
-                        <label class="input-group-text" id="inputGroup-sizing-sm">Tên</label>
-                        <input type="text" name="productName" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-                    </div>
+                <h1 style="text-align: center;">Chỉnh sửa sản phẩm</h1>   
+                <div class="input-group input-group-sm mb-3">
+                    <label class="input-group-text" id="inputGroup-sizing-sm">Mã sản phẩm</label>
+                    <input type="text" name="productID" id="productID" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" style="user-select: none; pointer-events: none; caret-color: transparent;">
+                </div>
+                
+                <div class="input-group input-group-sm mb-3">
+                    <label class="input-group-text" id="inputGroup-sizing-sm">Sản phẩm</label>
+                    <input type="text" name="name" id="name" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="">
+                </div>
 
-                    <div class="input-group input-group-sm mb-3">
-                        <label class="input-group-text" id="inputGroup-sizing-sm">Giá</label>
-                        <input type="text" name="productPrice" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-                    </div>
+                <div class="input-group input-group-sm mb-3">
+                    <label class="input-group-text" id="inputGroup-sizing-sm">Giá</label>
+                    <input type="text" name="price" id="price" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="">
+                </div>
 
-                    <div class="input-group input-group-sm mb-3">
-                        <label class="input-group-text" id="inputGroup-sizing-sm">Thương hiệu</label>
-                        <input type="text" name="productBrand" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-                    </div>
+                <div class="input-group input-group-sm mb-3">
+                    <label class="input-group-text" id="inputGroup-sizing-sm">Giảm giá</label>
+                    <input type="text" name="discount" id="discount" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="">
+                </div>
 
-                    <div class="input-group input-group-sm mb-3">
-                        <select name="productType" class="form-select form-select-sm" aria-label=".form-select-sm example">
-                            <label class="input-group-text" id="inputGroup-sizing-sm">Phân loại</label>
-                            <option selected>Chọn loại vợt</option>
-                            <option value="beginner">Vợt cho người mới</option>
-                            <option value="professional">Vợt chuyên nghiệp</option>
-                            <option value="newtech">Vợt công nghệ mới</option>
-                            <option value="light">Vợt nhẹ</option>
-                            <option value="medium">Vợt trung bình</option>
-                            <option value="heavy">Vợt nặng</option>
-                            <option value="female">Vợt nữ</option>
-                            <option value="children">Vợt trẻ em</option>
-                            <option value="new">Vợt đời mới</option>
-                            <option value="other">Khác</option>
+                <div class="input-group input-group-sm mb-3">
+                        <select name="status" class="form-select form-select-sm" aria-label=".form-select-sm example" value="">
+                            <label class="input-group-text" id="inputGroup-sizing-sm">Trạng thái</label>
+                            <option selected>Trạng thái</option>
+                            <option value="1">Hoạt động</option>
+                            <option value="0">Vô hiệu hoá</option>
                         </select>
                     </div>
 
-                    <div class="input-group input-group-sm mb-3">
-                        <label class="input-group-text" id="inputGroup-sizing-sm">Trọng lượng</label>
-                        <input type="text" name="productWeight" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-                    </div>
-
-                    <div class="input-group input-group-sm mb-3">
-                        <label class="input-group-text" id="inputGroup-sizing-sm">Kích thước</label>
-                        <input type="text" name="productSize" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-                    </div>
-
-                    <div class="input-group input-group-sm mb-3">
-                        <label class="input-group-text" id="inputGroup-sizing-sm">Chất liệu</label>
-                        <input type="text" name="productMaterial" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-                    </div>
+                <div class="input-group input-group-sm mb-3">
+                    <label class="input-group-text" id="inputGroup-sizing-sm">Mô tả</label>
+                    <input type="text" name="description" id="description" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="">
+                </div>
 
                 <div class="containboximg">
                     <label for="existingImage">Hình hiện tại:</label>
-                    <img id="existingImage" style="max-width: 100px; max-height: 100px;" alt="Existing Image">
+                    <img id="existingImage" style="max-width: 100px; max-height: 100px;" alt="Hình hiện tại" value="">
                     <button onclick="removeExistingImage()" style="width:55px; height:auto;">Xoá</button>
-                    <br>
+                    <br> 
                     <label for="editProductImageInput">Chọn hình mới:</label>
-                    <input type="file" name="productImage" id="editProductImageInput" accept="image/*">
+                    <input type="file" name="image" id="image" accept="image/*">
 
-                    <img id="selectedImage" style="max-width: 100px; max-height: 100px; " alt="Selected Image">
+                    <img id="selectedImage" style="max-width: 100px; max-height: 70px; " alt="Hình được chọn">
                 </div>
-
-                <div><button type="submit" style="width:55px; height:auto; margin-left:45%">Lưu</button> </div>
+                <button type="submit" style="width:55px; height:auto; margin-left:45%">Lưu</button>             
             </form>
         </div>
     </div>
-
+        
        <div id="hoadon-content" class="content-section">
         <div class="headerad"> QUẢN LÝ HÓA ĐƠN</div>
    
