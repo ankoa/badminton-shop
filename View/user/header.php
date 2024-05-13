@@ -160,11 +160,14 @@ $total_price_cart = 0;
                 foreach ($cartDetails  as $cartDetail) {
                     $variantDetail = $modelVariantDetail->getVariantByID(($cartDetail)->getVariantID());
                     $product = $modelProduct->getProductByID(($cartDetail)->getProductID());
+                    $inputString = $product->getUrl();
+                    $darkNavyRegex = '/^[^:]+/';
+                    preg_match($darkNavyRegex, $inputString, $match);
                     $total_price_cart += $product->getPrice();
                     echo "<div id='" . $modelUser->getUIDByUserName($_SESSION['username']) . "_" . $product->getProductID() . "_" . $variantDetail->getVariantID() . "'>
                                                         <a title='Xóa' class='remove-item-cart' href='javascript:void(0);' onclick='delProductCart(" . $modelUser->getUIDByUserName($_SESSION['username']) . ", " . $product->getProductID() . ", " . $cartDetail->getVariantID() . ")'><img class='svg-inline' src='../View/images/x-close.svg'></a>
                                                         <div class='cart-product'>
-                                                            <a href='#' class='cart-image' title='" . $product->getName() . "'><img width='80' height='80' src='../View/images/product/GiayNam.png' alt='" . $product->getName() . "'></a>
+                                                            <a href='#' class='cart-image' title='" . $product->getName() . "'><img width='80' height='80' src='../View/images/product/" . $product->getProductID() . "/" . $match[0] . "/" . $product->getProductID() . ".1.png' alt='" . $product->getName() . "'></a>
                                                             <div class='cart-info'>
                                                                 <div class='cart-name'>
                                                                 <a href='#' class='' title='" . $product->getName() . "'>" . $product->getName() . "</a>";
@@ -196,7 +199,6 @@ $total_price_cart = 0;
             }
             ?>
 
-
         </div>
     </div>
     <div class="ajaxcart-footer">
@@ -208,7 +210,7 @@ $total_price_cart = 0;
             </div>
         </div>
         <div class="cart-btn-proceed-checkout-dt ">
-            <button onclick="location.href='/gio-hang/thanh-toan'" type="button" class="button btn btn-default cart-btn-proceed-checkout" id="btn-proceed-checkout" title="Thanh toán">Đặt hàng</button>
+            <button onclick="location.href='../View/user/pages/payment_page.php'" type="button" class="button btn btn-default cart-btn-proceed-checkout" id="btn-proceed-checkout" title="Thanh toán">Đặt hàng</button>
         </div>
     </div>
 </form>
@@ -255,7 +257,7 @@ $total_price_cart = 0;
             return product.name.toLowerCase().includes(keyword.toLowerCase());
         });
 
-        result =filteredProducts;
+        result = filteredProducts;
 
         var maxResults = 5;
         for (var i = 0; i < filteredProducts.length && i < maxResults; i++) {
@@ -272,7 +274,7 @@ $total_price_cart = 0;
             var li = document.createElement('li');
             var link = document.createElement('a');
             link.textContent = 'Xem tất cả';
-            link.href = "index.php?control=ProductCategory&search="+keyword;
+            link.href = "index.php?control=ProductCategory&search=" + keyword;
             link.style.fontWeight = 'bold';
             link.style.textDecoration = 'underline';
             li.appendChild(link);

@@ -16,7 +16,6 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            padding: 20px;
         }
 
         .left-side {
