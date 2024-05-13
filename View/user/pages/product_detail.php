@@ -239,27 +239,7 @@ if ($catalog->getName() == "Racket") {
                         </div>
                     </fieldset>
                     <div class="form-product" id="test">
-                        <?php /* if ($catalog->getName() == 'Shuttle') : ?>
-                            <div class="select-swatch">
-                                <div class="swatch clearfix">
-                                    <div class="header">Chọn tốc độ: </div>
-                                    <?php foreach ($listVariantDetails as $variantDetail) : ?>
-                                        <?php if ($variantDetail->getQuantity() > 0) : ?>
-                                            <div class="swatch-element color-<?php echo $variantDetail->getSpeed(); ?>" data-value="<?php echo $variantDetail->getSpeed(); ?>" data-value_2="<?php echo $variantDetail->getSpeed(); ?>">
-                                                <input id="color-<?php echo $variantDetail->getSpeed(); ?>" type="radio" name="version" value="<?php echo $variantDetail->getVariantID(); ?>">
-                                            <?php else : ?>
-                                                <div class="swatch-element soldout color-<?php echo $variantDetail->getSpeed(); ?>" data-value="<?php echo $variantDetail->getSpeed(); ?>" data-value_2="<?php echo $variantDetail->getSpeed(); ?>">
-                                                    <input disabled id="color-<?php echo $variantDetail->getSpeed(); ?>" type="radio" name="version" value="<?php echo $variantDetail->getVariantID(); ?>">
-                                                <?php endif; ?>
-                                                <label for="color-<?php echo $variantDetail->getSpeed(); ?>">
-                                                    <?php echo $variantDetail->getSpeed(); ?>
-                                                    <img class="crossed-out" src="https://cdn.shopvnb.com/themes/images/soldout.png" alt="<?php echo $variantDetail->getSpeed(); ?>">
-                                                </label>
-                                                </div>
-                                            <?php endforeach; ?>
-                                            </div>
-                                </div>
-                            </div> */
+                        
                         <?php if ($catalog->getName() == 'Racket' || $catalog->getName() == 'Shoes') : ?>
                             <div class="select-swatch">
                                 <div class="swatch clearfix">
