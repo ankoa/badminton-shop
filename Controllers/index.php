@@ -6,6 +6,7 @@
     <title>Web dụng cụ thể thao cầu lông</title>
     <link rel="stylesheet" href="../View/css/style.css">
     <link href="https://cdn.shopvnb.com/themes/css/breadcrumb_style.scss.css" rel="stylesheet" type="text/css" />
+    <script src="../js/cart.js" defer></script>
     <?php
     if(isset($_GET['control'])) {
         if($_GET['control']=="ProductCategory") {
@@ -107,10 +108,10 @@
 
 
             <div class="bottom-action">
-                <div class="cart_btn-close tocontinued">
+                <div class="cart_btn-close tocontinued" onclick="location.reload();">
                     Tiếp tục mua hàng
                 </div>
-                <a href="/gio-hang" class="checkout" title="Xem giỏ hàng">
+                <a href="index.php?control=Cart" class="checkout" title="Xem giỏ hàng">
                     Xem giỏ hàng
                 </a>
             </div>
