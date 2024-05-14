@@ -1,16 +1,17 @@
 <?php
 require_once __DIR__ . '../../Model/ModelTransaction.php';
+
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $startDate = $_GET['startDate'];
     $endDate = $_GET['endDate'];
-
-    // Tạo một đối tượng ModelTransaction và gọi các phương thức để lấy dữ liệu
+    
+    // Create an instance of ModelTransaction and fetch the sales data
     $modelTransaction = new ModelTransaction();
     $salesData = $modelTransaction->getTotalSalesByBrand($startDate, $endDate);
 
+    // Log the sales data to verify its structure
+    error_log("Sales Data returned from model: " . print_r($salesData, true));
 
-    // Return the data for both charts as JSON
     echo json_encode($salesData);
 }
-
 ?>
