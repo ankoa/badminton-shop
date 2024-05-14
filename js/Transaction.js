@@ -8,6 +8,7 @@ window.onload = function() {
         handleAllCustomerOrder();
         renderCustomerOrderDetail();
         loadMiniForm();
+        handleDeleteTransaction();
     }
     
 };
@@ -46,10 +47,10 @@ async function AllCustomerOrder() {
     let olist = ''
     let filteredOrders = [];
 
-    if (search === 'Đang vận chuyển') {
-        filteredOrders = orders.filter(item => item.transport === 'Đang vận chuyển');
-    } else if (search === 'Đã giao hàng') {
-        filteredOrders = orders.filter(item => item.transport === 'Đã giao hàng');
+    if (search === 'Chưa xác nhận') {
+        filteredOrders = orders.filter(item => item.check === 'Chưa xác nhận');
+    } else if (search === 'Đã xác nhận') {
+        filteredOrders = orders.filter(item => item.check === 'Đã xác nhận');
     } else {
         filteredOrders = orders; // Hiển thị tất cả đơn hàng nếu không có tìm kiếm hoặc tìm kiếm không phù hợp
     }
@@ -62,9 +63,10 @@ async function AllCustomerOrder() {
                     <a href="#" class="order-link">${item.transactionID}</a>
                 </td>
                 <td>${item.time}</td>
-                <td>${item.pay}</td>
+                <td class="order-check" data-transaction-id="${item.check}">${item.check}</td>
                 <td>${item.transport}</td>
                 <td>${item.total}</td>
+                <td class="delete-button"><img class="svg-inline" src="../View/images/delete.png" data-src="../View/images/delete.png"></td>
                 </tr>
             ` 
         });
@@ -80,13 +82,13 @@ async function AllCustomerOrder() {
                     <span>Tất cả</span>
                     <input type="hidden" value="" >
                 </a>
-                <a class="order-filter__item ${search === 'Đang vận chuyển' ? 'active' : ''}">
-                    <span>Đang vận chuyển</span>
-                    <input type="hidden" value="Đang vận chuyển" >
+                <a class="order-filter__item ${search === 'Chưa xác nhận' ? 'active' : ''}">
+                    <span>Chưa xác nhận</span>
+                    <input type="hidden" value="Chưa xác nhận" >
                 </a>
-                <a class="order-filter__item ${search === 'Đã giao hàng' ? 'active' : ''}">
-                    <span>Đã giao hàng</span>
-                    <input type="hidden" value="Đã giao hàng" >
+                <a class="order-filter__item ${search === 'Đã xác nhận' ? 'active' : ''}">
+                    <span>Đã xác nhận</span>
+                    <input type="hidden" value="Đã xác nhận" >
                 </a>
             </div>
         </div>
@@ -148,9 +150,10 @@ async function CustomerOrder() {
                     </span>
                 </td>
                 <td>${item.time}</td>
-                <td>${item.pay}</td>
+                <td>${item.check}</td>
                 <td>${item.transport}</td>
                 <td>${item.total}</td>
+                <td></td>
                 </tr>
             `
     
@@ -171,7 +174,7 @@ function handleCustomerOrder() {
 }
 
 function renderCustomerOrderDetail() {
-    $(document).on('click', '.order-item__product-list', async function() {
+    $(document).on('click', '.order-link', async function() {
         try {
             const orderId = $(this).closest('tr').find('.order-item').data('transaction-id');
             console.log(orderId);
@@ -232,7 +235,7 @@ function renderCustomerOrderDetail() {
                             </div>
                         </div>
                         <div class="total-amount">
-                            <h3>Giá tổng: ${orderDetail.total_amount}</h3>
+                            <h3>Giá tổng: ${orderDetail.total_amonut}</h3>
                         </div>
                         `
                 index !== orderDetails.length - 1 ? html += '<div class="line"></div>' : ''
@@ -314,3 +317,32 @@ function loadMiniForm(){
     
 }
 
+function deleteTransaction(id) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: '../Controllers/TransactionController.php',
+            method: 'POST',
+            data: { action: 'delete', id },
+            dataType: 'JSON',
+            success: order => resolve(order),
+            error: (xhr, status, error) => reject(error)
+        })
+    })
+}
+
+function handleDeleteTransaction() {
+    $(document).on("click", ".delete-button", function () {
+        var id = $(this).closest('tr').find('.order-item').data('transaction-id');
+        console.log(id);
+        var tinh_trang = $(this).closest('tr').find('.order-check').data('transaction-id');
+        console.log(tinh_trang);
+        if(tinh_trang === 'Chưa xác nhận'){
+            deleteTransaction(id);
+            AllCustomerOrder();
+        }
+        else {
+            alert("Không thể xoá");
+        }
+        
+    })
+}

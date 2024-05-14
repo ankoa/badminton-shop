@@ -191,7 +191,7 @@ if ($catalog->getName() == "Racket") {
                         <span class="old-price">
                             Giá niêm yết:
                             <del class="price product-price-old">
-                                <?php echo number_format($product->getDiscount(), 0, ',', '.'); ?> ₫
+                                <?php echo number_format($product->getFakePrice(), 0, ',', '.'); ?> ₫
                             </del>
                         </span>
                     </div>

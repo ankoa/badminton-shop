@@ -30,7 +30,7 @@ class ModelProduct
                     $row['description'],
                     $row['status'],
                     $row['price'],
-                    $row['discount'],
+                    $row['fakePrice'],
                     $row['url_image'],
                     $row['timeCreated']
                 );
@@ -61,7 +61,7 @@ class ModelProduct
                     $row['description'],
                     $row['status'],
                     $row['price'],
-                    $row['discount'],
+                    $row['fakePrice'],
                     $row['url_image'],
                     $row['timeCreated']
                 );
@@ -91,7 +91,7 @@ class ModelProduct
                     $row['description'],
                     $row['status'],
                     $row['price'],
-                    $row['discount'],
+                    $row['fakePrice'],
                     $row['url_image'],
                     $row['timeCreated']
                 );
@@ -102,38 +102,38 @@ class ModelProduct
     }
 
     public function getListProductByWeight($weight, $brandID)
-{
-    $query = "SELECT DISTINCT p.productID, p.brandID, p.catalogID, p.name, p.description, p.status, p.price, p.discount, p.url_image, p.timeCreated
+    {
+        $query = "SELECT DISTINCT p.productID, p.brandID, p.catalogID, p.name, p.description, p.status, p.price, p.discount, p.url_image, p.timeCreated
     FROM product p, variantdetail vd, variant v
     WHERE p.productID=v.productID and v.variantID=vd.variantID and vd.weight='$weight'";
-    
-    if ($brandID !== null) {
-        $query .= " AND p.brandID='$brandID'";
-    }
 
-    $result = $this->db->select($query);
-    $products = [];
-    
-    if ($result && $result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $product = new Product(
-                $row['productID'],
-                $row['brandID'],
-                $row['catalogID'],
-                $row['name'],
-                $row['description'],
-                $row['status'],
-                $row['price'],
-                $row['discount'],
-                $row['url_image'],
-                $row['timeCreated']
-            );
-            $products[] = $product;
+        if ($brandID !== null) {
+            $query .= " AND p.brandID='$brandID'";
         }
+
+        $result = $this->db->select($query);
+        $products = [];
+
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $product = new Product(
+                    $row['productID'],
+                    $row['brandID'],
+                    $row['catalogID'],
+                    $row['name'],
+                    $row['description'],
+                    $row['status'],
+                    $row['price'],
+                    $row['fakePrice'],
+                    $row['url_image'],
+                    $row['timeCreated']
+                );
+                $products[] = $product;
+            }
+        }
+
+        return $products;
     }
-    
-    return $products;
-}
 
 
     public function getListProductByColor($color, $brandID)
@@ -156,7 +156,7 @@ class ModelProduct
                     $row['description'],
                     $row['status'],
                     $row['price'],
-                    $row['discount'],
+                    $row['fakePrice'],
                     $row['url_image'],
                     $row['timeCreated']
                 );
@@ -167,37 +167,37 @@ class ModelProduct
     }
 
     public function getListProductByGrip($grip, $brandID)
-{
-    $query = "SELECT DISTINCT p.productID, p.brandID, p.catalogID, p.name, p.description, p.status, p.price, p.discount, p.url_image, p.timeCreated
+    {
+        $query = "SELECT DISTINCT p.productID, p.brandID, p.catalogID, p.name, p.description, p.status, p.price, p.discount, p.url_image, p.timeCreated
         FROM product p, variantdetail vd, variant v
         WHERE p.productID=v.productID and v.variantID=vd.variantID and vd.grip='$grip'";
 
-    // Nếu $brandID không null, thêm điều kiện tìm kiếm theo brandID vào câu truy vấn
-    if ($brandID !== null) {
-        $query .= " AND p.brandID='$brandID'";
-    }
-
-    $result = $this->db->select($query);
-    $products = [];
-    if ($result && $result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $product = new Product(
-                $row['productID'],
-                $row['brandID'],
-                $row['catalogID'],
-                $row['name'],
-                $row['description'],
-                $row['status'],
-                $row['price'],
-                $row['discount'],
-                $row['url_image'],
-                $row['timeCreated']
-            );
-            $products[] = $product;
+        // Nếu $brandID không null, thêm điều kiện tìm kiếm theo brandID vào câu truy vấn
+        if ($brandID !== null) {
+            $query .= " AND p.brandID='$brandID'";
         }
+
+        $result = $this->db->select($query);
+        $products = [];
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $product = new Product(
+                    $row['productID'],
+                    $row['brandID'],
+                    $row['catalogID'],
+                    $row['name'],
+                    $row['description'],
+                    $row['status'],
+                    $row['price'],
+                    $row['fakePrice'],
+                    $row['url_image'],
+                    $row['timeCreated']
+                );
+                $products[] = $product;
+            }
+        }
+        return $products;
     }
-    return $products;
-}
 
 
 
@@ -217,7 +217,7 @@ class ModelProduct
                 $row['description'],
                 $row['status'],
                 $row['price'],
-                $row['discount'],
+                $row['fakePrice'],
                 $row['url_image'],
                 $row['timeCreated']
             );
@@ -255,7 +255,7 @@ class ModelProduct
                     $row['description'],
                     $row['status'],
                     $row['price'],
-                    $row['discount'],
+                    $row['fakePrice'],
                     $row['url_image'],
                     $row['timeCreated']
                 );
@@ -281,7 +281,7 @@ class ModelProduct
                     $row['description'],
                     $row['status'],
                     $row['price'],
-                    $row['discount'],
+                    $row['fakePrice'],
                     $row['url_image'],
                     $row['timeCreated']
                 );
@@ -306,7 +306,7 @@ class ModelProduct
                     $row['description'],
                     $row['status'],
                     $row['price'],
-                    $row['discount'],
+                    $row['fakePrice'],
                     $row['url_image'],
                     $row['timeCreated']
                 );
@@ -372,29 +372,29 @@ class ModelProduct
         }
         return null;
     }
-    
-    public function searchProductsByName($searchString)
-{
-    $query = "SELECT * FROM product WHERE name LIKE '%$searchString%'";
-    $result = $this->db->select($query);
-    $products = [];
-    if ($result && $result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $product = new Product(
-                $row['productID'],
-                $row['brandID'],
-                $row['catalogID'],
-                $row['name'],
-                $row['description'],
-                $row['status'],
-                $row['price'],
-                $row['discount'],
-                $row['url_image']
-            );
-            $products[] = $product;
-        }
-    }
-    return $products;
-}
 
+    public function searchProductsByName($searchString)
+    {
+        $query = "SELECT * FROM product WHERE name LIKE '%$searchString%'";
+        $result = $this->db->select($query);
+        $products = [];
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $product = new Product(
+                    $row['productID'],
+                    $row['brandID'],
+                    $row['catalogID'],
+                    $row['name'],
+                    $row['description'],
+                    $row['status'],
+                    $row['price'],
+                    $row['fakePrice'],
+                    $row['url_image'],
+                    $row['timeCreated']
+                );
+                $products[] = $product;
+            }
+        }
+        return $products;
+    }
 }

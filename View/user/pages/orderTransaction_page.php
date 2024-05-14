@@ -116,7 +116,7 @@
     } 
 
     .total-amount { 
-        padding-left: 80%;
+        padding-left: 70%;
         text-align: left; 
         margin-top: 10px; 
         margin-bottom: 25px; 
@@ -130,6 +130,18 @@
         z-index: 9999; /* Đảm bảo form hiển thị trên cùng */
         display: none;
     }
+
+    .svg-inline{
+        width: 25px;
+        height: 25px;
+        margin-top: -5px;
+        margin-right: 2px;
+    }
+
+    .order-item{
+      text-align: center;
+    }
+
     </style>
 </head>
 <body>
@@ -138,9 +150,9 @@
         <main>
         <div class="col-xs-12">
             <h1>Kiểm tra trạng thái đơn hàng</h1>
-            <a class="logout" href="">
+            <a class="logout" href="index.php?control=DetailOrder">
                 <span class="fa fa-sign-out"></span>
-                "Thoát"
+                "Đã huỷ"
             </a>
         </div>
         <form>
@@ -159,6 +171,7 @@
                     <th>Trạng thái thanh toán</th>
                     <th>Trạng thái vận chuyển</th>
                     <th>Tổng tiền</th>
+                    <th></th>
                     </tr>
                 </thead>
                 <tbody id="showlist">
