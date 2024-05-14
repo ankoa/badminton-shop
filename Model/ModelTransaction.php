@@ -115,6 +115,7 @@ require_once '..\Model\Entity\Transaction.php';
                 $query = "SELECT * FROM transaction
                     WHERE userID = '$ma_kh' 
                     AND transactionID = '$search'
+                    AND status = 1
                 ";
                 $result = $this->db->select($query);
                 $arrHoaDon = array();
@@ -131,7 +132,8 @@ require_once '..\Model\Entity\Transaction.php';
         public function getAllTransactionByCustomer($ma_kh) {
             try {
                 $query = "SELECT * FROM transaction
-                    WHERE userID = '$ma_kh' 
+                    WHERE userID = '$ma_kh'
+                    AND status = 1 
                 ";
                 $result = $this->db->select($query);
                 $arrHoaDon = array();
@@ -164,6 +166,17 @@ require_once '..\Model\Entity\Transaction.php';
                 return $transactions;
             } else {
                 // Return false if no transactions found
+                return false;
+            }
+        }
+
+        public function deleteHoaDon($ma_hd) {
+            try {
+                $query = "UPDATE transaction SET status = 0 WHERE transactionID = '$ma_hd'";
+                $result = $this->db->select($query);
+                return $result;
+            } catch (Exception $e) {
+                echo 'Error:'. $e->getMessage();
                 return false;
             }
         }
@@ -299,7 +312,6 @@ public function getTransactionsByDate($startDate, $endDate) {
         return false;
     }
 }
-        
 
     
     

@@ -17,6 +17,10 @@
             echo json_encode($this->modelTransaction->getTransactionByID($TransactionID));
         }
 
+        public function deleteHoaDon($id) {
+            echo json_encode($this->modelTransaction->deleteHoaDon($id));
+        }
+
         public function getTransaction($id) {
             echo json_encode($this->modelTransaction->getTransaction($id));
         }
@@ -64,6 +68,9 @@
             $ma_kh = $_GET['ma_kh'];
             $transactionctl->getAllTransactionByCustomer($ma_kh);
             break;
+        case 'delete':
+            $id = $_POST['id'];
+            $transactionctl->deleteHoaDon($id);
         default:
             break;
         }
