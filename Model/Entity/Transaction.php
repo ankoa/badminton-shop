@@ -6,14 +6,23 @@ class Transaction {
     public $note;
     public $time;
     public $address;
-
-    public function __construct($transactionID, $userID, $total, $note, $time, $address) {
+    public $name_receiver;
+    public $phone_receiver;
+    public $transport;
+    public $status;
+    public $check;
+    public function __construct($transactionID, $userID, $total, $note, $time, $address, $name_receiver, $phone_receiver, $transport, $status, $check) {
         $this->transactionID = $transactionID;
         $this->userID = $userID;
         $this->total = $total;
         $this->note = $note;
         $this->time = $time;
         $this->address = $address;
+        $this->name_receiver = $name_receiver;
+        $this->phone_receiver = $phone_receiver;
+        $this->transport = $transport;
+        $this->status = $status;
+        $this->check = $check;
     }
 
     // Getter và setter cho transactionID
@@ -65,9 +74,47 @@ class Transaction {
     public function getAddress() {
         return $this->address;
     }
+    // Getter và setter cho name_receiver
+    public function getNameReceiver() {
+        return $this->name_receiver;
+    }
 
-    public function setAddress($address) {
-        $this->address = $address;
+    public function setNameReceiver($name_receiver) {
+        $this->name_receiver = $name_receiver;
+    }
+
+    // Getter và setter cho phone_receiver
+    public function getPhoneReceiver() {
+        return $this->phone_receiver;
+    }
+
+    public function setPhoneReceiver($phone_receiver) {
+        $this->phone_receiver = $phone_receiver;
+    }
+
+    // Getter và setter cho transport
+    public function getTransport() {
+        return $this->transport;
+    }
+
+    public function setTransport($transport) {
+        $this->transport = $transport;
+    }
+
+    // Getter và setter cho status
+    public function getStatus() {
+        return $this->status;
+    }
+
+    public function setStatus($status) {
+        $this->status = $status;
+    }
+    public function getCheck() {
+        return $this->check;
+    }
+
+    public function setCheck($check) {
+        $this->check = $check;
     }
 }
 
