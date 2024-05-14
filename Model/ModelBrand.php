@@ -56,7 +56,8 @@ class ModelBrand {
     }
      // Phương thức lấy list brandID của 1 loại catalog 
      public function suggestBrandIDsForCatalog($catalogID) {
-        $query = "SELECT DISTINCT brandID FROM product WHERE catalogID = '$catalogID'";
+        // Sử dụng câu truy vấn lọc thương hiệu có status != 0
+        $query = "SELECT DISTINCT brandID FROM product WHERE catalogID = '$catalogID' AND status != 0";
         $result = $this->db->select($query);
         $brandIDs = [];
         if ($result) {
@@ -66,6 +67,7 @@ class ModelBrand {
         }
         return $brandIDs;
     }
+    
 }
 
 ?>

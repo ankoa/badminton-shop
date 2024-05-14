@@ -147,7 +147,7 @@ function changeTransactionStatus(transactionID, currentStatus) {
 
     // Tạo một yêu cầu AJAX để cập nhật trạng thái
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'update_transaction_status.php?transactionID=' + encodeURIComponent(transactionID) + '&status=' + encodeURIComponent(newStatus), true);
+    xhr.open('GET', '../View/update_transaction_status.php?transactionID=' + encodeURIComponent(transactionID) + '&status=' + encodeURIComponent(newStatus), true);
 
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
