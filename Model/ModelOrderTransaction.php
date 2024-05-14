@@ -55,6 +55,25 @@ class ModelOrderTransaction {
         $query = "UPDATE FROM `ordertransaction` SET status= 0 WHERE orderID = '$orderID'";
         return $this->db->delete($query);
     }
+    public function getOrderTransactionDetails($orderID) {
+        $query = "SELECT od.productID, p.name as productName, p.price as productPrice, od.quantity, od.total_amonut 
+                  FROM ordertransaction od 
+                  JOIN product p ON od.productID = p.productID 
+                  WHERE od.transactionID = '$orderID'";
+        $result = $this->db->select($query);
+        if ($result) {
+            $details = [];
+            while ($row = $result->fetch_assoc()) {
+                $details[] = $row;
+            }
+            return $details;
+        } else {
+            return false;
+        }
+    }
 }
+
+
+
 
 ?>
