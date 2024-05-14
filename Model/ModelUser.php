@@ -170,5 +170,11 @@ class ModelUser {
         return $this->db->update($query);
     }
 }
+    public function changeUserStatus($userID, $newStatus) {
+        // Update the status of the user in the database
+        $query = "UPDATE user SET status = '$newStatus' WHERE userID = '$userID'";
+        return $this->db->update($query);
+    }
+}
 
 ?>
