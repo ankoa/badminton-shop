@@ -6,20 +6,27 @@ class Transaction {
     public $note;
     public $time;
     public $address;
-    public $pay;
+    public $check; // Renamed from 'check' for consistency
     public $transport;
-    public function __construct($transactionID, $userID, $total, $note, $time, $address, $pay, $transport) {
+    public $status;
+    public $nameReceiver; // Camel case for consistency with other properties
+    public $phoneReceiver; // Camel case for consistency with other properties
+
+    public function __construct($transactionID, $userID, $total, $note, $time, $address, $check, $transport, $status, $nameReceiver, $phoneReceiver) {
         $this->transactionID = $transactionID;
         $this->userID = $userID;
         $this->total = $total;
         $this->note = $note;
         $this->time = $time;
         $this->address = $address;
-        $this->pay = $pay;
+        $this->check = $check;
         $this->transport = $transport;
+        $this->status = $status;
+        $this->nameReceiver = $nameReceiver;
+        $this->phoneReceiver = $phoneReceiver;
     }
 
-    // Getter và setter cho transactionID
+    // Getter and setter for transactionID
     public function getTransactionID() {
         return $this->transactionID;
     }
@@ -28,7 +35,7 @@ class Transaction {
         $this->transactionID = $transactionID;
     }
 
-    // Getter và setter cho userID
+    // Getter and setter for userID
     public function getUserID() {
         return $this->userID;
     }
@@ -37,7 +44,7 @@ class Transaction {
         $this->userID = $userID;
     }
 
-    // Getter và setter cho total
+    // Getter and setter for total
     public function getTotal() {
         return $this->total;
     }
@@ -46,7 +53,7 @@ class Transaction {
         $this->total = $total;
     }
 
-    // Getter và setter cho note
+    // Getter and setter for note
     public function getNote() {
         return $this->note;
     }
@@ -55,7 +62,7 @@ class Transaction {
         $this->note = $note;
     }
 
-    // Getter và setter cho time
+    // Getter and setter for time
     public function getTime() {
         return $this->time;
     }
@@ -64,7 +71,7 @@ class Transaction {
         $this->time = $time;
     }
 
-    // Getter và setter cho address
+    // Getter and setter for address
     public function getAddress() {
         return $this->address;
     }
@@ -72,21 +79,50 @@ class Transaction {
     public function setAddress($address) {
         $this->address = $address;
     }
-    public function getPay() {
-        return $this->pay;
+
+    // Getter and setter for pay
+    public function getCheck() {
+        return $this->check;
+    }
+    
+    public function setCheck($check) {
+        $this->check = $check;
     }
 
-    public function setPay($pay) {
-        $this->pay = $pay;
-    }
+    // Getter and setter for transport
     public function getTransport() {
         return $this->transport;
     }
-
+    
     public function setTransport($transport) {
         $this->transport = $transport;
     }
+
+    // Getter and setter for status
+    public function getStatus() {
+        return $this->status;
+    }
+    
+    public function setStatus($status) {
+        $this->status = $status;
+    }
+
+    // Getter and setter for nameReceiver
+    public function getNameReceiver() {
+        return $this->nameReceiver;
+    }
+    
+    public function setNameReceiver($nameReceiver) {
+        $this->nameReceiver = $nameReceiver;
+    }
+
+    // Getter and setter for phoneReceiver
+    public function getPhoneReceiver() {
+        return $this->phoneReceiver;
+    }
+    
+    public function setPhoneReceiver($phoneReceiver) {
+        $this->phoneReceiver = $phoneReceiver;
+    }
 }
-
 ?>
-

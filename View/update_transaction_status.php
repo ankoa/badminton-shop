@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ .'../../Model/ModelTransaction.php';
+require_once __DIR__ .'../../../web_BadmintonStore/Model/Model/ModelTransaction.php';
 
 // Kiểm tra xem yêu cầu là GET và có dữ liệu gửi lên không
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["transactionID"]) && isset($_GET["status"])) {
