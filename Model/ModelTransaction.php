@@ -64,10 +64,11 @@ require_once '..\Model\Entity\Transaction.php';
 
         public function getTransactionByCustomer($ma_kh, $search) {
             try {
-                $query = "SELECT * FROM transaction
+                $query = "SELECT *, DATE_FORMAT(time, '%d/%m/%Y') AS FormatDate FROM transaction
                     WHERE userID = '$ma_kh' 
                     AND transactionID = '$search'
                     AND status = 1
+                    ORDER BY transactionID DESC
                 ";
                 $result = $this->db->select($query);
                 $arrHoaDon = array();
@@ -83,10 +84,10 @@ require_once '..\Model\Entity\Transaction.php';
         
         public function getAllTransactionByCustomer($ma_kh) {
             try {
-                $query = "SELECT * FROM transaction
+                $query = "SELECT *, DATE_FORMAT(time, '%d/%m/%Y') AS FormatDate FROM transaction
                     WHERE userID = '$ma_kh'
                     AND status = 1 
-                ";
+                    ORDER BY transactionID DESC";
                 $result = $this->db->select($query);
                 $arrHoaDon = array();
                 while ($row = mysqli_fetch_assoc($result)) {
@@ -101,8 +102,9 @@ require_once '..\Model\Entity\Transaction.php';
 
         public function getTransactionByPhone($phoneNumber) {
             //$Phonenumber = $this->db->escape_string($Phonenumber);
-            $query = "Select * from transaction where transaction.userID in 
-            (select user.userID from user where phoneNumber = '$phoneNumber')";
+            $query = "SELECT *, , DATE_FORMAT(time, '%d/%m/%Y') AS FormatDate FROM transaction WHERE transaction.userID in 
+            (SELECT user.userID FROM user WHERE phoneNumber = '$phoneNumber')
+            ORDER BY transactionID DESC";
             $result = $this->db->select($query);
             if ($result && $result->num_rows > 0) {
                 // Initialize an array to store transactions
@@ -122,14 +124,29 @@ require_once '..\Model\Entity\Transaction.php';
             }
         }
 
-        public function deleteHoaDon($ma_hd) {
+        public function deleteHoaDon($status,$ma_hd) {
             try {
-                $query = "UPDATE transaction SET status = 0 WHERE transactionID = '$ma_hd'";
+                $query = "UPDATE transaction SET status = $status WHERE transactionID = '$ma_hd'";
                 $result = $this->db->select($query);
                 return $result;
             } catch (Exception $e) {
                 echo 'Error:'. $e->getMessage();
                 return false;
+            }
+        }
+
+        public function getAllDeleteHoaDon() {
+            try {
+                $query = "SELECT *, DATE_FORMAT(time, '%d/%m/%Y') AS FormatDate FROM transaction WHERE status = 0";
+                $result = $this->db->select($query);
+                $arrHoaDon = array();
+                while($row = mysqli_fetch_assoc($result)) {
+                    $arrHoaDon[] = $row;
+                }
+                return $arrHoaDon;
+            } catch (Exception $e) {
+                echo 'Error:'. $e->getMessage();
+                return null;
             }
         }
     

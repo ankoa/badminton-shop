@@ -1,17 +1,65 @@
 window.onload = function() {
-    // renderCustomerOrderDetail();
+    handleSearchByPhone();
+
     const urlParams = new URLSearchParams(window.location.search);
     if (window.location.pathname === '/badminton-shop/Controllers/index.php' && urlParams.get('control') === 'checkDonHang') {
-        AllCustomerOrder();
         filterEndUserOrderStatus();
         handleCustomerOrder();
         handleAllCustomerOrder();
         renderCustomerOrderDetail();
         loadMiniForm();
         handleDeleteTransaction();
+        // handleSearchByPhone();
     }
-    
+    if (window.location.pathname === '/badminton-shop/Controllers/index.php' && urlParams.get('control') === 'DetailOrder') {
+        listDelete();
+        renderReOrder();
+    }
 };
+
+function searchTransactionsByPhone(phoneNumber) {   
+    $.ajax({
+        url: '../Controllers/TransactionController.php',
+        method: 'POST',
+        data: { action: 'findPhone', phoneNumber },
+        dataType: 'JSON',
+        success: data => {
+            let html = ''
+            // //Xử lý kết quả thành công
+            if (data && data.length > 0) {
+                data.forEach((item) => {
+                    html+=`
+                    <tr class="order-item__product-list">
+                    <td class="order-item" data-transaction-id="${item.transactionID}">
+                        <a href="#" class="order-link">${item.transactionID}</a>
+                    </td>
+                    <td>${item.FormatDate}</td>
+                    <td class="order-check" data-transaction-id="${item.check}">${item.check}</td>
+                    <td>${item.transport}</td>
+                    <td>${item.total}</td>
+                    <td class="delete-button"><img class="svg-inline" src="../View/images/delete.png" data-src="../View/images/delete.png"></td>
+                    </tr>
+                    `
+                });      
+            }       
+            $('#showlist').html(html);
+        },
+    })
+}
+
+function handleSearchByPhone(){
+    // Sử dụng hàm khi cần tìm kiếm
+    $('.btn-search').on('click', function() {
+        // Lấy số điện thoại từ trường nhập
+        var TransactionID = $('.tra-cuu').val();
+
+        // Kiểm tra nếu số điện thoại không rỗng
+        if (TransactionID.trim() !== '') {
+            // Gọi hàm searchTransactionsByPhone để tìm kiếm
+            searchTransactionsByPhone(TransactionID);
+        }
+    }) 
+}
 
 function getOrder(id) {
     return new Promise((resolve, reject) => {
@@ -62,7 +110,7 @@ async function AllCustomerOrder() {
                 <td class="order-item" data-transaction-id="${item.transactionID}">
                     <a href="#" class="order-link">${item.transactionID}</a>
                 </td>
-                <td>${item.time}</td>
+                <td>${item.FormatDate}</td>
                 <td class="order-check" data-transaction-id="${item.check}">${item.check}</td>
                 <td>${item.transport}</td>
                 <td>${item.total}</td>
@@ -95,16 +143,17 @@ async function AllCustomerOrder() {
     `)
 }
 
-function filterEndUserOrderStatus() {
+function filterEndUserOrderStatus() {  
     $(document).on('click', '.order-filter__item', function() {
         $(this).siblings().removeClass('active')
         $(this).addClass('active')
         // $("#currentpage").val(1)
-        AllCustomerOrder()
+        AllCustomerOrder();
     })
 }
 
 function handleAllCustomerOrder() {
+    AllCustomerOrder();
     $(document).on('keyup',function() {
         var traCuuValue = $('.tra-cuu').val().trim(); // Lấy giá trị của phần tử .tra-cuu và loại bỏ các khoảng trắng
 
@@ -143,21 +192,17 @@ async function CustomerOrder() {
         orders.forEach((item) => {
             
             olist += `
-                <tr>
-                <td>
-                    <span class="detail">
-                    <a href="../View/user/pages/orderTransaction2_page.php?id=${item.transactionID}" title>${item.transactionID}</a>
-                    </span>
+                <tr class="order-item__product-list">
+                <td class="order-item" data-transaction-id="${item.transactionID}">
+                    <a href="#" class="order-link">${item.transactionID}</a>
                 </td>
-                <td>${item.time}</td>
-                <td>${item.check}</td>
+                <td>${item.FormatDate}</td>
+                <td class="order-check" data-transaction-id="${item.check}">${item.check}</td>
                 <td>${item.transport}</td>
                 <td>${item.total}</td>
-                <td></td>
+                <td class="delete-button"><img class="svg-inline" src="../View/images/delete.png" data-src="../View/images/delete.png"></td>
                 </tr>
-            `
-    
-            
+            `        
         });
     } else {
         olist = '<div class="order-empty"><h3>Chưa có đơn hàng</h3><img src="server/src/assets/images/order-empty.png"></div>'
@@ -177,7 +222,7 @@ function renderCustomerOrderDetail() {
     $(document).on('click', '.order-link', async function() {
         try {
             const orderId = $(this).closest('tr').find('.order-item').data('transaction-id');
-            console.log(orderId);
+            //console.log(orderId);
             const order = await getOrder(orderId);
             // console.log(order);
             const orderDetails = await getOrderTransaction(orderId);
@@ -185,45 +230,12 @@ function renderCustomerOrderDetail() {
             //const address = await getThongTinNhanHang(order.ma_ttnh)
             let html = ''
 
-            // let html = `
-            //     <div class="order-detail_address">
-            //         <h3>Địa chỉ nhận hàng</h3>
-            //         <div class="order-detail__address-info">
-            //             <div class="order-detail__address-info-item">
-            //                 <label>Người nhận:</label>
-            //                 <span>${address.ho_ten}</span>
-            //             </div>
-            //             <div class="order-detail__address-info-item">
-            //                 <label>Số điện thoại:</label>
-            //                 <span>${address.so_dien_thoai}</span>
-            //             </div>
-            //             <div class="order-detail__address-info-item">
-            //                 <label>Ngày đặt hàng:</label>
-            //                 <span>${convertDate(order.ngay_tao)}</span>
-            //             </div>
-            //             <div class="order-detail__address-info-item">
-            //                 <label>Địa chỉ:</label>
-            //                 <span>${address.dia_chi}</span>
-            //             </div>
-            //             ${order.ghi_chu ? `
-            //                 <div class="order-detail__address-info-item">
-            //                     <label>Ghi chú:</label>
-            //                     <span>${order.ghi_chu}</span>
-            //                 </div>
-            //             ` : ''}
-            //         </div>
-            //     </div>
-            //     <div class="order-detail__products">
-            //         <h3>Sản phẩm</h3>
-            //         <div class="order-detail__product-list">
-            // `
-
             orderDetails.forEach((orderDetail, index) => {
-                //console.log(orderDetail)
+                console.log(orderDetail)
                 html += `
                         <div class="order-details">
                             <div class="product-info">
-                                <img src="${orderDetail.url_image}">
+                                <img width="80px" height="80px" src='../View/images/product/${orderDetail.productID}/${orderDetail.color}/${orderDetail.productID}.1.png'>
                                     <div>
                                         <h2>${orderDetail.name}</h2>
                                     </div>
@@ -242,16 +254,29 @@ function renderCustomerOrderDetail() {
             })
 
             $('#order-detail-modal').html(html);
-            // html += '</div></div>'
-
-            // $('#order-detail-modal .modal-title').html(`Chi tiết đơn hàng <b>${order.ma_hd}</b>`)
-            // $('#order-detail-modal .modal-body').html(html)
             $('#order-detail-receive').html(`
-                <div class="mt-4">
-                    <h3 class="font-semibold">Thông tin nhận hàng</h3>
-                    <p><strong>Người nhận:</strong> Nguyễn Văn A</p>
-                    <p><strong>Địa chỉ:</strong> ${order.address}</p>
-                    <p><strong>Số điện thoại:</strong> 0123456789</p>
+                <div class="order-detail_address">
+                    <h3>Địa chỉ nhận hàng</h3>
+                    <div class="order-detail__address-info">
+                        <div class="order-detail__address-info-item">
+                            <label>Người nhận:</label>
+                            <span>${order.name_recieve}</span>
+                        </div>
+                        <div class="order-detail__address-info-item">
+                            <label>Số điện thoại:</label>
+                            <span>${order.phone_recieve}</span>
+                        </div>
+                        <div class="order-detail__address-info-item">
+                            <label>Địa chỉ:</label>
+                            <span>${order.dia_chi}</span>
+                        </div>
+                        ${order.note ? `
+                            <div class="order-detail__address-info-item">
+                                <label>Ghi chú:</label>
+                                <span>${order.note}</span>
+                            </div>
+                        ` : ''}
+                    </div>
                 </div>
                 `)
             //     <div class="order-detail__total">
@@ -300,9 +325,22 @@ function loadMiniForm(){
     $(document).ready(function() {
         $(document).on('click', '.order-link', function(e) {
             e.preventDefault();
-            $('.order-form').show();
-            $('.overlay').show();
-        });
+            var orderId = $(this).closest('tr').find('.order-item').data('transaction-id');
+            // console.log(orderId);
+            // var chk = checkOrderDetails(orderId);
+            // console.log(chk);
+            checkOrderDetails(orderId)
+                .then(function(hasDetails) {
+                    //console.log('Has Details:', hasDetails); // Log kết quả chi tiết đơn hàng
+                    if (hasDetails) {
+                        $('.order-form').show();
+                        $('.overlay').show();
+                    } 
+                    // else {
+                    //     alert('Không có chi tiết đơn hàng cho mã này.');
+                    // }
+                })
+});
     
         $('.close-button').click(function() {
             $('.order-form').hide();
@@ -317,14 +355,14 @@ function loadMiniForm(){
     
 }
 
-function deleteTransaction(id) {
+function deleteTransaction(status,id) {
     return new Promise((resolve, reject) => {
         $.ajax({
             url: '../Controllers/TransactionController.php',
             method: 'POST',
-            data: { action: 'delete', id },
+            data: { action: 'delete', status, id },
             dataType: 'JSON',
-            success: order => resolve(order),
+            success: del => resolve(del),
             error: (xhr, status, error) => reject(error)
         })
     })
@@ -333,16 +371,53 @@ function deleteTransaction(id) {
 function handleDeleteTransaction() {
     $(document).on("click", ".delete-button", function () {
         var id = $(this).closest('tr').find('.order-item').data('transaction-id');
-        console.log(id);
         var tinh_trang = $(this).closest('tr').find('.order-check').data('transaction-id');
-        console.log(tinh_trang);
         if(tinh_trang === 'Chưa xác nhận'){
-            deleteTransaction(id);
+            deleteTransaction(0,id);
             AllCustomerOrder();
         }
         else {
             alert("Không thể xoá");
         }
         
+    })
+}
+
+function listDelete() {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: '../Controllers/TransactionController.php',
+            method: 'POST',
+            data: { action: 'list-delete'},
+            dataType: 'JSON',
+            success: data => {
+                let html = ''
+                if (data && data.length > 0) {
+                    data.forEach((item) => {
+                        html += `
+                            <li class="order-item">
+                                <div class="order-details">
+                                    <div class="order-info">
+                                        <span class="order-id" data-transaction-id="${item.transactionID}">Order #${item.transactionID}</span> - Huỷ ngày ${item.FormatDate}
+                                    </div>
+                                    <button class="order-restore-btn">Đặt lại</button>
+                                </div>
+                                <div class="order-total">Tổng tiền: ${item.total}</div>
+                            </li>
+                            `
+                    });      
+                }       
+                $('#orders-list').html(html);
+            },
+        })
+    })
+}
+
+function renderReOrder(){
+    $(document).on('click', '.order-restore-btn', function() {
+        var id = $(this).closest('.order-details').find('.order-id').data('transaction-id');
+        console.log(id);
+        deleteTransaction(1,id);
+        listDelete();
     })
 }

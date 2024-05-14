@@ -56,8 +56,8 @@
       }
 
       .order-container1 { 
-        width: 700px;
-        max-width: 800px; 
+        width: 1200px;
+        max-width: 1500px; 
         margin: 20px auto; 
         background: white; 
         border-radius: 8px; 
@@ -81,6 +81,8 @@
         justify-content: space-between; 
         align-items: center; 
         margin-bottom: 20px; 
+        padding-bottom: 10px;
+        border-bottom: 1px solid black;
     }
 
     .close-button { 
@@ -106,7 +108,7 @@
     } 
 
     .price-info { 
-        width: auto;
+        width: 200px;
         font-size: 18px;
         font-weight: bold; 
     } 
@@ -116,7 +118,7 @@
     } 
 
     .total-amount { 
-        padding-left: 70%;
+        padding-left: 80%;
         text-align: left; 
         margin-top: 10px; 
         margin-bottom: 25px; 
@@ -134,6 +136,13 @@
     .svg-inline{
         width: 25px;
         height: 25px;
+        margin-top: -5px;
+        margin-right: 2px;
+    }
+
+    .svg-inline2{
+        width: 35px;
+        height: 35px;
         margin-top: -5px;
         margin-right: 2px;
     }
@@ -171,7 +180,7 @@
                     <th>Trạng thái thanh toán</th>
                     <th>Trạng thái vận chuyển</th>
                     <th>Tổng tiền</th>
-                    <th></th>
+                    
                     </tr>
                 </thead>
                 <tbody id="showlist">
@@ -217,7 +226,7 @@
 <div class="order-container1">
     <div class="header">
         <h1>Đặt hàng thành công</h1>
-        <button class="close-button">X</button>
+        <div class="close-button"><img class="svg-inline2" src="../View/images/x-button.png" data-src="../View/images/x-button.png"></div>
     </div>
     <div id="order-detail-modal"></div>
     <div id="order-detail-receive"></div>
