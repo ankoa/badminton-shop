@@ -241,7 +241,7 @@ $total_price_cart = 0;
                         </div>
                     </div>
                     <div class="footer">
-                        <a href="http://localhost/badminton-shop2/Controllers/index.php?control=Cart" class="back-btn">&lt; Quay về giỏ hàng</a>
+                        <a href="http://localhost/badminton-shop/Controllers/index.php?control=Cart" class="back-btn">&lt; Quay về giỏ hàng</a>
                         <button type="submit" class="submit-btn">ĐẶT HÀNG</button>
                     </div>
                 </div>
