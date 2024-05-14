@@ -56,8 +56,8 @@
       }
 
       .order-container1 { 
-        width: 700px;
-        max-width: 800px; 
+        width: 1200px;
+        max-width: 1500px; 
         margin: 20px auto; 
         background: white; 
         border-radius: 8px; 
@@ -81,6 +81,8 @@
         justify-content: space-between; 
         align-items: center; 
         margin-bottom: 20px; 
+        padding-bottom: 10px;
+        border-bottom: 1px solid black;
     }
 
     .close-button { 
@@ -106,7 +108,7 @@
     } 
 
     .price-info { 
-        width: auto;
+        width: 200px;
         font-size: 18px;
         font-weight: bold; 
     } 
@@ -130,6 +132,25 @@
         z-index: 9999; /* Đảm bảo form hiển thị trên cùng */
         display: none;
     }
+
+    .svg-inline{
+        width: 25px;
+        height: 25px;
+        margin-top: -5px;
+        margin-right: 2px;
+    }
+
+    .svg-inline2{
+        width: 35px;
+        height: 35px;
+        margin-top: -5px;
+        margin-right: 2px;
+    }
+
+    .order-item{
+      text-align: center;
+    }
+
     </style>
 </head>
 <body>
@@ -138,9 +159,9 @@
         <main>
         <div class="col-xs-12">
             <h1>Kiểm tra trạng thái đơn hàng</h1>
-            <a class="logout" href="">
+            <a class="logout" href="index.php?control=DetailOrder">
                 <span class="fa fa-sign-out"></span>
-                "Thoát"
+                "Đã huỷ"
             </a>
         </div>
         <form>
@@ -159,6 +180,7 @@
                     <th>Trạng thái thanh toán</th>
                     <th>Trạng thái vận chuyển</th>
                     <th>Tổng tiền</th>
+                    
                     </tr>
                 </thead>
                 <tbody id="showlist">
@@ -204,7 +226,7 @@
 <div class="order-container1">
     <div class="header">
         <h1>Đặt hàng thành công</h1>
-        <button class="close-button">X</button>
+        <div class="close-button"><img class="svg-inline2" src="../View/images/x-button.png" data-src="../View/images/x-button.png"></div>
     </div>
     <div id="order-detail-modal"></div>
     <div id="order-detail-receive"></div>

@@ -240,17 +240,14 @@ function loadNav(productsPerPage, id, brandID) {
 
 
 function loadPerPage() {
-    var productsPerPage = document.getElementById("mySelect").value;
     var id = getIdFromUrl();
 
-    loadPage(1, productsPerPage, id, getBrandIdFromUrl());
-    loadNav(productsPerPage, id, getBrandIdFromUrl());
+    loadPage(1, getProductPerPage(), id, getBrandIdFromUrl());
+    loadNav(getProductPerPage(), id, getBrandIdFromUrl());
 }
 
 function loadPerPageFilter() {
-    var productsPerPage = document.getElementById("mySelect").value;
-
-    loadPageFilter(1, productsPerPage);
+    loadPageFilter(1, getProductPerPage());
     loadNavFilter();
 }
 
@@ -443,6 +440,8 @@ function sortby(key) {
     loadNavFilter();
     loadPageFilter(1, getProductPerPage());
 
+    var desiredValue = getProductPerPage();
+
     document.getElementById("page-config").innerHTML = '<label for="mySelect">Item per page: </label>' +
         '<select name="mySelect" id="mySelect" onchange="loadPerPageFilter()">' +
         '<option value="4">4</option>' +
@@ -450,6 +449,15 @@ function sortby(key) {
         '<option value="12">12</option>' +
         '<option value="16">16</option>' +
         '</select>';
+    var selectElement = document.getElementById("mySelect");
+    var options = selectElement.options;
+
+    for (var i = 0; i < options.length; i++) {
+        if (options[i].value == desiredValue) {
+            options[i].selected = true;
+            break;
+        }
+    }
     if (key == 'alpha-asc') {
         document.getElementById('keysort').innerHTML = 'A → Z';
     } else if (key == 'alpha-desc') {
@@ -567,13 +575,25 @@ $(document).ready(function () {
                         loadPageFilter(1, getProductPerPage());
 
                         //--------------------------//
+                        var desiredValue = getProductPerPage();
                         document.getElementById("page-config").innerHTML = '<label for="mySelect">Item per page: </label>' +
                             '<select name="mySelect" id="mySelect" onchange="loadPerPageFilter()">' +
                             '<option value="4">4</option>' +
-                            '<option value="8" selected>8</option>' +
+                            '<option value="8">8</option>' +
                             '<option value="12">12</option>' +
                             '<option value="16">16</option>' +
                             '</select>';
+
+                        
+                        var selectElement = document.getElementById("mySelect");
+                        var options = selectElement.options;
+
+                        for (var i = 0; i < options.length; i++) {
+                            if (options[i].value == desiredValue) {
+                                options[i].selected = true;
+                                break;
+                            }
+                        }
                     }
                 }
             });

@@ -1,64 +1,64 @@
-<script> var ID = "<?php 
-    if(isset($_GET['id'])) {
-        $orderId = $_GET['id'];
-        echo $orderId;
-    } ?>"; 
-</script>
 <style>
-    .order-container { 
-        max-width: 800px; 
-        margin: 20px auto; 
-        background: white; 
-        border-radius: 8px; 
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
-        padding: 20px; 
-    }
-    
-    .header { 
-        display: flex; 
-        justify-content: space-between; 
-        align-items: center; 
-        margin-bottom: 20px; 
+    .orders-container {
+        width: 100%;
+        height: 100%;
+        display: grid;
+        justify-content: center; /* căn giữa theo chiều ngang */
+        align-items: center; /* căn giữa theo chiều dọc */
+        padding: 50px 25px;
     }
 
-    .close-button { 
-        background: none; 
-        border: none; 
-        font-size: 24px; 
-        cursor: pointer; 
-    } 
+    .orders-title {
+        padding: 30px 45px;
+        text-align: center;
+    }
+
+    .orders-list {
+        width: 500px;
+    }
+
+    .order-item {
+        display: flex;
+        flex-direction: column; /* Xếp chồng các phần tử dọc theo nhau */
+        border-bottom: 1px solid black;
+        margin-bottom: 20px;
+    }
+
+    .order-info {       
+        margin-top: -15px;
+    }
+
+    .order-item:last-child {
+        border-bottom: none;
+    }
 
     .order-details {
-        display: flex; 
-        justify-content: space-between; 
-        align-items: center; 
-    } 
-
-    .product-info { 
         display: flex;
-        align-items: center; 
-    } 
-
-    .product-info img { 
-        margin-right: 15px; 
-    } 
-
-    .price-info { 
-        font-size: 18px;
-        font-weight: bold; 
-    } 
-
-    .total { 
-        text-align: right; 
-        margin-top: 20px; 
+        justify-content: space-between; /* căn giữa theo chiều ngang và để các phần tử cách xa nhau */
+        align-items: center; /* căn giữa theo chiều dọc */
     }
+
+    .order-id {
+        font-weight: bold;
+    }
+
+    .order-total {
+        display: inline-block;
+        margin-bottom: 20px;
+        margin-top: -15px;
+    }
+
+    .order-restore-btn {
+        width: 70px;
+        height: 50px; /* Cao tự động theo nội dung */
+        align-self: flex-start; /* căn nút "Restore" lên trên */
+        padding: 0;
+    }
+
 </style>
 
-
-<div class="order-container">
-    <div class="header">
-        <h1>Đặt hàng thành công</h1>
-        <button class="close-button">X</button>
+<div class="orders-container">
+  <h2 class="orders-title">Cancelled Orders</h2>
+    <div class="orders-list" id="orders-list">
     </div>
-    <div id="order-detail-modal"></div>
 </div>

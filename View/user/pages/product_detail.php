@@ -191,7 +191,7 @@ if ($catalog->getName() == "Racket") {
                         <span class="old-price">
                             Giá niêm yết:
                             <del class="price product-price-old">
-                                <?php echo number_format($product->getDiscount(), 0, ',', '.'); ?> ₫
+                                <?php echo number_format($product->getFakePrice(), 0, ',', '.'); ?> ₫
                             </del>
                         </span>
                     </div>
@@ -429,7 +429,7 @@ if ($catalog->getName() == "Racket") {
     <script>
         var myArray = <?php echo json_encode($result) ?>;
         var divElement = document.getElementById("image-list-data");
-        divElement.dataset.array = JSON.stringify(myArray);
+        divElement.dataset.array = JSON.stringify(myArray).toLowerCase();
     </script>
 </body>
 
