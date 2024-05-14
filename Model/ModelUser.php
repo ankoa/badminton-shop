@@ -8,7 +8,7 @@ class ModelUser {
         $this->db = new Database();
     }
     public function getAllUsers() {
-        $query = "SELECT * FROM user WHERE status != 0";
+        $query = "SELECT * FROM user ";
         $result = $this->db->select($query);
         if ($result) {
             $users = [];
@@ -164,7 +164,11 @@ class ModelUser {
             return false;
         }
     }
-
+    public function changeUserStatus($userID, $newStatus) {
+        // Update the status of the user in the database
+        $query = "UPDATE user SET status = '$newStatus' WHERE userID = '$userID'";
+        return $this->db->update($query);
+    }
 }
 
 ?>
