@@ -1,431 +1,525 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="../../web_BadmintonStore/View/bootstrap-5.3.2-dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="../View/css/Badminton_Admin.css">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <title>Admin</title>
     <style>
-/* Tùy chỉnh kích thước của .tab-container */
-.tab-container {
-            margin-top: 20px; /* Khoảng cách từ phía trên */
-            max-width: 1000px; /* Chiều rộng tối đa */
-            margin-right: auto; /* Căn giữa */
+        /* Tùy chỉnh kích thước của .tab-container */
+        .tab-container {
+            margin-top: 20px;
+            /* Khoảng cách từ phía trên */
+            max-width: 1000px;
+            /* Chiều rộng tối đa */
+            margin-right: auto;
+            /* Căn giữa */
             width: 1000px;
         }
 
         /* Tùy chỉnh kích thước của tab navigation và nội dung tab */
         .nav-tabs .nav-item .nav-link {
-            padding: 12px 20px; /* Kích thước padding của tab */
-            font-size: 18px; /* Kích thước chữ của tab */
+            padding: 12px 20px;
+            /* Kích thước padding của tab */
+            font-size: 18px;
+            /* Kích thước chữ của tab */
         }
 
         .tab-content {
-            padding: 20px; /* Kích thước padding của nội dung tab */
-            font-size: 16px; /* Kích thước chữ của nội dung tab */
+            padding: 20px;
+            /* Kích thước padding của nội dung tab */
+            font-size: 16px;
+            /* Kích thước chữ của nội dung tab */
         }
 
-</style>
-<?php
-require_once __DIR__ . '../../Model/ModelTransaction.php';
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $startDate = $_POST['startDate'];
-    $endDate = $_POST['endDate'];
-
-    // Tạo một đối tượng ModelTransaction và gọi hàm displayTotalSales
-    $modelTransaction = new ModelTransaction();
-    $modelTransaction->displayTotalSales($startDate, $endDate);
-}
-?>
-
-<!-- Script JavaScript -->
-<script>
-    function openPermissionForm() {
-        var form = document.getElementById('permissionForm');
-        if (form.style.display === 'none' || form.style.display === '') {
-            form.style.display = 'block';
-        } else {
-            form.style.display = 'none';
+        .image-container {
+            position: relative;
+            display: inline-block;
+            margin: 10px;
         }
-    }
 
-    function addPermissions() {
-        // Xử lý thêm quyền vào nhóm quyền tương ứng
-        // Sử dụng AJAX để gửi dữ liệu form lên server và xử lý dữ liệu ở phía server
-        return false; // Để ngăn form submit mặc định
-    }
-
-    function editXuLy(roleID) {
-        var form = document.getElementById('permissionForm');
-        if (form.style.display === 'none' || form.style.display === '') {
-            form.style.display = 'block';
-            form.style.zIndex = 1000;
-        } else {
-            form.style.display = 'none';
+        .image-container img {
+            max-width: 100px;
+            max-height: 100px;
+            display: block;
         }
+
+        .image-container .delete-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(255, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        /* CSS để tạo hiệu ứng cho popup modal */
+        .modal-popup {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            padding-top: 50px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        .modal-content-popup {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .close {
+            color: white;
+            position: absolute;
+            top: 10px;
+            right: 25px;
+            font-size: 35px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #999;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+    <?php
+    require_once __DIR__ . '../../Model/ModelTransaction.php';
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $startDate = $_POST['startDate'];
+        $endDate = $_POST['endDate'];
+
+        // Tạo một đối tượng ModelTransaction và gọi hàm displayTotalSales
+        $modelTransaction = new ModelTransaction();
+        $modelTransaction->displayTotalSales($startDate, $endDate);
     }
-</script>
+    ?>
+
+    <!-- Script JavaScript -->
     <script>
-      function showContent(contentId) {
-     
-     var contentSections = document.getElementsByClassName('content-section');
-     for (var i = 0; i < contentSections.length; i++) {
-         contentSections[i].style.display = 'none';
-     }
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const priceInput = document.getElementById('price');
+            const discountInput = document.getElementById('discount');
 
-  
-     var selectedContent = document.getElementById(contentId);
-     if (selectedContent) 
-         selectedContent.style.display = 'block';}
-
- // Function to save the current content section to localStorage
-function saveCurrentContent(contentId) {
-    localStorage.setItem('currentContent', contentId);
-}
-
-// Function to show the content section based on localStorage data
-function restoreContent() {
-    var currentContent = localStorage.getItem('currentContent');
-    if (currentContent) {
-        var contentSections = document.getElementsByClassName('content-section');
-        for (var i = 0; i < contentSections.length; i++) {
-            contentSections[i].style.display = 'none';
-        }
-        var selectedContent = document.getElementById(currentContent);
-        if (selectedContent) {
-            selectedContent.style.display = 'block';
-        }
-    }
-}
-
-// Call restoreContent() when the page is loaded to restore the previous content section
-window.onload = restoreContent;
-
-        </script>
-
-<script>
- // JavaScript để hiển thị và ẩn popup
- function showPopup() {
-        var popup = document.getElementById('popup');
-        popup.style.display = 'block';
-    }
-
-    function closePopup() {
-        var popup = document.getElementById('popup');
-        popup.style.display = 'none';
-    }
-
-    // Thêm sự kiện click cho nút "Chi tiết"
-    function showTransactionDetails(transactionID) {
-        // Tạo yêu cầu AJAX để lấy chi tiết hóa đơn từ máy chủ
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', '../View/ViewDetail.php?transactionID=' + transactionID, true);
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                // Hiển thị nội dung chi tiết hóa đơn trong popup
-                document.getElementById('popup-details').innerHTML = this.responseText;
-                // Hiển thị popup
-                showPopup();
+            function formatNumber(num) {
+                return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
             }
-        };
-        xhr.send();
-    
-}
-function changeTransactionStatus(transactionID, currentStatus) {
-    // Xác định trạng thái mới dựa trên trạng thái hiện tại
-    var newStatus = '';
-    if (currentStatus === 'Chờ duyệt') {
-        newStatus = 'Đã duyệt';
-    } else {
-        newStatus = 'Chờ duyệt';
-    }
 
-    // Tạo một yêu cầu AJAX để cập nhật trạng thái
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', '../View/update_transaction_status.php?transactionID=' + encodeURIComponent(transactionID) + '&status=' + encodeURIComponent(newStatus), true);
+            function handleInput(event) {
+                let value = event.target.value.replace(/\./g, ''); // Remove existing dots
+                if (!isNaN(value) && value !== "") {
+                    event.target.value = formatNumber(value);
+                }
+            }
 
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            var response = xhr.responseText.trim();
-            console.log(response);
-            if (response === 'success') {
-                alert('Cập nhật trạng thái thành công!');
-                window.location.reload();
+            priceInput.addEventListener('input', handleInput);
+
+            priceInput.value = formatNumber(priceInput.value);
+            discountInput.addEventListener('input', handleInput);
+
+            discountInput.value = formatNumber(priceInput.value);
+        });
+
+        function openPermissionForm() {
+            var form = document.getElementById('permissionForm');
+            if (form.style.display === 'none' || form.style.display === '') {
+                form.style.display = 'block';
             } else {
-                alert('Cập nhật trạng thái thất bại!');
+                form.style.display = 'none';
             }
         }
-    };
 
-    // Gửi yêu cầu
-    xhr.send();
-}
+        function addPermissions() {
+            // Xử lý thêm quyền vào nhóm quyền tương ứng
+            // Sử dụng AJAX để gửi dữ liệu form lên server và xử lý dữ liệu ở phía server
+            return false; // Để ngăn form submit mặc định
+        }
 
-
-
-var myChart; // Khai báo biến myChart ở ngoài hàm
-
-function thongKe(event) {
-    event.preventDefault(); // Prevent the default form behavior
-
-    var startDate = document.getElementById('datestart2').value;
-    var endDate = document.getElementById('dateend2').value;
-
-    // Create an AJAX request to your PHP script
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', '../View/doanhso.php?startDate=' + encodeURIComponent(startDate) + '&endDate=' + encodeURIComponent(endDate), true);
-
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            console.log
-            var salesData = JSON.parse(this.responseText);
-
-            // Get the canvas element where the chart will be drawn
-            var ctx = document.getElementById('salesChart').getContext('2d');
-             // Destroy the old charts if they exist
-             if (myChart) {
-                myChart.destroy();
+        function editXuLy(roleID) {
+            var form = document.getElementById('permissionForm');
+            if (form.style.display === 'none' || form.style.display === '') {
+                form.style.display = 'block';
+                form.style.zIndex = 1000;
+            } else {
+                form.style.display = 'none';
             }
-            // Define the chart data and options
-            var chartData = {
-                labels: salesData.labels,
-                datasets: [{
-                    label: 'Doanh số thu được',
-                    data: salesData.sales,
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1
-                }]
-            };
+        }
+    </script>
+    <script>
+        function showContent(contentId) {
 
-            var chartOptions = {
-                scales: {
-                    y: {
-                        beginAtZero: true
+            var contentSections = document.getElementsByClassName('content-section');
+            for (var i = 0; i < contentSections.length; i++) {
+                contentSections[i].style.display = 'none';
+            }
+
+
+            var selectedContent = document.getElementById(contentId);
+            if (selectedContent)
+                selectedContent.style.display = 'block';
+        }
+
+        // Function to save the current content section to localStorage
+        function saveCurrentContent(contentId) {
+            localStorage.setItem('currentContent', contentId);
+        }
+
+        // Function to show the content section based on localStorage data
+        function restoreContent() {
+            var currentContent = localStorage.getItem('currentContent');
+            if (currentContent) {
+                var contentSections = document.getElementsByClassName('content-section');
+                for (var i = 0; i < contentSections.length; i++) {
+                    contentSections[i].style.display = 'none';
+                }
+                var selectedContent = document.getElementById(currentContent);
+                if (selectedContent) {
+                    selectedContent.style.display = 'block';
+                }
+            }
+        }
+
+        // Call restoreContent() when the page is loaded to restore the previous content section
+        window.onload = restoreContent;
+    </script>
+
+    <script>
+        // JavaScript để hiển thị và ẩn popup
+        function showPopup() {
+            var popup = document.getElementById('popup');
+            popup.style.display = 'block';
+        }
+
+        function closePopup() {
+            var popup = document.getElementById('popup');
+            popup.style.display = 'none';
+        }
+
+        // Thêm sự kiện click cho nút "Chi tiết"
+        function showTransactionDetails(transactionID) {
+            // Tạo yêu cầu AJAX để lấy chi tiết hóa đơn từ máy chủ
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '../View/ViewDetail.php?transactionID=' + transactionID, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    // Hiển thị nội dung chi tiết hóa đơn trong popup
+                    document.getElementById('popup-details').innerHTML = this.responseText;
+                    // Hiển thị popup
+                    showPopup();
+                }
+            };
+            xhr.send();
+
+        }
+
+        function changeTransactionStatus(transactionID, currentStatus) {
+            // Xác định trạng thái mới dựa trên trạng thái hiện tại
+            var newStatus = '';
+            if (currentStatus === 'Chờ duyệt') {
+                newStatus = 'Đã duyệt';
+            } else {
+                newStatus = 'Chờ duyệt';
+            }
+
+            // Tạo một yêu cầu AJAX để cập nhật trạng thái
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '../View/update_transaction_status.php?transactionID=' + encodeURIComponent(transactionID) + '&status=' + encodeURIComponent(newStatus), true);
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var response = xhr.responseText.trim();
+                    console.log(response);
+                    if (response === 'success') {
+                        alert('Cập nhật trạng thái thành công!');
+                        window.location.reload();
+                    } else {
+                        alert('Cập nhật trạng thái thất bại!');
                     }
                 }
             };
 
-            // Create the chart using the existing myChart variable
-            myChart = new Chart(ctx, {
-                type: 'bar',
-                data: chartData,
-                options: chartOptions
-            });
-
-            // Get the table element
-            var table = document.getElementById('quanlydoanhso');
-
-            // Clear the table
-            while (table.rows.length > 1) {
-                table.deleteRow(1);
-            }
-
-            // Populate the table with sales data
-            for (var i = 0; i < salesData.labels.length; i++) {
-                var row = table.insertRow(-1); // Insert a new row at the end of the table
-                var cell1 = row.insertCell(0); // Insert a new cell in the row
-                var cell2 = row.insertCell(1); // Insert a new cell in the row
-            
-                cell1.innerHTML = salesData.labels[i];
-                cell2.innerHTML = salesData.sales[i];
-            }
-
-            // Calculate total sales
-            var totalSales = salesData.sales.reduce((a, b) => a + b, 0);
-
-            // Add a new row to display total sales
-            var totalRow = table.insertRow(-1);
-            var totalCell1 = totalRow.insertCell(0);
-            var totalCell2 = totalRow.insertCell(1);
-           
-            totalCell1.innerHTML = "Tổng";
-            totalCell2.innerHTML = totalSales;
+            // Gửi yêu cầu
+            xhr.send();
         }
-    };
 
-    // Send the request
-    xhr.send();
-}
 
-function thongKeByBrand(event) {
-    event.preventDefault(); // Prevent the default form behavior
 
-    var startDate = document.getElementById('datestart2').value;
-        var endDate = document.getElementById('dateend2').value;
+        var myChart; // Khai báo biến myChart ở ngoài hàm
 
-        // Create an AJAX request to your new PHP script
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', '../View/doanhsotheohang.php?startDate=' + encodeURIComponent(startDate) + '&endDate=' + encodeURIComponent(endDate), true);
+        function thongKe(event) {
+            event.preventDefault(); // Prevent the default form behavior
 
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                var salesData = JSON.parse(this.responseText);
+            var startDate = document.getElementById('datestart2').value;
+            var endDate = document.getElementById('dateend2').value;
 
-                // Get the canvas element where the chart will be drawn
-                var ctx = document.getElementById('salesChart').getContext('2d');
-                // Destroy the old chart if they exist
-                if (myChart) {
-                    myChart.destroy();
-                }
+            // Create an AJAX request to your PHP script
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '../View/doanhso.php?startDate=' + encodeURIComponent(startDate) + '&endDate=' + encodeURIComponent(endDate), true);
 
-                // Check if there is no sales data
-                if (salesData.labels.length === 0) {
-                alert('Không có doanh thu để hiển thị');
-                    return;
-                } else {
-    
-                }
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    console.log
+                    var salesData = JSON.parse(this.responseText);
 
-                // Define the chart data and options
-                var chartData = {
-                    labels: salesData.labels, // This will now be brand IDs
-                    datasets: [{
-                        label: 'Tổng doanh số',
-                        data: salesData.totalSales, // This will now be total sales by brand
-                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        borderWidth: 1
-                    }]
-                };
+                    // Get the canvas element where the chart will be drawn
+                    var ctx = document.getElementById('salesChart').getContext('2d');
+                    // Destroy the old charts if they exist
+                    if (myChart) {
+                        myChart.destroy();
+                    }
+                    // Define the chart data and options
+                    var chartData = {
+                        labels: salesData.labels,
+                        datasets: [{
+                            label: 'Doanh số thu được',
+                            data: salesData.sales,
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 1
+                        }]
+                    };
 
-                var chartOptions = {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
+                    var chartOptions = {
+                        scales: {
+                            y: {
                                 beginAtZero: true
                             }
-                        }]
+                        }
+                    };
+
+                    // Create the chart using the existing myChart variable
+                    myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: chartData,
+                        options: chartOptions
+                    });
+
+                    // Get the table element
+                    var table = document.getElementById('quanlydoanhso');
+
+                    // Clear the table
+                    while (table.rows.length > 1) {
+                        table.deleteRow(1);
                     }
-                };
 
-                // Create the chart using the existing myChart variable
-                myChart = new Chart(ctx, {
-                    type: 'bar', // Change this to 'bar' to better represent sales by brand
-                    data: chartData,
-                    options: chartOptions
-                });
+                    // Populate the table with sales data
+                    for (var i = 0; i < salesData.labels.length; i++) {
+                        var row = table.insertRow(-1); // Insert a new row at the end of the table
+                        var cell1 = row.insertCell(0); // Insert a new cell in the row
+                        var cell2 = row.insertCell(1); // Insert a new cell in the row
 
-                // Get the table element
-                var table = document.getElementById('quanlydoanhso');
+                        cell1.innerHTML = salesData.labels[i];
+                        cell2.innerHTML = salesData.sales[i];
+                    }
 
-                // Clear the table
-                while (table.rows.length > 1) {
-                    table.deleteRow(1);
+                    // Calculate total sales
+                    var totalSales = salesData.sales.reduce((a, b) => a + b, 0);
+
+                    // Add a new row to display total sales
+                    var totalRow = table.insertRow(-1);
+                    var totalCell1 = totalRow.insertCell(0);
+                    var totalCell2 = totalRow.insertCell(1);
+
+                    totalCell1.innerHTML = "Tổng";
+                    totalCell2.innerHTML = totalSales;
                 }
+            };
 
-                // Populate the table with sales data
-                for (var i = 0; i < salesData.labels.length; i++) {
-                    var row = table.insertRow(-1); // Insert a new row at the end of the table
-                    var cell1 = row.insertCell(0); // Insert a new cell in the row
-                    var cell2 = row.insertCell(1); // Insert a new cell in the row
-                    cell1.innerHTML = salesData.labels[i]; // This will now be brand ID
-                    cell2.innerHTML = salesData.totalSales[i]; // This will now be total sales for the brand
-                }
-            }
-        };
-
-        // Send the request
-        xhr.send();
-    }
-
-
-
-    </script>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script>
-function logout(event) {
-    event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
-
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 200) {
-                // Xử lý phản hồi từ server
-                var response = JSON.parse(xhr.responseText);
-                if (response.status === 1) {
-                    // Đăng xuất thành công, chuyển hướng người dùng
-                    window.location.href = 'index.php'; 
-                } else {
-                    alert('Đăng xuất không thành công!');
-                }
-            } else {
-                alert('Đã có lỗi xảy ra. Vui lòng thử lại sau.');
-            }
+            // Send the request
+            xhr.send();
         }
-    };
-    xhr.open('GET', 'Logout_admin.php', true); // Tạo một file logout.php để xử lý đăng xuất
-    xhr.send();
-}
 
-</script>
-    </head>
-    <body>
-        <div>
+        function thongKeByBrand(event) {
+            event.preventDefault(); // Prevent the default form behavior
+
+            var startDate = document.getElementById('datestart2').value;
+            var endDate = document.getElementById('dateend2').value;
+
+            // Create an AJAX request to your new PHP script
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '../View/doanhsotheohang.php?startDate=' + encodeURIComponent(startDate) + '&endDate=' + encodeURIComponent(endDate), true);
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var salesData = JSON.parse(this.responseText);
+
+                    // Get the canvas element where the chart will be drawn
+                    var ctx = document.getElementById('salesChart').getContext('2d');
+                    // Destroy the old chart if they exist
+                    if (myChart) {
+                        myChart.destroy();
+                    }
+
+                    // Check if there is no sales data
+                    if (salesData.labels.length === 0) {
+                        alert('Không có doanh thu để hiển thị');
+                        return;
+                    } else {
+
+                    }
+
+                    // Define the chart data and options
+                    var chartData = {
+                        labels: salesData.labels, // This will now be brand IDs
+                        datasets: [{
+                            label: 'Tổng doanh số',
+                            data: salesData.totalSales, // This will now be total sales by brand
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    };
+
+                    var chartOptions = {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    };
+
+                    // Create the chart using the existing myChart variable
+                    myChart = new Chart(ctx, {
+                        type: 'bar', // Change this to 'bar' to better represent sales by brand
+                        data: chartData,
+                        options: chartOptions
+                    });
+
+                    // Get the table element
+                    var table = document.getElementById('quanlydoanhso');
+
+                    // Clear the table
+                    while (table.rows.length > 1) {
+                        table.deleteRow(1);
+                    }
+
+                    // Populate the table with sales data
+                    for (var i = 0; i < salesData.labels.length; i++) {
+                        var row = table.insertRow(-1); // Insert a new row at the end of the table
+                        var cell1 = row.insertCell(0); // Insert a new cell in the row
+                        var cell2 = row.insertCell(1); // Insert a new cell in the row
+                        cell1.innerHTML = salesData.labels[i]; // This will now be brand ID
+                        cell2.innerHTML = salesData.totalSales[i]; // This will now be total sales for the brand
+                    }
+                }
+            };
+
+            // Send the request
+            xhr.send();
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        function logout(event) {
+            event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
+
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        // Xử lý phản hồi từ server
+                        var response = JSON.parse(xhr.responseText);
+                        if (response.status === 1) {
+                            // Đăng xuất thành công, chuyển hướng người dùng
+                            window.location.href = 'index.php';
+                        } else {
+                            alert('Đăng xuất không thành công!');
+                        }
+                    } else {
+                        alert('Đã có lỗi xảy ra. Vui lòng thử lại sau.');
+                    }
+                }
+            };
+            xhr.open('GET', 'Logout_admin.php', true); // Tạo một file logout.php để xử lý đăng xuất
+            xhr.send();
+        }
+    </script>
+</head>
+
+<body>
+    <div>
         <div class="top_header">
-        
+
         </div>
-        </div>
-        
-        <div id="menu">
+    </div>
+
+    <div id="menu">
         <ul>
-                   <li class="icon" ><i class="fa-solid fa-house"></i><a href="#" onclick="saveCurrentContent('home-content'); showContent('home-content')">Trang chủ </a></li>
-                   <li class="icon" id="phanquyen"><i class="fa-solid fa-people-roof"></i><a href="#" onclick="showContent('phanquyen-content')">Phân quyền</a></li>
+            <li class="icon"><i class="fa-solid fa-house"></i><a href="#" onclick="saveCurrentContent('home-content'); showContent('home-content')">Trang chủ </a></li>
+            <li class="icon" id="phanquyen"><i class="fa-solid fa-people-roof"></i><a href="#" onclick="showContent('phanquyen-content')">Phân quyền</a></li>
 
-                    <li class="icon" id="taikhoan"><i class="fa-solid fa-user"></i><a href="#" onclick="saveCurrentContent('taikhoan-content');showContent('taikhoan-content')">Quản lý tài khoản</a></li>
-                    <li class="icon" id="sanpham"><i class="fa-solid fa-laptop"></i><a href="#" onclick="saveCurrentContent('sanpham-content');showContent('sanpham-content')">Quản lý sản phẩm</a></li>
-                    <li class="icon" id="loaisanpham"><i class="fa-solid fa-laptop"></i><a href="#" onclick="saveCurrentContent('loaisanpham-content');showContent('loaisanpham-content')">Quản lý loại sản phẩm</a></li>
-                    <li class="icon" id="hoadon"><i class="fa-solid fa-receipt"></i><a href="#" onclick="saveCurrentContent('hoadon-content');showContent('hoadon-content')">Quản lý hóa đơn</a></li>
-                    <li class="icon" id="doanhso"><i class="fa-solid fa-chart-simple"></i><a href="#" onclick="saveCurrentContent('doanhso-content');showContent('doanhso-content')">Doanh số</a></li>
-                    <li class="icon" id="dangxuat"><i class="fa-solid fa-right-from-bracket"></i><a href="#" onclick="logout(event)">Đăng xuất</a></li>                    
-                </ul>
-        </div>
-        <div id="home-content" class="content-section"> 
-                <div class="selling-products">
-                    <h1 class="text-center headerad">QUẢN LÝ CỬA HÀNG CẦU LÔNG</h1>
-                    <div class="item-selling-products" id="item-selling-products">
-                
+            <li class="icon" id="taikhoan"><i class="fa-solid fa-user"></i><a href="#" onclick="saveCurrentContent('taikhoan-content');showContent('taikhoan-content')">Quản lý tài khoản</a></li>
+            <li class="icon" id="sanpham"><i class="fa-solid fa-laptop"></i><a href="#" onclick="saveCurrentContent('sanpham-content');showContent('sanpham-content')">Quản lý sản phẩm</a></li>
+            <li class="icon" id="loaisanpham"><i class="fa-solid fa-laptop"></i><a href="#" onclick="saveCurrentContent('loaisanpham-content');showContent('loaisanpham-content')">Quản lý loại sản phẩm</a></li>
+            <li class="icon" id="hoadon"><i class="fa-solid fa-receipt"></i><a href="#" onclick="saveCurrentContent('hoadon-content');showContent('hoadon-content')">Quản lý hóa đơn</a></li>
+            <li class="icon" id="doanhso"><i class="fa-solid fa-chart-simple"></i><a href="#" onclick="saveCurrentContent('doanhso-content');showContent('doanhso-content')">Doanh số</a></li>
+            <li class="icon" id="dangxuat"><i class="fa-solid fa-right-from-bracket"></i><a href="#" onclick="logout(event)">Đăng xuất</a></li>
+        </ul>
+    </div>
+    <div id="home-content" class="content-section">
+        <div class="selling-products">
+            <h1 class="text-center headerad">QUẢN LÝ CỬA HÀNG CẦU LÔNG</h1>
+            <div class="item-selling-products" id="item-selling-products">
 
-                
-                        </div>
-                </div>   
+
+
             </div>
-            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-<!-- Quản lý nhóm quyền -->
-<div id="phanquyen-content" class="content-section">
-    <h1 class="headerad">PHÂN QUYỀN</h1>
-    <div class="tab-container">
-        <div class="row">
-            <div class="col-md-15 offset-md-2">
-                <ul class="nav nav-tabs">
-                    <li class="nav-item">
-                        <a class="nav-link active" onclick="openTab('tab1')" style="cursor: pointer;">Vai trò</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" onclick="openTab('tab2')" style="cursor: pointer;">Quyền</a>
-                    </li>
-                </ul>
+    <!-- Quản lý nhóm quyền -->
+    <div id="phanquyen-content" class="content-section">
+        <h1 class="headerad">PHÂN QUYỀN</h1>
+        <div class="tab-container">
+            <div class="row">
+                <div class="col-md-15 offset-md-2">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" onclick="openTab('tab1')" style="cursor: pointer;">Vai trò</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" onclick="openTab('tab2')" style="cursor: pointer;">Quyền</a>
+                        </li>
+                    </ul>
 
-                <div class="tab-content mt-3">
-                    <div id="tab1" class="tab-pane active">
-                        <?php include('../View/user/pages/rolepage.php'); ?>
-                    </div>
-                    <div id="tab2" class="tab-pane" style="display: none;">
-                        <?php include('../View/user/pages/grouprole.php'); ?>
+                    <div class="tab-content mt-3">
+                        <div id="tab1" class="tab-pane active">
+                            <?php include('../View/user/pages/rolepage.php'); ?>
+                        </div>
+                        <div id="tab2" class="tab-pane" style="display: none;">
+                            <?php include('../View/user/pages/grouprole.php'); ?>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>   
-    </div>  
-</div>
+        </div>
+    </div>
 
 
 
@@ -433,12 +527,12 @@ function logout(event) {
         <div class="headerad">Quản lý tài khoản</div>
         <?php
 
-    require_once __DIR__ . '../../Model/ModelUser.php'; 
+        require_once __DIR__ . '../../Model/ModelUser.php';
 
-    $modelUser = new ModelUser();
+        $modelUser = new ModelUser();
 
-    // Get all users
-    $users = $modelUser->getAllUsers();
+        // Get all users
+        $users = $modelUser->getAllUsers();
 
 
         // Check if there are any users
@@ -482,19 +576,19 @@ function logout(event) {
 
 
 
-    ?>
+        ?>
     </div>
-          <div id="loaisanpham-content" class="content-section">
-                <div class="headerad"> QUẢN LÝ LOẠI SẢN PHẨM</div>
-        
-    <?php
-    require_once __DIR__ . '/../Model/ModelBrand.php';
+    <div id="loaisanpham-content" class="content-section">
+        <div class="headerad"> QUẢN LÝ LOẠI SẢN PHẨM</div>
 
-    $modelBrand = new ModelBrand();
+        <?php
+        require_once __DIR__ . '/../Model/ModelBrand.php';
 
-    $brands = $modelBrand->getAllBrands();
-    if ($brands) {
-        echo "<table border='1'>
+        $modelBrand = new ModelBrand();
+
+        $brands = $modelBrand->getAllBrands();
+        if ($brands) {
+            echo "<table border='1'>
                 <tr>
                     <th>Brand ID</th>
                     <th>Name</th>
@@ -502,9 +596,9 @@ function logout(event) {
                     <th>Status</th>
                     <th>Action</th>
                 </tr>";
-        foreach ($brands as $brand) {
-            // Assuming $modelBrand->getAllBrands() returns an array of objects of type Brand
-            echo "<tr>
+            foreach ($brands as $brand) {
+                // Assuming $modelBrand->getAllBrands() returns an array of objects of type Brand
+                echo "<tr>
                     <td>" . $brand->getBrandID() . "</td>
                     <td>" . $brand->getName() . "</td>
                     <td>" . $brand->getDescription() . "</td>
@@ -515,115 +609,117 @@ function logout(event) {
                     <button type='submit' name='delete_brand'>Ngừng kinh doanh</button>
                     </td>
                 </tr>";
+            }
+            echo "</table>";
         }
-        echo "</table>";
-    }
-    ?>
-            <?php
-    require_once __DIR__ . '/../Model/ModelBrand.php';
+        ?>
+        <?php
+        require_once __DIR__ . '/../Model/ModelBrand.php';
 
-    // Function to add a new brand
-    function addBrand($name, $description, $status) {
-        $modelBrand = new ModelBrand();
-        return $modelBrand->addBrand($name, $description, $status);
-    }
-
-    
-    // Check if the form is submitted
-    if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['add_brand']) && isset($_GET['productBrand']) && isset($_GET['motatxt'])) {
-        $name = $_GET['productBrand'];
-        $description = $_GET['motatxt'];
-        $status = '1';
-        
-        // Call the function to add the brand
-        $result = addBrand($name, $description, $status);
-        
-        if ($result) {
-            // Brand added successfully
-            // You can redirect or show a success message here
-            echo "<script>alert('Thêm loại sản phẩm thành công!');</script>";
-            echo "<script>window.location.href = 'Badminton_Admin.php';</script>"; // 
-        
-        
-
-        } else {
-            // Failed to add brand
-            // You can redirect or show an error message here
-            echo "<script>alert('Thêm loại sản phẩm thất bại');</script>";
-            echo "<script>window.location.href = 'Badminton_Admin.php';</script>"; // 
-
+        // Function to add a new brand
+        function addBrand($name, $description, $status)
+        {
+            $modelBrand = new ModelBrand();
+            return $modelBrand->addBrand($name, $description, $status);
         }
-    }
-    function deleteBrand($brandID) {
-        $modelBrand = new ModelBrand();
-    
-        return $modelBrand->deleteBrand($brandID);
-    }
 
-    if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['delete_brand']) && isset($_GET['brand_id'])) {
-        $brandID = $_GET['brand_id'];
-        
 
-        $result = deleteBrand($brandID);
-        
-        if ($result) {
-     
-            echo "<script>alert('Xóa loại sản phẩm thành công!');</script>";
-            echo "<script>window.location.href = 'Badminton_Admin.php';</script>"; 
-        } else {
-            // Failed to delete brand
-            // You can redirect or show an error message here
-            echo "<script>alert('Xóa loại sản phẩm thất bại');</script>";
-            echo "<script>window.location.href = 'Badminton_Admin.php';</script>"; 
+        // Check if the form is submitted
+        if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['add_brand']) && isset($_GET['productBrand']) && isset($_GET['motatxt'])) {
+            $name = $_GET['productBrand'];
+            $description = $_GET['motatxt'];
+            $status = '1';
+
+            // Call the function to add the brand
+            $result = addBrand($name, $description, $status);
+
+            if ($result) {
+                // Brand added successfully
+                // You can redirect or show a success message here
+                echo "<script>alert('Thêm loại sản phẩm thành công!');</script>";
+                echo "<script>window.location.href = 'Badminton_Admin.php';</script>"; // 
+
+
+
+            } else {
+                // Failed to add brand
+                // You can redirect or show an error message here
+                echo "<script>alert('Thêm loại sản phẩm thất bại');</script>";
+                echo "<script>window.location.href = 'Badminton_Admin.php';</script>"; // 
+
+            }
         }
-    }
-    
-    ?>
-    <form id="frmnhaploaisp" method="get">
-        <h1 style="color: red;"> Thêm loại sản phẩm </h1>
-        <div class="containbox">
-            <label for="productName">Tên loại phẩm:</label>
-            <input type="text" id="productBrand" name="productBrand">
-        </div>
-        <div class="containbox">
-            <label for="productName">Mô tả:</label>
-            <input type="text" id="motatxt" name="motatxt">
-        </div>
-        <div class="containbox">
-            <button type="submit" name="add_brand">Thêm loại sản phẩm</button>
-        </div>
-    </form>
+        function deleteBrand($brandID)
+        {
+            $modelBrand = new ModelBrand();
 
-        </div>
+            return $modelBrand->deleteBrand($brandID);
+        }
 
-        <div id="doanhso-content" class="content-section">
-            <form id="frmdoanhso">
-                <h1 style="padding-left: 10%;"> TÌM KIẾM THEO NGÀY</h1>
-                <div class="containbox">
-                    <label for="datestart">Ngày bắt đầu:</label>
-                    <input type="date" id="datestart2">
-                </div>
-                <div class="containbox">
-                    <label for="dateend">Ngày kết thúc:</label>
-                    <input type="date" id="dateend2">
-                </div>
-                <button type="submit" style="margin-top: 10px; margin-left: 10px;" onclick="thongKe(event);"> Thống kê doanh số  </button>
-                <button type="submit" style="margin-top: 10px; margin-left: 10px;" onclick="thongKeByBrand(event);"> Thống kê doanh số theo hãng </button>
-                    <h2 id="tongdoanhso">  </h2>
-                    <canvas id="salesChart" width="400" height="400"></canvas>
-                    <table class="tabledoanhso" id="quanlydoanhso" cellpadding="50" cellspacing="100"> 
-                        
-                        <thead>
+        if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['delete_brand']) && isset($_GET['brand_id'])) {
+            $brandID = $_GET['brand_id'];
+
+
+            $result = deleteBrand($brandID);
+
+            if ($result) {
+
+                echo "<script>alert('Xóa loại sản phẩm thành công!');</script>";
+                echo "<script>window.location.href = 'Badminton_Admin.php';</script>";
+            } else {
+                // Failed to delete brand
+                // You can redirect or show an error message here
+                echo "<script>alert('Xóa loại sản phẩm thất bại');</script>";
+                echo "<script>window.location.href = 'Badminton_Admin.php';</script>";
+            }
+        }
+
+        ?>
+        <form id="frmnhaploaisp" method="get">
+            <h1 style="color: red;"> Thêm loại sản phẩm </h1>
+            <div class="containbox">
+                <label for="productName">Tên loại phẩm:</label>
+                <input type="text" id="productBrand" name="productBrand">
+            </div>
+            <div class="containbox">
+                <label for="productName">Mô tả:</label>
+                <input type="text" id="motatxt" name="motatxt">
+            </div>
+            <div class="containbox">
+                <button type="submit" name="add_brand">Thêm loại sản phẩm</button>
+            </div>
+        </form>
+
+    </div>
+
+    <div id="doanhso-content" class="content-section">
+        <form id="frmdoanhso">
+            <h1 style="padding-left: 10%;"> TÌM KIẾM THEO NGÀY</h1>
+            <div class="containbox">
+                <label for="datestart">Ngày bắt đầu:</label>
+                <input type="date" id="datestart2">
+            </div>
+            <div class="containbox">
+                <label for="dateend">Ngày kết thúc:</label>
+                <input type="date" id="dateend2">
+            </div>
+            <button type="submit" style="margin-top: 10px; margin-left: 10px;" onclick="thongKe(event);"> Thống kê doanh số </button>
+            <button type="submit" style="margin-top: 10px; margin-left: 10px;" onclick="thongKeByBrand(event);"> Thống kê doanh số theo hãng </button>
+            <h2 id="tongdoanhso"> </h2>
+            <canvas id="salesChart" width="400" height="400"></canvas>
+            <table class="tabledoanhso" id="quanlydoanhso" cellpadding="50" cellspacing="100">
+
+                <thead>
                     <tr>
                         <th>Ngày</th>
                         <th>Doanh số thu được</th>
                     </tr>
-                    </thead>
-                    </table>
-                
-            </form>        
-        </div>
-        </div>
+                </thead>
+            </table>
+
+        </form>
+    </div>
+    </div>
 
 
 
@@ -636,49 +732,95 @@ function logout(event) {
                 require_once '../Model/ModelProduct.php';
                 require_once '../Model/ModelBrand.php';
                 require_once '../Model/ModelCatalog.php';
+                require_once('../Model/ModelVariantDetail.php');
+                require_once('../Model/ModelVariant.php');
                 $ModelProduct = new ModelProduct();
                 $products = $ModelProduct->getAllProducts();
                 $ModelBrand = new ModelBrand();
                 $brands = $ModelBrand->getAllBrands();
                 $ModelCatalog = new ModelCatalog();
                 $catalogs = $ModelCatalog->getAllCatalogs();
+                $ModelVariantDetail = new ModelVariantDetail();
+                $ModelVariant = new ModelVariant();
                 if ($products) {
-                    echo ' <table class="table" style="width: 50;">
+                    echo ' <table class="table">
                             <thead>
                                 <tr>
                                     <th class="text-center" scope="col">Mã sản phẩm</th>
-                                    <th class="text-center" scope="col">Mã thương hiệu</th>
-                                    <th class="text-center" scope="col">Mã danh mục</th>
+                                    <th class="text-center" scope="col">Thương hiệu</th>
+                                    <th class="text-center" scope="col">Danh mục</th>
+                                    <th class="text-center" scope="col">Hình đại diện</th>
                                     <th class="text-center" scope="col">Sản phẩm</th>
                                     <th class="text-center" scope="col">Giá</th>
-                                    <th class="text-center" scope="col">Giảm giá</th>
+                                    <th class="text-center" scope="col">Giá gốc</th>
                                     <th class="text-center" scope="col">Trạng thái</th>
-                                    <th class="text-center" scope="col">Mô tả</th>
-                                    <th class="text-center" scope="col">Hình ảnh</th>
+                                    <th class="text-center" scope="col">Thời gian tạo</th>
                                     <th class="text-center" scope="col">Chỉnh sửa</th>
                                 </tr>
                             </thead>';
                     foreach ($products as $product) {
-                        echo "
-                                <tbody>
-                                <tr>
-                                    <td class='text-center'>{$product->productID}</td>
-                                    <td class='text-center'>{$product->brandID}</td>
-                                    <td class='text-center'>{$product->catalogID}</td>
-                                    <td class='text-center'>{$product->name}</td>
-                                    <td class='text-center'>{$product->price} VNĐ</td>
-                                    <td class='text-center'>{$product->discount}%</td>
-                                    <td class='text-center'>{$product->status}</td>
-                                    <td class='text-center'>{$product->description}</td>
-                                    <td class='text-center'><img src='{$product->image}' alt='Hình ảnh' style='max-width: 100px; max-height: 100px;'></td>
-                                    <td style='display:flex; justify-content:space-around; width: 150px'>
-                                        <button id='openEditModal' data-productid = {$product->productID}>Cập nhật</button>
-                                        <button id='confirmDelete' data-productid = {$product->productID}>Xoá</button>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            ";
+                        if ($product->status == 1) $status = "Đang bán";
+                        else if ($product->status == -1) $status = "Đã xóa";
+                        else $status = "Ngưng bán";
+                        $listVariant = $ModelVariant->getListVariantByProductID($product->productID);
+                        $catalogtmp = ($ModelCatalog->getCatalogByID($product->catalogID));
+                        if ($catalogtmp->getName() == "Shuttle" || $catalogtmp->getName() == "String")
+                            echo "
+                                    <tbody>
+                                    <tr>
+                                        <td class='text-center'>{$product->productID}</td>
+                                        <td class='text-center'>{$ModelBrand->getBrandByID($product->brandID)->getName()}</td>
+                                        <td class='text-center'>{$ModelCatalog->getCatalogByID($product->catalogID)->getName()}</td>
+                                        <td class='text-center'><img src='../View/images/product/{$product->getProductID()}/default/{$product->getProductID()}.1.png' alt='Hình ảnh' style='max-width: 100px; max-height: 100px;'></td>
+                                        <td class='text-center'>{$product->name}</td>
+                                        <td class='text-center'>" . number_format($product->price, 0, ',', '.') . " VNĐ</td>
+                                        <td class='text-center'>" . number_format($product->fakePrice, 0, ',', '.') . " VNĐ</td>
+                                        <td class='text-center'>{$status}</td>
+                                        <td class='text-center'>{$product->timeCreated}</td>
+                                        <td style='display:flex; justify-content:space-around; width: 150px'>
+                                            <button id='openEditModal' data-productid={$product->productID}>Cập nhật</button>
+                                            <button id='confirmDelete' data-productid={$product->productID}>Xoá</button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                ";
+
+
+                        else {
+                            if (count($listVariant) > 0) {
+                                $variantID = reset($listVariant)->getVariantID();
+                                $variantDetail = $ModelVariantDetail->getVariantByID($variantID);
+                                $color = $variantDetail->getColor();
+                            } else {
+                                $variantID = 0;
+                                $variantDetail = 0;
+                                $color = 0;
+                            }
+
+
+                            echo "
+                                    
+                                        <tbody>
+                                        <tr>
+                                            <td class='text-center'>{$product->productID}</td>
+                                            <td class='text-center'>{$ModelBrand->getBrandByID($product->brandID)->getName()}</td>
+                                            <td class='text-center'>{$ModelCatalog->getCatalogByID($product->catalogID)->getName()}</td>
+                                            <td class='text-center'><img src='../View/images/product/" . $product->getProductID() . "/" . $color . "/" . $product->getProductID() . ".1.png' alt='Hình ảnh' style='max-width: 100px; max-height: 100px;'></td>
+                                            <td class='text-center'>{$product->name}</td>
+                                            <td class='text-center'>" . number_format($product->price, 0, ',', '.') . " VNĐ</td>
+                                            <td class='text-center'>" . number_format($product->fakePrice, 0, ',', '.') . " VNĐ</td>
+                                            <td class='text-center'>{$status}</td>
+                                            <td class='text-center'>{$product->timeCreated}</td>
+                                            <td style='display:flex; justify-content:space-around; width: 150px'>
+                                                <button id='openEditModal' data-productid={$product->productID}>Cập nhật</button>
+                                                <button id='confirmDelete' data-productid={$product->productID}>Xoá</button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    ";
+                        }
                     }
+
                     echo "</table>";
                 }
                 ?>
@@ -701,7 +843,7 @@ function logout(event) {
                     </div>
 
                     <div class="input-group input-group-sm mb-3">
-                        <label class="input-group-text" id="inputGroup-sizing-sm">Giảm giá</label>
+                        <label class="input-group-text" id="inputGroup-sizing-sm">Giá gốc</label>
                         <input type="text" name="discount" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                     </div>
 
@@ -709,8 +851,9 @@ function logout(event) {
                         <select name="status" class="form-select form-select-sm" aria-label=".form-select-sm example">
                             <label class="input-group-text" id="inputGroup-sizing-sm">Trạng thái</label>
                             <option selected>Trạng thái</option>
-                            <option value="1">Hoạt động</option>
-                            <option value="0">Vô hiệu hoá</option>
+                            <option value="1">Đang bán</option>
+                            <option value="0">Ngừng bán</option>
+                            <option value="-1">Đã xóa</option>
                         </select>
                     </div>
 
@@ -735,46 +878,137 @@ function logout(event) {
         <script>
             // Mở popup chỉnh sửa sản phẩm khi bấm vào liên kết
             document.querySelectorAll('#openEditModal').forEach(button => {
-    button.addEventListener('click', function(event) {
-        event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
-        
-         // Hiển thị modal form
-         document.getElementById("editModal").style.display = "block";
-         
-        // Lấy các dữ liệu từ hàng chứa nút "Sửa" tương ứng
-        let productId = this.getAttribute('data-productid');
-        let row = this.closest('tr');
-        let productID = row.querySelector('td:nth-child(1)').innerText;
-        let productName = row.querySelector('td:nth-child(4)').innerText;
-        let productPrice = row.querySelector('td:nth-child(5)').innerText;
-        let productDiscount = row.querySelector('td:nth-child(6)').innerText;
-        let productStatus = row.querySelector('td:nth-child(7)').innerText;
-        let productDescription = row.querySelector('td:nth-child(8)').innerText;
-        let productImageSrc = row.querySelector('td:nth-child(9) img').getAttribute('src');
-        
-        // Gán giá trị cho các trường dữ liệu trong form
+                button.addEventListener('click', function(event) {
+                    event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
 
-        document.getElementById("productID").value = productID;
-        document.getElementById("name").value = productName;
-        document.getElementById("price").value = productPrice.replace(' VNĐ', '');
-        document.getElementById("discount").value = productDiscount.replace('%', '');
-        document.querySelector('select[name="status"]').value = productStatus;
-        document.getElementById("description").value = productDescription;
-        document.getElementById("existingImage").setAttribute('src', productImageSrc);
-        
-       
-    });
-});
+                    // Hiển thị modal form
+                    document.getElementById("editModal").style.display = "block";
 
-// Hàm đóng modal form
-function closeEditModal() {
-    document.getElementById("editModal").style.display = "none";
-}
+                    // Lấy các dữ liệu từ hàng chứa nút "Sửa" tương ứng
+                    let productId = this.getAttribute('data-productid');
+                    let row = this.closest('tr');
+                    let productID = row.querySelector('td:nth-child(1)').innerText;
+                    let productName = row.querySelector('td:nth-child(5)').innerText;
+                    let productPrice = row.querySelector('td:nth-child(6)').innerText;
+                    let productDiscount = row.querySelector('td:nth-child(7)').innerText;
+                    let productStatus = row.querySelector('td:nth-child(8)').innerText;
+                    let productImageSrc = row.querySelector('td:nth-child(4) img').getAttribute('src');
 
-// Hàm xoá hình hiện tại
-function removeExistingImage() {
-    document.getElementById("existingImage").setAttribute('src', '');
-}
+                    // Gán giá trị cho các trường dữ liệu trong form
+
+                    document.getElementById("productID").value = productID;
+                    document.getElementById("name").value = productName;
+                    document.getElementById("price").value = productPrice.replace(' VNĐ', '');
+                    document.getElementById("discount").value = productDiscount.replace(' VNĐ', '');
+                    document.getElementById('status').value = productStatus;
+                    //document.getElementById("description").value = productDescription;
+                    loadvariant(productID);
+
+
+                });
+            });
+
+            function loadvariant(productID) {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4) {
+                        if (this.status == 200) {
+                            var data = JSON.parse(this.responseText);
+                            var keys = Object.keys(data);
+                            var imagesrc = "../View/images/product/" + productID + "/" + keys[0] + "/" + productID + ".1.png";
+                            document.getElementById("existingImage").setAttribute('src', imagesrc);
+                            var imgUrl = data[keys[0]];
+                            var imgContainer = document.getElementById('image-container');
+                            var tmp = '';
+                            imgContainer.innerHTML = '';
+                            for (var i = 0; i < imgUrl.length; i++) {
+                                tmp += `<div class="image-container">
+                                    <img src="../View/images/product/` + productID + `/` + keys[0] + `/` + productID + `.` + imgUrl[i] + `.png" alt="Image 1" onclick="openImage(this.src)">
+                                    <button data-id="`+productID+`" data-color="`+keys[0]+`" data-value="` + imgUrl[i] + `" class="btn btn-danger delete-btn" onclick="deleteImage(this)">×</button>
+                                </div>`
+                            }
+                            imgContainer.innerHTML = tmp;
+
+
+                            // Khai báo biến variantContainer ở đây
+                            var variantContainer = document.getElementById('variant');
+                            variantContainer.innerHTML = '';
+                            // Kiểm tra xem có radio buttons trong #variant hay không
+                            if (variantContainer.innerHTML.trim() === '') { // Nếu không có radio buttons, thêm vào
+                                var firstRadio = true; // Biến để kiểm tra radio đầu tiên
+                                keys.forEach(function(key) {
+                                    var uppercaseKey = key.toUpperCase(); // Chuyển đổi khóa thành chữ hoa
+
+                                    // Tạo radio button
+                                    var radioHTML = `
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="color" id="${key}" value="${key}" data-value2="${productID}" onclick="loadvariantRadio(this)"`;
+
+                                    // Nếu là radio button đầu tiên, đặt thuộc tính checked
+                                    if (firstRadio) {
+                                        radioHTML += ` checked`;
+                                        firstRadio = false; // Đặt firstRadio thành false để không đặt checked cho các radio button sau
+                                    }
+
+                                    radioHTML += `>
+                                                <label class="form-check-label" for="${key}">${uppercaseKey}</label> <!-- In ra khóa dưới dạng chữ hoa -->
+                                            </div>
+                                        `;
+
+                                    variantContainer.innerHTML += radioHTML;
+                                });
+                            }
+                        } else {
+                            reject(new Error("Yêu cầu thất bại"));
+                        }
+                    }
+                };
+                xhttp.open("GET", "admin_product.php?get=listImg&productID=" + productID, true);
+                xhttp.send();
+            }
+
+            function loadvariantRadio(c) {
+                var productID = c.getAttribute('data-value2');
+                var color = c.value;
+                console.log(color);
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4) {
+                        if (this.status == 200) {
+                            var data = JSON.parse(this.responseText);
+                            console.log(data);
+                            var keys = Object.keys(data);
+                            var imagesrc = "../View/images/product/" + productID + "/" + color + "/" + productID + ".1.png";
+                            document.getElementById("existingImage").setAttribute('src', imagesrc);
+                            var imgUrl = data[color];
+                            var imgContainer = document.getElementById('image-container');
+                            var tmp = '';
+                            imgContainer.innerHTML = '';
+                            for (var i = 0; i < imgUrl.length; i++) {
+                                tmp += `<div class="image-container">   
+                                    <img src="../View/images/product/` + productID + `/` + color + `/` + productID + `.` + imgUrl[i] + `.png" alt="Image 1" onclick="openImage(this.src)">
+                                    <button data-color="`+color+`" data-id="`+productID+`" data-value="` + imgUrl[i] + `" class="btn btn-danger delete-btn" onclick="deleteImage(this)">×</button>
+                                </div>`
+                            }
+                            imgContainer.innerHTML = tmp;
+                        } else {
+                            reject(new Error("Yêu cầu thất bại"));
+                        }
+                    }
+                };
+                xhttp.open("GET", "admin_product.php?get=listImg&productID=" + productID, true);
+                xhttp.send();
+            }
+
+            // Hàm đóng modal form
+            function closeEditModal() {
+                document.getElementById("editModal").style.display = "none";
+            }
+
+            // Hàm xoá hình hiện tại
+            function removeExistingImage() {
+                document.getElementById("existingImage").setAttribute('src', '');
+            }
 
 
             // Đóng popup chỉnh sửa sản phẩm khi bấm vào nút "Đóng"
@@ -791,7 +1025,7 @@ function removeExistingImage() {
                     // Nếu người dùng chọn "OK"
                     if (deleteConfirmation) {
                         // Chuyển hướng đến trang Delete.php để xóa sản phẩm
-                        window.location.href = 'Delete.php?productID=' + ProductID;
+                        window.location.href = '../View/Delete.php?productID=' + ProductID;
                     }
                 });
             });
@@ -812,86 +1046,160 @@ function removeExistingImage() {
 
         <!-- Bảng chỉnh sửa sản phẩm -->
 
-        <div id="editModal" class="modal" style="background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">
-            <form class="modal-content" action="Update.php" method="POST" style="width:35%; margin-left:35%; margin-top:3%; border:solid 2px;">
-                <span style="margin-left:95%" class="close" onclick="closeEditModal()">&times;</span>
-                <h1 style="text-align: center;">Chỉnh sửa sản phẩm</h1>   
-                <div class="input-group input-group-sm mb-3">
-                    <label class="input-group-text" id="inputGroup-sizing-sm">Mã sản phẩm</label>
-                    <input type="text" name="productID" id="productID" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" style="user-select: none; pointer-events: none; caret-color: transparent;">
-                </div>
-                
-                <div class="input-group input-group-sm mb-3">
-                    <label class="input-group-text" id="inputGroup-sizing-sm">Sản phẩm</label>
-                    <input type="text" name="name" id="name" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="">
+        <div id="editModal" class="modal" style="overflow-y: auto;background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">
+            <form class="modal-content" action="Update.php" method="POST" style="width: 50%; margin-left: 25%; margin-top: 3%; border: solid 2px; padding: 20px;">
+                <span style="position: absolute; top: 5px; right: 5px;" class="close" onclick="closeEditModal()">&times;</span>
+                <h1 style="text-align: center;">Chỉnh sửa sản phẩm</h1>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text" style="min-width: 120px;">Mã sản phẩm</span>
+                    <input type="text" name="productID" id="productID" class="form-control" readonly>
                 </div>
 
-                <div class="input-group input-group-sm mb-3">
-                    <label class="input-group-text" id="inputGroup-sizing-sm">Giá</label>
-                    <input type="text" name="price" id="price" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" style="min-width: 120px;">Sản phẩm</span>
+                    <input type="text" name="name" id="name" class="form-control">
                 </div>
 
-                <div class="input-group input-group-sm mb-3">
-                    <label class="input-group-text" id="inputGroup-sizing-sm">Giảm giá</label>
-                    <input type="text" name="discount" id="discount" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" style="min-width: 120px;">Giá</span>
+                    <input type="text" name="price" id="price" class="form-control">
                 </div>
 
-                <div class="input-group input-group-sm mb-3">
-                        <select name="status" class="form-select form-select-sm" aria-label=".form-select-sm example" value="">
-                            <label class="input-group-text" id="inputGroup-sizing-sm">Trạng thái</label>
-                            <option selected>Trạng thái</option>
-                            <option value="1">Hoạt động</option>
-                            <option value="0">Vô hiệu hoá</option>
-                        </select>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" style="min-width: 120px;">Giá gốc</span>
+                    <input type="text" name="discount" id="discount" class="form-control">
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text" style="min-width: 120px;">Trạng thái</span>
+                    <select name="status" id="status" class="form-select">
+                        <option selected disabled>Chọn trạng thái</option>
+                        <option value="Đang bán">Đang bán</option>
+                        <option value="Ngừng bán">Ngừng bán</option>
+                        <option value="Đã xóa">Đã xóa</option>
+                    </select>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text" style="min-width: 120px;">Mô tả</span>
+                    <input type="text" name="description" id="description" class="form-control">
+                </div>
+
+                <div class="input-group mb-3" id="variant">
+
+                </div>
+
+                <div class="input-group mb-3">
+                    <label for="existingImage">Ảnh đại diện:</label>
+                    <div class="d-flex align-items-center">
+                        <img id="existingImage" style="max-width: 100px; max-height: 100px;" alt="Hình hiện tại" value="">
+                        <button class="btn btn-success ms-3" onclick="removeExistingImage()">Đổi</button>
                     </div>
-
-                <div class="input-group input-group-sm mb-3">
-                    <label class="input-group-text" id="inputGroup-sizing-sm">Mô tả</label>
-                    <input type="text" name="description" id="description" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="">
+                </div>
+                <label>Ảnh chi tiết:</label>
+                <div class="container mt-3 mb-3">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="d-flex flex-wrap" id="image-container">
+                                <div class="image-container">
+                                    <img src="../View/images/product/1/Kurenai/1.1.png" alt="Image 1" onclick="openImage(this.src)">
+                                    <button class="btn btn-danger delete-btn">&times;</button>
+                                </div>
+                                <div class="image-container">
+                                    <img src="../View/images/product/1/Kurenai/1.2.png" alt="Image 2" onclick="openImage(this.src)">
+                                    <button class="btn btn-danger delete-btn">&times;</button>
+                                </div>
+                                <div class="image-container">
+                                    <img src="../View/images/product/1/Kurenai/1.3.png" alt="Image 3" onclick="openImage(this.src)">
+                                    <button class="btn btn-danger delete-btn">&times;</button>
+                                </div>
+                                <!-- Add more images as needed -->
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="containboximg">
-                    <label for="existingImage">Hình hiện tại:</label>
-                    <img id="existingImage" style="max-width: 100px; max-height: 100px;" alt="Hình hiện tại" value="">
-                    <button onclick="removeExistingImage()" style="width:55px; height:auto;">Xoá</button>
-                    <br> 
+                <!-- Popup Modal -->
+                <div id="imageModal" class="modal-popup">
+                    <span class="close" onclick="closeModal()">&times;</span>
+                    <img class="modal-content-popup" id="modalImage">
+                </div>
+                <script>
+                    function deleteImage(button) {
+                        var imageContainer = button.parentElement; // Lấy phần tử cha của nút (div .image-container)
+                        imageContainer.remove();
+                        var productID = button.getAttribute('data-id');
+                        var imgIndex = button.getAttribute('data-value');
+                        var color = button.getAttribute('data-color');
+                        var xhttp = new XMLHttpRequest();
+                        xhttp.onreadystatechange = function() {
+                            if (this.readyState == 4) {
+                                if (this.status == 200) {
+                                    var data = JSON.parse(this.responseText);
+                                    console.log(data);
+                                } else {
+                                    reject(new Error("Yêu cầu thất bại"));
+                                }
+                            }
+                        };
+                        xhttp.open("GET", "admin_product.php?get=delImg&productID=" + productID + "&imgDel="+imgIndex + "&color="+color, true);
+                        xhttp.send();
+                    }
+
+                    function openImage(src) {
+                        var modal = document.getElementById('imageModal');
+                        var modalImg = document.getElementById('modalImage');
+                        modal.style.display = "block";
+                        modalImg.src = src;
+                    }
+
+                    function closeModal() {
+                        var modal = document.getElementById('imageModal');
+                        modal.style.display = "none";
+                    }
+                </script>
+
+
+                <div class="input-group mb-3">
                     <label for="editProductImageInput">Chọn hình mới:</label>
                     <input type="file" name="image" id="image" accept="image/*">
-
-                    <img id="selectedImage" style="max-width: 100px; max-height: 70px; " alt="Hình được chọn">
+                    <img id="selectedImage" style="max-width: 100px; max-height: 70px;" alt="Hình được chọn">
                 </div>
-                <button type="submit" style="width:55px; height:auto; margin-left:45%">Lưu</button>             
+
+                <button type="submit" class="btn btn-primary" style="width:100%;">Lưu</button>
             </form>
+
         </div>
     </div>
-        
-        <div id="hoadon-content" class="content-section">
+
+    <div id="hoadon-content" class="content-section">
         <div class="headerad"> QUẢN LÝ HÓA ĐƠN</div>
-   
+
         <div class="containbox">
-                    <label for="datestart">Ngày bắt đầu:</label>
-                    <input type="date" id="datestart1">
-                </div>
-                <div class="containbox">
-                    <label for="dateend">Ngày kết thúc:</label>
-                    <input type="date" id="dateend1">
-                </div>
-                <button type="submit" style="margin-top: 10px; margin-left: 10px" onclick="searchTransactionsByDate()">Tìm kiếm</button>
+            <label for="datestart">Ngày bắt đầu:</label>
+            <input type="date" id="datestart1">
+        </div>
+        <div class="containbox">
+            <label for="dateend">Ngày kết thúc:</label>
+            <input type="date" id="dateend1">
+        </div>
+        <button type="submit" style="margin-top: 10px; margin-left: 10px" onclick="searchTransactionsByDate()">Tìm kiếm</button>
 
-         
+
         <?php
-    
-            require_once __DIR__ . '../../Model/ModelTransaction.php';
 
-            $modelTransaction = new ModelTransaction();
+        require_once __DIR__ . '../../Model/ModelTransaction.php';
 
-            // Lấy tất cả các giao dịch từ cơ sở dữ liệu"
-            $transactions = $modelTransaction->getAllTransactions();
-            
-            // Kiểm tra xem có giao dịch nào không
-            if ($transactions) {
-                // In ra tiêu đề của bảng
-                echo "<table border='1'>
+        $modelTransaction = new ModelTransaction();
+
+        // Lấy tất cả các giao dịch từ cơ sở dữ liệu"
+        $transactions = $modelTransaction->getAllTransactions();
+
+        // Kiểm tra xem có giao dịch nào không
+        if ($transactions) {
+            // In ra tiêu đề của bảng
+            echo "<table border='1'>
                         <tr>
                             <th>Transaction ID</th>
                             <th>User ID</th>
@@ -906,21 +1214,21 @@ function removeExistingImage() {
                             <th>Detail</th>
                             <th>Chuyển trạng thái</th>
                         </tr>";
-            
-                foreach ($transactions as $transaction) {
-                    echo "<tr>";
-                    echo "<td>" . $transaction->getTransactionID() . "</td>";
-                    echo "<td>" . $transaction->getUserID() . "</td>";
-                    echo "<td>" . $transaction->getTotal() . "</td>";
-                    echo "<td>" . $transaction->getNote() . "</td>";
-                    echo "<td>" . $transaction->getTime() . "</td>";
-                    echo "<td>" . $transaction->getAddress() . "</td>";
-                    echo "<td>" . $transaction->getCheck() . "</td>";
-                    echo "<td>" . $transaction->getTransport() . "</td>";
-                    echo "<td>" . $transaction->getNameReceiver() . "</td>";
-                    echo "<td>" . $transaction->getPhoneReceiver() . "</td>";
-                    echo "<td><button onclick='showTransactionDetails(" . $transaction->getTransactionID() . ")'>View Details</button></td>";
-                    echo "<td>
+
+            foreach ($transactions as $transaction) {
+                echo "<tr>";
+                echo "<td>" . $transaction->getTransactionID() . "</td>";
+                echo "<td>" . $transaction->getUserID() . "</td>";
+                echo "<td>" . $transaction->getTotal() . "</td>";
+                echo "<td>" . $transaction->getNote() . "</td>";
+                echo "<td>" . $transaction->getTime() . "</td>";
+                echo "<td>" . $transaction->getAddress() . "</td>";
+                echo "<td>" . $transaction->getCheck() . "</td>";
+                echo "<td>" . $transaction->getTransport() . "</td>";
+                echo "<td>" . $transaction->getNameReceiver() . "</td>";
+                echo "<td>" . $transaction->getPhoneReceiver() . "</td>";
+                echo "<td><button onclick='showTransactionDetails(" . $transaction->getTransactionID() . ")'>View Details</button></td>";
+                echo "<td>
                     <select id='status" . $transaction->getTransactionID() . "'>
                         <option value=''>Select Status</option>
                         <option value='Đang chờ duyệt'>Đang chờ duyệt</option>
@@ -930,60 +1238,59 @@ function removeExistingImage() {
                     </select>
                     <button onclick='changeTransactionStatus(" . $transaction->getTransactionID() . ")'>Save</button>
                   </td>";
-            echo "</tr>";
+                echo "</tr>";
+            }
         }
-                }
-            
-                echo "</table>";
-                        ?>
-                
 
- <div id="popup" class="popup">
-        <div class="popup-content">
-            <span class="popup-close" onclick="closePopup()">&times;</span>
-            <div id="popup-details">
-                <!-- Nội dung chi tiết hóa đơn sẽ được thêm bằng JavaScript -->
+        echo "</table>";
+        ?>
+
+
+        <div id="popup" class="popup">
+            <div class="popup-content">
+                <span class="popup-close" onclick="closePopup()">&times;</span>
+                <div id="popup-details">
+                    <!-- Nội dung chi tiết hóa đơn sẽ được thêm bằng JavaScript -->
+                </div>
             </div>
         </div>
     </div>
-        </div>
-        <div id="dangxuat-content" class="content-section"></div>
+    <div id="dangxuat-content" class="content-section"></div>
     </div>
     <script>
-function openTab(tabName) {
-    // Lấy danh sách tất cả các tab và tablinks
-    var tabs = document.querySelectorAll('.tab-pane');
-    var tabLinks = document.querySelectorAll('.nav-link');
+        function openTab(tabName) {
+            // Lấy danh sách tất cả các tab và tablinks
+            var tabs = document.querySelectorAll('.tab-pane');
+            var tabLinks = document.querySelectorAll('.nav-link');
 
-    // Ẩn tất cả các tab trước khi hiển thị tab được chọn
-    tabs.forEach(function(tab) {
-        tab.style.display = 'none';
-    });
+            // Ẩn tất cả các tab trước khi hiển thị tab được chọn
+            tabs.forEach(function(tab) {
+                tab.style.display = 'none';
+            });
 
-    // Loại bỏ lớp 'active' cho tất cả các tablinks trước khi chọn tab mới
-    tabLinks.forEach(function(link) {
-        link.classList.remove('active');
-    });
+            // Loại bỏ lớp 'active' cho tất cả các tablinks trước khi chọn tab mới
+            tabLinks.forEach(function(link) {
+                link.classList.remove('active');
+            });
 
-    // Hiển thị tab được chọn và thêm lớp 'active' cho tablink tương ứng
-    document.getElementById(tabName).style.display = 'block';
-    document.querySelector('a[onclick="openTab(\'' + tabName + '\')"]').classList.add('active');
-}
-
-
-</script>
+            // Hiển thị tab được chọn và thêm lớp 'active' cho tablink tương ứng
+            document.getElementById(tabName).style.display = 'block';
+            document.querySelector('a[onclick="openTab(\'' + tabName + '\')"]').classList.add('active');
+        }
+    </script>
 
 
-<?php
-if (isset($_GET['message'])) {
-    if ($_GET['message'] == 'success') {
-        echo "<script>alert('Cập nhật thành công!');</script>";
-    } elseif ($_GET['message'] == 'error') {
-        echo "<script>alert('Cập nhật thất bại.');</script>";
-    } elseif ($_GET['message'] == 'missing') {
-        echo "<script>alert('Lỗi: Thiếu thông tin cần thiết.');</script>";
+    <?php
+    if (isset($_GET['message'])) {
+        if ($_GET['message'] == 'success') {
+            echo "<script>alert('Cập nhật thành công!');</script>";
+        } elseif ($_GET['message'] == 'error') {
+            echo "<script>alert('Cập nhật thất bại.');</script>";
+        } elseif ($_GET['message'] == 'missing') {
+            echo "<script>alert('Lỗi: Thiếu thông tin cần thiết.');</script>";
+        }
     }
-}
-?>
-    </body>
+    ?>
+</body>
+
 </html>

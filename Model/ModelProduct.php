@@ -351,15 +351,22 @@ class ModelProduct
         $catalogID = $product->getCatalogID();
         $name = $product->getName();
         $description = $product->getDescription();
+        $url = $product->getUrl();
 
-        $query = "UPDATE product SET brandID = '$brandID', catalogID = '$catalogID', name = '$name', description = '$description' WHERE productID = '$productID'";
+        $query = "UPDATE product SET brandID = '$brandID', catalogID = '$catalogID', name = '$name', description = '$description', url_image = '$url' WHERE productID = '$productID'";
+        return $this->db->update($query);
+    }
+
+    public function updateUrlImgProduct($productID, $url)
+    {
+        $query = "UPDATE product SET url_image = '$url' WHERE productID = '$productID'";
         return $this->db->update($query);
     }
 
     // Xóa sản phẩm khỏi cơ sở dữ liệu
     public function deleteProduct($productID)
     {
-        $query = "DELETE FROM product WHERE productID = '$productID'";
+        $query = "UPDATE product SET status = -1 WHERE productID = '$productID'";
         return $this->db->delete($query);
     }
     public function getProductNameByID($productID)

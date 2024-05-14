@@ -10,7 +10,7 @@ foreach ($products as $product) {
         'price' => $product->getPrice(),
         'brandID' => $product->getBrandID(),
         'catalogID' => $product->getCatalogID(),
-        'discount' => $product->getDiscount(),
+        'fakePrice' => $product->getFakePrice(),
         'status' => $product->getStatus(),
         'url' => $product->getUrl(),
         'timeCreated' => $product->getTimecreated(),
