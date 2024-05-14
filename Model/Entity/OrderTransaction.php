@@ -4,17 +4,19 @@ class OrderTransaction {
     public $orderID;
     public $transactionID;
     public $productID;
-    public $total;
+    public $variantID;
+    public $totalAmount;
     public $note;
-    public $status;
+    public $quantity;
 
-    public function __construct($orderID, $transactionID, $productID, $total, $note, $status) {
+    public function __construct($orderID, $transactionID, $productID, $variantID, $totalAmount, $note, $quantity) {
         $this->orderID = $orderID;
         $this->transactionID = $transactionID;
         $this->productID = $productID;
-        $this->total = $total;
+        $this->variantID = $variantID;
+        $this->totalAmount = $totalAmount;
         $this->note = $note;
-        $this->status = $status;
+        $this->quantity = $quantity;
     }
 
     // Getter và setter cho orderID
@@ -44,13 +46,22 @@ class OrderTransaction {
         $this->productID = $productID;
     }
 
-    // Getter và setter cho total
-    public function getTotal() {
-        return $this->total;
+    // Getter và setter cho variantID
+    public function getVariantID() {
+        return $this->variantID;
     }
 
-    public function setTotal($total) {
-        $this->total = $total;
+    public function setVariantID($variantID) {
+        $this->variantID = $variantID;
+    }
+
+    // Getter và setter cho totalAmount
+    public function getTotalAmount() {
+        return $this->totalAmount;
+    }
+
+    public function setTotalAmount($totalAmount) {
+        $this->totalAmount = $totalAmount;
     }
 
     // Getter và setter cho note
@@ -62,13 +73,13 @@ class OrderTransaction {
         $this->note = $note;
     }
 
-    // Getter và setter cho status
-    public function getStatus() {
-        return $this->status;
+    // Getter và setter cho quantity
+    public function getQuantity() {
+        return $this->quantity;
     }
 
-    public function setStatus($status) {
-        $this->status = $status;
+    public function setQuantity($quantity) {
+        $this->quantity = $quantity;
     }
 }
 
