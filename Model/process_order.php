@@ -8,17 +8,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $modelUser = new ModelUser();
     $modelTransaction = new ModelTransaction();
     
+    $transactionID = '';
     $userID = $modelUser->getUIDByUserName($_SESSION['username']);
     $total = $_POST['total'];
-    $note = $_POST['note'];
+    $note = $_POST['notes'];
     $time = date('Y-m-d H:i:s');
     $address = $_POST['address'];
-    $name_receiver = $_POST['fullname'];
-    $phone_receiver = $_POST['phone'];
+    $check = 'Chưa xác nhận'; 
     $transport = '';
     $status = 1; 
-    $check = 'Chưa xác nhận'; 
+    $name_receiver = $_POST['fullname'];
+    $phone_receiver = $_POST['phone'];
 
-    $modelTransaction->addTransaction($userID, $total, $note, $time, $address, $name_receiver, $phone_receiver, $transport, $status, $check);
+    $modelTransaction->addTransaction($transactionID, $userID, $total, $note, $time, $address, $check, $transport, $status, $name_receiver, $phone_receiver);
 }
 ?>

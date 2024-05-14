@@ -151,9 +151,9 @@ require_once '..\Model\Entity\Transaction.php';
         }
     
         // Phương thức để thêm một giao dịch mới vào cơ sở dữ liệu
-        public function addTransaction($userID, $total, $note, $time, $address, $name_receiver, $phone_receiver, $transport, $status, $check) {
-            $query = "INSERT INTO `transaction` (`userID`, `total`, `note`, `time`, `address`, `name_receiver`, `phone_receiver`, `transport`, `status`, `check`) 
-                      VALUES ('$userID', '$total', '$note', '$time', '$address', '$name_receiver', '$phone_receiver', '$transport', '$status', '$check')";
+        public function addTransaction($transactionID, $userID, $total, $note, $time, $address, $check, $transport, $status, $name_receiver, $phone_receiver) {
+            $query = "INSERT INTO `transaction` (`transactionID` `userID`, `total`, `note`, `time`, `address`, `check`, `transport`, `status` , `name_receiver`, `phone_receiver`) 
+                      VALUES ('$transactionID', '$userID', '$total', '$note', '$time', '$address', '$check', '$transport', '$status', '$name_receiver', '$phone_receiver')";
             return $this->db->insert($query);
         }
         

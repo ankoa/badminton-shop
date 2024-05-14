@@ -259,15 +259,15 @@ $total_price_cart = 0;
             </script>
 
             <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    document.querySelector('.submit-btn').addEventListener('click', function(event) {
+                
+                    $(document).on('click', '.submit-btn', function(event) {
                         event.preventDefault();
 
                         // Collect form data
                         var fullName = document.getElementById('fullname').value.trim();
                         var phone = document.getElementById('phone').value.trim();
                         var address = document.getElementById('address').value.trim();
-                        var note = document.getElementById('note').value.trim();
+                        var note = document.getElementById('notes').value.trim();
 
                         
                         if (fullName === '' || phone === '' || address === '') {
@@ -285,9 +285,9 @@ $total_price_cart = 0;
                                 
                             }
                         };
-                        xhr.send("fullname=" + fullName + "&phone=" + phone + "&address=" + address + "&note=" + note + "&total=" + <?php echo $total_price_cart; ?>);
+                        xhr.send("&fullname=" + fullName + "&phone=" + phone + "&address=" + address + "&notes=" + note + "&total=" + <?php echo $total_price_cart; ?>);
                     });
-                });
+                
             </script>
 
 
