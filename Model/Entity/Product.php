@@ -9,9 +9,9 @@ class Product {
     public $description;
     public $status;
     public $price;
-    public $discount;
+    public $fakePrice;
 
-    public function __construct($productID, $brandID, $catalogID, $name, $description, $status, $price, $discount,$url, $timeCreated) {
+    public function __construct($productID, $brandID, $catalogID, $name, $description, $status, $price, $fakePrice,$url, $timeCreated) {
 
         $this->productID = $productID;
         $this->brandID = $brandID;
@@ -20,7 +20,7 @@ class Product {
         $this->description = $description;
         $this->status = $status;
         $this->price = $price;
-        $this->discount = $discount;
+        $this->fakePrice = $fakePrice;
         $this->url = $url;
         $this->timeCreated = $timeCreated;
     }
@@ -94,12 +94,12 @@ class Product {
         $this->price = $price;
     }
 
-    public function getDiscount() {
-        return $this->discount;
+    public function getFakePrice() {
+        return $this->fakePrice;
     }
 
-    public function setDiscount($discount) {
-        $this->discount = $discount;
+    public function setFakePrice($fakePrice) {
+        $this->fakePrice = $fakePrice;
     }
 }
 
