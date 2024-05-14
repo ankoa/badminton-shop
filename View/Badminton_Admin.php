@@ -746,7 +746,7 @@ function removeExistingImage() {
         </div>
     </div>
         
-       <div id="hoadon-content" class="content-section">
+        <div id="hoadon-content" class="content-section">
         <div class="headerad"> QUẢN LÝ HÓA ĐƠN</div>
    
         <div class="containbox">
@@ -755,66 +755,70 @@ function removeExistingImage() {
                 </div>
                 <div class="containbox">
                     <label for="dateend">Ngày kết thúc:</label>
-                    <input type="date" id="dateend1x">
+                    <input type="date" id="dateend1">
                 </div>
+                <button type="submit" style="margin-top: 10px; margin-left: 10px" onclick="searchTransactionsByDate()">Tìm kiếm</button>
 
+         
         <?php
     
-require_once __DIR__ . '../../Model/ModelTransaction.php';
+            require_once __DIR__ . '../../Model/ModelTransaction.php';
 
-// Tạo một đối tượng ModelTransaction
-$modelTransaction = new ModelTransaction();
+            $modelTransaction = new ModelTransaction();
 
-// Lấy tất cả các giao dịch từ cơ sở dữ liệu
-$transactions = $modelTransaction->getAllTransactions();
+            // Lấy tất cả các giao dịch từ cơ sở dữ liệu"
+            $transactions = $modelTransaction->getAllTransactions();
+            
+            // Kiểm tra xem có giao dịch nào không
+            if ($transactions) {
+                // In ra tiêu đề của bảng
+                echo "<table border='1'>
+                        <tr>
+                            <th>Transaction ID</th>
+                            <th>User ID</th>
+                            <th>Total</th>
+                            <th>Note</th>
+                            <th>Time</th>
+                            <th>Address</th>
+                            <th>Pay</th>
+                            <th>Transport</th>
+                            <th>Name Receiver</th>
+                            <th>Phone Receiver</th>
+                            <th>Detail</th>
+                            <th>Chuyển trạng thái</th>
+                        </tr>";
+            
+                foreach ($transactions as $transaction) {
+                    echo "<tr>";
+                    echo "<td>" . $transaction->getTransactionID() . "</td>";
+                    echo "<td>" . $transaction->getUserID() . "</td>";
+                    echo "<td>" . $transaction->getTotal() . "</td>";
+                    echo "<td>" . $transaction->getNote() . "</td>";
+                    echo "<td>" . $transaction->getTime() . "</td>";
+                    echo "<td>" . $transaction->getAddress() . "</td>";
+                    echo "<td>" . $transaction->getCheck() . "</td>";
+                    echo "<td>" . $transaction->getTransport() . "</td>";
+                    echo "<td>" . $transaction->getNameReceiver() . "</td>";
+                    echo "<td>" . $transaction->getPhoneReceiver() . "</td>";
+                    echo "<td><button onclick='showTransactionDetails(" . $transaction->getTransactionID() . ")'>View Details</button></td>";
+                    echo "<td>
+                    <select id='status" . $transaction->getTransactionID() . "'>
+                        <option value=''>Select Status</option>
+                        <option value='Đang chờ duyệt'>Đang chờ duyệt</option>
+                        <option value='Đã duyệt'>Đã duyệt</option>
+                        <option value='Đang giao hàng'>Đang giao hàng</option>
+                        <option value='Đã giao hàng'>Đã giao hàng</option>
+                    </select>
+                    <button onclick='changeTransactionStatus(" . $transaction->getTransactionID() . ")'>Save</button>
+                  </td>";
+            echo "</tr>";
+        }
+                }
+            
+                echo "</table>";
+                        ?>
+                
 
-// Kiểm tra xem có giao dịch nào không
-if ($transactions) {
-    // In ra tiêu đề của bảng
-    echo "<table border='1'>
-            <tr>
-                <th>Transaction ID</th>
-                <th>Total</th>
-                <th>Note</th>
-                <th>Time</th>
-                <th>Address</th>
-                <th>Status</th>
-                <th>Detail</th>
-                <th>Action</th>
-            </tr>";
-
-    // Duyệt qua từng giao dịch và in ra thông tin
-    foreach ($transactions as $transaction) {
-        $transactionObj = new Transaction(
-            $transaction['transactionID'],
-            $transaction['userID'],
-            $transaction['total'],
-            $transaction['note'],
-            $transaction['time'],
-            $transaction['address'],
-            $transaction['status']
-        );
-        echo "<tr>
-        <td>" . $transactionObj->getTransactionID() . "</td>
-        <td>" . $transactionObj->getTotal() . "</td>
-        <td>" . $transactionObj->getNote() . "</td>
-        <td>" . $transactionObj->getTime() . "</td>
-        <td>" . $transactionObj->getAddress() . "</td>
-        <td>" . $transactionObj->getStatus() . "</td>
-        <td><button onclick='showTransactionDetails(\"" . $transactionObj->getTransactionID() . "\")'>Chi tiết</button></td>
-        <td><button onclick='changeTransactionStatus(\"" . $transactionObj->getTransactionID() . "\", \"" . $transactionObj->getStatus() . "\")'>Chuyển trạng thái</button></td>;
-
-    </tr>";
-    
-
-
-    }
-
-    echo "</table>";
-} else {
-    echo "Không có giao dịch nào.";
-}
-?>
  <div id="popup" class="popup">
         <div class="popup-content">
             <span class="popup-close" onclick="closePopup()">&times;</span>
