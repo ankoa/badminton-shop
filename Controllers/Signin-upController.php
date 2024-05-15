@@ -92,7 +92,7 @@
                         if ($add_user == 1) {
                             $now = new DateTime(); // Tạo một đối tượng DateTime đại diện cho thời gian hiện tại
                             $currentDateTime = $now->format('Y-m-d H:i:s'); // Format thời gian theo định dạng mong muốn
-                            /* $modelCart->addCart($modeluser->getUIDByUserName($username),$currentDateTime ); */
+                            $modelCart->addCart($modeluser->getUIDByUserName($username),$currentDateTime );
                             $_SESSION['login'] = true;
                             $_SESSION['type'] = 'user';
                             $_SESSION['username'] = $username;

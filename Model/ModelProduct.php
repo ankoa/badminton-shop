@@ -355,13 +355,17 @@ class ModelProduct
         $query = "UPDATE product SET brandID = '$brandID', catalogID = '$catalogID', name = '$name', description = '$description' WHERE productID = '$productID'";
         return $this->db->update($query);
     }
-
-    // Xóa sản phẩm khỏi cơ sở dữ liệu
-    public function deleteProduct($productID)
+    public function updateUrlImgProduct($productID, $url)
     {
-        $query = "DELETE FROM product WHERE productID = '$productID'";
-        return $this->db->delete($query);
+        $query = "UPDATE product SET url_image = '$url' WHERE productID = '$productID'";
+        return $this->db->update($query);
     }
+// Xóa sản phẩm khỏi cơ sở dữ liệu
+public function deleteProduct($productID)
+{
+    $query = "UPDATE product SET status = -1 WHERE productID = '$productID'";
+    return $this->db->delete($query);
+}
     public function getProductNameByID($productID)
     {
         $query = "SELECT name FROM product WHERE productID = '$productID'";

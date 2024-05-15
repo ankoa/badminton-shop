@@ -25,7 +25,7 @@ main {
 	position:relative;
 	min-height:1px;
 	padding-right:15px;
-	font-size: 20px;
+	font-size: 30px;
 	}
 
 form {
@@ -99,16 +99,16 @@ input {
 } */
 
 .thong-tin-don-hang {
-  width: 100%; /* chiều rộng của phần thông tin đơn hàng là 100% chiều rộng của container */
+  width: 100%; 
 }
 
 table {
-  width: 100%; /* chiều rộng của table là 100% chiều rộng của container */
+  width: 100%;
 }
 
 .pagination {
   float: right;
-  margin-top: 40px; /* Khoảng cách trên của phân trang */
+  margin-top: 40px;
   margin-right: -165px;
 }
 

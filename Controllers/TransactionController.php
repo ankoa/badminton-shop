@@ -17,8 +17,13 @@
             echo json_encode($this->modelTransaction->getTransactionByID($TransactionID));
         }
 
-        public function deleteHoaDon($id) {
-            echo json_encode($this->modelTransaction->deleteHoaDon($id));
+        public function deleteHoaDon($status,$id) {
+            $check = $this->modelTransaction->getTransaction($id);
+            if($check['status'] == 0){
+                echo $this->modelTransaction->deleteHoaDon(1,$id);
+            } else if($check['status'] == 1){
+                echo $this->modelTransaction->deleteHoaDon(0,$id);
+            }
         }
 
         public function getTransaction($id) {
@@ -35,6 +40,14 @@
 
         public function getTransactionByPhone($phoneNumber){
             echo json_encode($this->modelTransaction->getTransactionByPhone($phoneNumber));
+        }
+
+        public function getAllDeleteHoaDon() {
+            echo json_encode($this->modelTransaction->getAllDeleteHoaDon());
+        }
+
+        public function addTransaction($transactionID, $userID, $total, $note, $time, $address, $check, $transport, $status, $name_receiver, $phone_receiver){
+            echo json_encode($this->modelTransaction->addTransaction($transactionID, $userID, $total, $note, $time, $address, $check, $transport, $status, $name_receiver, $phone_receiver));
         }
 
     }
@@ -69,8 +82,27 @@
             $transactionctl->getAllTransactionByCustomer($ma_kh);
             break;
         case 'delete':
+            $status = $POST['status'];
             $id = $_POST['id'];
-            $transactionctl->deleteHoaDon($id);
+            $transactionctl->deleteHoaDon($status,$id);
+            break;
+        case 'list-delete':
+            $transactionctl->getAllDeleteHoaDon();
+            break;
+        case "add":
+            $transactionID = '';
+            $userID = $_POST['user'];
+            $total = $_POST['total'];
+            $note = $_POST['notes'];
+            $time = date('Y-m-d H:i:s');
+            $address = $_POST['address'];
+            $check = 'Chưa xác nhận'; 
+            $transport = '';
+            $status = 1; 
+            $name_receiver = $_POST['fullname'];
+            $phone_receiver = $_POST['phone'];
+            $chitietquyenctl->addTransaction($transactionID, $userID, $total, $note, $time, $address, $check, $transport, $status, $name_receiver, $phone_receiver);
+            break;
         default:
             break;
         }

@@ -56,8 +56,8 @@
       }
 
       .order-container1 { 
-        width: 700px;
-        max-width: 800px; 
+        width: 1200px;
+        max-width: 1500px; 
         margin: 20px auto; 
         background: white; 
         border-radius: 8px; 
@@ -67,13 +67,13 @@
       }
 
       .overlay {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background-color: rgba(0, 0, 0, 0.5); /* Màu nền đen mờ */
-          z-index: 9998; /* Đảm bảo overlay hiển thị dưới form */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); 
+        z-index: 9998; 
       }
     
     .header { 
@@ -81,6 +81,8 @@
         justify-content: space-between; 
         align-items: center; 
         margin-bottom: 20px; 
+        padding-bottom: 10px;
+        border-bottom: 1px solid black;
     }
 
     .close-button { 
@@ -106,7 +108,7 @@
     } 
 
     .price-info { 
-        width: auto;
+        width: 200px;
         font-size: 18px;
         font-weight: bold; 
     } 
@@ -116,7 +118,7 @@
     } 
 
     .total-amount { 
-        padding-left: 70%;
+        padding-left: 80%;
         text-align: left; 
         margin-top: 10px; 
         margin-bottom: 25px; 
@@ -127,7 +129,7 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        z-index: 9999; /* Đảm bảo form hiển thị trên cùng */
+        z-index: 9999;
         display: none;
     }
 
@@ -138,8 +140,29 @@
         margin-right: 2px;
     }
 
+    .svg-inline2{
+        width: 35px;
+        height: 35px;
+        margin-top: -5px;
+        margin-right: 2px;
+    }
+
     .order-item{
       text-align: center;
+    }
+
+    .order-detail_address{
+      padding-left: 20px;
+      padding-top: 20px;
+      border-top: 1px solid black;
+    }
+
+    .order-detail__address-info{
+      font-size: 20px;
+    }
+
+    .order-detail__address-info-item{
+      color: #00008b;
     }
 
     </style>
@@ -171,7 +194,7 @@
                     <th>Trạng thái thanh toán</th>
                     <th>Trạng thái vận chuyển</th>
                     <th>Tổng tiền</th>
-                    <th></th>
+                    
                     </tr>
                 </thead>
                 <tbody id="showlist">
@@ -180,33 +203,6 @@
             </table>
 
             </div>
-
-                <div class="clearfix">
-                  <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
-                    <ul class="pagination">
-                      <li class="page-item disabled">
-                        <a href="#">Previous</a>
-                      </li>
-                      <li class="page-item active">
-                        <a href="#" class="page-link">1</a>
-                      </li>
-                      <li class="page-item">
-                        <a href="#" class="page-link">2</a>
-                      </li>
-                      <li class="page-item">
-                        <a href="#" class="page-link">3</a>
-                      </li>
-                      <li class="page-item">
-                        <a href="#" class="page-link">4</a>
-                      </li>
-                      <li class="page-item">
-                        <a href="#" class="page-link">5</a>
-                      </li>
-                      <li class="page-item">
-                        <a href="#" class="page-link">Next</a>
-                      </li>
-                    </ul>
-                  </div>
          </div>
         </main>
     </div>
@@ -217,7 +213,7 @@
 <div class="order-container1">
     <div class="header">
         <h1>Đặt hàng thành công</h1>
-        <button class="close-button">X</button>
+        <div class="close-button"><img class="svg-inline2" src="../View/images/x-button.png" data-src="../View/images/x-button.png"></div>
     </div>
     <div id="order-detail-modal"></div>
     <div id="order-detail-receive"></div>

@@ -35,11 +35,13 @@ class ModelCart {
         }
     }
 
-    // Phương thức để thêm một giỏ hàng mới vào cơ sở dữ liệu
     public function addCart($userID, $timeCreated) {
-        $query = "INSERT INTO cart (userID, timeCreated) 
-                  VALUES ('$userID', '$timeCreated')";
-        return $this->db->insert($query);
+
+    
+        // Chèn bản ghi mới với cartID mới
+        $query = "INSERT INTO cart (cartID, userID, timeCreated) 
+                  VALUES ('$userID', '$userID', '$timeCreated')";
+       return $this->db->insert($query);
     }
 
     // Phương thức để cập nhật thông tin giỏ hàng trong cơ sở dữ liệu

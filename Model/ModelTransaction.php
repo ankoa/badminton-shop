@@ -315,6 +315,25 @@ require_once '..\Model\Entity\Transaction.php';
     }
     
     
+            public function getAllDeleteHoaDon() {
+                try {
+                    $query = "SELECT *, DATE_FORMAT(time, '%d/%m/%Y') AS FormatDate FROM transaction WHERE status = 0";
+                    $result = $this->db->select($query);
+                    $arrHoaDon = array();
+                    while($row = mysqli_fetch_assoc($result)) {
+                        $arrHoaDon[] = $row;
+                    }
+                    return $arrHoaDon;
+                } catch (Exception $e) {
+                    echo 'Error:'. $e->getMessage();
+                    return null;
+                }
+            }
+         
+        
+
     
+
     }
+
 ?>
