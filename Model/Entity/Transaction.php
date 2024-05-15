@@ -11,19 +11,18 @@ class Transaction {
     public $transport;
     public $status;
     public $check;
-    public function __construct($transactionID, $userID, $total, $note, $time, $address, $check, $transport, $status, $name_receiver, $phone_receiver,) {
+    public function __construct($transactionID, $userID, $total, $note, $time, $address, $name_receiver, $phone_receiver, $transport, $status, $check) {
         $this->transactionID = $transactionID;
         $this->userID = $userID;
         $this->total = $total;
         $this->note = $note;
         $this->time = $time;
         $this->address = $address;
-        $this->check = $check;
-        $this->transport = $transport;
-        $this->status = $status;
         $this->name_receiver = $name_receiver;
         $this->phone_receiver = $phone_receiver;
-        
+        $this->transport = $transport;
+        $this->status = $status;
+        $this->check = $check;
     }
 
     // Getter và setter cho transactionID
@@ -120,4 +119,3 @@ class Transaction {
 }
 
 ?>
-

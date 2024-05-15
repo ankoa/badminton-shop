@@ -2,7 +2,10 @@
     height: fit-content !important; /* Ghi đè chiều cao */
     display: block !important; /* Ghi đè kiểu hiển thị */
 }
-
+#main {
+    height: fit-content !important;
+    width: 100%;
+}
 body {
     font-family: Arial, sans-serif;
     margin: 0;

@@ -7,7 +7,7 @@ class ModelOrderTransaction {
     public function __construct() {
         $this->db = new Database();
     }
-
+/* 
     // Phương thức để lấy tất cả các giao dịch đơn hàng từ cơ sở dữ liệu
     public function getAllOrderTransactions() {
         try {
@@ -43,7 +43,32 @@ class ModelOrderTransaction {
             echo 'Error:'. $e->getMessage();
             return null;
         }
+    } */
+// Phương thức để lấy tất cả các giao dịch đơn hàng từ cơ sở dữ liệu
+public function getAllOrderTransactions() {
+    $query = "SELECT * FROM `ordertransaction` WHERE status != 0";
+    $result = $this->db->select($query);
+    if ($result) {
+        $orderTransactions = [];
+        while ($row = $result->fetch_assoc()) {
+            $orderTransactions[] = $row;
+        }
+        return $orderTransactions;
+    } else {
+        return false;
     }
+}
+
+// Phương thức để lấy thông tin giao dịch đơn hàng bằng ID đơn hàng
+public function getOrderTransactionByOrderID($orderID) {
+    $query = "SELECT * FROM `ordertransaction` WHERE orderID = '$orderID' AND status != 0";
+    $result = $this->db->select($query);
+    if ($result) {
+        return $result->fetch_assoc();
+    } else {
+        return false;
+    }
+}
 
     public function checkOrderDetail($id) {
         try {
@@ -83,6 +108,22 @@ class ModelOrderTransaction {
     public function deleteOrderTransaction($orderID) {
         $query = "UPDATE FROM `ordertransaction` SET status= 0 WHERE orderID = '$orderID'";
         return $this->db->delete($query);
+    }
+    public function getOrderTransactionDetails($orderID) {
+        $query = "SELECT od.productID, p.name as productName, p.price as productPrice, od.quantity, od.total_amonut 
+                  FROM ordertransaction od 
+                  JOIN product p ON od.productID = p.productID 
+                  WHERE od.transactionID = '$orderID'";
+        $result = $this->db->select($query);
+        if ($result) {
+            $details = [];
+            while ($row = $result->fetch_assoc()) {
+                $details[] = $row;
+            }
+            return $details;
+        } else {
+            return false;
+        }
     }
 }
 

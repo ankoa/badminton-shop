@@ -1,4 +1,4 @@
-<?php
+        <?php
 $productid = $_GET['productID'];
 require_once('../Model/ModelProduct.php');
 require_once('../Model/ModelBrand.php');

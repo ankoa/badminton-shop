@@ -239,6 +239,7 @@ if ($catalog->getName() == "Racket") {
                         </div>
                     </fieldset>
                     <div class="form-product" id="test">
+
                         <?php if ($catalog->getName() == 'Shuttle') : ?>
                             <div class="select-swatch">
                                 <div class="swatch clearfix">
