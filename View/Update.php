@@ -1,7 +1,7 @@
 <?php
 //  kết nối server
-require_once "../Model/database.php";
-require_once "./Badminton_Admin.php";
+require_once  "../Model/database.php";
+require_once "../Controllers/Badminton_Admin.php";
 $ModelProduct = new ModelProduct();
 
 if($_SERVER['REQUEST_METHOD']=='POST'){

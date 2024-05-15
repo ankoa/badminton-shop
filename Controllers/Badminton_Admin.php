@@ -12,6 +12,15 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <title>Admin</title>
     <style>
+        .product-version-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .product-version {
+            margin-right: 10px;
+        }
+
         /* Tùy chỉnh kích thước của .tab-container */
         .tab-container {
             margin-top: 20px;
@@ -104,6 +113,9 @@
             cursor: pointer;
         }
     </style>
+    <script>
+        var imgCurrent = null;
+    </script>
     <?php
     require_once __DIR__ . '../../Model/ModelTransaction.php';
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -918,13 +930,14 @@
                             var imagesrc = "../View/images/product/" + productID + "/" + keys[0] + "/" + productID + ".1.png";
                             document.getElementById("existingImage").setAttribute('src', imagesrc);
                             var imgUrl = data[keys[0]];
+                            imgCurrent = imgUrl;
                             var imgContainer = document.getElementById('image-container');
                             var tmp = '';
                             imgContainer.innerHTML = '';
                             for (var i = 0; i < imgUrl.length; i++) {
                                 tmp += `<div class="image-container">
                                     <img src="../View/images/product/` + productID + `/` + keys[0] + `/` + productID + `.` + imgUrl[i] + `.png" alt="Image 1" onclick="openImage(this.src)">
-                                    <button data-id="`+productID+`" data-color="`+keys[0]+`" data-value="` + imgUrl[i] + `" class="btn btn-danger delete-btn" onclick="deleteImage(this)">×</button>
+                                    <button data-id="` + productID + `" data-color="` + keys[0] + `" data-value="` + imgUrl[i] + `" class="btn btn-danger delete-btn" onclick="deleteImage(this)">×</button>
                                 </div>`
                             }
                             imgContainer.innerHTML = tmp;
@@ -970,24 +983,24 @@
             function loadvariantRadio(c) {
                 var productID = c.getAttribute('data-value2');
                 var color = c.value;
-                console.log(color);
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4) {
                         if (this.status == 200) {
                             var data = JSON.parse(this.responseText);
-                            console.log(data);
                             var keys = Object.keys(data);
                             var imagesrc = "../View/images/product/" + productID + "/" + color + "/" + productID + ".1.png";
                             document.getElementById("existingImage").setAttribute('src', imagesrc);
                             var imgUrl = data[color];
+                            imgCurrent = imgUrl;
+                            console.log(imgCurrent);
                             var imgContainer = document.getElementById('image-container');
                             var tmp = '';
                             imgContainer.innerHTML = '';
                             for (var i = 0; i < imgUrl.length; i++) {
                                 tmp += `<div class="image-container">   
                                     <img src="../View/images/product/` + productID + `/` + color + `/` + productID + `.` + imgUrl[i] + `.png" alt="Image 1" onclick="openImage(this.src)">
-                                    <button data-color="`+color+`" data-id="`+productID+`" data-value="` + imgUrl[i] + `" class="btn btn-danger delete-btn" onclick="deleteImage(this)">×</button>
+                                    <button data-color="` + color + `" data-id="` + productID + `" data-value="` + imgUrl[i] + `" class="btn btn-danger delete-btn" onclick="deleteImage(this)">×</button>
                                 </div>`
                             }
                             imgContainer.innerHTML = tmp;
@@ -1047,7 +1060,7 @@
         <!-- Bảng chỉnh sửa sản phẩm -->
 
         <div id="editModal" class="modal" style="overflow-y: auto;background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">
-            <form class="modal-content" action="Update.php" method="POST" style="width: 50%; margin-left: 25%; margin-top: 3%; border: solid 2px; padding: 20px;">
+            <form class="modal-content" action="../View/Update.php" method="POST" style="width: 50%; margin-left: 25%; margin-top: 3%; border: solid 2px; padding: 20px;">
                 <span style="position: absolute; top: 5px; right: 5px;" class="close" onclick="closeEditModal()">&times;</span>
                 <h1 style="text-align: center;">Chỉnh sửa sản phẩm</h1>
 
@@ -1089,7 +1102,69 @@
                 <div class="input-group mb-3" id="variant">
 
                 </div>
+                <div class="input-group mb-3">
+                <div class="container">
+  <div class="row">
+  <div class="col-md-6">
+  <div class="product-version-container">
+    <div class="product-version">Biến thể:</div>
+    <div class="position-relative d-inline-block badge-container" style="margin-left: 20px; cursor:pointer;">
+      <div class="badge badge-primary" style="height: 40px; width:100px; line-height: 30px" data-toggle="badge">4UG5
+        <button type="button" class="btn btn-danger btn-sm rounded-circle position-absolute" style="top: -10px; right: -15px;" data-toggle="button">&times;</button>
+      </div>
+    </div>
+    <div class="position-relative d-inline-block badge-container" style="margin-left: 20px; cursor:pointer;">
+      <div class="badge badge-primary" style="height: 40px; width:100px; line-height: 30px" data-toggle="badge">4UG5
+        <button type="button" class="btn btn-danger btn-sm rounded-circle position-absolute" style="top: -10px; right: -15px;" data-toggle="button">&times;</button>
+      </div>
+    </div>
+    <div class="position-relative d-inline-block badge-container" style="margin-left: 20px; cursor:pointer;">
+      <div class="badge badge-primary" style="height: 40px; width:100px; line-height: 30px" data-toggle="badge">4UG5
+        <button type="button" class="btn btn-danger btn-sm rounded-circle position-absolute" style="top: -10px; right: -15px;" data-toggle="button">&times;</button>
+      </div>
+    </div>
+  </div>
+</div>
+  </div>
 
+  <script>
+  // Lắng nghe sự kiện nhấp vào badge
+  document.querySelectorAll('[data-toggle="badge"]').forEach(function(badge) {
+    badge.addEventListener('click', function() {
+      // Loại bỏ lớp "badge-active" từ tất cả các badge
+      document.querySelectorAll('.badge-container').forEach(function(item) {
+        item.classList.remove('badge-active');
+      });
+      // Thêm lớp "badge-active" cho badge được nhấp vào
+      badge.closest('.badge-container').classList.add('badge-active');
+    });
+  });
+
+  // Lắng nghe sự kiện nhấp vào nút xóa
+  document.querySelectorAll('[data-toggle="button"]').forEach(function(button) {
+    button.addEventListener('click', function(event) {
+      event.stopPropagation(); // Ngăn chặn sự kiện click trên badge
+    });
+  });
+</script>
+
+  <!-- Thêm hàng mới cho input và nút lưu -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="input-group" style="margin-top: 10px; width:60%">
+        <input type="text" class="form-control" placeholder="Số lượng" aria-label="Số lượng" aria-describedby="basic-addon2">
+        <div class="input-group-append" style="width: 100px">
+          <button class="btn btn-outline-secondary" type="button">Lưu</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+                </div>
                 <div class="input-group mb-3">
                     <label for="existingImage">Ảnh đại diện:</label>
                     <div class="d-flex align-items-center">
@@ -1143,7 +1218,7 @@
                                 }
                             }
                         };
-                        xhttp.open("GET", "admin_product.php?get=delImg&productID=" + productID + "&imgDel="+imgIndex + "&color="+color, true);
+                        xhttp.open("GET", "admin_product.php?get=delImg&productID=" + productID + "&imgDel=" + imgIndex + "&color=" + color, true);
                         xhttp.send();
                     }
 
@@ -1163,9 +1238,24 @@
 
                 <div class="input-group mb-3">
                     <label for="editProductImageInput">Chọn hình mới:</label>
-                    <input type="file" name="image" id="image" accept="image/*">
+                    <input type="file" name="image" id="image-choose" accept="image/*">
                     <img id="selectedImage" style="max-width: 100px; max-height: 70px;" alt="Hình được chọn">
+                    <button id="uploadButton">Upload Image</button>
                 </div>
+
+                <script>
+                    document.getElementById('image-choose').addEventListener('change', function(event) {
+                        const file = event.target.files[0];
+                        if (file) {
+                            const reader = new FileReader();
+                            reader.onload = function(e) {
+                                document.getElementById('selectedImage').src = e.target.result;
+                            };
+                            reader.readAsDataURL(file);
+                        }
+                    });
+                </script>
+
 
                 <button type="submit" class="btn btn-primary" style="width:100%;">Lưu</button>
             </form>
