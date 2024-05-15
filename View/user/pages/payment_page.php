@@ -1,5 +1,5 @@
 <?php
-    session_start();
+session_start();
 require_once __DIR__ . '/../../../Model/ModelProduct.php';
 require_once __DIR__ . '/../../../Model/ModelUser.php';
 require_once __DIR__ . '/../../../Model/ModelCartDetail.php';
@@ -9,6 +9,7 @@ $modelProduct = new ModelProduct();
 $modelCartDetail = new ModelCartDetail();
 $modelVariantDetail = new ModelVariantDetail();
 $cartDetails = $modelCartDetail->getCartDetailByCartID($modelUser->getUIDByUserName($_SESSION['username']));
+$total_price_cart = 0;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -84,7 +85,8 @@ $cartDetails = $modelCartDetail->getCartDetailByCartID($modelUser->getUIDByUserN
             margin-bottom: 5px;
         }
 
-        .input-group input {
+        .input-group input,
+        .input-group textarea {
             width: 100%;
             padding: 8px;
             font-size: 16px;
@@ -124,12 +126,20 @@ $cartDetails = $modelCartDetail->getCartDetailByCartID($modelUser->getUIDByUserN
             color: green;
         }
 
+
         .submit-btn {
             background-color: orange;
             color: white;
             padding: 10px 20px;
             border: none;
             cursor: pointer;
+            transition: background-color 0.1s;
+        }
+
+
+        .submit-btn:hover {
+            background-color: green;
+
         }
     </style>
 </head>
@@ -154,8 +164,8 @@ $cartDetails = $modelCartDetail->getCartDetailByCartID($modelUser->getUIDByUserN
                     <input type="text" id="address" name="address" maxlength="100">
                 </div>
                 <div class="input-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" maxlength="50">
+                    <label for="notes">Ghi chú</label>
+                    <textarea id="notes" name="notes" rows="3"></textarea>
                 </div>
             </form>
         </div>
@@ -175,7 +185,7 @@ $cartDetails = $modelCartDetail->getCartDetailByCartID($modelUser->getUIDByUserN
                                         $productID = $cartDetail->getProductID();
                                         $price = $cartDetail->getPrice();
                                         $variantDetail = $modelVariantDetail->getVariantByID($cartDetail->getVariantID());
-
+                                        $total_price_cart += $cartDetail->getPrice();
                                         $productName = $modelProduct->getProductNameByID($productID);
                                         $product = $modelProduct->getProductByID($productID);
 
@@ -193,32 +203,9 @@ $cartDetails = $modelCartDetail->getCartDetailByCartID($modelUser->getUIDByUserN
                                         echo '</td>';
                                         echo '<td class="product-price text-right">' . number_format($price) . ' ₫ </td>';
                                         echo '</tr>';
-
                                     }
                                     //  }
-                                    ?> 
-
-                                    <!-- <tr class="product product-has-image clearfix">
-                                        <td>
-                                            <div class="product-thumbnail">
-                                                <div class="product-thumbnail__wrapper">
-
-                                                    <img src="" class="product-thumbnail__image" />
-
-                                                </div>
-                                                <span class="product-thumbnail__quantity" aria-hidden="true">1</span>
-                                            </div>
-                                        </td>
-                                        <td class="product-info">
-                                            <span class="product-info-name">
-
-                                                Giày cầu lông Mizuno Gate Sky Plus 3 - Đen hồng chính hãng (71GA234025) </span>
-
-
-                                        </td>
-                                        <td class="product-price text-right">
-                                            1.800.000 ₫ </td>
-                                    </tr> -->
+                                    ?>
 
 
                                 </tbody>
@@ -232,9 +219,9 @@ $cartDetails = $modelCartDetail->getCartDetailByCartID($modelUser->getUIDByUserN
                     <div class="summary-section border-top-none--mobile">
                         <div class="total-line total-line-total clearfix">
                             <span class="total-line-name pull-left">
-                                Tổng cộng
+                                Tổng tiền:
                             </span>
-                            <span class="total-line-price pull-right"> 3.600.000 ₫</span>
+                            <span class="total-line-price pull-right"> <?php echo number_format($total_price_cart, 0, ',', '.'); ?> ₫</span>
                         </div>
                         <div class="payment-options">
                             <div>
@@ -270,6 +257,40 @@ $cartDetails = $modelCartDetail->getCartDetailByCartID($modelUser->getUIDByUserN
                     });
                 }
             </script>
+
+            <script>
+                
+                    $(document).on('click', '.submit-btn', function(event) {
+                        event.preventDefault();
+
+                        // Collect form data
+                        var fullName = document.getElementById('fullname').value.trim();
+                        var phone = document.getElementById('phone').value.trim();
+                        var address = document.getElementById('address').value.trim();
+                        var note = document.getElementById('notes').value.trim();
+
+                        
+                        if (fullName === '' || phone === '' || address === '') {
+                            alert('Vui lòng nhập đủ thông tin!');
+                            return;
+                        }
+
+                        
+                        var xhr = new XMLHttpRequest();
+                        xhr.open("POST", "process_order.php", true);
+                        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                        xhr.onreadystatechange = function() {
+                            if (xhr.readyState === 4 && xhr.status === 200) {
+                                alert('Đặt hàng thành công!');
+                                
+                            }
+                        };
+                        xhr.send("&fullname=" + fullName + "&phone=" + phone + "&address=" + address + "&notes=" + note + "&total=" + <?php echo $total_price_cart; ?>);
+                    });
+                
+            </script>
+
+
 
 </body>
 

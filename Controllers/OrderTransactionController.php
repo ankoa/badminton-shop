@@ -16,6 +16,10 @@
         public function getOrderTransactionByOrderID($orderID) {
             echo json_encode($this->modelOrderTransaction->getOrderTransactionByOrderID($orderID));
         }
+
+        public function checkOrderDetail($id) {
+            echo json_encode($this->modelOrderTransaction->checkOrderDetail($id));
+        }
     }
 
     $CTHD = new ModelOrderTransaction();
@@ -23,18 +27,14 @@
     $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : null;
 
     switch ($action){
-        // case 'getcthd':
-        //     $ma_hd = $_POST['ma_hd'];
-        //     $CTHD->getAllOrderTransactions($ma_hd);
-        //     break;
         case 'get-cthd':
             $ma_hd = $_POST['id_transaction'];
             echo json_encode($CTHD->getOrderTransactionByOrderID($ma_hd));
             break;
-        // case 'add':
-        //     $obj = json_decode(json_encode($_POST['cthd']));
-
-        //     $ctHDctl->addCTHD($obj->{'maHD'}, $obj->{'maCTSP'}, $obj->{'soLuong'}, $obj->{'giaSP'});
+        case 'check-order':
+            $ma_cthd = $_POST['id'];
+            echo json_encode($CTHD->checkOrderDetail($ma_cthd));
+            break;
         default:
             break;
     }

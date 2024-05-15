@@ -6,27 +6,26 @@ class Transaction {
     public $note;
     public $time;
     public $address;
-    public $check; // Renamed from 'check' for consistency
+    public $name_receiver;
+    public $phone_receiver;
     public $transport;
     public $status;
-    public $nameReceiver; // Camel case for consistency with other properties
-    public $phoneReceiver; // Camel case for consistency with other properties
-
-    public function __construct($transactionID, $userID, $total, $note, $time, $address, $check, $transport, $status, $nameReceiver, $phoneReceiver) {
+    public $check;
+    public function __construct($transactionID, $userID, $total, $note, $time, $address, $name_receiver, $phone_receiver, $transport, $status, $check) {
         $this->transactionID = $transactionID;
         $this->userID = $userID;
         $this->total = $total;
         $this->note = $note;
         $this->time = $time;
         $this->address = $address;
-        $this->check = $check;
+        $this->name_receiver = $name_receiver;
+        $this->phone_receiver = $phone_receiver;
         $this->transport = $transport;
         $this->status = $status;
-        $this->nameReceiver = $nameReceiver;
-        $this->phoneReceiver = $phoneReceiver;
+        $this->check = $check;
     }
 
-    // Getter and setter for transactionID
+    // Getter và setter cho transactionID
     public function getTransactionID() {
         return $this->transactionID;
     }
@@ -35,7 +34,7 @@ class Transaction {
         $this->transactionID = $transactionID;
     }
 
-    // Getter and setter for userID
+    // Getter và setter cho userID
     public function getUserID() {
         return $this->userID;
     }
@@ -44,7 +43,7 @@ class Transaction {
         $this->userID = $userID;
     }
 
-    // Getter and setter for total
+    // Getter và setter cho total
     public function getTotal() {
         return $this->total;
     }
@@ -53,7 +52,7 @@ class Transaction {
         $this->total = $total;
     }
 
-    // Getter and setter for note
+    // Getter và setter cho note
     public function getNote() {
         return $this->note;
     }
@@ -62,7 +61,7 @@ class Transaction {
         $this->note = $note;
     }
 
-    // Getter and setter for time
+    // Getter và setter cho time
     public function getTime() {
         return $this->time;
     }
@@ -71,58 +70,52 @@ class Transaction {
         $this->time = $time;
     }
 
-    // Getter and setter for address
+    // Getter và setter cho address
     public function getAddress() {
         return $this->address;
     }
-
-    public function setAddress($address) {
-        $this->address = $address;
+    // Getter và setter cho name_receiver
+    public function getNameReceiver() {
+        return $this->name_receiver;
     }
 
-    // Getter and setter for pay
-    public function getCheck() {
-        return $this->check;
-    }
-    
-    public function setCheck($check) {
-        $this->check = $check;
+    public function setNameReceiver($name_receiver) {
+        $this->name_receiver = $name_receiver;
     }
 
-    // Getter and setter for transport
+    // Getter và setter cho phone_receiver
+    public function getPhoneReceiver() {
+        return $this->phone_receiver;
+    }
+
+    public function setPhoneReceiver($phone_receiver) {
+        $this->phone_receiver = $phone_receiver;
+    }
+
+    // Getter và setter cho transport
     public function getTransport() {
         return $this->transport;
     }
-    
+
     public function setTransport($transport) {
         $this->transport = $transport;
     }
 
-    // Getter and setter for status
+    // Getter và setter cho status
     public function getStatus() {
         return $this->status;
     }
-    
+
     public function setStatus($status) {
         $this->status = $status;
     }
-
-    // Getter and setter for nameReceiver
-    public function getNameReceiver() {
-        return $this->nameReceiver;
-    }
-    
-    public function setNameReceiver($nameReceiver) {
-        $this->nameReceiver = $nameReceiver;
+    public function getCheck() {
+        return $this->check;
     }
 
-    // Getter and setter for phoneReceiver
-    public function getPhoneReceiver() {
-        return $this->phoneReceiver;
-    }
-    
-    public function setPhoneReceiver($phoneReceiver) {
-        $this->phoneReceiver = $phoneReceiver;
+    public function setCheck($check) {
+        $this->check = $check;
     }
 }
+
 ?>

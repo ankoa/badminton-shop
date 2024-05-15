@@ -59,24 +59,6 @@
 
 <div class="orders-container">
   <h2 class="orders-title">Cancelled Orders</h2>
-  <ul class="orders-list">
-    <li class="order-item">
-        <div class="order-details">
-            <div class="order-info">
-                <span class="order-id">Order #12345</span> - Cancelled on 2022-01-15
-            </div>
-            <button class="order-restore-btn">Restore</button>
-        </div>
-        <div class="order-total">Total: $50.00</div>
-    </li>
-    <li class="order-item">
-        <div class="order-details">
-            <div class="order-info">
-                <span class="order-id">Order #67890</span> - Cancelled on 2022-02-20
-            </div>
-            <button class="order-restore-btn">Restore</button>
-        </div>
-        <div class="order-total">Total: $75.00</div>
-    </li>
-</ul>
+    <div class="orders-list" id="orders-list">
+    </div>
 </div>

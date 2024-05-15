@@ -27,8 +27,9 @@ class ModelOrderTransaction {
     // Phương thức để lấy thông tin giao dịch đơn hàng bằng ID đơn hàng
     public function getOrderTransactionByOrderID($orderID) {
         try{
-            $query = "SELECT cthd.*, pro.name , pro.price, pro.description, pro.url_image FROM ordertransaction cthd
+            $query = "SELECT cthd.*, pro.name , pro.price, pro.description, pro.url_image, var.color FROM ordertransaction cthd
             JOIN product pro ON cthd.productID = pro.productID
+            JOIN variantdetail var ON cthd.variantID = var.variantID
             WHERE cthd.transactionID = '$orderID'
             ";
 
@@ -68,6 +69,25 @@ public function getOrderTransactionByOrderID($orderID) {
         return false;
     }
 }
+
+    public function checkOrderDetail($id) {
+        try {
+            $query = "SELECT IF(EXISTS (
+                SELECT 1
+                FROM ordertransaction
+                WHERE transactionID = '$id'
+            ), 1, 0) AS hasDetails";
+            $result = $this->db->select($query);
+            if ($row = mysqli_fetch_assoc($result)) {
+                return (int)$row['hasDetails'];
+            }
+            return ['hasDetails' => 0];
+        } catch (Exception $e) {
+            echo 'Error:'. $e->getMessage();
+            return null;
+        }
+    }
+
     // Phương thức để thêm một giao dịch đơn hàng mới vào cơ sở dữ liệu
     public function addOrderTransaction($transactionID, $productID, $total, $note, $status) {
         $query = "INSERT INTO `ordertransaction` (transactionID, productID, total, note, status) 

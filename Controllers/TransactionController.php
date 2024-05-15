@@ -17,8 +17,13 @@
             echo json_encode($this->modelTransaction->getTransactionByID($TransactionID));
         }
 
-        public function deleteHoaDon($id) {
-            echo json_encode($this->modelTransaction->deleteHoaDon($id));
+        public function deleteHoaDon($status,$id) {
+            $check = $this->modelTransaction->getTransaction($id);
+            if($check['status'] == 0){
+                echo $this->modelTransaction->deleteHoaDon(1,$id);
+            } else if($check['status'] == 1){
+                echo $this->modelTransaction->deleteHoaDon(0,$id);
+            }
         }
 
         public function getTransaction($id) {
@@ -35,6 +40,10 @@
 
         public function getTransactionByPhone($phoneNumber){
             echo json_encode($this->modelTransaction->getTransactionByPhone($phoneNumber));
+        }
+
+        public function getAllDeleteHoaDon() {
+            echo json_encode($this->modelTransaction->getAllDeleteHoaDon());
         }
 
     }
@@ -69,8 +78,13 @@
             $transactionctl->getAllTransactionByCustomer($ma_kh);
             break;
         case 'delete':
+            $status = $POST['status'];
             $id = $_POST['id'];
-            $transactionctl->deleteHoaDon($id);
+            $transactionctl->deleteHoaDon($status,$id);
+            break;
+        case 'list-delete':
+            $transactionctl->getAllDeleteHoaDon();
+            break;
         default:
             break;
         }
