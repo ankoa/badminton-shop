@@ -1,7 +1,7 @@
 <?php
 // Include các file cần thiết
 require_once '../Model/ModelRole.php';
-
+        
 // Xử lý yêu cầu AJAX
 if (isset($_POST['roleID']) && isset($_POST['roleName'])) {     
     // Lấy dữ liệu từ form
@@ -20,6 +20,7 @@ if (isset($_POST['roleID']) && isset($_POST['roleName'])) {
             'message' => "Cập nhật thành công.",
             'status' => 1
         ));
+        exit;
     } else {
         echo json_encode(array(
             'message' => "Cập nhật thất bại.",
@@ -34,4 +35,5 @@ if (isset($_POST['roleID']) && isset($_POST['roleName'])) {
     ));
     exit;
 }
+
 ?>

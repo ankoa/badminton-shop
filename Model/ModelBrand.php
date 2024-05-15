@@ -36,7 +36,32 @@ class ModelBrand {
             return false;
         }
     }
-
+    public function getNameByID($brandID) {
+        $query = "SELECT name FROM brand WHERE brandID = '$brandID' AND status != 0";
+        $result = $this->db->select($query);
+        if ($result && $result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row['name'];
+        } else {
+            return null;
+        }
+    }
+    public function getIDByName($name) {
+        // Chuẩn bị câu truy vấn SQL để lấy brandID từ tên thương hiệu
+        $query = "SELECT brandID FROM brand WHERE name = '$name' AND status != 0";
+    
+        // Thực thi câu truy vấn
+        $result = $this->db->select($query);
+    
+        // Kiểm tra kết quả trả về từ câu truy vấn
+        if ($result && $result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row['brandID']; // Trả về brandID nếu tìm thấy
+        } else {
+            return null; // Trả về null nếu không tìm thấy
+        }
+    }
+        
     // Phương thức để thêm một thương hiệu mới vào cơ sở dữ liệu
     public function addBrand($name, $description, $status) {
         $query = "INSERT INTO brand (name, description, status) VALUES ('$name', '$description', '$status')";

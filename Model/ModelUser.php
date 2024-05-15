@@ -199,6 +199,24 @@ class ModelUser {
             return 0; // Trả về 0 nếu có lỗi hoặc không có người dùng nào có vai trò tương ứng
         }
     }
+    public function changeUserStatus($userID, $newStatus) {
+        // Update the status of the user in the database
+        $query = "UPDATE user SET status = '$newStatus' WHERE userID = '$userID'";
+        return $this->db->update($query);
+    }
+
+    // Lấy role ID bằng username
+    public function getRoleIDByUsername($username) {
+        $query = "SELECT roleID FROM user WHERE username = '$username' AND status != 0";
+        $result = $this->db->select($query);
+        if ($result) {
+            $row = $result->fetch_assoc();
+            return $row['roleID'];
+        } else {
+            return false;
+        }
+    }
+
     
 
 }

@@ -203,12 +203,12 @@ header{
 
 .submenu{
     position: absolute;
-    width: 850px;
+    width: 1000px;
     height: auto;
     border: 1px solid #000;
     display: flex;
     margin-top: 20px;
-    transform: translateX(-350px);
+    transform: translateX(-400px);
     visibility: hidden;
     z-index: 1000;
     background: #ffffff;
@@ -221,7 +221,7 @@ header{
     padding: 15px 0 50px 50px;
 
 }
-.submenu > li a{
+.submenua{
     padding: 50px 15px 5px 5px;
     color: #E95221;
     font-weight: bold; 
@@ -229,15 +229,17 @@ header{
 }
 .menu_item > li{
     padding: 10px 0 5px 5px;
+    margin-top: 15px;
    
 }
-
 .titlemenu{
     color: #ffffff;
     font-weight: bold;
     
 }
-
+.fixa{
+    text-decoration: none !important;
+}
 
 .wrapper{
     height: auto;

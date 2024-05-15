@@ -53,12 +53,15 @@
         height: 50px; /* Cao tự động theo nội dung */
         align-self: flex-start; /* căn nút "Restore" lên trên */
         padding: 0;
+        color: wheat;
+        background: linear-gradient(to right, #00bfff, #00008b);
     }
 
 </style>
 
 <div class="orders-container">
-  <h2 class="orders-title">Cancelled Orders</h2>
+  <h2 class="orders-title">Danh sách đơn hàng huỷ</h2>
+
     <div class="orders-list" id="orders-list">
     </div>
 </div>
