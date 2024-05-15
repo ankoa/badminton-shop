@@ -186,13 +186,12 @@ session_start(); // Start the session at the beginning of the script
     <?php
     require_once __DIR__ . '../../Model/ModelTransaction.php';
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        if(isset($_POST['startDate']) && isset($_POST['startDate'])) {
-            $startDate = $_POST['startDate'];
-            $endDate = $_POST['endDate'];
-            // Tạo một đối tượng ModelTransaction và gọi hàm displayTotalSales
-            $modelTransaction = new ModelTransaction();
-            $modelTransaction->displayTotalSales($startDate, $endDate);
-        }    
+        $startDate = $_POST['startDate'];
+        $endDate = $_POST['endDate'];
+
+        // Tạo một đối tượng ModelTransaction và gọi hàm displayTotalSales
+        $modelTransaction = new ModelTransaction();
+        $modelTransaction->displayTotalSales($startDate, $endDate);
     }
     ?>
 
@@ -238,16 +237,15 @@ session_start(); // Start the session at the beginning of the script
 
         var myChart; // Declare the myChart variable outside the function
 
+function thongKe(event) {
+    event.preventDefault(); // Prevent the default form behavior
 
-        function thongKe(event) {
-            event.preventDefault(); // Prevent the default form behavior
+    var startDate = document.getElementById('datestart2').value;
+    var endDate = document.getElementById('dateend2').value;
 
-            var startDate = document.getElementById('datestart2').value;
-            var endDate = document.getElementById('dateend2').value;
-
-            // Create an AJAX request to your PHP script
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', '../View/doanhso.php?startDate=' + encodeURIComponent(startDate) + '&endDate=' + encodeURIComponent(endDate), true);
+    // Create an AJAX request to your PHP script
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '../View/doanhso.php?startDate=' + encodeURIComponent(startDate) + '&endDate=' + encodeURIComponent(endDate), true);
 
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
@@ -267,11 +265,10 @@ session_start(); // Start the session at the beginning of the script
                 return;
             }
 
-                    // Get the canvas element where the chart will be drawn
-                    var ctx = document.getElementById('salesChart').getContext('2d');
-                    ctx.canvas.width = 300;
-                    ctx.canvas.height = 200;
-
+            // Get the canvas element where the chart will be drawn
+            var ctx = document.getElementById('salesChart').getContext('2d');
+            ctx.canvas.width = 300;
+            ctx.canvas.height = 200;
 
             // Destroy the old charts if they exist
             if (myChart) {
@@ -296,7 +293,6 @@ session_start(); // Start the session at the beginning of the script
                     }
                 }
             };
-
 
             // Create the chart using the existing myChart variable
             myChart = new Chart(ctx, {
@@ -339,9 +335,10 @@ session_start(); // Start the session at the beginning of the script
             totalCell2.innerHTML = totalSales;
         }
     };
-            // Send the request
-            xhr.send();
-        }
+
+    // Send the request
+    xhr.send();
+}
 
 
 
@@ -401,7 +398,7 @@ session_start(); // Start the session at the beginning of the script
             // Tạo yêu cầu AJAX để lấy chi tiết hóa đơn từ máy chủ
             var xhr = new XMLHttpRequest();
             xhr.open('GET', '../View/ViewDetail.php?transactionID=' + transactionID, true);
-            xhr.onreadystatechange = function () {
+            xhr.onreadystatechange = function() {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     // Hiển thị nội dung chi tiết hóa đơn trong popup
                     document.getElementById('popup-details').innerHTML = this.responseText;
@@ -426,7 +423,7 @@ session_start(); // Start the session at the beginning of the script
             var xhr = new XMLHttpRequest();
             xhr.open('GET', '../View/update_transaction_status.php?transactionID=' + encodeURIComponent(transactionID) + '&status=' + encodeURIComponent(newStatus), true);
 
-            xhr.onreadystatechange = function () {
+            xhr.onreadystatechange = function() {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     var response = xhr.responseText.trim();
                     console.log(response);
@@ -442,7 +439,7 @@ session_start(); // Start the session at the beginning of the script
         }
 
 
-function displaySalesTableByBrand(labels, totalSales) {
+        function displaySalesTableByBrand(labels, totalSales) {
     // Get the table element
     var table = document.getElementById('quanlydoanhso');
 
@@ -547,33 +544,39 @@ function editUser(userID) {
 function closeModal() {
     document.getElementById('editUserModal').style.display = 'none';
 }
+
+
+
+
+
+
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        function logout(event) {
-            event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+function logout(event) {
+    event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
 
-            var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        // Xử lý phản hồi từ server
-                        var response = JSON.parse(xhr.responseText);
-                        if (response.status === 1) {
-                            // Đăng xuất thành công, chuyển hướng người dùng
-                            window.location.href = 'index.php';
-                        } else {
-                            alert('Đăng xuất không thành công!');
-                        }
-                    } else {
-                        alert('Đã có lỗi xảy ra. Vui lòng thử lại sau.');
-                    }
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                // Xử lý phản hồi từ server
+                var response = JSON.parse(xhr.responseText);
+                if (response.status === 1) {
+                    // Đăng xuất thành công, chuyển hướng người dùng
+                    window.location.href = 'index.php'; 
+                } else {
+                    alert('Đăng xuất không thành công!');
                 }
-            };
-            xhr.open('GET', 'Logout_admin.php', true);
-            xhr.send();
+            } else {
+                alert('Đã có lỗi xảy ra. Vui lòng thử lại sau.');
+            }
         }
+    };
+    xhr.open('GET', 'Logout_admin.php', true);
+    xhr.send();
+}
 
 
         
@@ -677,7 +680,7 @@ function thongKeByBrand(event) {
             event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
 
             var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function () {
+            xhr.onreadystatechange = function() {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
                         // Xử lý phản hồi từ server
@@ -775,6 +778,9 @@ if (isset($_SESSION['username'])) {
                 <div class="selling-products">
                     <h1 class="text-center headerad">QUẢN LÝ CỬA HÀNG CẦU LÔNG</h1>
                     <div class="item-selling-products" id="item-selling-products">
+                
+
+
             </div>
         </div>
     </div>
@@ -799,10 +805,10 @@ if (isset($_SESSION['username'])) {
 
                     <div class="tab-content mt-3">
                         <div id="tab1" class="tab-pane active">
-                            <?php include ('../View/user/pages/rolepage.php'); ?>
+                            <?php include('../View/user/pages/rolepage.php'); ?>
                         </div>
                         <div id="tab2" class="tab-pane" style="display: none;">
-                            <?php include ('../View/user/pages/grouprole.php'); ?>
+                            <?php include('../View/user/pages/grouprole.php'); ?>
                         </div>
                     </div>
                 </div>
@@ -842,7 +848,7 @@ if (isset($_SESSION['username'])) {
             // Loop through each user and print their information
             foreach ($users as $user) {
                 if ($user['status'] != 0) {
-                    echo "<tr>
+                echo "<tr>
                     <td>" . $user['userID'] . "</td>
                     <td>" . $user['username'] . "</td>
                     <td>" . $user['name'] . "</td>
@@ -854,10 +860,8 @@ if (isset($_SESSION['username'])) {
                     <td><button onclick='changeUserStatus(\"" . $user['userID'] . "\", 0)'>Banned</button>
                     <button onclick='editUser(\"" . $user['userID'] . "\")'>Edit</button></td>
                 </tr>";
-                }
             }
-        
-
+        }
             // Close the table tag
             echo "</table>";
         } else {
@@ -969,7 +973,7 @@ if (isset($_SESSION['username'])) {
                 // You can redirect or show a success message here
                 echo "<script>alert('Thêm loại sản phẩm thành công!');</script>";
                 echo "<script>window.location.href = 'Badminton_Admin.php';</script>"; // 
-        
+
 
 
             } else {
@@ -977,7 +981,7 @@ if (isset($_SESSION['username'])) {
                 // You can redirect or show an error message here
                 echo "<script>alert('Thêm loại sản phẩm thất bại');</script>";
                 echo "<script>window.location.href = 'Badminton_Admin.php';</script>"; // 
-        
+
             }
         }
         function deleteBrand($brandID)
@@ -1034,17 +1038,15 @@ if (isset($_SESSION['username'])) {
                 <label for="dateend">Ngày kết thúc:</label>
                 <input type="date" id="dateend2">
             </div>
-            <button type="submit" style="margin-top: 10px; margin-left: 10px;" onclick="thongKe(event);"> Thống kê doanh
-                số </button>
-            <button type="submit" style="margin-top: 10px; margin-left: 10px;" onclick="thongKeByBrand(event);"> Thống
-                kê doanh số theo hãng </button>
+            <button type="submit" style="margin-top: 10px; margin-left: 10px;" onclick="thongKe(event);"> Thống kê doanh số </button>
+            <button type="submit" style="margin-top: 10px; margin-left: 10px;" onclick="thongKeByBrand(event);"> Thống kê doanh số theo hãng </button>
             <h2 id="tongdoanhso"> </h2>
             <canvas id="salesChart" width="400" height="400"></canvas>
             <table class="tabledoanhso" id="quanlydoanhso" cellpadding="50" cellspacing="100">
 
                 <thead>
                     <tr>
-
+                        
                     </tr>
                 </thead>
             </table>
@@ -1064,8 +1066,8 @@ if (isset($_SESSION['username'])) {
                 require_once '../Model/ModelProduct.php';
                 require_once '../Model/ModelBrand.php';
                 require_once '../Model/ModelCatalog.php';
-                require_once ('../Model/ModelVariantDetail.php');
-                require_once ('../Model/ModelVariant.php');
+                require_once('../Model/ModelVariantDetail.php');
+                require_once('../Model/ModelVariant.php');
                 $ModelProduct = new ModelProduct();
                 $products = $ModelProduct->getAllProducts();
                 $ModelBrand = new ModelBrand();
@@ -1091,12 +1093,9 @@ if (isset($_SESSION['username'])) {
                                 </tr>
                             </thead>';
                     foreach ($products as $product) {
-                        if ($product->status == 1)
-                            $status = "Đang bán";
-                        else if ($product->status == -1)
-                            $status = "Đã xóa";
-                        else
-                            $status = "Ngưng bán";
+                        if ($product->status == 1) $status = "Đang bán";
+                        else if ($product->status == -1) $status = "Đã xóa";
+                        else $status = "Ngưng bán";
                         $listVariant = $ModelVariant->getListVariantByProductID($product->productID);
                         $catalogtmp = ($ModelCatalog->getCatalogByID($product->catalogID));
                         if ($catalogtmp->getName() == "Shuttle" || $catalogtmp->getName() == "String")
@@ -1119,6 +1118,8 @@ if (isset($_SESSION['username'])) {
                                     </tr>
                                     </tbody>
                                 ";
+
+
                         else {
                             if (count($listVariant) > 0) {
                                 $variantID = reset($listVariant)->getVariantID();
@@ -1167,20 +1168,17 @@ if (isset($_SESSION['username'])) {
 
                     <div class="input-group input-group-sm mb-3">
                         <label class="input-group-text" id="inputGroup-sizing-sm">Tên sản phẩm</label>
-                        <input type="text" name="name" class="form-control" aria-label="Sizing example input"
-                            aria-describedby="inputGroup-sizing-sm">
+                        <input type="text" name="name" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                     </div>
 
                     <div class="input-group input-group-sm mb-3">
                         <label class="input-group-text" id="inputGroup-sizing-sm">Giá</label>
-                        <input type="text" name="price" class="form-control" aria-label="Sizing example input"
-                            aria-describedby="inputGroup-sizing-sm">
+                        <input type="text" name="price" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                     </div>
 
                     <div class="input-group input-group-sm mb-3">
                         <label class="input-group-text" id="inputGroup-sizing-sm">Giá gốc</label>
-                        <input type="text" name="discount" class="form-control" aria-label="Sizing example input"
-                            aria-describedby="inputGroup-sizing-sm">
+                        <input type="text" name="discount" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                     </div>
 
                     <div class="input-group input-group-sm mb-3">
@@ -1195,8 +1193,7 @@ if (isset($_SESSION['username'])) {
 
                     <div class="input-group input-group-sm mb-3">
                         <label class="input-group-text" id="inputGroup-sizing-sm">Mô tả</label>
-                        <input type="textarea" name="description" class="form-control" aria-label="Sizing example input"
-                            aria-describedby="inputGroup-sizing-sm">
+                        <input type="textarea" name="description" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                     </div>
 
                     <div class="containbox">
@@ -1215,7 +1212,7 @@ if (isset($_SESSION['username'])) {
         <script>
             // Mở popup chỉnh sửa sản phẩm khi bấm vào liên kết
             document.querySelectorAll('#openEditModal').forEach(button => {
-                button.addEventListener('click', function (event) {
+                button.addEventListener('click', function(event) {
                     event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
 
                     // Hiển thị modal form
@@ -1247,7 +1244,7 @@ if (isset($_SESSION['username'])) {
 
             function loadvariant(productID) {
                 var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function () {
+                xhttp.onreadystatechange = function() {
                     if (this.readyState == 4) {
                         if (this.status == 200) {
                             var data = JSON.parse(this.responseText);
@@ -1274,7 +1271,7 @@ if (isset($_SESSION['username'])) {
                             // Kiểm tra xem có radio buttons trong #variant hay không
                             if (variantContainer.innerHTML.trim() === '') { // Nếu không có radio buttons, thêm vào
                                 var firstRadio = true; // Biến để kiểm tra radio đầu tiên
-                                keys.forEach(function (key) {
+                                keys.forEach(function(key) {
                                     var uppercaseKey = key.toUpperCase(); // Chuyển đổi khóa thành chữ hoa
 
                                     // Tạo radio button
@@ -1309,7 +1306,7 @@ if (isset($_SESSION['username'])) {
                 var productID = c.getAttribute('data-value2');
                 var color = c.value;
                 var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function () {
+                xhttp.onreadystatechange = function() {
                     if (this.readyState == 4) {
                         if (this.status == 200) {
                             var data = JSON.parse(this.responseText);
@@ -1355,7 +1352,7 @@ if (isset($_SESSION['username'])) {
             }
 
             document.querySelectorAll('#confirmDelete').forEach(button => {
-                button.addEventListener('click', function () {
+                button.addEventListener('click', function() {
                     // Lấy ID sản phẩm từ thuộc tính data-productid của button
                     var ProductID = this.getAttribute('data-productid');
                     // Hiển thị hộp thoại xác nhận
@@ -1384,12 +1381,9 @@ if (isset($_SESSION['username'])) {
 
         <!-- Bảng chỉnh sửa sản phẩm -->
 
-        <div id="editModal" class="modal"
-            style="overflow-y: auto;background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">
-            <form class="modal-content" action="../View/Update.php" method="POST"
-                style="width: 50%; margin-left: 25%; margin-top: 3%; border: solid 2px; padding: 20px;">
-                <span style="position: absolute; top: 5px; right: 5px;" class="close"
-                    onclick="closeEditModal()">&times;</span>
+        <div id="editModal" class="modal" style="overflow-y: auto;background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">
+            <form class="modal-content" action="../View/Update.php" method="POST" style="width: 50%; margin-left: 25%; margin-top: 3%; border: solid 2px; padding: 20px;">
+                <span style="position: absolute; top: 5px; right: 5px;" class="close" onclick="closeEditModal()">&times;</span>
                 <h1 style="text-align: center;">Chỉnh sửa sản phẩm</h1>
 
                 <div class="input-group mb-3">
@@ -1415,7 +1409,7 @@ if (isset($_SESSION['username'])) {
                 <div class="input-group mb-3">
                     <span class="input-group-text" style="min-width: 120px;">Trạng thái</span>
                     <select name="status" id="status" class="form-select">
-                        <option selected>Trạng thái</option>
+                        <option selected disabled>Chọn trạng thái</option>
                         <option value="Đang bán">Đang bán</option>
                         <option value="Ngừng bán">Ngừng bán</option>
                         <option value="Đã xóa">Đã xóa</option>
@@ -1431,79 +1425,63 @@ if (isset($_SESSION['username'])) {
 
                 </div>
                 <div class="input-group mb-3">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="product-version-container">
-                                    <div class="product-version">Biến thể:</div>
-                                    <div class="position-relative d-inline-block badge-container"
-                                        style="margin-left: 20px; cursor:pointer;">
-                                        <div class="badge badge-primary"
-                                            style="height: 40px; width:100px; line-height: 30px" data-toggle="badge">
-                                            4UG5
-                                            <button type="button"
-                                                class="btn btn-danger btn-sm rounded-circle position-absolute"
-                                                style="top: -10px; right: -15px;" data-toggle="button">&times;</button>
-                                        </div>
-                                    </div>
-                                    <div class="position-relative d-inline-block badge-container"
-                                        style="margin-left: 20px; cursor:pointer;">
-                                        <div class="badge badge-primary"
-                                            style="height: 40px; width:100px; line-height: 30px" data-toggle="badge">
-                                            4UG5
-                                            <button type="button"
-                                                class="btn btn-danger btn-sm rounded-circle position-absolute"
-                                                style="top: -10px; right: -15px;" data-toggle="button">&times;</button>
-                                        </div>
-                                    </div>
-                                    <div class="position-relative d-inline-block badge-container"
-                                        style="margin-left: 20px; cursor:pointer;">
-                                        <div class="badge badge-primary"
-                                            style="height: 40px; width:100px; line-height: 30px" data-toggle="badge">
-                                            4UG5
-                                            <button type="button"
-                                                class="btn btn-danger btn-sm rounded-circle position-absolute"
-                                                style="top: -10px; right: -15px;" data-toggle="button">&times;</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <div class="container">
+  <div class="row">
+  <div class="col-md-6">
+  <div class="product-version-container">
+    <div class="product-version">Biến thể:</div>
+    <div class="position-relative d-inline-block badge-container" style="margin-left: 20px; cursor:pointer;">
+      <div class="badge badge-primary" style="height: 40px; width:100px; line-height: 30px" data-toggle="badge">4UG5
+        <button type="button" class="btn btn-danger btn-sm rounded-circle position-absolute" style="top: -10px; right: -15px;" data-toggle="button">&times;</button>
+      </div>
+    </div>
+    <div class="position-relative d-inline-block badge-container" style="margin-left: 20px; cursor:pointer;">
+      <div class="badge badge-primary" style="height: 40px; width:100px; line-height: 30px" data-toggle="badge">4UG5
+        <button type="button" class="btn btn-danger btn-sm rounded-circle position-absolute" style="top: -10px; right: -15px;" data-toggle="button">&times;</button>
+      </div>
+    </div>
+    <div class="position-relative d-inline-block badge-container" style="margin-left: 20px; cursor:pointer;">
+      <div class="badge badge-primary" style="height: 40px; width:100px; line-height: 30px" data-toggle="badge">4UG5
+        <button type="button" class="btn btn-danger btn-sm rounded-circle position-absolute" style="top: -10px; right: -15px;" data-toggle="button">&times;</button>
+      </div>
+    </div>
+  </div>
+</div>
+  </div>
 
-                        <script>
-                            // Lắng nghe sự kiện nhấp vào badge
-                            document.querySelectorAll('[data-toggle="badge"]').forEach(function (badge) {
-                                badge.addEventListener('click', function () {
-                                    // Loại bỏ lớp "badge-active" từ tất cả các badge
-                                    document.querySelectorAll('.badge-container').forEach(function (item) {
-                                        item.classList.remove('badge-active');
-                                    });
-                                    // Thêm lớp "badge-active" cho badge được nhấp vào
-                                    badge.closest('.badge-container').classList.add('badge-active');
-                                });
-                            });
+  <script>
+  // Lắng nghe sự kiện nhấp vào badge
+  document.querySelectorAll('[data-toggle="badge"]').forEach(function(badge) {
+    badge.addEventListener('click', function() {
+      // Loại bỏ lớp "badge-active" từ tất cả các badge
+      document.querySelectorAll('.badge-container').forEach(function(item) {
+        item.classList.remove('badge-active');
+      });
+      // Thêm lớp "badge-active" cho badge được nhấp vào
+      badge.closest('.badge-container').classList.add('badge-active');
+    });
+  });
 
-                            // Lắng nghe sự kiện nhấp vào nút xóa
-                            document.querySelectorAll('[data-toggle="button"]').forEach(function (button) {
-                                button.addEventListener('click', function (event) {
-                                    event.stopPropagation(); // Ngăn chặn sự kiện click trên badge
-                                });
-                            });
-                        </script>
+  // Lắng nghe sự kiện nhấp vào nút xóa
+  document.querySelectorAll('[data-toggle="button"]').forEach(function(button) {
+    button.addEventListener('click', function(event) {
+      event.stopPropagation(); // Ngăn chặn sự kiện click trên badge
+    });
+  });
+</script>
 
-                        <!-- Thêm hàng mới cho input và nút lưu -->
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="input-group" style="margin-top: 10px; width:60%">
-                                    <input type="text" class="form-control" placeholder="Số lượng" aria-label="Số lượng"
-                                        aria-describedby="basic-addon2">
-                                    <div class="input-group-append" style="width: 100px">
-                                        <button class="btn btn-outline-secondary" type="button">Lưu</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+  <!-- Thêm hàng mới cho input và nút lưu -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="input-group" style="margin-top: 10px; width:60%">
+        <input type="text" class="form-control" placeholder="Số lượng" aria-label="Số lượng" aria-describedby="basic-addon2">
+        <div class="input-group-append" style="width: 100px">
+          <button class="btn btn-outline-secondary" type="button">Lưu</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 
@@ -1512,8 +1490,7 @@ if (isset($_SESSION['username'])) {
                 <div class="input-group mb-3">
                     <label for="existingImage">Ảnh đại diện:</label>
                     <div class="d-flex align-items-center">
-                        <img id="existingImage" style="max-width: 100px; max-height: 100px;" alt="Hình hiện tại"
-                            value="">
+                        <img id="existingImage" style="max-width: 100px; max-height: 100px;" alt="Hình hiện tại" value="">
                         <button class="btn btn-success ms-3" onclick="removeExistingImage()">Đổi</button>
                     </div>
                 </div>
@@ -1523,18 +1500,15 @@ if (isset($_SESSION['username'])) {
                         <div class="col-12">
                             <div class="d-flex flex-wrap" id="image-container">
                                 <div class="image-container">
-                                    <img src="../View/images/product/1/Kurenai/1.1.png" alt="Image 1"
-                                        onclick="openImage(this.src)">
+                                    <img src="../View/images/product/1/Kurenai/1.1.png" alt="Image 1" onclick="openImage(this.src)">
                                     <button class="btn btn-danger delete-btn">&times;</button>
                                 </div>
                                 <div class="image-container">
-                                    <img src="../View/images/product/1/Kurenai/1.2.png" alt="Image 2"
-                                        onclick="openImage(this.src)">
+                                    <img src="../View/images/product/1/Kurenai/1.2.png" alt="Image 2" onclick="openImage(this.src)">
                                     <button class="btn btn-danger delete-btn">&times;</button>
                                 </div>
                                 <div class="image-container">
-                                    <img src="../View/images/product/1/Kurenai/1.3.png" alt="Image 3"
-                                        onclick="openImage(this.src)">
+                                    <img src="../View/images/product/1/Kurenai/1.3.png" alt="Image 3" onclick="openImage(this.src)">
                                     <button class="btn btn-danger delete-btn">&times;</button>
                                 </div>
                                 <!-- Add more images as needed -->
@@ -1556,7 +1530,7 @@ if (isset($_SESSION['username'])) {
                         var imgIndex = button.getAttribute('data-value');
                         var color = button.getAttribute('data-color');
                         var xhttp = new XMLHttpRequest();
-                        xhttp.onreadystatechange = function () {
+                        xhttp.onreadystatechange = function() {
                             if (this.readyState == 4) {
                                 if (this.status == 200) {
                                     var data = JSON.parse(this.responseText);
@@ -1592,11 +1566,11 @@ if (isset($_SESSION['username'])) {
                 </div>
 
                 <script>
-                    document.getElementById('image-choose').addEventListener('change', function (event) {
+                    document.getElementById('image-choose').addEventListener('change', function(event) {
                         const file = event.target.files[0];
                         if (file) {
                             const reader = new FileReader();
-                            reader.onload = function (e) {
+                            reader.onload = function(e) {
                                 document.getElementById('selectedImage').src = e.target.result;
                             };
                             reader.readAsDataURL(file);
@@ -1605,9 +1579,7 @@ if (isset($_SESSION['username'])) {
                 </script>
 
 
-                <button type="submit" class="btn btn-primary" style="width:100%;"
-                    onclick="saveUpdateProduct()">Lưu</button>
-
+                <button type="submit" class="btn btn-primary" style="width:100%;">Lưu</button>
                 <script>
                     function saveUpdateProduct() {
                         var name = document.getElementById('name').innerText;
@@ -1667,46 +1639,43 @@ if (isset($_SESSION['username'])) {
         <?php
 require_once __DIR__ . '../../Model/ModelTransaction.php';
 
+$modelTransaction = new ModelTransaction();
 
-            $modelTransaction = new ModelTransaction();
+// Lấy tất cả các giao dịch từ cơ sở dữ liệu"
+$transactions = $modelTransaction->getAllTransactions();
 
-            // Lấy tất cả các giao dịch từ cơ sở dữ liệu"
-            $transactions = $modelTransaction->getAllTransactions();
-
-            // Kiểm tra xem có giao dịch nào không
-            if ($transactions) {
-                foreach ($transactions as $transaction) {
-                    ?>
-                    <tr>
-                        <td><?php echo $transaction->getTransactionID(); ?></td>
-                        <td><?php echo $transaction->getUserID(); ?></td>
-                        <td><?php echo $transaction->getTotal(); ?></td>
-                        <td><?php echo $transaction->getNote(); ?></td>
-                        <td><?php echo $transaction->getTime(); ?></td>
-                        <td><?php echo $transaction->getAddress(); ?></td>
-                        <td><?php echo $transaction->getCheck(); ?></td>
-                        <td><?php echo $transaction->getTransport(); ?></td>
-                        <td><?php echo $transaction->getNameReceiver(); ?></td>
-                        <td><?php echo $transaction->getPhoneReceiver(); ?></td>
-                        <td><button onclick='showTransactionDetails(<?php echo $transaction->getTransactionID(); ?>)'>View
-                                Details</button></td>
-                        <td>
-                            <select id='status<?php echo $transaction->getTransactionID(); ?>'>
-                                <option value=''>Select Status</option>
-                                <option value='Đang chờ duyệt'>Đang chờ duyệt</option>
-                                <option value='Đã duyệt'>Đã duyệt</option>
-                                <option value='Đang giao hàng'>Đang giao hàng</option>
-                                <option value='Đã giao hàng'>Đã giao hàng</option>
-                            </select>
-                            <button
-                                onclick='changeTransactionStatus(<?php echo $transaction->getTransactionID(); ?>)'>Save</button>
-                        </td>
-                    </tr>
-                    <?php
-                }
-            }
-            ?>
-        </table>
+// Kiểm tra xem có giao dịch nào không
+if ($transactions) {
+    foreach ($transactions as $transaction) {
+?>
+    <tr>
+        <td><?php echo $transaction->getTransactionID(); ?></td>
+        <td><?php echo $transaction->getUserID(); ?></td>
+        <td><?php echo $transaction->getTotal(); ?></td>
+        <td><?php echo $transaction->getNote(); ?></td>
+        <td><?php echo $transaction->getTime(); ?></td>
+        <td><?php echo $transaction->getAddress(); ?></td>
+        <td><?php echo $transaction->getCheck(); ?></td>
+        <td><?php echo $transaction->getTransport(); ?></td>
+        <td><?php echo $transaction->getNameReceiver(); ?></td>
+        <td><?php echo $transaction->getPhoneReceiver(); ?></td>
+        <td><button onclick='showTransactionDetails(<?php echo $transaction->getTransactionID(); ?>)'>View Details</button></td>
+        <td>
+            <select id='status<?php echo $transaction->getTransactionID(); ?>'>
+                <option value=''>Select Status</option>
+                <option value='Đang chờ duyệt'>Đang chờ duyệt</option>
+                <option value='Đã duyệt'>Đã duyệt</option>
+                <option value='Đang giao hàng'>Đang giao hàng</option>
+                <option value='Đã giao hàng'>Đã giao hàng</option>
+            </select>
+            <button onclick='changeTransactionStatus(<?php echo $transaction->getTransactionID(); ?>)'>Save</button>
+        </td>
+    </tr>
+<?php
+    }
+}
+?>
+</table>
 
         <div id="popup" class="popup">
             <div class="popup-content">
