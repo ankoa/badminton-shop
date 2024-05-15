@@ -881,35 +881,48 @@ function removeExistingImage() {
         </div>
     </div>
         
-   <div id="hoadon-content" class="content-section">
-        <div class="headerad"> QUẢN LÝ HÓA ĐƠN</div>
+       <div id="hoadon-content" class="content-section">
+    <div class="headerad"> QUẢN LÝ HÓA ĐƠN</div>
    
-        <div class="containbox">
-                    <label for="datestart">Ngày bắt đầu:</label>
-                    <input type="date" id="datestart1">
-                </div>
-                <div class="containbox">
-                    <label for="dateend">Ngày kết thúc:</label>
-                    <input type="date" id="dateend1">
-                </div>
-                <button type="submit" style="margin-top: 10px; margin-left: 10px" onclick="searchTransactionsByDate()">Tìm kiếm</button>
-                <button type="submit" style="margin-top: 10px; margin-left: 10px" onclick=" window.location.reload()">Reset</button>
-         
-                <table id="hoadontable" border='1'>
-    <tr>
-        <th>Transaction ID</th>
-        <th>User ID</th>
-        <th>Total</th>
-        <th>Note</th>
-        <th>Time</th>
-        <th>Address</th>
-        <th>Pay</th>
-        <th>Transport</th>
-        <th>Name Receiver</th>
-        <th>Phone Receiver</th>
-        <th>Detail</th>
-        <th>Change Transport</th>
-    </tr>
+    <div class="containbox">
+        <label for="datestart">Ngày bắt đầu:</label>
+        <input type="date" id="datestart1">
+    </div>
+
+    <div class="containbox">
+        <label for="dateend">Ngày kết thúc:</label>
+        <input type="date" id="dateend1">
+    </div>
+
+    <div class="containbox" style="display: flex; align-items: center;">
+        <label for="transport" style="margin-right: 10px;">Loại vận chuyển:</label>
+        <select id="transport" style="width: 100px;">
+            <option value="">Chọn loại vận chuyển</option>
+            <option value="Đang chờ duyệt">Đang chờ duyệt</option>
+            <option value="Đã duyệt">Đã duyệt</option>
+            <option value="Đang giao hàng">Đang giao hàng</option>
+            <option value="Đã giao hàng">Đã giao hàng</option>
+        </select>
+    </div>
+    
+    <button type="submit" style="margin-top: 10px; margin-left: 10px" onclick="searchTransactionsByDate()">Tìm kiếm</button>
+    <button type="submit" style="margin-top: 10px; margin-left: 10px" onclick=" window.location.reload()">Reset</button>
+
+    <table id="hoadontable" border="1">
+        <tr>
+            <th>Transaction ID</th>
+            <th>User ID</th>
+            <th>Total</th>
+            <th>Note</th>
+            <th>Time</th>
+            <th>Address</th>
+            <th>Pay</th>
+            <th>Transport</th>
+            <th>Name Receiver</th>
+            <th>Phone Receiver</th>
+            <th>Detail</th>
+            <th>Change Transport</th>
+        </tr>
 <?php
 require_once __DIR__ . '../../Model/ModelTransaction.php';
 
@@ -950,6 +963,18 @@ if ($transactions) {
 }
 ?>
 </table>
+
+                
+
+ <div id="popup" class="popup">
+        <div class="popup-content">
+            <span class="popup-close" onclick="closePopup()">&times;</span>
+            <div id="popup-details">
+                <!-- Nội dung chi tiết hóa đơn sẽ được thêm bằng JavaScript -->
+            </div>
+        </div>
+    </div>
+        </div>
 
                 
 
