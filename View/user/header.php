@@ -120,7 +120,10 @@ $total_price_cart = 0;
                     $brandIDs = $modelBrand->suggestBrandIDsForCatalog($catalog->getCatalogID());
                     foreach ($brandIDs as $brandID) {
                         $brand = $modelBrand->getBrandByID($brandID);
-                        echo '<li><a class="fixa" href="index.php?control=ProductCategory&id='.$catalog->getCatalogID().'&brandID='.$brandID.'" style="color: black;text-decoration: none;">'. $temp .' '.$brand->getName().'</a></li>';
+                        if($brand!=null){
+                            echo '<li><a class="fixa" href="index.php?control=ProductCategory&id='.$catalog->getCatalogID().'&brandID='.$brandID.'" style="color: black;text-decoration: none;">'. $temp .' '.$brand->getName().'</a></li>';
+
+                        }
                     }
 
                     echo '

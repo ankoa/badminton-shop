@@ -335,9 +335,43 @@ require_once '..\Model\Entity\Transaction.php';
     
          
         
+    public function getTransactionsByDateAndTransport($startDate, $endDate, $transport) {
+        // Create the SQL query to fetch transactions based on date range and transport type
+        $query = "SELECT * FROM `transaction` WHERE `time` BETWEEN '$startDate' AND '$endDate'";
+        
+        if (!empty($transport)) {
+            $query .= " AND `transport` = '$transport'";
+        }
 
+        // Execute the query
+        $result = $this->db->select($query);
+
+        // Check if the query was successful
+        if ($result && $result->num_rows > 0) {
+            $transactions = [];
+            while ($row = $result->fetch_assoc()) {
+                $transactions[] = new Transaction(
+                    $row['transactionID'],
+                    $row['userID'],
+                    $row['total'],
+                    $row['note'],
+                    $row['time'],
+                    $row['address'],
+                    $row['check'],
+                    $row['transport'],
+                    $row['status'],
+                    $row['name_receiver'],
+                    $row['phone_receiver']
+                );
+            }
+            return $transactions;
+        } else {
+            return false;
+        }
+    }
+}
     
 
-    }
+    
 
 ?>

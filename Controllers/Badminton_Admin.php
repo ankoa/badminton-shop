@@ -1,3 +1,7 @@
+
+<?php 
+session_start(); // Start the session at the beginning of the script
+?>
 <!DOCTYPE html>
 <html lang="vi">
 
@@ -12,6 +16,69 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <title>Admin</title>
     <style>
+        .modal1 {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.4);
+        padding-top: 60px;
+    }
+
+    .modal1-content {
+    background-color: #fefefe;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    margin: 20px auto;}
+
+.modal1-content div {
+    margin-bottom: 10px; 
+}
+
+#editUserForm input[type="text"],
+#editUserForm input[type="email"],
+#editUserForm input[type="number"],
+#editUserForm button[type="submit"] {
+    width: calc(100% - 10px); 
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+#editUserForm label {
+    display: inline-block; 
+    width: 30%;
+    margin-bottom: 5px;
+}
+
+#editUserForm div {
+    display: grid;
+    grid-template-columns: 30% 70%; /
+    gap: 10px; 
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    margin-top: -10px; 
+    margin-right: -10px; 
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+    
+}
         .product-version-container {
             display: flex;
             align-items: center;
@@ -168,7 +235,7 @@
             return false; // Để ngăn form submit mặc định
         }
 
-var myChart; // Khai báo biến myChart ở ngoài hàm
+        var myChart; // Declare the myChart variable outside the function
 
 function thongKe(event) {
     event.preventDefault(); // Prevent the default form behavior
@@ -182,16 +249,29 @@ function thongKe(event) {
 
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
-            console.log
-            var salesData = JSON.parse(this.responseText);
+            var response = JSON.parse(this.responseText);
+
+            // Check if the response contains an error
+            if (response.error) {
+                alert(response.error); // Display the error message
+                return; // Exit the function
+            }
+
+            var salesData = response;
+
+            // Check if salesData is empty
+            if (!salesData || salesData.labels.length === 0 || salesData.sales.length === 0) {
+                alert('Không có đơn hàng nào trong khoảng thời gian này.');
+                return;
+            }
 
             // Get the canvas element where the chart will be drawn
             var ctx = document.getElementById('salesChart').getContext('2d');
             ctx.canvas.width = 300;
             ctx.canvas.height = 200;
 
-             // Destroy the old charts if they exist
-             if (myChart) {
+            // Destroy the old charts if they exist
+            if (myChart) {
                 myChart.destroy();
             }
             // Define the chart data and options
@@ -235,11 +315,10 @@ function thongKe(event) {
                 var cell1 = row.insertCell(0); // Insert a new cell in the row
                 var cell2 = row.insertCell(1); // Insert a new cell in the row
                 var headerRow = table.insertRow(0);
-                var headerRow = table.insertRow(0);
-    var brandHeader = headerRow.insertCell(0);
-    brandHeader.innerHTML = 'Ngày';
-    var salesHeader = headerRow.insertCell(1);
-    salesHeader.innerHTML = 'Doanh số';
+                var brandHeader = headerRow.insertCell(0);
+                brandHeader.innerHTML = 'Ngày';
+                var salesHeader = headerRow.insertCell(1);
+                salesHeader.innerHTML = 'Doanh số';
                 cell1.innerHTML = salesData.labels[i];
                 cell2.innerHTML = salesData.sales[i];
             }
@@ -251,7 +330,7 @@ function thongKe(event) {
             var totalRow = table.insertRow(-1);
             var totalCell1 = totalRow.insertCell(0);
             var totalCell2 = totalRow.insertCell(1);
-           
+
             totalCell1.innerHTML = "Tổng";
             totalCell2.innerHTML = totalSales;
         }
@@ -260,6 +339,7 @@ function thongKe(event) {
     // Send the request
     xhr.send();
 }
+
 
 
     </script>
@@ -359,57 +439,64 @@ function thongKe(event) {
         }
 
 
-
-function displaySalesTableByBrand(labels, totalSales) {
+        function displaySalesTableByBrand(labels, totalSales) {
+    // Get the table element
     var table = document.getElementById('quanlydoanhso');
 
-    // Clear the existing table content
+    // Clear the table
+    while (table.rows.length > 1) {
+        table.deleteRow(1);
+    }
     table.innerHTML = '';
-
-    // Create table headers
-    var headerRow = table.insertRow(0);
-    var brandHeader = headerRow.insertCell(0);
-    brandHeader.innerHTML = 'Hãng';
-    var salesHeader = headerRow.insertCell(1);
-    salesHeader.innerHTML = 'Doanh số';
-
     // Populate the table with sales data
     for (var i = 0; i < labels.length; i++) {
-        var row = table.insertRow(i + 1);
-        var brandCell = row.insertCell(0);
-        brandCell.innerHTML = labels[i];
-        var salesCell = row.insertCell(1);
-        salesCell.innerHTML = totalSales[i];
+        var row = table.insertRow(-1); // Insert a new row at the end of the table
+        var cell1 = row.insertCell(0); // Insert a new cell in the row
+        var cell2 = row.insertCell(1); // Insert a new cell in the row
+        var headerRow = table.insertRow(0);
+        var brandHeader = headerRow.insertCell(0);
+        brandHeader.innerHTML = 'Ngày';
+        var salesHeader = headerRow.insertCell(1);
+        salesHeader.innerHTML = 'Doanh số';
+        cell1.innerHTML = labels[i];
+        cell2.innerHTML = totalSales[i];
     }
+
+    // Calculate total sales
+    var totalSalesSum = totalSales.reduce((a, b) => a + b, 0);
+
+    // Add a new row to display total sales
+    var totalRow = table.insertRow(-1);
+    var totalCell1 = totalRow.insertCell(0);
+    var totalCell2 = totalRow.insertCell(1);
+
+    totalCell1.innerHTML = "Tổng";
+    totalCell2.innerHTML = totalSalesSum;
 }
 function searchTransactionsByDate() {
-    // Lấy ngày bắt đầu và kết thúc từ input
-    var startDate = document.getElementById("datestart1").value;
-    var endDate = document.getElementById("dateend1").value;
+    var startDate = document.getElementById('datestart1').value;
+    var endDate = document.getElementById('dateend1').value;
+    var transport = document.getElementById('transport').value;
 
-    // Tạo đối tượng XMLHttpRequest
     var xhr = new XMLHttpRequest();
-
-    // Xác định phương thức và URL của yêu cầu
-    xhr.open("GET", "../View/search_transaction.php?startDate=" + startDate + "&endDate=" + endDate, true);
-
-    // Xử lý khi nhận được phản hồi từ máy chủ
+    xhr.open('GET', `../View/search_transaction.php?startDate=${startDate}&endDate=${endDate}&transport=${transport}`, true);
     xhr.onreadystatechange = function() {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 200) {
-                var tableContent = xhr.responseText;
-                document.getElementById("hoadontable").innerHTML = tableContent;
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);
+            if (response.error) {
+                alert(response.error);
+            } else {
+                document.getElementById('hoadontable').innerHTML = response.tableContent;
             }
         }
     };
-
-    // Gửi yêu cầu tìm kiếm đến máy chủ
     xhr.send();
 }
+
 function changeUserStatus(userID, newStatus) {
     var xhr = new XMLHttpRequest();
     // Construct the URL with query parameters
-    var url = "../View/change_user_status.php?userID=" + userID + "&newStatus=" + newStatus;
+    var url = "change_user_status.php?userID=" + userID + "&newStatus=" + newStatus;
     xhr.open("GET", url, true);
     xhr.onreadystatechange = function() {
         if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -424,6 +511,41 @@ function changeUserStatus(userID, newStatus) {
     // No need to set Content-Type for GET requests
     xhr.send();
 }
+function editUser(userID) {
+    // Find the row that contains the user ID
+    var rows = document.querySelectorAll('#taikhoan-content table tr');
+    var userRow;
+
+    for (var i = 1; i < rows.length; i++) { // start at 1 to skip the header row
+        if (rows[i].children[0].textContent === userID) {
+            userRow = rows[i];
+            break;
+        }
+    }
+
+    // Populate the form with user data
+    if (userRow) {
+        document.getElementById('editUserID').value = userID;
+        document.getElementById('editUsername').value = userRow.children[1].textContent;
+        document.getElementById('editName').value = userRow.children[2].textContent;
+        document.getElementById('editEmail').value = userRow.children[3].textContent;
+        document.getElementById('editPhoneNumber').value = userRow.children[4].textContent;
+        document.getElementById('editPoint').value = userRow.children[5].textContent;
+        document.getElementById('editRole').value = userRow.children[6].textContent;
+        document.getElementById('editType').value = userRow.children[7].textContent;
+
+        // Show the modal
+        document.getElementById('editUserModal').style.display = 'block';
+    } else {
+        alert('User not found');
+    }
+}
+
+function closeModal() {
+    document.getElementById('editUserModal').style.display = 'none';
+}
+
+
 
 
 
@@ -457,33 +579,54 @@ function logout(event) {
 }
 
 
-        function thongKeByBrand(event) {
-            event.preventDefault(); // Prevent the default form behavior
+        
+function thongKeByBrand(event) {
+    event.preventDefault(); // Prevent the default form behavior
 
-            var startDate = document.getElementById('datestart2').value;
-            var endDate = document.getElementById('dateend2').value;
+    var startDate = document.getElementById('datestart2').value;
+    var endDate = document.getElementById('dateend2').value;
 
-            // Create an AJAX request to your new PHP script
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', '../View/doanhsotheohang.php?startDate=' + encodeURIComponent(startDate) + '&endDate=' + encodeURIComponent(endDate), true);
+    // Create an AJAX request to your new PHP script
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '../View/doanhsotheohang.php?startDate=' + encodeURIComponent(startDate) + '&endDate=' + encodeURIComponent(endDate), true);
 
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    var salesData = JSON.parse(this.responseText);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+                console.log("Raw response: ", this.responseText); // Log the raw response
+                try {
+                    var response = JSON.parse(this.responseText);
+
+                    // Check if the response contains an error
+                    if (response.error) {
+                        alert(response.error); // Display the error message
+                        return; // Exit the function
+                    }
+
+                    var salesData = response;
+                    console.log("Start Date: " + startDate);
+                    console.log("End Date: " + endDate);
+
+                    // Check if salesData is empty
+                    if (!salesData || salesData.labels.length === 0 || salesData.totalSales.length === 0) {
+                        alert('Không có đơn hàng nào trong khoảng thời gian này.');
+                        return;
+                    }
+
+                    // Log the sales data to verify its structure
+                    console.log("Parsed sales data: ", salesData);
+
+                    // Check if salesData contains the expected properties
+                    if (!salesData || !Array.isArray(salesData.labels) || !Array.isArray(salesData.totalSales)) {
+                        throw new Error("Invalid data structure");
+                    }
 
                     // Get the canvas element where the chart will be drawn
                     var ctx = document.getElementById('salesChart').getContext('2d');
-                    // Destroy the old chart if they exist
-                    if (myChart) {
-                        myChart.destroy();
-                    }
 
-                    // Check if there is no sales data
-                    if (salesData.labels.length === 0) {
-                        alert('Không có doanh thu để hiển thị');
-                        return;
-                    } else {
-
+                    // Destroy the old chart if it exists
+                    if (window.myChart) {
+                        window.myChart.destroy();
                     }
 
                     // Define the chart data and options
@@ -508,35 +651,28 @@ function logout(event) {
                         }
                     };
 
-                    // Create the chart using the existing myChart variable
-                    myChart = new Chart(ctx, {
-                        type: 'bar', // Change this to 'bar' to better represent sales by brand
+                    // Create the new chart
+                    window.myChart = new Chart(ctx, {
+                        type: 'bar',
                         data: chartData,
                         options: chartOptions
                     });
 
-                    // Get the table element
-                    var table = document.getElementById('quanlydoanhso');
-
-                    // Clear the table
-                    while (table.rows.length > 1) {
-                        table.deleteRow(1);
-                    }
-
-                    // Populate the table with sales data
-                    for (var i = 0; i < salesData.labels.length; i++) {
-                        var row = table.insertRow(-1); // Insert a new row at the end of the table
-                        var cell1 = row.insertCell(0); // Insert a new cell in the row
-                        var cell2 = row.insertCell(1); // Insert a new cell in the row
-                        cell1.innerHTML = salesData.labels[i]; // This will now be brand ID
-                        cell2.innerHTML = salesData.totalSales[i]; // This will now be total sales for the brand
-                    }
+                    // Display the table for sales by brand
+                    displaySalesTableByBrand(salesData.labels, salesData.totalSales);
+                } catch (e) {
+                    console.error("Error processing the response: ", e.message);
+                    alert('Có lỗi xảy ra khi xử lý dữ liệu. Vui lòng thử lại.');
                 }
-            };
-
-            // Send the request
-            xhr.send();
+            } else {
+                console.error("Error with the request: ", xhr.statusText);
+                alert('Có lỗi xảy ra khi lấy dữ liệu. Vui lòng thử lại.');
+            }
         }
+    };
+
+    xhr.send();
+}
     </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
@@ -574,16 +710,69 @@ function logout(event) {
     </div>
 
     <div id="menu">
-        <ul>
-                    <li class="icon" ><i class="fa-solid fa-house"></i><a href="#" onclick="saveCurrentContent('home-content'); showContent('home-content')">Trang chủ </a></li>
-                    <li class="icon" id="phanquyen"><i class="fa-solid fa-people-roof"></i><a href="#" onclick="showContent('phanquyen-content')">Phân quyền</a></li>
-                    <li class="icon" id="taikhoan"><i class="fa-solid fa-user"></i><a href="#" onclick="saveCurrentContent('taikhoan-content');showContent('taikhoan-content')">Quản lý tài khoản</a></li>
-                    <li class="icon" id="sanpham"><i class="fa-solid fa-laptop"></i><a href="#" onclick="saveCurrentContent('sanpham-content');showContent('sanpham-content')">Quản lý sản phẩm</a></li>
-                    <li class="icon" id="loaisanpham"><i class="fa-solid fa-laptop"></i><a href="#" onclick="saveCurrentContent('loaisanpham-content');showContent('loaisanpham-content')">Quản lý loại sản phẩm</a></li>
-                    <li class="icon" id="hoadon"><i class="fa-solid fa-receipt"></i><a href="#" onclick="saveCurrentContent('hoadon-content');showContent('hoadon-content')">Quản lý hóa đơn</a></li>
-                    <li class="icon" id="doanhso"><i class="fa-solid fa-chart-simple"></i><a href="#" onclick="saveCurrentContent('doanhso-content');showContent('doanhso-content')">Doanh số</a></li>
-                    <li class="icon" id="dangxuat"><i class="fa-solid fa-right-from-bracket"></i><a href="#" onclick="logout(event)">Đăng xuất</a></li>                    
-                </ul>
+        <?php
+require_once '../Model/Entity/Permission.php'; // Include the Permission entity file
+require_once '../Model/ModelPermission.php'; // Include the ModelPermission class file
+require_once '../Model/ModelUser.php'; // Include the ModelUser class file
+
+// Function to check if functionID is allowed
+function isFunctionAllowed($functionID, $functionIDs) {
+    return in_array($functionID, $functionIDs);
+}
+
+// Check if the session username is set
+if (isset($_SESSION['username'])) {
+    $username = $_SESSION['username'];
+    // Instantiate the ModelUser class
+    $modelUser = new ModelUser();
+    $user = $modelUser->getUserByUsername($username);
+
+    if ($user !== null) {
+        // Get the roleID from the User object
+        $roleID = $user->getRoleID();
+
+        // Instantiate the ModelPermission class
+        $modelPermission = new ModelPermission();
+
+        // Get permissions by roleID
+        $permissions = $modelPermission->getPermissionsByRoleID($roleID);
+ 
+        // Extract functionIDs from permissions
+        $functionIDs = array_map(function($permission) {
+            return $permission['functionID'];
+        }, $permissions);
+    } else {
+        echo "User not found.";
+        exit;
+    }
+} else {
+    echo "No username found in session.";
+    exit;
+}
+?>
+
+<ul>
+    <li class="icon"><i class="fa-solid fa-house"></i><a href="#" onclick="saveCurrentContent('home-content'); showContent('home-content')">Trang chủ</a></li>
+    <?php if (isFunctionAllowed(1, $functionIDs)) { ?>
+        <li class="icon" id="phanquyen"><i class="fa-solid fa-people-roof"></i><a href="#" onclick="showContent('phanquyen-content')">Phân quyền</a></li>
+    <?php } ?>
+    <?php if (isFunctionAllowed(2, $functionIDs)) { ?>
+        <li class="icon" id="taikhoan"><i class="fa-solid fa-user"></i><a href="#" onclick="saveCurrentContent('taikhoan-content'); showContent('taikhoan-content')">Quản lý tài khoản</a></li>
+    <?php } ?>
+    <?php if (isFunctionAllowed(3, $functionIDs)) { ?>
+        <li class="icon" id="sanpham"><i class="fa-solid fa-laptop"></i><a href="#" onclick="saveCurrentContent('sanpham-content'); showContent('sanpham-content')">Quản lý sản phẩm</a></li>
+    <?php } ?>
+    <?php if (isFunctionAllowed(4, $functionIDs)) { ?>
+        <li class="icon" id="loaisanpham"><i class="fa-solid fa-laptop"></i><a href="#" onclick="saveCurrentContent('loaisanpham-content'); showContent('loaisanpham-content')">Quản lý loại sản phẩm</a></li>
+    <?php } ?>
+    <?php if (isFunctionAllowed(5, $functionIDs)) { ?>
+        <li class="icon" id="hoadon"><i class="fa-solid fa-receipt"></i><a href="#" onclick="saveCurrentContent('hoadon-content'); showContent('hoadon-content')">Quản lý hóa đơn</a></li>
+    <?php } ?>
+    <?php if (isFunctionAllowed(6, $functionIDs)) { ?>
+        <li class="icon" id="doanhso"><i class="fa-solid fa-chart-simple"></i><a href="#" onclick="saveCurrentContent('doanhso-content'); showContent('doanhso-content')">Doanh số</a></li>
+    <?php } ?>
+    <li class="icon" id="dangxuat"><i class="fa-solid fa-right-from-bracket"></i><a href="#" onclick="logout(event)">Đăng xuất</a></li>
+</ul>
         </div>
         <div id="home-content" class="content-section"> 
                 <div class="selling-products">
@@ -628,17 +817,16 @@ function logout(event) {
     </div>
 
 
-
     <div id="taikhoan-content" class="content-section">
         <div class="headerad">Quản lý tài khoản</div>
         <?php
 
-        require_once __DIR__ . '../../Model/ModelUser.php';
+    require_once __DIR__ . '../../Model/ModelUser.php'; 
 
-        $modelUser = new ModelUser();
+    $modelUser = new ModelUser();
 
-        // Get all users
-        $users = $modelUser->getAllUsers();
+    // Get all users
+    $users = $modelUser->getAllUsers();
 
 
         // Check if there are any users
@@ -669,11 +857,11 @@ function logout(event) {
                     <td>" . $user['point'] . "</td>
                     <td>" . $user['roleID'] . "</td>
                     <td>" . $user['type'] . "</td>
-                    <td><button onclick='changeUserStatus(\"" . $user['userID'] . "\", 0)'>Banned</button></td>
+                    <td><button onclick='changeUserStatus(\"" . $user['userID'] . "\", 0)'>Banned</button>
+                    <button onclick='editUser(\"" . $user['userID'] . "\")'>Edit</button></td>
                 </tr>";
             }
         }
-
             // Close the table tag
             echo "</table>";
         } else {
@@ -684,8 +872,47 @@ function logout(event) {
 
 
 
-        ?>
+    ?>
     </div>
+    <div id="editUserModal" class="modal1">
+    <div class="modal1-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Edit User</h2>
+        <form id="editUserForm">
+            <input type="hidden" id="editUserID">
+            <div>
+                <label for="editUsername">Username:</label>
+                <input type="text" id="editUsername" required>
+            </div>
+            <div>
+                <label for="editName">Name:</label>
+                <input type="text" id="editName" required>
+            </div>
+            <div>
+                <label for="editEmail">Email:</label>
+                <input type="text" id="editEmail" required>
+            </div>
+            <div>
+                <label for="editPhoneNumber">Phone Number:</label>
+                <input type="text" id="editPhoneNumber" required>
+            </div>
+            <div>
+                <label for="editPoint">Point:</label>
+                <input type="text" id="editPoint" required>
+            </div>
+            <div>
+                <label for="editRole">Role:</label>
+                <input type="text" id="editRole" required>
+            </div>
+            <div>
+                <label for="editType">Type:</label>
+                <input type="text" id="editType" required>
+            </div>
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
+</div>
+
     <div id="loaisanpham-content" class="content-section">
         <div class="headerad"> QUẢN LÝ LOẠI SẢN PHẨM</div>
 
@@ -1358,35 +1585,50 @@ function logout(event) {
         </div>
     </div>
 
-    <div id="hoadon-content" class="content-section">
-        <div class="headerad"> QUẢN LÝ HÓA ĐƠN</div>
+    </div>
+        <div id="hoadon-content" class="content-section">
+    <div class="headerad"> QUẢN LÝ HÓA ĐƠN</div>
+   
+    <div class="containbox">
+        <label for="datestart">Ngày bắt đầu:</label>
+        <input type="date" id="datestart1">
+    </div>
 
-        <div class="containbox">
-                    <label for="datestart">Ngày bắt đầu:</label>
-                    <input type="date" id="datestart1">
-                </div>
-                <div class="containbox">
-                    <label for="dateend">Ngày kết thúc:</label>
-                    <input type="date" id="dateend1">
-                </div>
-                <button type="submit" style="margin-top: 10px; margin-left: 10px" onclick="searchTransactionsByDate()">Tìm kiếm</button>
-                <button type="submit" style="margin-top: 10px; margin-left: 10px" onclick=" window.location.reload()">Reset</button>
-                <table id="hoadontable" border='1'>
-    <tr>
-        <th>Transaction ID</th>
-        <th>User ID</th>
-        <th>Total</th>
-        <th>Note</th>
-        <th>Time</th>
-        <th>Address</th>
-        <th>Pay</th>
-        <th>Transport</th>
-        <th>Name Receiver</th>
-        <th>Phone Receiver</th>
-        <th>Detail</th>
-        <th>Change Transport</th>
-    </tr>
-<?php
+    <div class="containbox">
+        <label for="dateend">Ngày kết thúc:</label>
+        <input type="date" id="dateend1">
+    </div>
+
+    <div class="containbox" style="display: flex; align-items: center;">
+        <label for="transport" style="margin-right: 10px;">Loại vận chuyển:</label>
+        <select id="transport" style="width: 100px;">
+            <option value="">Chọn loại vận chuyển</option>
+            <option value="Đang chờ duyệt">Đang chờ duyệt</option>
+            <option value="Đã duyệt">Đã duyệt</option>
+            <option value="Đang giao hàng">Đang giao hàng</option>
+            <option value="Đã giao hàng">Đã giao hàng</option>
+        </select>
+    </div>
+    
+    <button type="submit" style="margin-top: 10px; margin-left: 10px" onclick="searchTransactionsByDate()">Tìm kiếm</button>
+    <button type="submit" style="margin-top: 10px; margin-left: 10px" onclick=" window.location.reload()">Reset</button>
+
+    <table id="hoadontable" border="1">
+        <tr>
+            <th>Transaction ID</th>
+            <th>User ID</th>
+            <th>Total</th>
+            <th>Note</th>
+            <th>Time</th>
+            <th>Address</th>
+            <th>Pay</th>
+            <th>Transport</th>
+            <th>Name Receiver</th>
+            <th>Phone Receiver</th>
+            <th>Detail</th>
+            <th>Change Transport</th>
+        </tr>
+        <?php
 require_once __DIR__ . '../../Model/ModelTransaction.php';
 
 $modelTransaction = new ModelTransaction();
@@ -1472,6 +1714,34 @@ if ($transactions) {
         }
     }
     ?>
+
 </body>
+<script>
+    document.getElementById('editUserForm').onsubmit = function(event) {
+    event.preventDefault();
+
+    var userID = document.getElementById('editUserID').value;
+    var username = document.getElementById('editUsername').value;
+    var name = document.getElementById('editName').value;
+    var email = document.getElementById('editEmail').value;
+    var phoneNumber = document.getElementById('editPhoneNumber').value;
+    var point = document.getElementById('editPoint').value;
+    var role = document.getElementById('editRole').value;
+    var type = document.getElementById('editType').value;
+
+    // AJAX request to update user info
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', `updateUser.php?userID=${userID}&username=${username}&name=${name}&email=${email}&phoneNumber=${phoneNumber}&point=${point}&role=${role}&type=${type}`, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            // Handle response from the server
+            alert('Cập nhật tài khoản thành công');
+            closeModal();
+            window.location.reload();
+        }
+    };
+    xhr.send();
+};
+</script>
 
 </html>
