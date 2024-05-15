@@ -119,12 +119,13 @@
     <?php
     require_once __DIR__ . '../../Model/ModelTransaction.php';
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $startDate = $_POST['startDate'];
-        $endDate = $_POST['endDate'];
-
-        // Tạo một đối tượng ModelTransaction và gọi hàm displayTotalSales
-        $modelTransaction = new ModelTransaction();
-        $modelTransaction->displayTotalSales($startDate, $endDate);
+        if(isset($_POST['startDate']) && isset($_POST['startDate'])) {
+            $startDate = $_POST['startDate'];
+            $endDate = $_POST['endDate'];
+            // Tạo một đối tượng ModelTransaction và gọi hàm displayTotalSales
+            $modelTransaction = new ModelTransaction();
+            $modelTransaction->displayTotalSales($startDate, $endDate);
+        }    
     }
     ?>
 
@@ -168,98 +169,98 @@
             return false; // Để ngăn form submit mặc định
         }
 
-var myChart; // Khai báo biến myChart ở ngoài hàm
+        var myChart; // Khai báo biến myChart ở ngoài hàm
 
-function thongKe(event) {
-    event.preventDefault(); // Prevent the default form behavior
+        function thongKe(event) {
+            event.preventDefault(); // Prevent the default form behavior
 
-    var startDate = document.getElementById('datestart2').value;
-    var endDate = document.getElementById('dateend2').value;
+            var startDate = document.getElementById('datestart2').value;
+            var endDate = document.getElementById('dateend2').value;
 
-    // Create an AJAX request to your PHP script
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', '../View/doanhso.php?startDate=' + encodeURIComponent(startDate) + '&endDate=' + encodeURIComponent(endDate), true);
+            // Create an AJAX request to your PHP script
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '../View/doanhso.php?startDate=' + encodeURIComponent(startDate) + '&endDate=' + encodeURIComponent(endDate), true);
 
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            console.log
-            var salesData = JSON.parse(this.responseText);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    console.log
+                    var salesData = JSON.parse(this.responseText);
 
-            // Get the canvas element where the chart will be drawn
-            var ctx = document.getElementById('salesChart').getContext('2d');
-            ctx.canvas.width = 300;
-            ctx.canvas.height = 200;
+                    // Get the canvas element where the chart will be drawn
+                    var ctx = document.getElementById('salesChart').getContext('2d');
+                    ctx.canvas.width = 300;
+                    ctx.canvas.height = 200;
 
-             // Destroy the old charts if they exist
-             if (myChart) {
-                myChart.destroy();
-            }
-            // Define the chart data and options
-            var chartData = {
-                labels: salesData.labels,
-                datasets: [{
-                    label: 'Doanh số thu được',
-                    data: salesData.sales,
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1
-                }]
-            };
-
-            var chartOptions = {
-                scales: {
-                    y: {
-                        beginAtZero: true
+                    // Destroy the old charts if they exist
+                    if (myChart) {
+                        myChart.destroy();
                     }
+                    // Define the chart data and options
+                    var chartData = {
+                        labels: salesData.labels,
+                        datasets: [{
+                            label: 'Doanh số thu được',
+                            data: salesData.sales,
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 1
+                        }]
+                    };
+
+                    var chartOptions = {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    };
+
+                    // Create the chart using the existing myChart variable
+                    myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: chartData,
+                        options: chartOptions
+                    });
+
+                    // Get the table element
+                    var table = document.getElementById('quanlydoanhso');
+
+                    // Clear the table
+                    while (table.rows.length > 1) {
+                        table.deleteRow(1);
+                    }
+                    table.innerHTML = '';
+                    // Populate the table with sales data
+                    for (var i = 0; i < salesData.labels.length; i++) {
+                        var row = table.insertRow(-1); // Insert a new row at the end of the table
+                        var cell1 = row.insertCell(0); // Insert a new cell in the row
+                        var cell2 = row.insertCell(1); // Insert a new cell in the row
+                        var headerRow = table.insertRow(0);
+                        var headerRow = table.insertRow(0);
+                        var brandHeader = headerRow.insertCell(0);
+                        brandHeader.innerHTML = 'Ngày';
+                        var salesHeader = headerRow.insertCell(1);
+                        salesHeader.innerHTML = 'Doanh số';
+                        cell1.innerHTML = salesData.labels[i];
+                        cell2.innerHTML = salesData.sales[i];
+                    }
+
+                    // Calculate total sales
+                    var totalSales = salesData.sales.reduce((a, b) => a + b, 0);
+
+                    // Add a new row to display total sales
+                    var totalRow = table.insertRow(-1);
+                    var totalCell1 = totalRow.insertCell(0);
+                    var totalCell2 = totalRow.insertCell(1);
+
+                    totalCell1.innerHTML = "Tổng";
+                    totalCell2.innerHTML = totalSales;
                 }
             };
 
-            // Create the chart using the existing myChart variable
-            myChart = new Chart(ctx, {
-                type: 'bar',
-                data: chartData,
-                options: chartOptions
-            });
-
-            // Get the table element
-            var table = document.getElementById('quanlydoanhso');
-
-            // Clear the table
-            while (table.rows.length > 1) {
-                table.deleteRow(1);
-            }
-            table.innerHTML = '';
-            // Populate the table with sales data
-            for (var i = 0; i < salesData.labels.length; i++) {
-                var row = table.insertRow(-1); // Insert a new row at the end of the table
-                var cell1 = row.insertCell(0); // Insert a new cell in the row
-                var cell2 = row.insertCell(1); // Insert a new cell in the row
-                var headerRow = table.insertRow(0);
-                var headerRow = table.insertRow(0);
-    var brandHeader = headerRow.insertCell(0);
-    brandHeader.innerHTML = 'Ngày';
-    var salesHeader = headerRow.insertCell(1);
-    salesHeader.innerHTML = 'Doanh số';
-                cell1.innerHTML = salesData.labels[i];
-                cell2.innerHTML = salesData.sales[i];
-            }
-
-            // Calculate total sales
-            var totalSales = salesData.sales.reduce((a, b) => a + b, 0);
-
-            // Add a new row to display total sales
-            var totalRow = table.insertRow(-1);
-            var totalCell1 = totalRow.insertCell(0);
-            var totalCell2 = totalRow.insertCell(1);
-           
-            totalCell1.innerHTML = "Tổng";
-            totalCell2.innerHTML = totalSales;
+            // Send the request
+            xhr.send();
         }
-    };
-
-    // Send the request
-    xhr.send();
-}
 
 
     </script>
@@ -318,7 +319,7 @@ function thongKe(event) {
             // Tạo yêu cầu AJAX để lấy chi tiết hóa đơn từ máy chủ
             var xhr = new XMLHttpRequest();
             xhr.open('GET', '../View/ViewDetail.php?transactionID=' + transactionID, true);
-            xhr.onreadystatechange = function() {
+            xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     // Hiển thị nội dung chi tiết hóa đơn trong popup
                     document.getElementById('popup-details').innerHTML = this.responseText;
@@ -343,7 +344,7 @@ function thongKe(event) {
             var xhr = new XMLHttpRequest();
             xhr.open('GET', '../View/update_transaction_status.php?transactionID=' + encodeURIComponent(transactionID) + '&status=' + encodeURIComponent(newStatus), true);
 
-            xhr.onreadystatechange = function() {
+            xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     var response = xhr.responseText.trim();
                     console.log(response);
@@ -360,101 +361,101 @@ function thongKe(event) {
 
 
 
-function displaySalesTableByBrand(labels, totalSales) {
-    var table = document.getElementById('quanlydoanhso');
+        function displaySalesTableByBrand(labels, totalSales) {
+            var table = document.getElementById('quanlydoanhso');
 
-    // Clear the existing table content
-    table.innerHTML = '';
+            // Clear the existing table content
+            table.innerHTML = '';
 
-    // Create table headers
-    var headerRow = table.insertRow(0);
-    var brandHeader = headerRow.insertCell(0);
-    brandHeader.innerHTML = 'Hãng';
-    var salesHeader = headerRow.insertCell(1);
-    salesHeader.innerHTML = 'Doanh số';
+            // Create table headers
+            var headerRow = table.insertRow(0);
+            var brandHeader = headerRow.insertCell(0);
+            brandHeader.innerHTML = 'Hãng';
+            var salesHeader = headerRow.insertCell(1);
+            salesHeader.innerHTML = 'Doanh số';
 
-    // Populate the table with sales data
-    for (var i = 0; i < labels.length; i++) {
-        var row = table.insertRow(i + 1);
-        var brandCell = row.insertCell(0);
-        brandCell.innerHTML = labels[i];
-        var salesCell = row.insertCell(1);
-        salesCell.innerHTML = totalSales[i];
-    }
-}
-function searchTransactionsByDate() {
-    // Lấy ngày bắt đầu và kết thúc từ input
-    var startDate = document.getElementById("datestart1").value;
-    var endDate = document.getElementById("dateend1").value;
-
-    // Tạo đối tượng XMLHttpRequest
-    var xhr = new XMLHttpRequest();
-
-    // Xác định phương thức và URL của yêu cầu
-    xhr.open("GET", "../View/search_transaction.php?startDate=" + startDate + "&endDate=" + endDate, true);
-
-    // Xử lý khi nhận được phản hồi từ máy chủ
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 200) {
-                var tableContent = xhr.responseText;
-                document.getElementById("hoadontable").innerHTML = tableContent;
+            // Populate the table with sales data
+            for (var i = 0; i < labels.length; i++) {
+                var row = table.insertRow(i + 1);
+                var brandCell = row.insertCell(0);
+                brandCell.innerHTML = labels[i];
+                var salesCell = row.insertCell(1);
+                salesCell.innerHTML = totalSales[i];
             }
         }
-    };
+        function searchTransactionsByDate() {
+            // Lấy ngày bắt đầu và kết thúc từ input
+            var startDate = document.getElementById("datestart1").value;
+            var endDate = document.getElementById("dateend1").value;
 
-    // Gửi yêu cầu tìm kiếm đến máy chủ
-    xhr.send();
-}
-function changeUserStatus(userID, newStatus) {
-    var xhr = new XMLHttpRequest();
-    // Construct the URL with query parameters
-    var url = "../View/change_user_status.php?userID=" + userID + "&newStatus=" + newStatus;
-    xhr.open("GET", url, true);
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 200) {
-                // Reload the page to reflect the changes
-                alert('Cập nhật trạng thái thành công!');
-            } else {
-                console.error('Error occurred: ' + xhr.status);
-            }
+            // Tạo đối tượng XMLHttpRequest
+            var xhr = new XMLHttpRequest();
+
+            // Xác định phương thức và URL của yêu cầu
+            xhr.open("GET", "../View/search_transaction.php?startDate=" + startDate + "&endDate=" + endDate, true);
+
+            // Xử lý khi nhận được phản hồi từ máy chủ
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        var tableContent = xhr.responseText;
+                        document.getElementById("hoadontable").innerHTML = tableContent;
+                    }
+                }
+            };
+
+            // Gửi yêu cầu tìm kiếm đến máy chủ
+            xhr.send();
         }
-    };
-    // No need to set Content-Type for GET requests
-    xhr.send();
-}
+        function changeUserStatus(userID, newStatus) {
+            var xhr = new XMLHttpRequest();
+            // Construct the URL with query parameters
+            var url = "../View/change_user_status.php?userID=" + userID + "&newStatus=" + newStatus;
+            xhr.open("GET", url, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        // Reload the page to reflect the changes
+                        alert('Cập nhật trạng thái thành công!');
+                    } else {
+                        console.error('Error occurred: ' + xhr.status);
+                    }
+                }
+            };
+            // No need to set Content-Type for GET requests
+            xhr.send();
+        }
 
 
 
 
     </script>
 
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script>
-function logout(event) {
-    event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        function logout(event) {
+            event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
 
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 200) {
-                // Xử lý phản hồi từ server
-                var response = JSON.parse(xhr.responseText);
-                if (response.status === 1) {
-                    // Đăng xuất thành công, chuyển hướng người dùng
-                    window.location.href = 'index.php'; 
-                } else {
-                    alert('Đăng xuất không thành công!');
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        // Xử lý phản hồi từ server
+                        var response = JSON.parse(xhr.responseText);
+                        if (response.status === 1) {
+                            // Đăng xuất thành công, chuyển hướng người dùng
+                            window.location.href = 'index.php';
+                        } else {
+                            alert('Đăng xuất không thành công!');
+                        }
+                    } else {
+                        alert('Đã có lỗi xảy ra. Vui lòng thử lại sau.');
+                    }
                 }
-            } else {
-                alert('Đã có lỗi xảy ra. Vui lòng thử lại sau.');
-            }
+            };
+            xhr.open('GET', 'Logout_admin.php', true);
+            xhr.send();
         }
-    };
-    xhr.open('GET', 'Logout_admin.php', true);
-    xhr.send();
-}
 
 
         function thongKeByBrand(event) {
@@ -467,7 +468,7 @@ function logout(event) {
             var xhr = new XMLHttpRequest();
             xhr.open('GET', '../View/doanhsotheohang.php?startDate=' + encodeURIComponent(startDate) + '&endDate=' + encodeURIComponent(endDate), true);
 
-            xhr.onreadystatechange = function() {
+            xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     var salesData = JSON.parse(this.responseText);
 
@@ -544,7 +545,7 @@ function logout(event) {
             event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
 
             var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function() {
+            xhr.onreadystatechange = function () {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
                         // Xử lý phản hồi từ server
@@ -575,21 +576,33 @@ function logout(event) {
 
     <div id="menu">
         <ul>
-                    <li class="icon" ><i class="fa-solid fa-house"></i><a href="#" onclick="saveCurrentContent('home-content'); showContent('home-content')">Trang chủ </a></li>
-                    <li class="icon" id="phanquyen"><i class="fa-solid fa-people-roof"></i><a href="#" onclick="showContent('phanquyen-content')">Phân quyền</a></li>
-                    <li class="icon" id="taikhoan"><i class="fa-solid fa-user"></i><a href="#" onclick="saveCurrentContent('taikhoan-content');showContent('taikhoan-content')">Quản lý tài khoản</a></li>
-                    <li class="icon" id="sanpham"><i class="fa-solid fa-laptop"></i><a href="#" onclick="saveCurrentContent('sanpham-content');showContent('sanpham-content')">Quản lý sản phẩm</a></li>
-                    <li class="icon" id="loaisanpham"><i class="fa-solid fa-laptop"></i><a href="#" onclick="saveCurrentContent('loaisanpham-content');showContent('loaisanpham-content')">Quản lý loại sản phẩm</a></li>
-                    <li class="icon" id="hoadon"><i class="fa-solid fa-receipt"></i><a href="#" onclick="saveCurrentContent('hoadon-content');showContent('hoadon-content')">Quản lý hóa đơn</a></li>
-                    <li class="icon" id="doanhso"><i class="fa-solid fa-chart-simple"></i><a href="#" onclick="saveCurrentContent('doanhso-content');showContent('doanhso-content')">Doanh số</a></li>
-                    <li class="icon" id="dangxuat"><i class="fa-solid fa-right-from-bracket"></i><a href="#" onclick="logout(event)">Đăng xuất</a></li>                    
-                </ul>
-        </div>
-        <div id="home-content" class="content-section"> 
-                <div class="selling-products">
-                    <h1 class="text-center headerad">QUẢN LÝ CỬA HÀNG CẦU LÔNG</h1>
-                    <div class="item-selling-products" id="item-selling-products">
-                
+            <li class="icon"><i class="fa-solid fa-house"></i><a href="#"
+                    onclick="saveCurrentContent('home-content'); showContent('home-content')">Trang chủ </a></li>
+            <li class="icon" id="phanquyen"><i class="fa-solid fa-people-roof"></i><a href="#"
+                    onclick="showContent('phanquyen-content')">Phân quyền</a></li>
+            <li class="icon" id="taikhoan"><i class="fa-solid fa-user"></i><a href="#"
+                    onclick="saveCurrentContent('taikhoan-content');showContent('taikhoan-content')">Quản lý tài
+                    khoản</a></li>
+            <li class="icon" id="sanpham"><i class="fa-solid fa-laptop"></i><a href="#"
+                    onclick="saveCurrentContent('sanpham-content');showContent('sanpham-content')">Quản lý sản phẩm</a>
+            </li>
+            <li class="icon" id="loaisanpham"><i class="fa-solid fa-laptop"></i><a href="#"
+                    onclick="saveCurrentContent('loaisanpham-content');showContent('loaisanpham-content')">Quản lý loại
+                    sản phẩm</a></li>
+            <li class="icon" id="hoadon"><i class="fa-solid fa-receipt"></i><a href="#"
+                    onclick="saveCurrentContent('hoadon-content');showContent('hoadon-content')">Quản lý hóa đơn</a>
+            </li>
+            <li class="icon" id="doanhso"><i class="fa-solid fa-chart-simple"></i><a href="#"
+                    onclick="saveCurrentContent('doanhso-content');showContent('doanhso-content')">Doanh số</a></li>
+            <li class="icon" id="dangxuat"><i class="fa-solid fa-right-from-bracket"></i><a href="#"
+                    onclick="logout(event)">Đăng xuất</a></li>
+        </ul>
+    </div>
+    <div id="home-content" class="content-section">
+        <div class="selling-products">
+            <h1 class="text-center headerad">QUẢN LÝ CỬA HÀNG CẦU LÔNG</h1>
+            <div class="item-selling-products" id="item-selling-products">
+
 
 
             </div>
@@ -616,10 +629,10 @@ function logout(event) {
 
                     <div class="tab-content mt-3">
                         <div id="tab1" class="tab-pane active">
-                            <?php include('../View/user/pages/rolepage.php'); ?>
+                            <?php include ('../View/user/pages/rolepage.php'); ?>
                         </div>
                         <div id="tab2" class="tab-pane" style="display: none;">
-                            <?php include('../View/user/pages/grouprole.php'); ?>
+                            <?php include ('../View/user/pages/grouprole.php'); ?>
                         </div>
                     </div>
                 </div>
@@ -660,7 +673,7 @@ function logout(event) {
             // Loop through each user and print their information
             foreach ($users as $user) {
                 if ($user['status'] != 0) {
-                echo "<tr>
+                    echo "<tr>
                     <td>" . $user['userID'] . "</td>
                     <td>" . $user['username'] . "</td>
                     <td>" . $user['name'] . "</td>
@@ -671,8 +684,8 @@ function logout(event) {
                     <td>" . $user['type'] . "</td>
                     <td><button onclick='changeUserStatus(\"" . $user['userID'] . "\", 0)'>Banned</button></td>
                 </tr>";
+                }
             }
-        }
 
             // Close the table tag
             echo "</table>";
@@ -746,7 +759,7 @@ function logout(event) {
                 // You can redirect or show a success message here
                 echo "<script>alert('Thêm loại sản phẩm thành công!');</script>";
                 echo "<script>window.location.href = 'Badminton_Admin.php';</script>"; // 
-
+        
 
 
             } else {
@@ -754,7 +767,7 @@ function logout(event) {
                 // You can redirect or show an error message here
                 echo "<script>alert('Thêm loại sản phẩm thất bại');</script>";
                 echo "<script>window.location.href = 'Badminton_Admin.php';</script>"; // 
-
+        
             }
         }
         function deleteBrand($brandID)
@@ -811,15 +824,17 @@ function logout(event) {
                 <label for="dateend">Ngày kết thúc:</label>
                 <input type="date" id="dateend2">
             </div>
-            <button type="submit" style="margin-top: 10px; margin-left: 10px;" onclick="thongKe(event);"> Thống kê doanh số </button>
-            <button type="submit" style="margin-top: 10px; margin-left: 10px;" onclick="thongKeByBrand(event);"> Thống kê doanh số theo hãng </button>
+            <button type="submit" style="margin-top: 10px; margin-left: 10px;" onclick="thongKe(event);"> Thống kê doanh
+                số </button>
+            <button type="submit" style="margin-top: 10px; margin-left: 10px;" onclick="thongKeByBrand(event);"> Thống
+                kê doanh số theo hãng </button>
             <h2 id="tongdoanhso"> </h2>
             <canvas id="salesChart" width="400" height="400"></canvas>
             <table class="tabledoanhso" id="quanlydoanhso" cellpadding="50" cellspacing="100">
 
                 <thead>
                     <tr>
-                        
+
                     </tr>
                 </thead>
             </table>
@@ -839,8 +854,8 @@ function logout(event) {
                 require_once '../Model/ModelProduct.php';
                 require_once '../Model/ModelBrand.php';
                 require_once '../Model/ModelCatalog.php';
-                require_once('../Model/ModelVariantDetail.php');
-                require_once('../Model/ModelVariant.php');
+                require_once ('../Model/ModelVariantDetail.php');
+                require_once ('../Model/ModelVariant.php');
                 $ModelProduct = new ModelProduct();
                 $products = $ModelProduct->getAllProducts();
                 $ModelBrand = new ModelBrand();
@@ -866,9 +881,12 @@ function logout(event) {
                                 </tr>
                             </thead>';
                     foreach ($products as $product) {
-                        if ($product->status == 1) $status = "Đang bán";
-                        else if ($product->status == -1) $status = "Đã xóa";
-                        else $status = "Ngưng bán";
+                        if ($product->status == 1)
+                            $status = "Đang bán";
+                        else if ($product->status == -1)
+                            $status = "Đã xóa";
+                        else
+                            $status = "Ngưng bán";
                         $listVariant = $ModelVariant->getListVariantByProductID($product->productID);
                         $catalogtmp = ($ModelCatalog->getCatalogByID($product->catalogID));
                         if ($catalogtmp->getName() == "Shuttle" || $catalogtmp->getName() == "String")
@@ -891,8 +909,6 @@ function logout(event) {
                                     </tr>
                                     </tbody>
                                 ";
-
-
                         else {
                             if (count($listVariant) > 0) {
                                 $variantID = reset($listVariant)->getVariantID();
@@ -941,17 +957,20 @@ function logout(event) {
 
                     <div class="input-group input-group-sm mb-3">
                         <label class="input-group-text" id="inputGroup-sizing-sm">Tên sản phẩm</label>
-                        <input type="text" name="name" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                        <input type="text" name="name" class="form-control" aria-label="Sizing example input"
+                            aria-describedby="inputGroup-sizing-sm">
                     </div>
 
                     <div class="input-group input-group-sm mb-3">
                         <label class="input-group-text" id="inputGroup-sizing-sm">Giá</label>
-                        <input type="text" name="price" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                        <input type="text" name="price" class="form-control" aria-label="Sizing example input"
+                            aria-describedby="inputGroup-sizing-sm">
                     </div>
 
                     <div class="input-group input-group-sm mb-3">
                         <label class="input-group-text" id="inputGroup-sizing-sm">Giá gốc</label>
-                        <input type="text" name="discount" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                        <input type="text" name="discount" class="form-control" aria-label="Sizing example input"
+                            aria-describedby="inputGroup-sizing-sm">
                     </div>
 
                     <div class="input-group input-group-sm mb-3">
@@ -966,7 +985,8 @@ function logout(event) {
 
                     <div class="input-group input-group-sm mb-3">
                         <label class="input-group-text" id="inputGroup-sizing-sm">Mô tả</label>
-                        <input type="textarea" name="description" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                        <input type="textarea" name="description" class="form-control" aria-label="Sizing example input"
+                            aria-describedby="inputGroup-sizing-sm">
                     </div>
 
                     <div class="containbox">
@@ -985,7 +1005,7 @@ function logout(event) {
         <script>
             // Mở popup chỉnh sửa sản phẩm khi bấm vào liên kết
             document.querySelectorAll('#openEditModal').forEach(button => {
-                button.addEventListener('click', function(event) {
+                button.addEventListener('click', function (event) {
                     event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
 
                     // Hiển thị modal form
@@ -1017,7 +1037,7 @@ function logout(event) {
 
             function loadvariant(productID) {
                 var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function() {
+                xhttp.onreadystatechange = function () {
                     if (this.readyState == 4) {
                         if (this.status == 200) {
                             var data = JSON.parse(this.responseText);
@@ -1044,7 +1064,7 @@ function logout(event) {
                             // Kiểm tra xem có radio buttons trong #variant hay không
                             if (variantContainer.innerHTML.trim() === '') { // Nếu không có radio buttons, thêm vào
                                 var firstRadio = true; // Biến để kiểm tra radio đầu tiên
-                                keys.forEach(function(key) {
+                                keys.forEach(function (key) {
                                     var uppercaseKey = key.toUpperCase(); // Chuyển đổi khóa thành chữ hoa
 
                                     // Tạo radio button
@@ -1079,7 +1099,7 @@ function logout(event) {
                 var productID = c.getAttribute('data-value2');
                 var color = c.value;
                 var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function() {
+                xhttp.onreadystatechange = function () {
                     if (this.readyState == 4) {
                         if (this.status == 200) {
                             var data = JSON.parse(this.responseText);
@@ -1125,7 +1145,7 @@ function logout(event) {
             }
 
             document.querySelectorAll('#confirmDelete').forEach(button => {
-                button.addEventListener('click', function() {
+                button.addEventListener('click', function () {
                     // Lấy ID sản phẩm từ thuộc tính data-productid của button
                     var ProductID = this.getAttribute('data-productid');
                     // Hiển thị hộp thoại xác nhận
@@ -1154,9 +1174,12 @@ function logout(event) {
 
         <!-- Bảng chỉnh sửa sản phẩm -->
 
-        <div id="editModal" class="modal" style="overflow-y: auto;background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">
-            <form class="modal-content" action="../View/Update.php" method="POST" style="width: 50%; margin-left: 25%; margin-top: 3%; border: solid 2px; padding: 20px;">
-                <span style="position: absolute; top: 5px; right: 5px;" class="close" onclick="closeEditModal()">&times;</span>
+        <div id="editModal" class="modal"
+            style="overflow-y: auto;background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">
+            <form class="modal-content" action="../View/Update.php" method="POST"
+                style="width: 50%; margin-left: 25%; margin-top: 3%; border: solid 2px; padding: 20px;">
+                <span style="position: absolute; top: 5px; right: 5px;" class="close"
+                    onclick="closeEditModal()">&times;</span>
                 <h1 style="text-align: center;">Chỉnh sửa sản phẩm</h1>
 
                 <div class="input-group mb-3">
@@ -1171,18 +1194,18 @@ function logout(event) {
 
                 <div class="input-group mb-3">
                     <span class="input-group-text" style="min-width: 120px;">Giá</span>
-                    <input type="text" name="price" id="price" class="form-control">
+                    <input name="price" id="price" class="form-control">
                 </div>
 
                 <div class="input-group mb-3">
                     <span class="input-group-text" style="min-width: 120px;">Giá gốc</span>
-                    <input type="text" name="discount" id="discount" class="form-control">
+                    <input name="discount" id="discount" class="form-control">
                 </div>
 
                 <div class="input-group mb-3">
                     <span class="input-group-text" style="min-width: 120px;">Trạng thái</span>
                     <select name="status" id="status" class="form-select">
-                        <option selected disabled>Chọn trạng thái</option>
+                        <option selected>Trạng thái</option>
                         <option value="Đang bán">Đang bán</option>
                         <option value="Ngừng bán">Ngừng bán</option>
                         <option value="Đã xóa">Đã xóa</option>
@@ -1198,63 +1221,79 @@ function logout(event) {
 
                 </div>
                 <div class="input-group mb-3">
-                <div class="container">
-  <div class="row">
-  <div class="col-md-6">
-  <div class="product-version-container">
-    <div class="product-version">Biến thể:</div>
-    <div class="position-relative d-inline-block badge-container" style="margin-left: 20px; cursor:pointer;">
-      <div class="badge badge-primary" style="height: 40px; width:100px; line-height: 30px" data-toggle="badge">4UG5
-        <button type="button" class="btn btn-danger btn-sm rounded-circle position-absolute" style="top: -10px; right: -15px;" data-toggle="button">&times;</button>
-      </div>
-    </div>
-    <div class="position-relative d-inline-block badge-container" style="margin-left: 20px; cursor:pointer;">
-      <div class="badge badge-primary" style="height: 40px; width:100px; line-height: 30px" data-toggle="badge">4UG5
-        <button type="button" class="btn btn-danger btn-sm rounded-circle position-absolute" style="top: -10px; right: -15px;" data-toggle="button">&times;</button>
-      </div>
-    </div>
-    <div class="position-relative d-inline-block badge-container" style="margin-left: 20px; cursor:pointer;">
-      <div class="badge badge-primary" style="height: 40px; width:100px; line-height: 30px" data-toggle="badge">4UG5
-        <button type="button" class="btn btn-danger btn-sm rounded-circle position-absolute" style="top: -10px; right: -15px;" data-toggle="button">&times;</button>
-      </div>
-    </div>
-  </div>
-</div>
-  </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="product-version-container">
+                                    <div class="product-version">Biến thể:</div>
+                                    <div class="position-relative d-inline-block badge-container"
+                                        style="margin-left: 20px; cursor:pointer;">
+                                        <div class="badge badge-primary"
+                                            style="height: 40px; width:100px; line-height: 30px" data-toggle="badge">
+                                            4UG5
+                                            <button type="button"
+                                                class="btn btn-danger btn-sm rounded-circle position-absolute"
+                                                style="top: -10px; right: -15px;" data-toggle="button">&times;</button>
+                                        </div>
+                                    </div>
+                                    <div class="position-relative d-inline-block badge-container"
+                                        style="margin-left: 20px; cursor:pointer;">
+                                        <div class="badge badge-primary"
+                                            style="height: 40px; width:100px; line-height: 30px" data-toggle="badge">
+                                            4UG5
+                                            <button type="button"
+                                                class="btn btn-danger btn-sm rounded-circle position-absolute"
+                                                style="top: -10px; right: -15px;" data-toggle="button">&times;</button>
+                                        </div>
+                                    </div>
+                                    <div class="position-relative d-inline-block badge-container"
+                                        style="margin-left: 20px; cursor:pointer;">
+                                        <div class="badge badge-primary"
+                                            style="height: 40px; width:100px; line-height: 30px" data-toggle="badge">
+                                            4UG5
+                                            <button type="button"
+                                                class="btn btn-danger btn-sm rounded-circle position-absolute"
+                                                style="top: -10px; right: -15px;" data-toggle="button">&times;</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-  <script>
-  // Lắng nghe sự kiện nhấp vào badge
-  document.querySelectorAll('[data-toggle="badge"]').forEach(function(badge) {
-    badge.addEventListener('click', function() {
-      // Loại bỏ lớp "badge-active" từ tất cả các badge
-      document.querySelectorAll('.badge-container').forEach(function(item) {
-        item.classList.remove('badge-active');
-      });
-      // Thêm lớp "badge-active" cho badge được nhấp vào
-      badge.closest('.badge-container').classList.add('badge-active');
-    });
-  });
+                        <script>
+                            // Lắng nghe sự kiện nhấp vào badge
+                            document.querySelectorAll('[data-toggle="badge"]').forEach(function (badge) {
+                                badge.addEventListener('click', function () {
+                                    // Loại bỏ lớp "badge-active" từ tất cả các badge
+                                    document.querySelectorAll('.badge-container').forEach(function (item) {
+                                        item.classList.remove('badge-active');
+                                    });
+                                    // Thêm lớp "badge-active" cho badge được nhấp vào
+                                    badge.closest('.badge-container').classList.add('badge-active');
+                                });
+                            });
 
-  // Lắng nghe sự kiện nhấp vào nút xóa
-  document.querySelectorAll('[data-toggle="button"]').forEach(function(button) {
-    button.addEventListener('click', function(event) {
-      event.stopPropagation(); // Ngăn chặn sự kiện click trên badge
-    });
-  });
-</script>
+                            // Lắng nghe sự kiện nhấp vào nút xóa
+                            document.querySelectorAll('[data-toggle="button"]').forEach(function (button) {
+                                button.addEventListener('click', function (event) {
+                                    event.stopPropagation(); // Ngăn chặn sự kiện click trên badge
+                                });
+                            });
+                        </script>
 
-  <!-- Thêm hàng mới cho input và nút lưu -->
-  <div class="row">
-    <div class="col-md-12">
-      <div class="input-group" style="margin-top: 10px; width:60%">
-        <input type="text" class="form-control" placeholder="Số lượng" aria-label="Số lượng" aria-describedby="basic-addon2">
-        <div class="input-group-append" style="width: 100px">
-          <button class="btn btn-outline-secondary" type="button">Lưu</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+                        <!-- Thêm hàng mới cho input và nút lưu -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="input-group" style="margin-top: 10px; width:60%">
+                                    <input type="text" class="form-control" placeholder="Số lượng" aria-label="Số lượng"
+                                        aria-describedby="basic-addon2">
+                                    <div class="input-group-append" style="width: 100px">
+                                        <button class="btn btn-outline-secondary" type="button">Lưu</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
 
 
@@ -1263,7 +1302,8 @@ function logout(event) {
                 <div class="input-group mb-3">
                     <label for="existingImage">Ảnh đại diện:</label>
                     <div class="d-flex align-items-center">
-                        <img id="existingImage" style="max-width: 100px; max-height: 100px;" alt="Hình hiện tại" value="">
+                        <img id="existingImage" style="max-width: 100px; max-height: 100px;" alt="Hình hiện tại"
+                            value="">
                         <button class="btn btn-success ms-3" onclick="removeExistingImage()">Đổi</button>
                     </div>
                 </div>
@@ -1273,15 +1313,18 @@ function logout(event) {
                         <div class="col-12">
                             <div class="d-flex flex-wrap" id="image-container">
                                 <div class="image-container">
-                                    <img src="../View/images/product/1/Kurenai/1.1.png" alt="Image 1" onclick="openImage(this.src)">
+                                    <img src="../View/images/product/1/Kurenai/1.1.png" alt="Image 1"
+                                        onclick="openImage(this.src)">
                                     <button class="btn btn-danger delete-btn">&times;</button>
                                 </div>
                                 <div class="image-container">
-                                    <img src="../View/images/product/1/Kurenai/1.2.png" alt="Image 2" onclick="openImage(this.src)">
+                                    <img src="../View/images/product/1/Kurenai/1.2.png" alt="Image 2"
+                                        onclick="openImage(this.src)">
                                     <button class="btn btn-danger delete-btn">&times;</button>
                                 </div>
                                 <div class="image-container">
-                                    <img src="../View/images/product/1/Kurenai/1.3.png" alt="Image 3" onclick="openImage(this.src)">
+                                    <img src="../View/images/product/1/Kurenai/1.3.png" alt="Image 3"
+                                        onclick="openImage(this.src)">
                                     <button class="btn btn-danger delete-btn">&times;</button>
                                 </div>
                                 <!-- Add more images as needed -->
@@ -1303,7 +1346,7 @@ function logout(event) {
                         var imgIndex = button.getAttribute('data-value');
                         var color = button.getAttribute('data-color');
                         var xhttp = new XMLHttpRequest();
-                        xhttp.onreadystatechange = function() {
+                        xhttp.onreadystatechange = function () {
                             if (this.readyState == 4) {
                                 if (this.status == 200) {
                                     var data = JSON.parse(this.responseText);
@@ -1339,11 +1382,11 @@ function logout(event) {
                 </div>
 
                 <script>
-                    document.getElementById('image-choose').addEventListener('change', function(event) {
+                    document.getElementById('image-choose').addEventListener('change', function (event) {
                         const file = event.target.files[0];
                         if (file) {
                             const reader = new FileReader();
-                            reader.onload = function(e) {
+                            reader.onload = function (e) {
                                 document.getElementById('selectedImage').src = e.target.result;
                             };
                             reader.readAsDataURL(file);
@@ -1352,7 +1395,17 @@ function logout(event) {
                 </script>
 
 
-                <button type="submit" class="btn btn-primary" style="width:100%;">Lưu</button>
+                <button type="submit" class="btn btn-primary" style="width:100%;"
+                    onclick="saveUpdateProduct()">Lưu</button>
+
+                <script>
+                    function saveUpdateProduct() {
+                        var name = document.getElementById('name').innerText;
+                        var price = document.getElementById('price').innerText;
+                        var fakePrice = document.getElementById('discount').innerText;
+                        console.log(fakePrice);
+                    }
+                </script>
             </form>
 
         </div>
@@ -1362,70 +1415,74 @@ function logout(event) {
         <div class="headerad"> QUẢN LÝ HÓA ĐƠN</div>
 
         <div class="containbox">
-                    <label for="datestart">Ngày bắt đầu:</label>
-                    <input type="date" id="datestart1">
-                </div>
-                <div class="containbox">
-                    <label for="dateend">Ngày kết thúc:</label>
-                    <input type="date" id="dateend1">
-                </div>
-                <button type="submit" style="margin-top: 10px; margin-left: 10px" onclick="searchTransactionsByDate()">Tìm kiếm</button>
-                <button type="submit" style="margin-top: 10px; margin-left: 10px" onclick=" window.location.reload()">Reset</button>
-                <table id="hoadontable" border='1'>
-    <tr>
-        <th>Transaction ID</th>
-        <th>User ID</th>
-        <th>Total</th>
-        <th>Note</th>
-        <th>Time</th>
-        <th>Address</th>
-        <th>Pay</th>
-        <th>Transport</th>
-        <th>Name Receiver</th>
-        <th>Phone Receiver</th>
-        <th>Detail</th>
-        <th>Change Transport</th>
-    </tr>
-<?php
-require_once __DIR__ . '../../Model/ModelTransaction.php';
+            <label for="datestart">Ngày bắt đầu:</label>
+            <input type="date" id="datestart1">
+        </div>
+        <div class="containbox">
+            <label for="dateend">Ngày kết thúc:</label>
+            <input type="date" id="dateend1">
+        </div>
+        <button type="submit" style="margin-top: 10px; margin-left: 10px" onclick="searchTransactionsByDate()">Tìm
+            kiếm</button>
+        <button type="submit" style="margin-top: 10px; margin-left: 10px"
+            onclick=" window.location.reload()">Reset</button>
+        <table id="hoadontable" border='1'>
+            <tr>
+                <th>Transaction ID</th>
+                <th>User ID</th>
+                <th>Total</th>
+                <th>Note</th>
+                <th>Time</th>
+                <th>Address</th>
+                <th>Pay</th>
+                <th>Transport</th>
+                <th>Name Receiver</th>
+                <th>Phone Receiver</th>
+                <th>Detail</th>
+                <th>Change Transport</th>
+            </tr>
+            <?php
+            require_once __DIR__ . '../../Model/ModelTransaction.php';
 
-$modelTransaction = new ModelTransaction();
+            $modelTransaction = new ModelTransaction();
 
-// Lấy tất cả các giao dịch từ cơ sở dữ liệu"
-$transactions = $modelTransaction->getAllTransactions();
+            // Lấy tất cả các giao dịch từ cơ sở dữ liệu"
+            $transactions = $modelTransaction->getAllTransactions();
 
-// Kiểm tra xem có giao dịch nào không
-if ($transactions) {
-    foreach ($transactions as $transaction) {
-?>
-    <tr>
-        <td><?php echo $transaction->getTransactionID(); ?></td>
-        <td><?php echo $transaction->getUserID(); ?></td>
-        <td><?php echo $transaction->getTotal(); ?></td>
-        <td><?php echo $transaction->getNote(); ?></td>
-        <td><?php echo $transaction->getTime(); ?></td>
-        <td><?php echo $transaction->getAddress(); ?></td>
-        <td><?php echo $transaction->getCheck(); ?></td>
-        <td><?php echo $transaction->getTransport(); ?></td>
-        <td><?php echo $transaction->getNameReceiver(); ?></td>
-        <td><?php echo $transaction->getPhoneReceiver(); ?></td>
-        <td><button onclick='showTransactionDetails(<?php echo $transaction->getTransactionID(); ?>)'>View Details</button></td>
-        <td>
-            <select id='status<?php echo $transaction->getTransactionID(); ?>'>
-                <option value=''>Select Status</option>
-                <option value='Đang chờ duyệt'>Đang chờ duyệt</option>
-                <option value='Đã duyệt'>Đã duyệt</option>
-                <option value='Đang giao hàng'>Đang giao hàng</option>
-                <option value='Đã giao hàng'>Đã giao hàng</option>
-            </select>
-            <button onclick='changeTransactionStatus(<?php echo $transaction->getTransactionID(); ?>)'>Save</button>
-        </td>
-    </tr>
-<?php
-    }
-}
-?>
-</table>
+            // Kiểm tra xem có giao dịch nào không
+            if ($transactions) {
+                foreach ($transactions as $transaction) {
+                    ?>
+                    <tr>
+                        <td><?php echo $transaction->getTransactionID(); ?></td>
+                        <td><?php echo $transaction->getUserID(); ?></td>
+                        <td><?php echo $transaction->getTotal(); ?></td>
+                        <td><?php echo $transaction->getNote(); ?></td>
+                        <td><?php echo $transaction->getTime(); ?></td>
+                        <td><?php echo $transaction->getAddress(); ?></td>
+                        <td><?php echo $transaction->getCheck(); ?></td>
+                        <td><?php echo $transaction->getTransport(); ?></td>
+                        <td><?php echo $transaction->getNameReceiver(); ?></td>
+                        <td><?php echo $transaction->getPhoneReceiver(); ?></td>
+                        <td><button onclick='showTransactionDetails(<?php echo $transaction->getTransactionID(); ?>)'>View
+                                Details</button></td>
+                        <td>
+                            <select id='status<?php echo $transaction->getTransactionID(); ?>'>
+                                <option value=''>Select Status</option>
+                                <option value='Đang chờ duyệt'>Đang chờ duyệt</option>
+                                <option value='Đã duyệt'>Đã duyệt</option>
+                                <option value='Đang giao hàng'>Đang giao hàng</option>
+                                <option value='Đã giao hàng'>Đã giao hàng</option>
+                            </select>
+                            <button
+                                onclick='changeTransactionStatus(<?php echo $transaction->getTransactionID(); ?>)'>Save</button>
+                        </td>
+                    </tr>
+                    <?php
+                }
+            }
+            ?>
+        </table>
 
         <div id="popup" class="popup">
             <div class="popup-content">
@@ -1445,12 +1502,12 @@ if ($transactions) {
             var tabLinks = document.querySelectorAll('.nav-link');
 
             // Ẩn tất cả các tab trước khi hiển thị tab được chọn
-            tabs.forEach(function(tab) {
+            tabs.forEach(function (tab) {
                 tab.style.display = 'none';
             });
 
             // Loại bỏ lớp 'active' cho tất cả các tablinks trước khi chọn tab mới
-            tabLinks.forEach(function(link) {
+            tabLinks.forEach(function (link) {
                 link.classList.remove('active');
             });
 
