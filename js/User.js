@@ -10,3 +10,25 @@ function getUserID(user) {
         })
     })
 }
+
+function checkOrderDetails(id) {
+    return new Promise(function(resolve, reject) {
+        $.ajax({
+            url: '../Controllers/OrderTransactionController.php',
+            method: 'POST',
+            data: { action: 'check-order', id },
+            dataType: 'JSON',
+            success: function(response) {
+                //console.log('Response from server:', response);
+                if (response === 1) {
+                    resolve(true);
+                } else {
+                    resolve(false);
+                }
+            },
+            error: function(error) {
+                reject(error);
+            }
+        });
+    });
+}

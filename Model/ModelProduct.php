@@ -344,9 +344,9 @@ class ModelProduct
     // }
 
     // Cập nhật thông tin sản phẩm trong cơ sở dữ liệu
-    public function updateProduct($productID)
+    public function updateProduct($productID, $name, $price, $fakePrice, $status)
     {
-        $query = "UPDATE product SET brandID = '$brandID', catalogID = '$catalogID', name = '$name', description = '$description', url_image = '$url' WHERE productID = '$productID'";
+        $query = "UPDATE product SET name = '$name', price = '$price', fakePrice = '$fakePrice', status = '$status' WHERE productID = '$productID'";
         return $this->db->update($query);
     }
 

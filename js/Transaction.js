@@ -2,7 +2,7 @@ window.onload = function() {
     handleSearchByPhone();
 
     const urlParams = new URLSearchParams(window.location.search);
-    if (window.location.pathname === '/badminton-shop/Controllers/index.php' && urlParams.get('control') === 'checkDonHang') {
+    if (window.location.pathname === '/badminton-fix/Controllers/index.php' && urlParams.get('control') === 'checkDonHang') {
         filterEndUserOrderStatus();
         handleCustomerOrder();
         handleAllCustomerOrder();
@@ -11,7 +11,7 @@ window.onload = function() {
         handleDeleteTransaction();
         // handleSearchByPhone();
     }
-    if (window.location.pathname === '/badminton-shop/Controllers/index.php' && urlParams.get('control') === 'DetailOrder') {
+    if (window.location.pathname === '/badminton-fix/Controllers/index.php' && urlParams.get('control') === 'DetailOrder') {
         listDelete();
         renderReOrder();
     }

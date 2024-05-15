@@ -11,7 +11,7 @@ if (isset($_GET['productID'])) {
   $result = $ModelProduct -> deleteProduct($ProductID);
   if ($result) {
     echo "<script>alert('Xoá sản phẩm thành công!')</script>";
-    // header("Location: ./Badminton_Admin.php");
+      //header("../Controllers/Badminton_Admin.php");
 } else {
     echo "<script>alert('Không thể xoá sản phẩm:')</script> " . $result->message;
 }
