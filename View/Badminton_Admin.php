@@ -109,7 +109,8 @@ function changeTransactionStatus(transactionID) {
 
 
 
-var myChart; // Khai báo biến myChart ở ngoài hàm
+
+var myChart; // Declare the myChart variable outside the function
 
 function thongKe(event) {
     event.preventDefault(); // Prevent the default form behavior
@@ -123,16 +124,29 @@ function thongKe(event) {
 
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
-            console.log
-            var salesData = JSON.parse(this.responseText);
+            var response = JSON.parse(this.responseText);
+
+            // Check if the response contains an error
+            if (response.error) {
+                alert(response.error); // Display the error message
+                return; // Exit the function
+            }
+
+            var salesData = response;
+
+            // Check if salesData is empty
+            if (!salesData || salesData.labels.length === 0 || salesData.sales.length === 0) {
+                alert('Không có đơn hàng nào trong khoảng thời gian này.');
+                return;
+            }
 
             // Get the canvas element where the chart will be drawn
             var ctx = document.getElementById('salesChart').getContext('2d');
             ctx.canvas.width = 300;
             ctx.canvas.height = 200;
 
-             // Destroy the old charts if they exist
-             if (myChart) {
+            // Destroy the old charts if they exist
+            if (myChart) {
                 myChart.destroy();
             }
             // Define the chart data and options
@@ -176,11 +190,10 @@ function thongKe(event) {
                 var cell1 = row.insertCell(0); // Insert a new cell in the row
                 var cell2 = row.insertCell(1); // Insert a new cell in the row
                 var headerRow = table.insertRow(0);
-                var headerRow = table.insertRow(0);
-    var brandHeader = headerRow.insertCell(0);
-    brandHeader.innerHTML = 'Ngày';
-    var salesHeader = headerRow.insertCell(1);
-    salesHeader.innerHTML = 'Doanh số';
+                var brandHeader = headerRow.insertCell(0);
+                brandHeader.innerHTML = 'Ngày';
+                var salesHeader = headerRow.insertCell(1);
+                salesHeader.innerHTML = 'Doanh số';
                 cell1.innerHTML = salesData.labels[i];
                 cell2.innerHTML = salesData.sales[i];
             }
@@ -192,7 +205,7 @@ function thongKe(event) {
             var totalRow = table.insertRow(-1);
             var totalCell1 = totalRow.insertCell(0);
             var totalCell2 = totalRow.insertCell(1);
-           
+
             totalCell1.innerHTML = "Tổng";
             totalCell2.innerHTML = totalSales;
         }
@@ -217,9 +230,23 @@ function thongKeByBrand(event) {
             if (xhr.status == 200) {
                 console.log("Raw response: ", this.responseText); // Log the raw response
                 try {
-                    var salesData = JSON.parse(this.responseText);
+                    var response = JSON.parse(this.responseText);
+
+                    // Check if the response contains an error
+                    if (response.error) {
+                        alert(response.error); // Display the error message
+                        return; // Exit the function
+                    }
+
+                    var salesData = response;
                     console.log("Start Date: " + startDate);
                     console.log("End Date: " + endDate);
+
+                    // Check if salesData is empty
+                    if (!salesData || salesData.labels.length === 0 || salesData.totalSales.length === 0) {
+                        alert('Không có đơn hàng nào trong khoảng thời gian này.');
+                        return;
+                    }
 
                     // Log the sales data to verify its structure
                     console.log("Parsed sales data: ", salesData);
@@ -235,12 +262,6 @@ function thongKeByBrand(event) {
                     // Destroy the old chart if it exists
                     if (window.myChart) {
                         window.myChart.destroy();
-                    }
-
-                    // Check if there is no sales data
-                    if (salesData.labels.length === 0) {
-                        alert('Không có doanh thu để hiển thị');
-                        return;
                     }
 
                     // Define the chart data and options
@@ -289,27 +310,60 @@ function thongKeByBrand(event) {
 }
 
 function displaySalesTableByBrand(labels, totalSales) {
+    // Get the table element
     var table = document.getElementById('quanlydoanhso');
 
-    // Clear the existing table content
+    // Clear the table
+    while (table.rows.length > 1) {
+        table.deleteRow(1);
+    }
     table.innerHTML = '';
-
-    // Create table headers
-    var headerRow = table.insertRow(0);
-    var brandHeader = headerRow.insertCell(0);
-    brandHeader.innerHTML = 'Hãng';
-    var salesHeader = headerRow.insertCell(1);
-    salesHeader.innerHTML = 'Doanh số';
-
     // Populate the table with sales data
     for (var i = 0; i < labels.length; i++) {
-        var row = table.insertRow(i + 1);
-        var brandCell = row.insertCell(0);
-        brandCell.innerHTML = labels[i];
-        var salesCell = row.insertCell(1);
-        salesCell.innerHTML = totalSales[i];
+        var row = table.insertRow(-1); // Insert a new row at the end of the table
+        var cell1 = row.insertCell(0); // Insert a new cell in the row
+        var cell2 = row.insertCell(1); // Insert a new cell in the row
+        var headerRow = table.insertRow(0);
+        var brandHeader = headerRow.insertCell(0);
+        brandHeader.innerHTML = 'Ngày';
+        var salesHeader = headerRow.insertCell(1);
+        salesHeader.innerHTML = 'Doanh số';
+        cell1.innerHTML = labels[i];
+        cell2.innerHTML = totalSales[i];
     }
+
+    // Calculate total sales
+    var totalSalesSum = totalSales.reduce((a, b) => a + b, 0);
+
+    // Add a new row to display total sales
+    var totalRow = table.insertRow(-1);
+    var totalCell1 = totalRow.insertCell(0);
+    var totalCell2 = totalRow.insertCell(1);
+
+    totalCell1.innerHTML = "Tổng";
+    totalCell2.innerHTML = totalSalesSum;
 }
+
+function searchTransactionsByDate() {
+    var startDate = document.getElementById('datestart1').value;
+    var endDate = document.getElementById('dateend1').value;
+    var transport = document.getElementById('transport').value;
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', `search_transaction.php?startDate=${startDate}&endDate=${endDate}&transport=${transport}`, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);
+            if (response.error) {
+                alert(response.error);
+            } else {
+                document.getElementById('hoadontable').innerHTML = response.tableContent;
+            }
+        }
+    };
+    xhr.send();
+}
+
 function searchTransactionsByDate() {
     // Lấy ngày bắt đầu và kết thúc từ input
     var startDate = document.getElementById("datestart1").value;
