@@ -189,6 +189,14 @@ $total_price_cart = 0;
                                         $productName = $modelProduct->getProductNameByID($productID);
                                         $product = $modelProduct->getProductByID($productID);
 
+                                        $cartData[] = [
+                                            'quantity' => $quantity,
+                                            'productID' => $productID,
+                                            'price' => $price,
+                                            'variantDetail' => $variantDetail,
+                                            'productName' => $productName,
+                                        ];
+
                                         echo '<tr class="product product-has-image clearfix">';
                                         echo '<td>';
                                         echo '<div class="product-thumbnail">';
@@ -260,34 +268,60 @@ $total_price_cart = 0;
 
             <script>
                 
-                    $(document).on('click', '.submit-btn', function(event) {
-                        event.preventDefault();
+                $(document).on('click', '.submit-btn', function(event) {
+    event.preventDefault();
 
-                        // Collect form data
-                        var fullName = document.getElementById('fullname').value.trim();
-                        var phone = document.getElementById('phone').value.trim();
-                        var address = document.getElementById('address').value.trim();
-                        var note = document.getElementById('notes').value.trim();
+    // Collect form data
+    var fullName = document.getElementById('fullname').value.trim();
+    var phone = document.getElementById('phone').value.trim();
+    var address = document.getElementById('address').value.trim();
+    var note = document.getElementById('notes').value.trim();
+    var username = <?php echo $_SESSION['username']; ?>;
+    const userID = getUserID(username);
+    console.log(fullName);
+    console.log(phone);
+    console.log(address);
+    console.log(note);
+    var cartDetails = <?php echo json_encode($cartData); ?>;
+    var totalPriceCart = <?php echo $total_price_cart; ?>;
+    console.log(totalPriceCart);
+    cartDetails.forEach(function(item) {
+            console.log('Product ID:', item.productID);
+            console.log('Quantity:', item.quantity);
+            console.log('Price:', item.price);
+            console.log('Variant:', item.variantDetail);
+            console.log('Name:', item.productName);
+        });
+    if (fullName === '' || phone === '' || address === '') {
+        alert('Vui lòng nhập đủ thông tin!');
+        return;
+    }
 
-                        
-                        if (fullName === '' || phone === '' || address === '') {
-                            alert('Vui lòng nhập đủ thông tin!');
-                            return;
-                        }
+    // var xhr = new XMLHttpRequest();
+    // xhr.open("POST", "/Model/process_order.php", true); // Corrected path
+    // xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    // xhr.onreadystatechange = function() {
+    //     if (xhr.readyState === 4 && xhr.status === 200) {
+    //         alert('Đặt hàng thành công!');
+    //     }
+    // };
+    // xhr.send("fullname=" + fullName + "&phone=" + phone + "&address=" + address + "&notes=" + note + "&total=" + <?php echo $total_price_cart; ?>);
+});
 
-                        
-                        var xhr = new XMLHttpRequest();
-                        xhr.open("POST", "process_order.php", true);
-                        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                        xhr.onreadystatechange = function() {
-                            if (xhr.readyState === 4 && xhr.status === 200) {
-                                alert('Đặt hàng thành công!');
-                                
-                            }
-                        };
-                        xhr.send("&fullname=" + fullName + "&phone=" + phone + "&address=" + address + "&notes=" + note + "&total=" + <?php echo $total_price_cart; ?>);
-                    });
-                
+function addTransaction(){
+    $.ajax({
+        url: '../Controllers/TransactionController.php',
+        method: 'POST',
+        data: { action: "add", maquyen: ma_nhomquyen, tenquyen: ten_nhomquyen },
+        success: function (data) {
+            console.log(data);
+            $("form").trigger('reset');
+            $("#addNhomQuyen").modal("hide");
+            alert("Thêm Nhóm Quyền Thành Công")
+            loadNhomQuyen();
+        }
+    })
+}
             </script>
 
 

@@ -109,10 +109,6 @@
         margin-bottom: 0px;
     }
 
-    /* .d-none {
-    display: none;
-} */
-
     .cartheader {
         margin-bottom: 0;
     }
@@ -327,12 +323,10 @@
         height: 40px;
         line-height: 40px;
         cursor: pointer;
-        /* Biểu tượng chuột khi di chuột qua button */
     }
 
     .cartheader .ajaxcart-footer .cart-btn-proceed-checkout-dt button:hover {
         background-color: #ffffff;
-        /* Màu nền khi trỏ vào button */
         color: #e95221;
     }
 </style>

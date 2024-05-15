@@ -46,6 +46,10 @@
             echo json_encode($this->modelTransaction->getAllDeleteHoaDon());
         }
 
+        public function addTransaction($transactionID, $userID, $total, $note, $time, $address, $check, $transport, $status, $name_receiver, $phone_receiver){
+            echo json_encode($this->modelTransaction->addTransaction($transactionID, $userID, $total, $note, $time, $address, $check, $transport, $status, $name_receiver, $phone_receiver));
+        }
+
     }
 
     $transactionctl = new TransactionController();
@@ -84,6 +88,20 @@
             break;
         case 'list-delete':
             $transactionctl->getAllDeleteHoaDon();
+            break;
+        case "add":
+            $transactionID = '';
+            $userID = $_POST['user'];
+            $total = $_POST['total'];
+            $note = $_POST['notes'];
+            $time = date('Y-m-d H:i:s');
+            $address = $_POST['address'];
+            $check = 'Chưa xác nhận'; 
+            $transport = '';
+            $status = 1; 
+            $name_receiver = $_POST['fullname'];
+            $phone_receiver = $_POST['phone'];
+            $chitietquyenctl->addTransaction($transactionID, $userID, $total, $note, $time, $address, $check, $transport, $status, $name_receiver, $phone_receiver);
             break;
         default:
             break;
