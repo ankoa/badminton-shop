@@ -103,6 +103,7 @@
             $phone_receiver = $_POST['phone'];
             $chitietquyenctl->addTransaction($transactionID, $userID, $total, $note, $time, $address, $check, $transport, $status, $name_receiver, $phone_receiver);
             break;
+
         default:
             break;
         }

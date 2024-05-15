@@ -269,6 +269,7 @@ function renderCustomerOrderDetail() {
                         <div class="order-detail__address-info-item">
                             <label>Địa chỉ:</label>
                             <span>${order.address}</span>
+
                         </div>
                         ${order.note ? `
                             <div class="order-detail__address-info-item">

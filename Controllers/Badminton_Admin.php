@@ -168,6 +168,7 @@
             return false; // Để ngăn form submit mặc định
         }
 
+<<<<<<< HEAD
 var myChart; // Khai báo biến myChart ở ngoài hàm
 
 function thongKe(event) {
@@ -193,27 +194,112 @@ function thongKe(event) {
              // Destroy the old charts if they exist
              if (myChart) {
                 myChart.destroy();
+=======
+        function editXuLy(roleID) {
+            var form = document.getElementById('permissionForm');
+            if (form.style.display === 'none' || form.style.display === '') {
+                form.style.display = 'block';
+                form.style.zIndex = 1000;
+            } else {
+                form.style.display = 'none';
+>>>>>>> ee6cac4c73b2da49efb2dc9d405b5b268cdb5581
             }
-            // Define the chart data and options
-            var chartData = {
-                labels: salesData.labels,
-                datasets: [{
-                    label: 'Doanh số thu được',
-                    data: salesData.sales,
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1
-                }]
-            };
+        }
+    </script>
+    <script>
+        function showContent(contentId) {
 
-            var chartOptions = {
-                scales: {
-                    y: {
-                        beginAtZero: true
+            var contentSections = document.getElementsByClassName('content-section');
+            for (var i = 0; i < contentSections.length; i++) {
+                contentSections[i].style.display = 'none';
+            }
+
+
+            var selectedContent = document.getElementById(contentId);
+            if (selectedContent)
+                selectedContent.style.display = 'block';
+        }
+
+        // Function to save the current content section to localStorage
+        function saveCurrentContent(contentId) {
+            localStorage.setItem('currentContent', contentId);
+        }
+
+        // Function to show the content section based on localStorage data
+        function restoreContent() {
+            var currentContent = localStorage.getItem('currentContent');
+            if (currentContent) {
+                var contentSections = document.getElementsByClassName('content-section');
+                for (var i = 0; i < contentSections.length; i++) {
+                    contentSections[i].style.display = 'none';
+                }
+                var selectedContent = document.getElementById(currentContent);
+                if (selectedContent) {
+                    selectedContent.style.display = 'block';
+                }
+            }
+        }
+
+        // Call restoreContent() when the page is loaded to restore the previous content section
+        window.onload = restoreContent;
+    </script>
+
+    <script>
+        // JavaScript để hiển thị và ẩn popup
+        function showPopup() {
+            var popup = document.getElementById('popup');
+            popup.style.display = 'block';
+        }
+
+        function closePopup() {
+            var popup = document.getElementById('popup');
+            popup.style.display = 'none';
+        }
+
+        // Thêm sự kiện click cho nút "Chi tiết"
+        function showTransactionDetails(transactionID) {
+            // Tạo yêu cầu AJAX để lấy chi tiết hóa đơn từ máy chủ
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '../View/ViewDetail.php?transactionID=' + transactionID, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    // Hiển thị nội dung chi tiết hóa đơn trong popup
+                    document.getElementById('popup-details').innerHTML = this.responseText;
+                    // Hiển thị popup
+                    showPopup();
+                }
+            };
+            xhr.send();
+
+        }
+
+        function changeTransactionStatus(transactionID, currentStatus) {
+            // Xác định trạng thái mới dựa trên trạng thái hiện tại
+            var newStatus = '';
+            if (currentStatus === 'Chờ duyệt') {
+                newStatus = 'Đã duyệt';
+            } else {
+                newStatus = 'Chờ duyệt';
+            }
+
+            // Tạo một yêu cầu AJAX để cập nhật trạng thái
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '../View/update_transaction_status.php?transactionID=' + encodeURIComponent(transactionID) + '&status=' + encodeURIComponent(newStatus), true);
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var response = xhr.responseText.trim();
+                    console.log(response);
+                    if (response === 'success') {
+                        alert('Cập nhật trạng thái thành công!');
+                        window.location.reload();
+                    } else {
+                        alert('Cập nhật trạng thái thất bại!');
                     }
                 }
             };
 
+<<<<<<< HEAD
             // Create the chart using the existing myChart variable
             myChart = new Chart(ctx, {
                 type: 'bar',
@@ -254,14 +340,15 @@ function thongKe(event) {
            
             totalCell1.innerHTML = "Tổng";
             totalCell2.innerHTML = totalSales;
+=======
+            // Gửi yêu cầu
+            xhr.send();
+>>>>>>> ee6cac4c73b2da49efb2dc9d405b5b268cdb5581
         }
-    };
-
-    // Send the request
-    xhr.send();
-}
 
 
+
+<<<<<<< HEAD
     </script>
     <script>
         function showContent(contentId) {
@@ -592,6 +679,229 @@ function logout(event) {
                 
 
 
+=======
+        var myChart; // Khai báo biến myChart ở ngoài hàm
+
+        function thongKe(event) {
+            event.preventDefault(); // Prevent the default form behavior
+
+            var startDate = document.getElementById('datestart2').value;
+            var endDate = document.getElementById('dateend2').value;
+
+            // Create an AJAX request to your PHP script
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '../View/doanhso.php?startDate=' + encodeURIComponent(startDate) + '&endDate=' + encodeURIComponent(endDate), true);
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    console.log
+                    var salesData = JSON.parse(this.responseText);
+
+                    // Get the canvas element where the chart will be drawn
+                    var ctx = document.getElementById('salesChart').getContext('2d');
+                    // Destroy the old charts if they exist
+                    if (myChart) {
+                        myChart.destroy();
+                    }
+                    // Define the chart data and options
+                    var chartData = {
+                        labels: salesData.labels,
+                        datasets: [{
+                            label: 'Doanh số thu được',
+                            data: salesData.sales,
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 1
+                        }]
+                    };
+
+                    var chartOptions = {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    };
+
+                    // Create the chart using the existing myChart variable
+                    myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: chartData,
+                        options: chartOptions
+                    });
+
+                    // Get the table element
+                    var table = document.getElementById('quanlydoanhso');
+
+                    // Clear the table
+                    while (table.rows.length > 1) {
+                        table.deleteRow(1);
+                    }
+
+                    // Populate the table with sales data
+                    for (var i = 0; i < salesData.labels.length; i++) {
+                        var row = table.insertRow(-1); // Insert a new row at the end of the table
+                        var cell1 = row.insertCell(0); // Insert a new cell in the row
+                        var cell2 = row.insertCell(1); // Insert a new cell in the row
+
+                        cell1.innerHTML = salesData.labels[i];
+                        cell2.innerHTML = salesData.sales[i];
+                    }
+
+                    // Calculate total sales
+                    var totalSales = salesData.sales.reduce((a, b) => a + b, 0);
+
+                    // Add a new row to display total sales
+                    var totalRow = table.insertRow(-1);
+                    var totalCell1 = totalRow.insertCell(0);
+                    var totalCell2 = totalRow.insertCell(1);
+
+                    totalCell1.innerHTML = "Tổng";
+                    totalCell2.innerHTML = totalSales;
+                }
+            };
+
+            // Send the request
+            xhr.send();
+        }
+
+        function thongKeByBrand(event) {
+            event.preventDefault(); // Prevent the default form behavior
+
+            var startDate = document.getElementById('datestart2').value;
+            var endDate = document.getElementById('dateend2').value;
+
+            // Create an AJAX request to your new PHP script
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '../View/doanhsotheohang.php?startDate=' + encodeURIComponent(startDate) + '&endDate=' + encodeURIComponent(endDate), true);
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var salesData = JSON.parse(this.responseText);
+
+                    // Get the canvas element where the chart will be drawn
+                    var ctx = document.getElementById('salesChart').getContext('2d');
+                    // Destroy the old chart if they exist
+                    if (myChart) {
+                        myChart.destroy();
+                    }
+
+                    // Check if there is no sales data
+                    if (salesData.labels.length === 0) {
+                        alert('Không có doanh thu để hiển thị');
+                        return;
+                    } else {
+
+                    }
+
+                    // Define the chart data and options
+                    var chartData = {
+                        labels: salesData.labels, // This will now be brand IDs
+                        datasets: [{
+                            label: 'Tổng doanh số',
+                            data: salesData.totalSales, // This will now be total sales by brand
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    };
+
+                    var chartOptions = {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    };
+
+                    // Create the chart using the existing myChart variable
+                    myChart = new Chart(ctx, {
+                        type: 'bar', // Change this to 'bar' to better represent sales by brand
+                        data: chartData,
+                        options: chartOptions
+                    });
+
+                    // Get the table element
+                    var table = document.getElementById('quanlydoanhso');
+
+                    // Clear the table
+                    while (table.rows.length > 1) {
+                        table.deleteRow(1);
+                    }
+
+                    // Populate the table with sales data
+                    for (var i = 0; i < salesData.labels.length; i++) {
+                        var row = table.insertRow(-1); // Insert a new row at the end of the table
+                        var cell1 = row.insertCell(0); // Insert a new cell in the row
+                        var cell2 = row.insertCell(1); // Insert a new cell in the row
+                        cell1.innerHTML = salesData.labels[i]; // This will now be brand ID
+                        cell2.innerHTML = salesData.totalSales[i]; // This will now be total sales for the brand
+                    }
+                }
+            };
+
+            // Send the request
+            xhr.send();
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        function logout(event) {
+            event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
+
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        // Xử lý phản hồi từ server
+                        var response = JSON.parse(xhr.responseText);
+                        if (response.status === 1) {
+                            // Đăng xuất thành công, chuyển hướng người dùng
+                            window.location.href = 'index.php';
+                        } else {
+                            alert('Đăng xuất không thành công!');
+                        }
+                    } else {
+                        alert('Đã có lỗi xảy ra. Vui lòng thử lại sau.');
+                    }
+                }
+            };
+            xhr.open('GET', 'Logout_admin.php', true); // Tạo một file logout.php để xử lý đăng xuất
+            xhr.send();
+        }
+    </script>
+</head>
+
+<body>
+    <div>
+        <div class="top_header">
+
+        </div>
+    </div>
+
+    <div id="menu">
+        <ul>
+            <li class="icon"><i class="fa-solid fa-house"></i><a href="#" onclick="saveCurrentContent('home-content'); showContent('home-content')">Trang chủ </a></li>
+            <li class="icon" id="phanquyen"><i class="fa-solid fa-people-roof"></i><a href="#" onclick="showContent('phanquyen-content')">Phân quyền</a></li>
+
+            <li class="icon" id="taikhoan"><i class="fa-solid fa-user"></i><a href="#" onclick="saveCurrentContent('taikhoan-content');showContent('taikhoan-content')">Quản lý tài khoản</a></li>
+            <li class="icon" id="sanpham"><i class="fa-solid fa-laptop"></i><a href="#" onclick="saveCurrentContent('sanpham-content');showContent('sanpham-content')">Quản lý sản phẩm</a></li>
+            <li class="icon" id="loaisanpham"><i class="fa-solid fa-laptop"></i><a href="#" onclick="saveCurrentContent('loaisanpham-content');showContent('loaisanpham-content')">Quản lý loại sản phẩm</a></li>
+            <li class="icon" id="hoadon"><i class="fa-solid fa-receipt"></i><a href="#" onclick="saveCurrentContent('hoadon-content');showContent('hoadon-content')">Quản lý hóa đơn</a></li>
+            <li class="icon" id="doanhso"><i class="fa-solid fa-chart-simple"></i><a href="#" onclick="saveCurrentContent('doanhso-content');showContent('doanhso-content')">Doanh số</a></li>
+            <li class="icon" id="dangxuat"><i class="fa-solid fa-right-from-bracket"></i><a href="#" onclick="logout(event)">Đăng xuất</a></li>
+        </ul>
+    </div>
+    <div id="home-content" class="content-section">
+        <div class="selling-products">
+            <h1 class="text-center headerad">QUẢN LÝ CỬA HÀNG CẦU LÔNG</h1>
+            <div class="item-selling-products" id="item-selling-products">
+
+
+
+>>>>>>> ee6cac4c73b2da49efb2dc9d405b5b268cdb5581
             </div>
         </div>
     </div>
@@ -1362,6 +1672,7 @@ function logout(event) {
         <div class="headerad"> QUẢN LÝ HÓA ĐƠN</div>
 
         <div class="containbox">
+<<<<<<< HEAD
                     <label for="datestart">Ngày bắt đầu:</label>
                     <input type="date" id="datestart1">
                 </div>
@@ -1471,6 +1782,121 @@ if ($transactions) {
             echo "<script>alert('Lỗi: Thiếu thông tin cần thiết.');</script>";
         }
     }
+=======
+            <label for="datestart">Ngày bắt đầu:</label>
+            <input type="date" id="datestart1">
+        </div>
+        <div class="containbox">
+            <label for="dateend">Ngày kết thúc:</label>
+            <input type="date" id="dateend1">
+        </div>
+        <button type="submit" style="margin-top: 10px; margin-left: 10px" onclick="searchTransactionsByDate()">Tìm kiếm</button>
+
+
+        <?php
+
+        require_once __DIR__ . '../../Model/ModelTransaction.php';
+
+        $modelTransaction = new ModelTransaction();
+
+        // Lấy tất cả các giao dịch từ cơ sở dữ liệu"
+        $transactions = $modelTransaction->getAllTransactions();
+
+        // Kiểm tra xem có giao dịch nào không
+        if ($transactions) {
+            // In ra tiêu đề của bảng
+            echo "<table border='1'>
+                        <tr>
+                            <th>Transaction ID</th>
+                            <th>User ID</th>
+                            <th>Total</th>
+                            <th>Note</th>
+                            <th>Time</th>
+                            <th>Address</th>
+                            <th>Pay</th>
+                            <th>Transport</th>
+                            <th>Name Receiver</th>
+                            <th>Phone Receiver</th>
+                            <th>Detail</th>
+                            <th>Chuyển trạng thái</th>
+                        </tr>";
+
+            foreach ($transactions as $transaction) {
+                echo "<tr>";
+                echo "<td>" . $transaction->getTransactionID() . "</td>";
+                echo "<td>" . $transaction->getUserID() . "</td>";
+                echo "<td>" . $transaction->getTotal() . "</td>";
+                echo "<td>" . $transaction->getNote() . "</td>";
+                echo "<td>" . $transaction->getTime() . "</td>";
+                echo "<td>" . $transaction->getAddress() . "</td>";
+                echo "<td>" . $transaction->getCheck() . "</td>";
+                echo "<td>" . $transaction->getTransport() . "</td>";
+                echo "<td>" . $transaction->getNameReceiver() . "</td>";
+                echo "<td>" . $transaction->getPhoneReceiver() . "</td>";
+                echo "<td><button onclick='showTransactionDetails(" . $transaction->getTransactionID() . ")'>View Details</button></td>";
+                echo "<td>
+                    <select id='status" . $transaction->getTransactionID() . "'>
+                        <option value=''>Select Status</option>
+                        <option value='Đang chờ duyệt'>Đang chờ duyệt</option>
+                        <option value='Đã duyệt'>Đã duyệt</option>
+                        <option value='Đang giao hàng'>Đang giao hàng</option>
+                        <option value='Đã giao hàng'>Đã giao hàng</option>
+                    </select>
+                    <button onclick='changeTransactionStatus(" . $transaction->getTransactionID() . ")'>Save</button>
+                  </td>";
+                echo "</tr>";
+            }
+        }
+
+        echo "</table>";
+        ?>
+
+
+        <div id="popup" class="popup">
+            <div class="popup-content">
+                <span class="popup-close" onclick="closePopup()">&times;</span>
+                <div id="popup-details">
+                    <!-- Nội dung chi tiết hóa đơn sẽ được thêm bằng JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="dangxuat-content" class="content-section"></div>
+    </div>
+    <script>
+        function openTab(tabName) {
+            // Lấy danh sách tất cả các tab và tablinks
+            var tabs = document.querySelectorAll('.tab-pane');
+            var tabLinks = document.querySelectorAll('.nav-link');
+
+            // Ẩn tất cả các tab trước khi hiển thị tab được chọn
+            tabs.forEach(function(tab) {
+                tab.style.display = 'none';
+            });
+
+            // Loại bỏ lớp 'active' cho tất cả các tablinks trước khi chọn tab mới
+            tabLinks.forEach(function(link) {
+                link.classList.remove('active');
+            });
+
+            // Hiển thị tab được chọn và thêm lớp 'active' cho tablink tương ứng
+            document.getElementById(tabName).style.display = 'block';
+            document.querySelector('a[onclick="openTab(\'' + tabName + '\')"]').classList.add('active');
+        }
+    </script>
+
+
+    <?php
+    if (isset($_GET['message'])) {
+        if ($_GET['message'] == 'success') {
+            echo "<script>alert('Cập nhật thành công!');</script>";
+        } elseif ($_GET['message'] == 'error') {
+            echo "<script>alert('Cập nhật thất bại.');</script>";
+        } elseif ($_GET['message'] == 'missing') {
+            echo "<script>alert('Lỗi: Thiếu thông tin cần thiết.');</script>";
+        }
+    }
+>>>>>>> ee6cac4c73b2da49efb2dc9d405b5b268cdb5581
     ?>
 </body>
 

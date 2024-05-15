@@ -344,17 +344,12 @@ class ModelProduct
     // }
 
     // Cập nhật thông tin sản phẩm trong cơ sở dữ liệu
-    public function updateProduct($product)
+    public function updateProduct($productID)
     {
-        $productID = $product->getProductID();
-        $brandID = $product->getBrandID();
-        $catalogID = $product->getCatalogID();
-        $name = $product->getName();
-        $description = $product->getDescription();
-
-        $query = "UPDATE product SET brandID = '$brandID', catalogID = '$catalogID', name = '$name', description = '$description' WHERE productID = '$productID'";
+        $query = "UPDATE product SET brandID = '$brandID', catalogID = '$catalogID', name = '$name', description = '$description', url_image = '$url' WHERE productID = '$productID'";
         return $this->db->update($query);
     }
+
     public function updateUrlImgProduct($productID, $url)
     {
         $query = "UPDATE product SET url_image = '$url' WHERE productID = '$productID'";
