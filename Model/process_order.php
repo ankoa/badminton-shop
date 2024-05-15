@@ -8,7 +8,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $modelUser = new ModelUser();
     $modelTransaction = new ModelTransaction();
     
-    $transactionID = '';
+    $db = new Database();
+
+    $result = $db->select("SELECT MAX(transactionID) AS max_id FROM transaction");
+    $row = $result->fetch_assoc();
+    $transactionID = $row['max_id'] + 1;
+    
     $userID = $modelUser->getUIDByUserName($_SESSION['username']);
     $total = $_POST['total'];
     $note = $_POST['notes'];
