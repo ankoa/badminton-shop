@@ -2,12 +2,14 @@
     session_start();
     require_once(__DIR__ . '/../Model/ModelUser.php');
     require_once(__DIR__ . '/../Model/ModelRole.php');
+    require_once(__DIR__ . '/../Model/ModelCart.php');
     require_once(__DIR__ . '/../Model/ModelCartDetail.php');
     require_once(__DIR__ . '/../Model/Entity/CartDetail.php');
     if(isset($_POST['action'])) {
         $modeluser = new ModelUser();
         $modelrole = new ModelRole();
-        $modelCartDetail = new ModelCartDetail();
+        $modelCart = new ModelCart();
+        $modelrole = new ModelRole();
         if($_POST['action'] == 'signin') {
             if(isset($_POST['username']) && isset($_POST['password'])) {     
                 $username = $_POST['username'];
@@ -15,39 +17,10 @@
                 if(!empty($username) && !empty($password)) {
                     $authenticated_user = $modeluser->authenticate($username, $password);
                     if($authenticated_user){ 
-                        $authenticated_role = $modeluser->getRoleUsetByID($modeluser->getUIDByUserName($username));   
-                        if($authenticated_role ==1){
+                        $authenticated_role = $modeluser->getRoleUsetByID($modeluser->getUIDByUserName($username)); 
+                        if($authenticated_role == 4){
                             $_SESSION['login'] = true;
-                            $_SESSION['type'] = 'admin';
-                            $_SESSION['username'] = $username;
-                            echo json_encode(array(
-                                'message' => "Đăng nhập thành công - admin",
-                                'status' => 1
-                            ));
-                            exit;
-                        } elseif($authenticated_role == 2){
-                            $_SESSION['login'] = true;
-                            $_SESSION['type'] = 'manager';
-                            $_SESSION['username'] = $username;
-                            echo json_encode(array(
-                                'message' => "Đăng nhập thành công - manager",
-                                'status' => 2
-                            ));
-                            exit;   
-                        }
-                        elseif($authenticated_role == 3){
-                            $_SESSION['login'] = true;
-                            $_SESSION['type'] = 'saler';
-                            $_SESSION['username'] = $username;
-                            echo json_encode(array(
-                                'message' => "Đăng nhập thành công - saler",
-                                'status' => 3
-                            ));
-                            exit;   
-                        }
-                        elseif($authenticated_role == 4){
-                            $_SESSION['login'] = true;
-                            $_SESSION['type'] = 'tester';
+                            $_SESSION['type'] = 'user';
                             $_SESSION['username'] = $username;
                             echo json_encode(array(
                                 'message' => "Đăng nhập thành công - tester",
@@ -55,6 +28,18 @@
                             ));
                             exit;   
                         }
+                        else{
+                            $_SESSION['login'] = true;
+                            $_SESSION['type'] = 'admin';
+                            $_SESSION['username'] = $username;
+                            echo json_encode(array(
+                                'message' => "Đăng nhập thành công - admin",
+                                'status' => 1
+                            ));
+                            exit;    
+                        } 
+                     
+                       
                     } else {
                         echo json_encode(array(
                             'message' => "Tên người dùng hoặc mật khẩu không chính xác!",
@@ -103,11 +88,13 @@
                         $checkError = true;
                     }
                     if(!$checkError){ 
-                        $hashpass = password_hash($password, PASSWORD_DEFAULT);
-                        $add_user = $modeluser->addUser($username, $hashpass, 4, $username, $email, $phone, 0, 'normal', 1);
+                        $add_user = $modeluser->addUser($username, $password, 4, $username, $email, $phone, 0, 'normal', 1);
                         if ($add_user == 1) {
+                            $now = new DateTime(); // Tạo một đối tượng DateTime đại diện cho thời gian hiện tại
+                            $currentDateTime = $now->format('Y-m-d H:i:s'); // Format thời gian theo định dạng mong muốn
+                            /* $modelCart->addCart($modeluser->getUIDByUserName($username),$currentDateTime ); */
                             $_SESSION['login'] = true;
-                            $_SESSION['type'] = 'tester';
+                            $_SESSION['type'] = 'user';
                             $_SESSION['username'] = $username;
                             echo json_encode(array(
                                 'message' => "Đăng kí thành công",

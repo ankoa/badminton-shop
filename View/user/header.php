@@ -115,16 +115,16 @@ $total_price_cart = 0;
                     } else $temp = "Giày cầu lông ";
                     echo '
                                 <li> 
-                                    <a href="index.php?control=ProductCategory&id=' . $catalog->getCatalogID() . '">' . $temp . '</a> 
+                                    <a class="submenua" href="index.php?control=ProductCategory&id=' . $catalog->getCatalogID() . '">' . $temp . '</a> 
                                     <ul class="menu_item">';
                     $brandIDs = $modelBrand->suggestBrandIDsForCatalog($catalog->getCatalogID());
                     foreach ($brandIDs as $brandID) {
                         $brand = $modelBrand->getBrandByID($brandID);
-                        echo '<li>' . $temp . $brand->getName() . '</li>';
+                        echo '<li><a class="fixa" href="index.php?control=ProductCategory&id='.$catalog->getCatalogID().'&brandID='.$brandID.'" style="color: black;text-decoration: none;">'. $temp .' '.$brand->getName().'</a></li>';
                     }
 
                     echo '
-                                        <li>Xem thêm</li>
+                                        <li><a  href="index.php?control=ProductCategory&id='. $catalog->getCatalogID() .'" style="color: black; text-decoration: none;">Xem thêm</a></li>
                                     </ul>
                                 </li>';
                 }
