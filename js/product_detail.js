@@ -62,9 +62,6 @@ const initSlider = () => {
         image.addEventListener('click', handleClickOnImage);
     });
 
-    // Display the first image in the big-img container on page load
-    const firstImageSrc = imageList.querySelector('.image-item').src;
-    displayBigImage(firstImageSrc);
 
     // Select the first image in the slider
     const firstImage = imageList.querySelector('.image-item');
@@ -78,7 +75,6 @@ window.addEventListener("resize", initSlider);
 
 window.addEventListener("load", function () {
     const imageList = document.querySelector(".slider-wrapper .image-list");
-    console.log(imageList.scrollLeft);
     initSlider();
     document.getElementById("tab1").click();
     document.getElementById("tab1").style.display = 'block';
@@ -149,22 +145,22 @@ function addCart() {
                         totalprice += product.price * quantity;
                         tmp.innerHTML = formatPrice(totalprice) + "₫";
                         var catalogData = product.catalogID;
-                        var inputElement = document.querySelector('input[value="'+selectedVariant+'"]');
+                        var inputElement = document.querySelector('input[value="' + selectedVariant + '"]');
                         if (inputElement) {
                             // Lấy id của input
                             var inputId = inputElement.id;
-                        
+
                             // Tạo attribute for của label tương ứng với id của input
                             var labelFor = inputId;
-                        
+
                             // Lấy label bằng cách sử dụng attribute for
                             var labelElement = document.querySelector('label[for="' + labelFor + '"]');
-                        
+
                             // Kiểm tra xem label có tồn tại không
                             if (labelElement) {
                                 // Lấy nội dung của label
                                 var labelText = labelElement.innerText.trim();
-                        
+
                             } else {
                                 console.log("Không tìm thấy label tương ứng với input có giá trị là 2.");
                             }
@@ -178,7 +174,7 @@ function addCart() {
                         } else if (catalogData == 3) {
                             document.getElementById("product-new-price").innerHTML = "<b>" + formatPrice(product.price) + "₫</b><span>Tốc độ: " + labelText + "</span>";
                         } else if (catalogData == 2) {
-                            document.getElementById("product-new-price").innerHTML = "<b>" + formatPrice(product.price) + "₫</b><span>Màu: " + labelText  + "</span>";
+                            document.getElementById("product-new-price").innerHTML = "<b>" + formatPrice(product.price) + "₫</b><span>Màu: " + labelText + "</span>";
                         }
                         document.getElementById('popup-cart-mobile').classList.add('active');
                         document.getElementById('full-cover').style.opacity = "0.5";
@@ -204,7 +200,7 @@ function removeActiveTab() {
         tab.classList.remove("active");
         document.getElementById('full-cover').style.pointerEvents = "auto";
         document.getElementById('full-cover').style.opacity = "1";
-        
+
     }
     location.reload();
 }
@@ -224,36 +220,16 @@ function loadVersion(productID, color) {
 
     const bigImageContainer = document.querySelector('.big-img');
     const bigImage = document.createElement('img');
-    bigImage.src = "../View/images/product/"+productID+"/"+color+"/"+productID+".1.png";
-    document.getElementById("thumb-1x1").innerHTML = '<img src="../View/images/product/'+productID+'/'+color+'/'+productID+'.1.png" alt="'+productID+'">';
-    bigImage.style.maxWidth = '100%';
-    bigImage.style.maxHeight = '100%';
-    bigImage.style.objectFit = 'cover';
-    // Clear previous big image
-    bigImageContainer.innerHTML = '';
-    // Append new big image
-    bigImageContainer.appendChild(bigImage);
+    linktmp = "images/product/" + productID + "/" + color + "/" + productID + ".1.png";
+    getPromiseUrl(linktmp).then(url => {
+        displayBigImage(url);
+    }).catch(error => {
+        return error;
+    });
+   
     const container = document.getElementById("image-list");
     container.innerHTML = '';
 
-    // Lặp qua mỗi đường dẫn hình ảnh và chèn chúng vào danh sách
-    for (var i = 0; i < imagePaths.length; i++) {
-        // Tạo một thẻ img và đặt thuộc tính src và alt
-        const image = document.createElement('img');
-        image.src = "../View/images/product/"+productID+"/"+color+"/"+productID+"." + imagePaths[i] + ".png";
-        image.alt = `Image `+i+1    ; // Tùy chỉnh alt nếu cần
-        image.classList.add('image-item');
-        // Kiểm tra xem danh sách có tồn tại không trước khi chèn hình vào
-        if (container) {
-            container.appendChild(image);
-        } else {
-            console.error(`UL with id 'image-list' not found.`);
-        }
-    }
-    console.log(imageList.scrollLeft);
-    imageList.scrollLeft = 0;
-
-    // Function to display the clicked image in the big-img container
     const displayBigImage = (src) => {
         const bigImage = document.createElement('img');
         bigImage.src = src;
@@ -265,6 +241,27 @@ function loadVersion(productID, color) {
         // Append new big image
         bigImageContainer.appendChild(bigImage);
     };
+
+    // Lặp qua mỗi đường dẫn hình ảnh và chèn chúng vào danh sách
+    for (var i = 0; i < imagePaths.length; i++) {
+        // Tạo một thẻ img và đặt thuộc tính src và alt
+        const image = document.createElement('img');
+        var link = "images/product/" + productID + "/" + color.trim() + "/" + productID + "." + imagePaths[i] + ".png";
+        getPromiseUrl(link).then(url => {
+            image.src = url;
+        }).catch(error => {
+            return error;
+        });
+        image.alt = `Image ` + i + 1; // Tùy chỉnh alt nếu cần
+        image.classList.add('image-item');
+        // Kiểm tra xem danh sách có tồn tại không trước khi chèn hình vào
+        if (container) {
+            container.appendChild(image);
+        } else {
+            console.error(`UL with id 'image-list' not found.`);
+        }
+    }
+    imageList.scrollLeft = 0;
 
     const handleClickOnImage = (event) => {
         // Remove class .img-chosen-border from all images in the slider
@@ -284,9 +281,6 @@ function loadVersion(productID, color) {
         image.addEventListener('click', handleClickOnImage);
     });
 
-    // Display the first image in the big-img container on page load
-    const firstImageSrc = imageList.querySelector('.image-item').src;
-    displayBigImage(firstImageSrc);
 
     // Select the first image in the slider
     const firstImage = imageList.querySelector('.image-item');

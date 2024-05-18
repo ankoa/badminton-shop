@@ -25,6 +25,28 @@ window.addEventListener("load", function () {
     console.log(filterArray);
 });
 
+async function createImageArray(listVariantDetails) {
+    var imageArray = [];
+
+    var promises = listVariantDetails.map(async (variant) => {
+        var inputString = variant.url;
+        var darkNavyRegex = /^[^:]+/;
+        var match = inputString.match(darkNavyRegex);
+        var linktmp = "images/product/" + variant.productID + "/" + match + "/" + variant.productID + ".1.png";
+        
+        try {
+            var url = await getPromiseUrl(linktmp);
+            imageArray.push({ productID: variant.productID, imageUrl: url });
+        } catch (error) {
+            console.error('Error getting file URL:', error);
+        }
+    });
+
+    await Promise.all(promises);
+    return imageArray;
+}
+
+
 
 function uncheckAllInputs() {
     // Lấy tất cả các phần tử input trên trang
@@ -92,34 +114,43 @@ function loadSearch() {
     xhttp.send();
 }
 
-function loadPage(page, productsPerPage, id, brandID) {
+async function loadPage(page, productsPerPage, id, brandID) {
     var xhttp = new XMLHttpRequest();
 
-    xhttp.onreadystatechange = function () {
+    xhttp.onreadystatechange = async function () {
         if (this.readyState == 4 && this.status == 200) {
             var listVariantDetails = JSON.parse(this.responseText);
             var htmlContent = '';
-            for (var i = 0; i < listVariantDetails.length; i++) {
-                var inputString = listVariantDetails[i].url;
+            var promises = listVariantDetails.map(async (variant) => {
+                var inputString = variant.url;
                 var darkNavyRegex = /^[^:]+/;
                 var match = inputString.match(darkNavyRegex);
-                htmlContent += `<div class="col-6 col-md-3">
+                var linktmp = "images/product/" + variant.productID + "/" + match + "/" + variant.productID + ".1.png";
+                
+                try {
+                    var url = await getPromiseUrl(linktmp);
+                    htmlContent += `<div class="col-6 col-md-3">
                     <div class="item_product_main">
                         <div class="product-thumbnail">
-                            <a class="product_overlay" href="index.php?control=ProductDetail&productID=`+ listVariantDetails[i].productID + `" title="` + listVariantDetails[i].name + `"></a>
-                            <a class="image_thumb" href="index.php?control=ProductDetail&productID=`+ listVariantDetails[i].productID + `" title="` + listVariantDetails[i].name + `">
-                                <img width="300" height="300" class="lazyload loaded" src="../View/images/product/`+ listVariantDetails[i].productID + `/` + match + `/` + listVariantDetails[i].productID + `.1.png" data-src="https://cdn.shopvnb.com/img/300x300/uploads/gallery/vot-cau-long-victor-brave-sword-ltd-pro-noi-dia-taiwan-jpg-4_1711143954.webp" alt="Vợt Cầu Lông Victor Brave Sword LTD Pro (Nội Địa Taiwan)" data-was-processed="true">
+                            <a class="product_overlay" href="index.php?control=ProductDetail&productID=` + variant.productID + `" title="` + variant.name + `"></a>
+                            <a class="image_thumb" href="index.php?control=ProductDetail&productID=` + variant.productID + `" title="` + variant.name + `">
+                                <img width="300" height="300" class="lazyload loaded" src="` + url + `" data-src="" alt="Vợt Cầu Lông Victor Brave Sword LTD Pro (Nội Địa Taiwan)" data-was-processed="true">
                             </a>
                         </div>
                         <div class="product-info">
-                            <h3 class="product-name"><a href="index.php?control=ProductDetail&productID=`+ listVariantDetails[i].productID + `" title="` + listVariantDetails[i].name + `">` + listVariantDetails[i].name + `</a></h3>
+                            <h3 class="product-name"><a href="index.php?control=ProductDetail&productID=` + variant.productID + `" title="` + variant.name + `">` + variant.name + `</a></h3>
                             <div class="price-box-nav">
-                                <span class="price">`+ formatPrice(listVariantDetails[i].price) + ` ₫</span>
+                                <span class="price">` + formatPrice(variant.price) + ` ₫</span>
                             </div>
                         </div>
                     </div>
                 </div>`;
-            }
+                } catch (error) {
+                    console.error('Error getting file URL:', error);
+                }
+            });
+
+            await Promise.all(promises);
             document.getElementById("show-product").innerHTML = htmlContent;
 
             // Xóa class 'active' và 'current-page' khỏi tất cả các thẻ li
@@ -131,7 +162,6 @@ function loadPage(page, productsPerPage, id, brandID) {
             // Thêm class 'active' và 'current-page' vào thẻ li được click
             var currentLi = document.querySelector('.number-page li:nth-child(' + page + ')');
             currentLi.classList.add('active', 'current-page');
-
         }
     };
 
@@ -142,32 +172,40 @@ function loadPage(page, productsPerPage, id, brandID) {
     xhttp.send();
 }
 
-function loadPageFilter(page, productsPerPage) {
 
+async function loadPageFilter(page, productsPerPage) {
     var offset = (page - 1) * productsPerPage;
-    var productsOnCurrentPage = filterArray.slice(offset, offset + productsPerPage);
+    var productsOnCurrentPage = filterArray.slice(offset, offset + productsPerPage); // Sử dụng mảng filterArray đã được sắp xếp
     var htmlContent = '';
-    for (var i = 0; i < productsOnCurrentPage.length; i++) {
-        var inputString = productsOnCurrentPage[i].url;
+    var promises = productsOnCurrentPage.map(async (variant) => {
+        var inputString = variant.url;
         var darkNavyRegex = /^[^:]+/;
         var match = inputString.match(darkNavyRegex);
-        htmlContent += `<div class="col-6 col-md-3">
-                    <div class="item_product_main">
-                        <div class="product-thumbnail">
-                            <a class="product_overlay" href="index.php?control=ProductDetail&productID=`+ productsOnCurrentPage[i].productID + `" title=""></a>
-                            <a class="image_thumb" href="index.php?control=ProductDetail&productID=`+ productsOnCurrentPage[i].productID + `" title="">
-                                <img width="300" height="300" class="lazyload loaded" src="../View/images/product/`+ productsOnCurrentPage[i].productID + `/` + match + `/` + productsOnCurrentPage[i].productID + `.1.png" data-src="https://cdn.shopvnb.com/img/300x300/uploads/gallery/vot-cau-long-victor-brave-sword-ltd-pro-noi-dia-taiwan-jpg-4_1711143954.webp" alt="Vợt Cầu Lông Victor Brave Sword LTD Pro (Nội Địa Taiwan)" data-was-processed="true">
-                            </a>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-name"><a href="index.php?control=ProductDetail&productID=`+ productsOnCurrentPage[i].productID + `" title="Vợt Cầu Lông Victor Brave Sword LTD Pro (Nội Địa Taiwan)">` + productsOnCurrentPage[i].name + `</a></h3>
-                            <div class="price-box-nav">
-                                <span class="price">`+ formatPrice(productsOnCurrentPage[i].price) + ` ₫</span>
-                            </div>
-                        </div>
+        var linktmp = "images/product/" + variant.productID + "/" + match + "/" + variant.productID + ".1.png";
+        
+        try {
+            var url = await getPromiseUrl(linktmp);
+            htmlContent += `<div class="col-6 col-md-3">
+            <div class="item_product_main">
+                <div class="product-thumbnail">
+                    <a class="product_overlay" href="index.php?control=ProductDetail&productID=` + variant.productID + `" title="` + variant.name + `"></a>
+                    <a class="image_thumb" href="index.php?control=ProductDetail&productID=` + variant.productID + `" title="` + variant.name + `">
+                        <img width="300" height="300" class="lazyload loaded" src="` + url + `" data-src="" alt="Vợt Cầu Lông Victor Brave Sword LTD Pro (Nội Địa Taiwan)" data-was-processed="true">
+                    </a>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name"><a href="index.php?control=ProductDetail&productID=` + variant.productID + `" title="` + variant.name + `">` + variant.name + `</a></h3>
+                    <div class="price-box-nav">
+                        <span class="price">` + formatPrice(variant.price) + ` ₫</span>
                     </div>
-                </div>`;
-    }
+                </div>
+            </div>
+        </div>`;
+        } catch (error) {
+            console.error('Error getting file URL:', error);
+        }
+    });
+    await Promise.all(promises);
     document.getElementById("show-product").innerHTML = htmlContent;
 
     // Xóa class 'active' và 'current-page' khỏi tất cả các thẻ li
@@ -180,6 +218,8 @@ function loadPageFilter(page, productsPerPage) {
     var currentLi = document.querySelector('.number-page li:nth-child(' + page + ')');
     currentLi.classList.add('active', 'current-page');
 }
+
+
 
 function formatPrice(price) {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -402,43 +442,44 @@ function formatTime(timeString) {
 
 
 function sapXep(arr, key) {
-    if (key == 'alpha-asc') {
+    if (key === 'alpha-asc') {
         return arr.sort(function (a, b) {
             return a.name.localeCompare(b.name);
         });
-    } else if (key == 'alpha-desc') {
+    } else if (key === 'alpha-desc') {
         return arr.sort(function (a, b) {
             return b.name.localeCompare(a.name);
         });
-    } else if (key == 'price-asc') {
+    } else if (key === 'price-asc') {
         return arr.sort(function (a, b) {
             return a.price - b.price;
         });
-    } else if (key == 'price-desc') {
+    } else if (key === 'price-desc') {
         return arr.sort(function (a, b) {
             return b.price - a.price;
         });
-    } else if (key == 'created-desc') {
-        console.log(arr);
+    } else if (key === 'created-desc') {
         return arr.sort(function (a, b) {
             return new Date(formatTime(b.timeCreated)) - new Date(formatTime(a.timeCreated));
         });
-    } else if (key == 'created-asc') {
+    } else if (key === 'created-asc') {
         return arr.sort(function (a, b) {
             return new Date(formatTime(a.timeCreated)) - new Date(formatTime(b.timeCreated));
         });
     }
+    return arr;
 }
+
 
 
 function sortby(key) {
     if (filterArray.length <= 0) {
-        getAllByCatalogAndBrand()
+        getAllByCatalogAndBrand();
     }
-    sapXep(filterArray, key);
+    filterArray = sapXep(filterArray, key); // Cập nhật filterArray với mảng đã sắp xếp
 
     loadNavFilter();
-    loadPageFilter(1, getProductPerPage());
+    loadPageFilter(1, getProductPerPage()); // Gọi hàm loadPageFilter với mảng đã sắp xếp
 
     var desiredValue = getProductPerPage();
 
@@ -471,8 +512,8 @@ function sortby(key) {
     } else if (key == 'created-asc') {
         document.getElementById('keysort').innerHTML = 'Hàng cũ nhất';
     }
-
 }
+
 
 
 
