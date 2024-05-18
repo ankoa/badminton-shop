@@ -1,19 +1,23 @@
 <?php
-// Kiểm tra xem có dữ liệu được gửi từ phía máy khách không
-if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['startDate']) && isset($_GET['endDate'])) {
-    // Lấy ngày bắt đầu và kết thúc từ dữ liệu được gửi
+if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['startDate']) && isset($_GET['endDate']) && isset($_GET['transport'])) {
     $startDate = $_GET['startDate'];
     $endDate = $_GET['endDate'];
+    $transport = $_GET['transport'];
 
-    // Thực hiện kết nối đến cơ sở dữ liệu và truy vấn dữ liệu dựa trên ngày bắt đầu và kết thúc
+    $startDateTimestamp = strtotime($startDate);
+    $endDateTimestamp = strtotime($endDate);
+
+    if ($startDateTimestamp > $endDateTimestamp) {
+        echo json_encode(['error' => 'Ngày bắt đầu không được sau ngày kết thúc.']);
+        exit();
+    }
+
     require_once __DIR__ . '../../Model/ModelTransaction.php';
     $modelTransaction = new ModelTransaction();
-    $transactions = $modelTransaction->getTransactionsByDate($startDate, $endDate);
+    $transactions = $modelTransaction->getTransactionsByDateAndTransport($startDate, $endDate, $transport);
 
-    // Khởi tạo biến chứa nội dung của bảng
     $tableContent = '';
 
-    // Hiển thị kết quả
     if ($transactions) {
         $tableContent .= "<table border='1'>
                     <tr>
@@ -62,9 +66,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['startDate']) && isset($_
         $tableContent = "Không tìm thấy đơn hàng nào trong khoảng thời gian này.";
     }
 
-    // Xuất nội dung của bảng
-    echo $tableContent;
+    echo json_encode(['tableContent' => $tableContent]);
 } else {
-    echo "Invalid request";
+    echo json_encode(['error' => 'Invalid request']);
 }
 ?>
