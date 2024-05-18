@@ -120,7 +120,12 @@ if ($catalog->getName() == "Racket") {
                                 for(var i=0;i<imagePaths.length;i++) {
                                     // Tạo một thẻ img và đặt thuộc tính src và alt
                                     const image = document.createElement('img');
-                                    image.src = "../View/images/product/<?php echo $productID ;?>/<?php echo array_keys($result)[0] ;?>/<?php echo $productID ;?>."+imagePaths[i]+".png";
+                                    var link = "images/product/<?php echo $productID ;?>/<?php echo array_keys($result)[0] ;?>/<?php echo $productID ;?>."+imagePaths[i]+".png";
+                                    getPromiseUrl(link).then(url=>{
+                                        image.src = url;
+                                    }).catch(error=> {
+                                        return error;
+                                    });
                                     image.alt = `Image ${i + 1}`; // Tùy chỉnh alt nếu cần
                                     image.classList.add('image-item');
 

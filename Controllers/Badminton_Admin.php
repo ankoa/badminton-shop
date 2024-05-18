@@ -926,7 +926,7 @@
                                         <tbody>
                                         <tr>
                                             <td class='text-center'>{$product->productID}</td>
-                                            <td class='text-center'>{$ModelBrand->getBrandByID($product->brandID)->getName()}</td>
+                                            <td class='text-center'>{$ModelBrand->getNameByID($product->brandID)}</td>
                                             <td class='text-center'>{$ModelCatalog->getCatalogByID($product->catalogID)->getName()}</td>
                                             <td class='text-center'><img src='../View/images/product/" . $product->getProductID() . "/" . $color . "/" . $product->getProductID() . ".1.png' alt='Hình ảnh' style='max-width: 100px; max-height: 100px;'></td>
                                             <td class='text-center'>{$product->name}</td>
