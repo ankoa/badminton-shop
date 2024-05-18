@@ -1,11 +1,20 @@
 <?php
-session_start();
 $total_price_cart = 0;
 ?>
 <div class="header_contentTop">
     <div class="left_header_contentTop">
         <div class="logo">
-            <img src="../View/images/logo.png">
+            <img id="logoImg">
+            <script>
+                document.addEventListener('DOMContentLoaded', (event) => {
+                    getPromiseUrl("images/logo.png").then(url=>{
+                        document.getElementById("logoImg").src = url;
+                        console.log(url);
+                    }).catch(error=> {
+                        return error;
+                    });
+                });
+            </script>
         </div>
         <a href="#"> HOTLINE: 0123456789 | 0987654321 </a>
     </div>
@@ -31,7 +40,8 @@ $total_price_cart = 0;
                 <i class="fa-solid fa-clipboard-list" style="color: #e95221;"></i>
                 <span class="icon-name">TRA CỨU</span>
                 <ul class="submenu_check" style="height: 30px;">
-                    <li class="dropdown-item" style="height: 100%;"> <a href="index.php?control=checkDonHang"> Kiểm tra đơn hàng </a></li>
+                    <li class="dropdown-item" style="height: 100%;"> <a href="index.php?control=checkDonHang"> Kiểm tra
+                            đơn hàng </a></li>
                 </ul>
             </li>
         </div>
@@ -82,8 +92,10 @@ $total_price_cart = 0;
         <div class="icon-item" id="hover-cart">
             <li href="index.php?control=Cart">
                 <ul class="show-item" onmouseover="showTarget()" onmouseout="hideTarget()">
-                    <a class="a-head" href="index.php?control=Cart"><i class="fa-solid fa-cart-arrow-down" style="color: #e95221;"></i></a>
-                    <span class="icon-name"><a class="a-head" href="index.php?control=Cart"><span class="icon-name" id="spanGH">GIỎ HÀNG</span></a></span>
+                    <a class="a-head" href="index.php?control=Cart"><i class="fa-solid fa-cart-arrow-down"
+                            style="color: #e95221;"></i></a>
+                    <span class="icon-name"><a class="a-head" href="index.php?control=Cart"><span class="icon-name"
+                                id="spanGH">GIỎ HÀNG</span></a></span>
                 </ul>
             </li>
         </div>
@@ -96,8 +108,8 @@ $total_price_cart = 0;
         <a class="titlemenu" href="#">SẢN PHẨM</a>
         <ul class="submenu">
             <?php
-            require_once('../Model/ModelCatalog.php');
-            require_once('../Model/ModelBrand.php');
+            require_once ('../Model/ModelCatalog.php');
+            require_once ('../Model/ModelBrand.php');
 
             $modelBrand = new ModelBrand();
             $modelCatalog = new ModelCatalog();
@@ -112,7 +124,8 @@ $total_price_cart = 0;
                         $temp = "Lưới cầu lông ";
                     } elseif ($catalog->getName() == "Shuttle") {
                         $temp = "Quả cầu lông ";
-                    } else $temp = "Giày cầu lông ";
+                    } else
+                        $temp = "Giày cầu lông ";
                     echo '
                                 <li> 
                                     <a class="submenua" href="index.php?control=ProductCategory&id=' . $catalog->getCatalogID() . '">' . $temp . '</a> 
@@ -120,14 +133,12 @@ $total_price_cart = 0;
                     $brandIDs = $modelBrand->suggestBrandIDsForCatalog($catalog->getCatalogID());
                     foreach ($brandIDs as $brandID) {
                         $brand = $modelBrand->getBrandByID($brandID);
-                        if($brand!=null){
-                            echo '<li><a class="fixa" href="index.php?control=ProductCategory&id='.$catalog->getCatalogID().'&brandID='.$brandID.'" style="color: black;text-decoration: none;">'. $temp .' '.$brand->getName().'</a></li>';
-
-                        }
+                        if ($brand != null)
+                            echo '<li><a class="fixa" href="index.php?control=ProductCategory&id=' . $catalog->getCatalogID() . '&brandID=' . $brandID . '" style="color: black;text-decoration: none;">' . $temp . ' ' . $brand->getName() . '</a></li>';
                     }
 
                     echo '
-                                        <li><a  href="index.php?control=ProductCategory&id='. $catalog->getCatalogID() .'" style="color: black; text-decoration: none;">Xem thêm</a></li>
+                                        <li><a  href="index.php?control=ProductCategory&id=' . $catalog->getCatalogID() . '" style="color: black; text-decoration: none;">Xem thêm</a></li>
                                     </ul>
                                 </li>';
                 }
@@ -151,18 +162,18 @@ $total_price_cart = 0;
         <div class="ajaxcart-row">
             <?php
             if (isset($_SESSION['username'])) {
-                require_once('../Model/ModelVariantDetail.php');
-                require_once('../Model/ModelUser.php');
-                require_once('../Model/ModelProduct.php');
-                require_once('../Model/ModelCartDetail.php');
-                require_once('../Model/ModelCatalog.php');
+                require_once ('../Model/ModelVariantDetail.php');
+                require_once ('../Model/ModelUser.php');
+                require_once ('../Model/ModelProduct.php');
+                require_once ('../Model/ModelCartDetail.php');
+                require_once ('../Model/ModelCatalog.php');
                 $modelVariantDetail = new ModelVariantDetail();
                 $modelUser = new ModelUser();
                 $modelProduct = new ModelProduct();
                 $modelCartDetail = new ModelCartDetail();
                 $modelCatalog = new ModelCatalog();
                 $cartDetails = $modelCartDetail->getCartDetailByCartID($modelUser->getUIDByUserName($_SESSION['username']));
-                foreach ($cartDetails  as $cartDetail) {
+                foreach ($cartDetails as $cartDetail) {
                     $variantDetail = $modelVariantDetail->getVariantByID(($cartDetail)->getVariantID());
                     $product = $modelProduct->getProductByID(($cartDetail)->getProductID());
                     $total_price_cart += $product->getPrice();
@@ -219,119 +230,123 @@ $total_price_cart = 0;
         <div class="ajaxcart-subtotal">
             <div class="cart-subtotal">
                 <div class="cart-col-6">Tổng tiền:</div>
-                <div class="text-right cart-totle"><span class="total-price"><?php if (isset($_SESSION['username'])) echo number_format($modelCartDetail->getTotalPriceCart($modelUser->getUIDByUserName($_SESSION['username'])), 0, '.', '.');
-                                                                                else echo "0" ?>₫</span></div>
+                <div class="text-right cart-totle"><span class="total-price"><?php if (isset($_SESSION['username']))
+                    echo number_format($modelCartDetail->getTotalPriceCart($modelUser->getUIDByUserName($_SESSION['username'])), 0, '.', '.');
+                else
+                    echo "0" ?>₫</span></div>
+                </div>
+            </div>
+            <div class="cart-btn-proceed-checkout-dt ">
+                <button onclick="location.href='../View/user/pages/payment_page.php'" type="button"
+                    class="button btn btn-default cart-btn-proceed-checkout" id="btn-proceed-checkout"
+                    title="Thanh toán">Đặt hàng</button>
             </div>
         </div>
-        <div class="cart-btn-proceed-checkout-dt ">
-            <button onclick="location.href='../View/user/pages/payment_page.php'" type="button" class="button btn btn-default cart-btn-proceed-checkout" id="btn-proceed-checkout" title="Thanh toán">Đặt hàng</button>
-        </div>
-    </div>
-</form>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    var searchInput = document.getElementById('search_text');
-    var result = [];
-    searchInput.addEventListener('input', function() {
-        searchProduct(this);
-    });
-
-    searchInput.addEventListener('click', function() {
-        searchProduct(this);
-    });
-
-    function searchProduct(c) {
-        var keyword = c.value.trim();
-
-        if (keyword !== '') {
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    var products = JSON.parse(this.responseText);
-                    displayProductNames(products, keyword);
-                }
-            };
-            xhttp.open("GET", "search_products.php", true);
-            xhttp.send();
-        } else {
-            hideProductNames();
-        }
-    }
-
-    function hideProductNames() {
-        var searchList = document.getElementById('searchList');
-        searchList.style.display = 'none';
-    }
-
-    function displayProductNames(products, keyword) {
-        var searchList = document.getElementById('searchList');
-        searchList.innerHTML = '';
-
-        var filteredProducts = products.filter(function(product) {
-            return product.name.toLowerCase().includes(keyword.toLowerCase());
+    </form>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        var searchInput = document.getElementById('search_text');
+        var result = [];
+        searchInput.addEventListener('input', function () {
+            searchProduct(this);
         });
 
-        result = filteredProducts;
+        searchInput.addEventListener('click', function () {
+            searchProduct(this);
+        });
 
-        var maxResults = 5;
-        for (var i = 0; i < filteredProducts.length && i < maxResults; i++) {
-            var li = document.createElement('li');
-            var link = document.createElement('a');
-            link.textContent = `${filteredProducts[i].name} - Giá: ${filteredProducts[i].price}`;
-            link.href = "index.php?control=ProductDetail&productID=" + filteredProducts[i].productID;
-            li.appendChild(link);
-            searchList.appendChild(li);
+        function searchProduct(c) {
+            var keyword = c.value.trim();
+
+            if (keyword !== '') {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var products = JSON.parse(this.responseText);
+                        displayProductNames(products, keyword);
+                    }
+                };
+                xhttp.open("GET", "search_products.php", true);
+                xhttp.send();
+            } else {
+                hideProductNames();
+            }
         }
 
-        if (filteredProducts.length > 0) {
-            searchList.style.display = 'block';
-            var li = document.createElement('li');
-            var link = document.createElement('a');
-            link.textContent = 'Xem tất cả';
-            link.href = "index.php?control=ProductCategory&search=" + keyword;
-            link.style.fontWeight = 'bold';
-            link.style.textDecoration = 'underline';
-            li.appendChild(link);
-            searchList.appendChild(li);
-        } else {
+        function hideProductNames() {
+            var searchList = document.getElementById('searchList');
             searchList.style.display = 'none';
         }
-        if (products == null) {
-            searchList.style.display = 'none';
+
+        function displayProductNames(products, keyword) {
+            var searchList = document.getElementById('searchList');
+            searchList.innerHTML = '';
+
+            var filteredProducts = products.filter(function (product) {
+                return product.name.toLowerCase().includes(keyword.toLowerCase());
+            });
+
+            result = filteredProducts;
+
+            var maxResults = 5;
+            for (var i = 0; i < filteredProducts.length && i < maxResults; i++) {
+                var li = document.createElement('li');
+                var link = document.createElement('a');
+                link.textContent = `${filteredProducts[i].name} - Giá: ${filteredProducts[i].price}`;
+                link.href = "index.php?control=ProductDetail&productID=" + filteredProducts[i].productID;
+                li.appendChild(link);
+                searchList.appendChild(li);
+            }
+
+            if (filteredProducts.length > 0) {
+                searchList.style.display = 'block';
+                var li = document.createElement('li');
+                var link = document.createElement('a');
+                link.textContent = 'Xem tất cả';
+                link.href = "index.php?control=ProductCategory&search=" + keyword;
+                link.style.fontWeight = 'bold';
+                link.style.textDecoration = 'underline';
+                li.appendChild(link);
+                searchList.appendChild(li);
+            } else {
+                searchList.style.display = 'none';
+            }
+            if (products == null) {
+                searchList.style.display = 'none';
+            }
         }
-    }
 
 
 
-    // Ẩn dropdown khi click ra ngoài ô search
-    document.addEventListener('click', function(e) {
-        if (!document.getElementById('searchList').contains(e.target) && !document.getElementById('search_box').contains(e.target)) {
-            hideProductNames();
-        } else {
+        // Ẩn dropdown khi click ra ngoài ô search
+        document.addEventListener('click', function (e) {
+            if (!document.getElementById('searchList').contains(e.target) && !document.getElementById('search_box').contains(e.target)) {
+                hideProductNames();
+            } else {
 
+            }
+        });
+
+        function showTarget() {
+            var targetElement = document.querySelector('.popup-cart');
+
+            var siuElement = document.getElementById('hover-cart');
+            var targetElement = document.querySelector('.popup-cart');
+            var siuRect = siuElement.getBoundingClientRect();
+            var windowWidth = window.innerWidth;
+
+            if (windowWidth <= 1300) {
+
+            } else {
+                targetElement.style.display = 'block';
+                targetElement.style.position = 'absolute';
+                targetElement.style.top = siuRect.top + 45 + 'px';
+                targetElement.style.left = (siuRect.right - 360) + 'px';
+            }
         }
-    });
 
-    function showTarget() {
-        var targetElement = document.querySelector('.popup-cart');
-
-        var siuElement = document.getElementById('hover-cart');
-        var targetElement = document.querySelector('.popup-cart');
-        var siuRect = siuElement.getBoundingClientRect();
-        var windowWidth = window.innerWidth;
-
-        if (windowWidth <= 1300) {
-
-        } else {
-            targetElement.style.display = 'block';
-            targetElement.style.position = 'absolute';
-            targetElement.style.top = siuRect.top + 45 + 'px';
-            targetElement.style.left = (siuRect.right - 360) + 'px';
+        function hideTarget() {
+            var targetElement = document.querySelector('.popup-cart');
+            targetElement.style.display = 'none';
         }
-    }
-
-    function hideTarget() {
-        var targetElement = document.querySelector('.popup-cart');
-        targetElement.style.display = 'none';
-    }
-</script>
+    </script>

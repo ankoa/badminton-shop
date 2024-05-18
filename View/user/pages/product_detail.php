@@ -57,7 +57,7 @@ foreach ($parts as $part) {
 
     // Lưu tên làm key (viết thường) và các số làm value vào mảng kết quả
     if (isset($temp[0]) && isset($temp[1])) {
-        $result[trim(strtolower($temp[0]))] = explode(",", $temp[1]);
+        $result[trim(($temp[0]))] = explode(",", $temp[1]);
     }
 }
 $imagePaths = array_values($result)[0];
@@ -116,11 +116,33 @@ if ($catalog->getName() == "Racket") {
                                 // Đảm bảo rằng biến imagePaths đã được định nghĩa trước
                                 const imagePaths = <?php echo json_encode($imagePaths); ?>;
                                 const productID= <?php echo json_encode($productID); ?>;
+
+                                const bigImageContainer = document.querySelector('.big-img');
+                                const bigImage = document.createElement('img');
+                                linktmp = "images/product/<?php echo $productID ;?>/<?php echo array_keys($result)[0] ;?>/<?php echo $productID ;?>.1.png";
+                                getPromiseUrl(linktmp).then(url => {
+                                    bigImage.src = url;
+                                }).catch(error => {
+                                    return error;
+                                });
+                                bigImage.style.maxWidth = '100%';
+                                bigImage.style.maxHeight = '100%';
+                                bigImage.style.objectFit = 'cover';
+                                // Clear previous big image
+                                bigImageContainer.innerHTML = '';
+                                // Append new big image
+                                bigImageContainer.appendChild(bigImage);
                                 // Lặp qua mỗi đường dẫn hình ảnh và chèn chúng vào danh sách
                                 for(var i=0;i<imagePaths.length;i++) {
                                     // Tạo một thẻ img và đặt thuộc tính src và alt
                                     const image = document.createElement('img');
-                                    image.src = "../View/images/product/<?php echo $productID ;?>/<?php echo array_keys($result)[0] ;?>/<?php echo $productID ;?>."+imagePaths[i]+".png";
+                                    var link = "images/product/<?php echo $productID ;?>/<?php echo array_keys($result)[0] ;?>/<?php echo $productID ;?>."+imagePaths[i]+".png";
+                                    console.log(link);
+                                    getPromiseUrl(link).then(url=>{
+                                        image.src = url;
+                                    }).catch(error=> {
+                                        return error;
+                                    });
                                     image.alt = `Image ${i + 1}`; // Tùy chỉnh alt nếu cần
                                     image.classList.add('image-item');
 
