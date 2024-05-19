@@ -27,7 +27,7 @@ function getImgList($productID) {
 
         // Lưu tên làm key (viết thường) và các số làm value vào mảng kết quả
         if (isset($temp[0]) && isset($temp[1])) {
-            $result[trim(strtolower($temp[0]))] = explode(",", $temp[1]);
+            $result[trim(($temp[0]))] = explode(",", $temp[1]);
         }
     }
     //$imagePaths = array_values($result)[0];
@@ -50,12 +50,12 @@ function delImg($productID, $imgIndex, $color) {
 
         // Lưu tên làm key (viết thường) và các số làm value vào mảng kết quả
         if (isset($temp[0]) && isset($temp[1])) {
-            $result[trim(strtolower($temp[0]))] = explode(",", $temp[1]);
+            $result[trim(($temp[0]))] = explode(",", $temp[1]);
         }
     }
 
     // Xóa phần tử có giá trị imgIndex trong mảng có key color
-    $colorKey = trim(strtolower($color));
+    $colorKey = trim(($color));
     if (isset($result[$colorKey])) {
         $imageArray = $result[$colorKey];
         // Sử dụng array_filter để xóa tất cả phần tử có giá trị bằng imgIndex

@@ -1,5 +1,6 @@
 countFilter = 0;
 var filterArray = [];
+var filterImgArray = [];
 var fullArray = [];
 selectedFilters = {};
 
@@ -76,6 +77,7 @@ function getAllByCatalogAndBrand() {
                 if (this.status == 200) {
                     var listVariantDetails = JSON.parse(this.responseText);
                     filterArray = listVariantDetails;
+                    filterImgArray = createImageArray(filterArray);
                     fullArray = listVariantDetails;
                 } else {
                     reject(new Error("Yêu cầu thất bại"));
@@ -96,6 +98,7 @@ function loadSearch() {
             if (this.status == 200) {
                 var listVariantDetails = JSON.parse(this.responseText);
                 filterArray = listVariantDetails;
+                filterImgArray = createImageArray(filterArray);
                 loadNavFilter();
                 loadPageFilter(1,8);
                 document.getElementById("page-config").innerHTML = '<label for="mySelect">Item per page: </label>' +
@@ -120,21 +123,23 @@ async function loadPage(page, productsPerPage, id, brandID) {
     xhttp.onreadystatechange = async function () {
         if (this.readyState == 4 && this.status == 200) {
             var listVariantDetails = JSON.parse(this.responseText);
-            var htmlContent = '';
-            var promises = listVariantDetails.map(async (variant) => {
-                var inputString = variant.url;
-                var darkNavyRegex = /^[^:]+/;
-                var match = inputString.match(darkNavyRegex);
-                var linktmp = "images/product/" + variant.productID + "/" + match + "/" + variant.productID + ".1.png";
+
+            // Tạo mảng lưu đường dẫn ảnh và productID
+            if(filterImgArray && filterImgArray.length>0) {
+
+            } else {
+                var filterImgArray = await createImageArray(listVariantDetails);
+            }
                 
-                try {
-                    var url = await getPromiseUrl(linktmp);
-                    htmlContent += `<div class="col-6 col-md-3">
+            var htmlContent = '';
+            listVariantDetails.forEach((variant) => {
+                var productImage = filterImgArray.find(item => item.productID === variant.productID);
+                htmlContent += `<div class="col-6 col-md-3">
                     <div class="item_product_main">
                         <div class="product-thumbnail">
                             <a class="product_overlay" href="index.php?control=ProductDetail&productID=` + variant.productID + `" title="` + variant.name + `"></a>
                             <a class="image_thumb" href="index.php?control=ProductDetail&productID=` + variant.productID + `" title="` + variant.name + `">
-                                <img width="300" height="300" class="lazyload loaded" src="` + url + `" data-src="" alt="Vợt Cầu Lông Victor Brave Sword LTD Pro (Nội Địa Taiwan)" data-was-processed="true">
+                                <img width="300" height="300" class="lazyload loaded" src="` + (productImage ? productImage.imageUrl : '') + `" data-src="" alt="Vợt Cầu Lông Victor Brave Sword LTD Pro (Nội Địa Taiwan)" data-was-processed="true">
                             </a>
                         </div>
                         <div class="product-info">
@@ -145,12 +150,8 @@ async function loadPage(page, productsPerPage, id, brandID) {
                         </div>
                     </div>
                 </div>`;
-                } catch (error) {
-                    console.error('Error getting file URL:', error);
-                }
             });
 
-            await Promise.all(promises);
             document.getElementById("show-product").innerHTML = htmlContent;
 
             // Xóa class 'active' và 'current-page' khỏi tất cả các thẻ li
@@ -165,10 +166,11 @@ async function loadPage(page, productsPerPage, id, brandID) {
         }
     };
 
-    if (brandID == null)
-        xhttp.open("GET", "ProductNavController.php?page=" + parseInt(page) + "&productsPerPage=" + parseInt(productsPerPage) + "&id=" + parseInt(id), true);
-    else
-        xhttp.open("GET", "ProductNavController.php?page=" + parseInt(page) + "&productsPerPage=" + parseInt(productsPerPage) + "&id=" + parseInt(id) + "&brandID=" + parseInt(brandID), true);
+    var url = "ProductNavController.php?page=" + parseInt(page) + "&productsPerPage=" + parseInt(productsPerPage) + "&id=" + parseInt(id);
+    if (brandID != null) {
+        url += "&brandID=" + parseInt(brandID);
+    }
+    xhttp.open("GET", url, true);
     xhttp.send();
 }
 
@@ -176,21 +178,22 @@ async function loadPage(page, productsPerPage, id, brandID) {
 async function loadPageFilter(page, productsPerPage) {
     var offset = (page - 1) * productsPerPage;
     var productsOnCurrentPage = filterArray.slice(offset, offset + productsPerPage); // Sử dụng mảng filterArray đã được sắp xếp
+
+    if(filterImgArray && filterImgArray.length>0) {
+
+            } else {
+                var filterImgArray = await createImageArray(productsOnCurrentPage);
+            }
+
     var htmlContent = '';
-    var promises = productsOnCurrentPage.map(async (variant) => {
-        var inputString = variant.url;
-        var darkNavyRegex = /^[^:]+/;
-        var match = inputString.match(darkNavyRegex);
-        var linktmp = "images/product/" + variant.productID + "/" + match + "/" + variant.productID + ".1.png";
-        
-        try {
-            var url = await getPromiseUrl(linktmp);
-            htmlContent += `<div class="col-6 col-md-3">
+    productsOnCurrentPage.forEach((variant) => {
+        var productImage = filterImgArray.find(item => item.productID === variant.productID);
+        htmlContent += `<div class="col-6 col-md-3">
             <div class="item_product_main">
                 <div class="product-thumbnail">
                     <a class="product_overlay" href="index.php?control=ProductDetail&productID=` + variant.productID + `" title="` + variant.name + `"></a>
                     <a class="image_thumb" href="index.php?control=ProductDetail&productID=` + variant.productID + `" title="` + variant.name + `">
-                        <img width="300" height="300" class="lazyload loaded" src="` + url + `" data-src="" alt="Vợt Cầu Lông Victor Brave Sword LTD Pro (Nội Địa Taiwan)" data-was-processed="true">
+                        <img width="300" height="300" class="lazyload loaded" src="` + (productImage ? productImage.imageUrl : '') + `" data-src="" alt="Vợt Cầu Lông Victor Brave Sword LTD Pro (Nội Địa Taiwan)" data-was-processed="true">
                     </a>
                 </div>
                 <div class="product-info">
@@ -201,11 +204,8 @@ async function loadPageFilter(page, productsPerPage) {
                 </div>
             </div>
         </div>`;
-        } catch (error) {
-            console.error('Error getting file URL:', error);
-        }
     });
-    await Promise.all(promises);
+
     document.getElementById("show-product").innerHTML = htmlContent;
 
     // Xóa class 'active' và 'current-page' khỏi tất cả các thẻ li
