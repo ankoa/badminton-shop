@@ -80,6 +80,10 @@
             }
 
         </script>
+        <?php
+        session_start();
+$total_price_cart = 0;
+?>
     <?php
     if (isset($_GET['control'])) {
         if ($_GET['control'] == "ProductCategory") {

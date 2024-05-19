@@ -1,6 +1,4 @@
-<?php
-$total_price_cart = 0;
-?>
+
 <div class="header_contentTop">
     <div class="left_header_contentTop">
         <div class="logo">
