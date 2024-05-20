@@ -389,23 +389,30 @@ function searchTransactionsByDate() {
     xhr.send();
 }
 function changeUserStatus(userID, newStatus) {
-    var xhr = new XMLHttpRequest();
-    // Construct the URL with query parameters
-    var url = "change_user_status.php?userID=" + userID + "&newStatus=" + newStatus;
-    xhr.open("GET", url, true);
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 200) {
-                // Reload the page to reflect the changes
-                alert('Cập nhật trạng thái thành công!');
-            } else {
-                console.error('Error occurred: ' + xhr.status);
-            }
+            var xhr = new XMLHttpRequest();
+            // Construct the URL with query parameters
+            var url = "change_user_status.php?userID=" + userID + "&newStatus=" + newStatus;
+            xhr.open("GET", url, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        if (newStatus == 0) {
+                            buttonElement.innerText = 'Bỏ chặn';
+                            buttonElement.setAttribute('onclick', 'changeUserStatus("' + userID + '", 1, this)');
+                        } else {
+                            buttonElement.innerText = 'Chặn';
+                            buttonElement.setAttribute('onclick', 'changeUserStatus("' + userID + '", 0, this)');
+                        }
+                        // Reload the page to reflect the changes
+                        alert('Cập nhật trạng thái thành công!');
+                    } else {
+                        console.error('Error occurred: ' + xhr.status);
+                    }
+                }
+            };
+            // No need to set Content-Type for GET requests
+            xhr.send();
         }
-    };
-    // No need to set Content-Type for GET requests
-    xhr.send();
-}
 
 
 
@@ -456,49 +463,65 @@ function changeUserStatus(userID, newStatus) {
     // Get all users
     $users = $modelUser->getAllUsers();
 
-
-        // Check if there are any users
         if ($users) {
-            // Print table header
             echo "<table border='1'>
                     <tr>
-                        <th>User ID</th>
+                        <th>Mã người dùng</th>
                         <th>Username</th>
-                        <th>Name</th>
+                        <th>Mật khẩu</th>
+                        <th>Tên</th>
                         <th>Email</th>
-                        <th>Phone Number</th>
-                        <th>Point</th>
-                        <th>Role</th>
-                        <th>Type</th>
+                        <th>Số điện thoại</th>
+                        <th>Điểm</th>
+                        <th>Vai trò</th>
+                        <th>Phân loại</th>
+                        <th>Trạng thái</th>
                         <th>Action</th>
                     </tr>";
 
-            // Loop through each user and print their information
             foreach ($users as $user) {
-                if ($user['status'] != 0) {
                 echo "<tr>
                     <td>" . $user['userID'] . "</td>
                     <td>" . $user['username'] . "</td>
+                    <td>" . $user['password'] . "</td>
                     <td>" . $user['name'] . "</td>
                     <td>" . $user['mail'] . "</td>
                     <td>" . $user['phoneNumber'] . "</td>
                     <td>" . $user['point'] . "</td>
-                    <td>" . $user['roleID'] . "</td>
-                    <td>" . $user['type'] . "</td>
-                    <td><button onclick='changeUserStatus(\"" . $user['userID'] . "\", 0)'>Banned</button></td>
-                </tr>";
+                    <td>";
+                // Hiển thị vai trò dựa trên roleID
+                switch ($user['roleID']) {
+                    case 1:
+                        echo "Admin";
+                        break;
+                    case 2:
+                        echo "Manager";
+                        break;
+                    case 3:
+                        echo "Saler";
+                        break;
+                    case 4:
+                        echo "Tester";
+                        break;
+                    default:
+                        echo "Unknown";
+                }
+                echo "</td>
+                <td>" . $user['type'] . "</td>
+                    <td>" . ($user['status'] == 1 ? 'Hoạt động' : 'Vô hiệu hóa') . "</td>
+                    <td>";
+
+                if ($user['roleID'] != 1) {
+                    $buttonText = $user['status'] == 1 ? 'Chặn' : 'Bỏ chặn';
+                    $newStatus = $user['status'] == 1 ? 0 : 1;
+                    echo "<button onclick='changeUserStatus(\"" . $user['userID'] . "\", " . $newStatus . ", this)'>$buttonText</button>";
+                }
+                echo "</td></tr>";
             }
-        }
-            // Close the table tag
             echo "</table>";
         } else {
-            // If there are no users, print a message
-            echo "No users found.";
+            echo "Không tìm thấy người dùng!";
         }
-
-
-
-
     ?>
     </div>
           <div id="loaisanpham-content" class="content-section">
