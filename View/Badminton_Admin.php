@@ -523,7 +523,142 @@ function changeUserStatus(userID, newStatus) {
             echo "Không tìm thấy người dùng!";
         }
     ?>
+
+         <script>
+            // Mở popup chỉnh sửa sản phẩm khi bấm vào liên kết
+document.querySelectorAll('#openEditUser').forEach(button => {
+    button.addEventListener('click', function(event) {
+        event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
+
+        // Hiển thị modal form
+        document.getElementById("editUser").style.display = "block";
+
+        // Lấy các dữ liệu từ hàng chứa nút "Sửa" tương ứng
+        let row = this.closest('tr');
+        let userID = row.querySelector('td:nth-child(1)').innerText;
+        let username = row.querySelector('td:nth-child(2)').innerText;
+        let password = row.querySelector('td:nth-child(3)').innerText;
+        let name = row.querySelector('td:nth-child(4)').innerText;
+        let mail = row.querySelector('td:nth-child(5)').innerText;
+        let phoneNumber = row.querySelector('td:nth-child(6)').innerText;
+        let point = row.querySelector('td:nth-child(7)').innerText;
+        let role = row.querySelector('td:nth-child(8)').innerText.trim(); 
+        let type = row.querySelector('td:nth-child(9)').innerText;
+        let status = row.querySelector('td:nth-child(10)').innerText.trim(); 
+
+        // Gán giá trị cho các trường dữ liệu trong form
+        document.getElementById("userID").value = userID;
+        document.getElementById("username").value = username;
+        document.getElementById("password").value = password;
+        document.getElementById("name").value = name;
+        document.getElementById("mail").value = mail;
+        document.getElementById("phoneNumber").value = phoneNumber;
+        document.getElementById("point").value = point;
+        document.getElementById("type").value = type;
+
+        // Gán giá trị cho thẻ select role
+        let roleSelect = document.querySelector('select[name="role"]');
+        switch (role) {
+            case 'Admin':
+                roleSelect.value = 1;
+                break;
+            case 'Manager':
+                roleSelect.value = 2;
+                break;
+            case 'Saler':
+                roleSelect.value = 3;
+                break;
+            case 'Tester':
+                roleSelect.value = 4;
+                break;
+            default:
+                roleSelect.value = '';
+        }
+
+        // Gán giá trị cho thẻ select status
+        let statusSelect = document.querySelector('select[name="status"]');
+        if (status === 'Hoạt động') {
+            statusSelect.value = 1;
+        } else if (status === 'Vô hiệu hóa') {
+            statusSelect.value = 0;
+        } else {
+            statusSelect.value = '';
+        }
+    });
+});
+
+// Đóng popup chỉnh sửa sản phẩm khi bấm vào nút "Đóng"
+function closeEditUser() {
+    document.getElementById("editUser").style.display = "none";
+}
+
+        </script>
+
+        <div id="editUser" class="modal" style="background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">
+            <form class="modal-content" action="change_user_information.php" method="POST" style="width:35%; margin-left:35%; margin-top:3%; border:solid 2px;">
+                <span style="margin-left:95%" class="close" onclick="closeEditUser()">&times;</span>
+                <h1 style="text-align: center;">Chỉnh sửa sản phẩm</h1>
+                <div class="input-group input-group-sm mb-3">
+                    <label class="input-group-text" id="inputGroup-sizing-sm">Mã người dùng</label>
+                    <input type="text" name="userID" id="userID" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" style="user-select: none; pointer-events: none; caret-color: transparent;">
+                </div>
+
+                <div class="input-group input-group-sm mb-3">
+                    <label class="input-group-text" id="inputGroup-sizing-sm">Username</label>
+                    <input type="text" name="username" id="username" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="">
+                </div>
+
+                <div class="input-group input-group-sm mb-3">
+                    <label class="input-group-text" id="inputGroup-sizing-sm">Mật khẩu</label>
+                    <input type="text" name="password" id="password" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="">
+                </div>
+
+                <div class="input-group input-group-sm mb-3">
+                    <label class="input-group-text" id="inputGroup-sizing-sm">Tên</label>
+                    <input type="text" name="name" id="name" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="">
+                </div>
+
+                <div class="input-group input-group-sm mb-3">
+                    <label class="input-group-text" id="inputGroup-sizing-sm">Email</label>
+                    <input type="text" name="mail" id="mail" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="">
+                </div>
+
+                <div class="input-group input-group-sm mb-3">
+                    <label class="input-group-text" id="inputGroup-sizing-sm">Số điện thoại</label>
+                    <input type="text" name="phoneNumber" id="phoneNumber" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="">
+                </div>
+
+                <div class="input-group input-group-sm mb-3">
+                    <label class="input-group-text" id="inputGroup-sizing-sm">Điểm</label>
+                    <input type="text" name="point" id="point" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="">
+                </div>
+
+                <div class="input-group input-group-sm mb-3">
+                    <label class="input-group-text" id="inputGroup-sizing-sm">Quyền</label>
+                    <select name="roleID" class="form-select form-select-sm" aria-label=".form-select-sm example" value="">
+                        <option value="2">Manager</option>
+                        <option value="3">Saler</option>
+                        <option value="4">Tester</option>
+                    </select>
+                </div>
+
+                <div class="input-group input-group-sm mb-3">
+                    <label class="input-group-text" id="inputGroup-sizing-sm">Phân loại</label>
+                    <input type="text" name="type" id="type" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="">
+                </div>
+
+                <div class="input-group input-group-sm mb-3">
+                    <label class="input-group-text" id="inputGroup-sizing-sm">Trạng thái</label>
+                    <select name="status" class="form-select form-select-sm" aria-label=".form-select-sm example" value="">           
+                        <option value="1">Hoạt động</option>
+                        <option value="0">Vô hiệu hoá</option>
+                    </select>
+                </div>
+                <button type="submit" style="width:55px; height:auto; margin-left:45%">Lưu</button>
+            </form>
+        </div>  
     </div>
+        
           <div id="loaisanpham-content" class="content-section">
                 <div class="headerad"> QUẢN LÝ LOẠI SẢN PHẨM</div>
         
