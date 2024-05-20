@@ -46,8 +46,8 @@
             echo json_encode($this->modelTransaction->getAllDeleteHoaDon());
         }
 
-        public function addTransaction($transactionID, $userID, $total, $note, $time, $address, $check, $transport, $status, $name_receiver, $phone_receiver){
-            echo json_encode($this->modelTransaction->addTransaction($transactionID, $userID, $total, $note, $time, $address, $check, $transport, $status, $name_receiver, $phone_receiver));
+        public function addTransaction($userID, $total, $note,$time, $address, $name_receiver, $phone_receiver){
+            echo json_encode($this->modelTransaction->addTransaction($userID, $total, $note,$time, $address, $name_receiver, $phone_receiver));
         }
 
     }
@@ -63,11 +63,7 @@
         case 'findPhone':
             $phoneNumber = $_POST['phoneNumber'];
             $transactionctl->getTransactionByPhone($phoneNumber);
-            break;
-        case 'findTranCode':
-            $TransactionID = $_POST['TransactionID'];
-            $transactionctl->getTransactionByID($TransactionID);
-            break;    
+            break; 
         case 'get':
             $id = $_POST['id'];
             $transactionctl->getTransaction($id);
@@ -90,20 +86,16 @@
             $transactionctl->getAllDeleteHoaDon();
             break;
         case "add":
-            $transactionID = '';
-            $userID = $_POST['user'];
-            $total = $_POST['total'];
-            $note = $_POST['notes'];
-            $time = date('Y-m-d H:i:s');
-            $address = $_POST['address'];
-            $check = 'Chưa xác nhận'; 
-            $transport = '';
-            $status = 1; 
-            $name_receiver = $_POST['fullname'];
-            $phone_receiver = $_POST['phone'];
-            $chitietquyenctl->addTransaction($transactionID, $userID, $total, $note, $time, $address, $check, $transport, $status, $name_receiver, $phone_receiver);
-            break;
-
+                $userID = $_POST['user'];
+                $total = $_POST['total'];
+                $note = $_POST['notes'];
+                $address = $_POST['address'];
+                $name_receiver = $_POST['fullname'];
+                $phone_receiver = $_POST['phone'];
+                $time = date('Y-m-d H:i:s'); // Lấy ngày hiện tại theo định dạng 'Y-m-d H:i:s'
+                $transactionctl->addTransaction($userID, $total, $note, $time, $address, $name_receiver, $phone_receiver);
+                break;
+            
         default:
             break;
         }

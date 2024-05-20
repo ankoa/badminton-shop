@@ -1028,31 +1028,77 @@ if (isset($_SESSION['username'])) {
     </div>
 
     <div id="doanhso-content" class="content-section">
-        <form id="frmdoanhso">
-            <h1 style="padding-left: 10%;"> TÌM KIẾM THEO NGÀY</h1>
-            <div class="containbox">
-                <label for="datestart">Ngày bắt đầu:</label>
-                <input type="date" id="datestart2">
-            </div>
-            <div class="containbox">
-                <label for="dateend">Ngày kết thúc:</label>
-                <input type="date" id="dateend2">
-            </div>
-            <button type="submit" style="margin-top: 10px; margin-left: 10px;" onclick="thongKe(event);"> Thống kê doanh số </button>
-            <button type="submit" style="margin-top: 10px; margin-left: 10px;" onclick="thongKeByBrand(event);"> Thống kê doanh số theo hãng </button>
-            <h2 id="tongdoanhso"> </h2>
-            <canvas id="salesChart" width="400" height="400"></canvas>
-            <table class="tabledoanhso" id="quanlydoanhso" cellpadding="50" cellspacing="100">
+    <form id="frmdoanhso">
+        <h1 style="padding-left: 10%;">TÌM KIẾM THEO NGÀY</h1>
+        <div class="containbox">
+            <label for="datestart">Ngày bắt đầu:</label>
+            <input type="date" id="datestart2">
+        </div>
+        <div class="containbox">
+            <label for="dateend">Ngày kết thúc:</label>
+            <input type="date" id="dateend2">
+        </div>
+        <button type="submit" style="margin-top: 10px; margin-left: 10px;" onclick="thongKe(event);"> Thống kê doanh số </button>
+        <button type="submit" style="margin-top: 10px; margin-left: 10px;" onclick="thongKeByBrand(event);"> Thống kê doanh số theo hãng </button>
+        <button type="button" style="margin-top: 10px; margin-left: 10px;" onclick="showBestSellingProductsPopup();"> Thống kê sản phẩm bán chạy </button>
+        <h2 id="tongdoanhso"></h2>
+        <canvas id="salesChart" width="400" height="400"></canvas>
+        <table class="tabledoanhso" id="quanlydoanhso" cellpadding="50" cellspacing="100">
+            <thead>
+                <tr></tr>
+            </thead>
+        </table>
+    </form>
+    <div id="bestSellingProductsTable" style="display: none;">
+    <table id="bestSellingTable">
+        <thead>
+            <tr>
+                <th>Tên sản phẩm</th>
+                <th id="statTypeHeader">Statistic Value</th>
+            </tr>
+        </thead>
+        <tbody id="bestSellingTableBody">
+            <!-- Table body will be dynamically populated -->
+        </tbody>
+    </table>
+</div>
+<div id="salesDataTable" style="display: none;">
+    <h2>Bảng Dữ liệu Doanh số</h2>
+    <table id="salesData">
+        <thead>
+            <tr>
+            <th id="salesDateHeader">Ngày</th>
+            <th id="salesValueHeader">Doanh số</th>
+            </tr>
+        </thead>
+        <tbody>
+    
+        </tbody>
+    </table>
+</div>
 
-                <thead>
-                    <tr>
-                        
-                    </tr>
-                </thead>
-            </table>
+</div>
 
-        </form>
+<!-- Popup Modal -->
+<div id="bestSellingProductsModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeBestSellingProductsPopup()">&times;</span>
+        <h2>Thống kê sản phẩm bán chạy</h2>
+        <div>
+            <label for="topNumber">Top số lượng:</label>
+            <input type="number" id="topNumber" value="3" min="1">
+        </div>
+        <div>
+            <label for="statType">Thống kê theo:</label>
+            <select id="statType">
+                <option value="totalRevenue">Tổng doanh thu</option>
+                <option value="numberOfBuyers">Số lượng người mua</option>
+                <option value="quantitySold">Số lượng bán ra</option>
+            </select>
+        </div>
+        <button onclick="fetchBestSellingProducts()">Thống kê</button>
     </div>
+</div>
     </div>
 
 
@@ -1725,6 +1771,69 @@ if ($transactions) {
 
 </body>
 <script>
+    function showBestSellingProductsPopup() {
+    document.getElementById('bestSellingProductsModal').style.display = 'block';
+}
+
+function closeBestSellingProductsPopup() {
+    document.getElementById('bestSellingProductsModal').style.display = 'none';
+}
+
+function fetchBestSellingProducts() {
+    const topNumber = document.getElementById('topNumber').value;
+    const statType = document.getElementById('statType').value;
+    var startDate = document.getElementById('datestart2').value;
+    var endDate = document.getElementById('dateend2').value;
+    document.getElementById('bestSellingProductsTable').style.display = 'block';
+    // Ẩn canvas của biểu đồ
+    document.getElementById('salesChart').style.display = 'none';
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', `../View/fetch_best_selling_products.php?startDate=${startDate}&endDate=${endDate}&topNumber=${topNumber}&statType=${statType}`, true);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            const data = JSON.parse(xhr.responseText);
+            console.log(data);
+
+            // Populate the table with data
+            const tableBody = document.getElementById('bestSellingTableBody');
+            tableBody.innerHTML = ''; // Clear previous data
+            data.forEach(product => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${product.name}</td>
+                    <td>${product.value}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            // Update the column header based on the selected statType
+            const statTypeHeader = document.getElementById('statTypeHeader');
+            switch (statType) {
+                case 'totalRevenue':
+                    statTypeHeader.textContent = 'Tổng doanh thu';
+                    break;
+                case 'numberOfBuyers':
+                    statTypeHeader.textContent = 'Số lượng người mua';
+                    break;
+                case 'quantitySold':
+                    statTypeHeader.textContent = 'Số lượng bán ra ';
+                    break;
+                default:
+                    statTypeHeader.textContent = 'Statistic Value';
+            }
+
+            // Show the table
+            document.getElementById('bestSellingProductsTable').style.display = 'block';
+        } else {
+            console.error('Error fetching data:', xhr.status, xhr.statusText);
+        }
+    };
+    xhr.onerror = function() {
+        console.error('Request failed');
+    };
+    xhr.send();
+}
     document.getElementById('editUserForm').onsubmit = function(event) {
     event.preventDefault();
 

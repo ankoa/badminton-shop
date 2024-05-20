@@ -20,6 +20,10 @@
         public function checkOrderDetail($id) {
             echo json_encode($this->modelOrderTransaction->checkOrderDetail($id));
         }
+
+        public function addOrderTransaction($productID, $variantID, $total_amonut, $quantity){
+            echo json_encode($this->modelOrderTransaction->addOrderTransaction($productID, $variantID, $total_amonut, $quantity));
+        }
     }
 
     $CTHD = new ModelOrderTransaction();
@@ -34,6 +38,13 @@
         case 'check-order':
             $ma_cthd = $_POST['id'];
             echo json_encode($CTHD->checkOrderDetail($ma_cthd));
+            break;
+        case "add-order":
+            $productID = $_POST['proID'];
+            $variantID = $_POST['varID'];
+            $total_amonut = $_POST['total_amonut'];
+            $quantity = $_POST['quantity'];
+            $CTHD->addOrderTransaction($productID, $variantID, $total_amonut, $quantity);
             break;
         default:
             break;

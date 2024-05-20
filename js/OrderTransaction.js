@@ -11,6 +11,19 @@ function getOrderTransaction(id_transaction) {
     })
 }
 
+function addOrderTransaction(proID, varID, total_amonut, quantity) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: '../../../Controllers/OrderTransactionController.php',
+            method: 'POST',
+            data: { action: 'add-order', proID, varID, total_amonut, quantity },
+            dataType: 'JSON',
+            success: cthd => resolve(cthd),
+            error: (xhr, status, error) => reject(error)
+        })
+    })
+}
+
 function checkOrderDetails(id) {
     return new Promise(function(resolve, reject) {
         $.ajax({

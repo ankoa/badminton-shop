@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tìm kiếm mã đơn hàng</title>
-    <script> var username = "<?php echo $_SESSION['username']; ?>"; </script>
+    <script> var username = "<?php echo isset($_SESSION['username']) ? $_SESSION['username'] : 'unknown'; ?>"; </script>
     <style>
       .combobox__right {
         background-color: #fff;

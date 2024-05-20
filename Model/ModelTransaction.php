@@ -114,44 +114,61 @@ require_once '..\Model\Entity\Transaction.php';
         public function getTransactionByCustomer($ma_kh, $search) {
             try {
                 $query = "SELECT *, DATE_FORMAT(time, '%d/%m/%Y') AS FormatDate FROM transaction
-                    WHERE userID = '$ma_kh' 
-                    AND transactionID = '$search'
-                    AND status = 1
-                    ORDER BY transactionID DESC
-                ";
+                          WHERE userID = '$ma_kh' 
+                          AND transactionID = '$search'
+                          AND status = 1
+                          ORDER BY transactionID DESC";
                 $result = $this->db->select($query);
+        
+                if ($result === false) {
+                    // Log the error message
+                    error_log("SQL Error: " . $this->db->error);
+                    return null;
+                }
+        
                 $arrHoaDon = array();
                 while ($row = mysqli_fetch_assoc($result)) {
                     $arrHoaDon[] = $row;
                 }
                 return $arrHoaDon;
             } catch (Exception $e) {
-                echo 'Error:'. $e->getMessage();
+                echo 'Error: ' . $e->getMessage();
                 return null;
             }
         }
         
+        
         public function getAllTransactionByCustomer($ma_kh) {
             try {
                 $query = "SELECT *, DATE_FORMAT(time, '%d/%m/%Y') AS FormatDate FROM transaction
-                    WHERE userID = '$ma_kh'
-                    AND status = 1 
-                    ORDER BY transactionID DESC";
+                          WHERE userID = '$ma_kh'
+                          AND status = 1 
+                          ORDER BY transactionID DESC";
                 $result = $this->db->select($query);
+        
+                if ($result === false) {
+                    // Log the error message
+                    error_log("SQL Error in getAllTransactionByCustomer: " . $this->db->error);
+                    // Optionally, you can also echo the error message for debugging
+                    echo "SQL Error: " . $this->db->error;
+                    return null;
+                }
+        
                 $arrHoaDon = array();
                 while ($row = mysqli_fetch_assoc($result)) {
                     $arrHoaDon[] = $row;
                 }
                 return $arrHoaDon;
             } catch (Exception $e) {
-                echo 'Error:'. $e->getMessage();
+                echo 'Error: ' . $e->getMessage();
                 return null;
             }
         }
+        
 
         public function getTransactionByPhone($phoneNumber) {
             //$Phonenumber = $this->db->escape_string($Phonenumber);
-            $query = "SELECT *, , DATE_FORMAT(time, '%d/%m/%Y') AS FormatDate FROM transaction WHERE transaction.userID in 
+            $query = "SELECT *, DATE_FORMAT(time, '%d/%m/%Y') AS FormatDate FROM transaction WHERE transaction.userID in 
             (SELECT user.userID FROM user WHERE phoneNumber = '$phoneNumber')
             ORDER BY transactionID DESC";
             $result = $this->db->select($query);
@@ -183,29 +200,6 @@ require_once '..\Model\Entity\Transaction.php';
                 return false;
             }
         }
-    // Method to add a new transaction to the database
-    public function addTransaction($userID, $total, $note, $time, $address, $check, $transport, $status, $nameReceiver, $phoneReceiver) {
-        $query = "INSERT INTO `transaction` (`userID`, `total`, `note`, `time`, `address`, `check`, `transport`, `status`, `name_receiver`, `phone_receiver`) 
-                  VALUES ('$userID', '$total', '$note', '$time', '$address', '$check', '$transport', '$status', '$nameReceiver', '$phoneReceiver')";
-        return $this->db->insert($query);
-    }
-
-    // Method to update an existing transaction in the database
-    public function updateTransaction($transactionID, $userID, $total, $note, $time, $address, $check, $transport, $status, $nameReceiver, $phoneReceiver) {
-        $query = "UPDATE `transaction` 
-                  SET `userID` = '$userID', `total` = '$total', `note` = '$note', `time` = '$time', `address` = '$address', 
-                      `check` = '$check', `transport` = '$transport', `status` = '$status', `name_receiver` = '$nameReceiver', `phone_receiver` = '$phoneReceiver'
-                  WHERE `transactionID` = '$transactionID'";
-        return $this->db->update($query);
-    }
-
-    // Method to delete a transaction from the database
-    public function deleteTransaction($transactionID) {
-        $query = "DELETE FROM `transaction` WHERE `transactionID` = '$transactionID'";
-        return $this->db->delete($query);
-    }
-
-
 
         public function getAllDeleteHoaDon() {
             try {
@@ -220,6 +214,27 @@ require_once '..\Model\Entity\Transaction.php';
                 echo 'Error:'. $e->getMessage();
                 return null;
             }
+        }
+        // Phương thức để thêm một giao dịch mới vào cơ sở dữ liệu
+        public function addTransaction($userID, $total, $note,$time, $address, $name_receiver, $phone_receiver) {
+            $query = "INSERT INTO `transaction` (`userID`, `total`, `note`,`time`, `address`, `check`, `transport`, `status` , `name_receiver`, `phone_receiver`) 
+                      VALUES ('$userID', '$total', '$note','$time', '$address', 'Chưa xác nhận', '', '1', '$name_receiver', '$phone_receiver')";
+            return $this->db->insert($query);
+        }
+        
+    
+        // Phương thức để cập nhật thông tin của một giao dịch trong cơ sở dữ liệu
+        public function updateTransaction($transactionID, $userID, $total, $note, $time, $address,$status) {
+            $query = "UPDATE `transaction` 
+                      SET `userID` = '$userID', `total` = '$total', `note` = '$note', `time` = '$time', `address` = '$address', `status` = '$status' 
+                      WHERE `transactionID` = '$transactionID'";
+            return $this->db->update($query);
+        }
+    
+        // Phương thức để xóa một giao dịch khỏi cơ sở dữ liệu
+        public function deleteTransaction($transactionID) {
+            $query = "DELETE FROM `transaction` WHERE `transactionID` = '$transactionID'";
+            return $this->db->delete($query);
         }
 
     public function displayTotalSales($startDate, $endDate) {
@@ -368,6 +383,50 @@ require_once '..\Model\Entity\Transaction.php';
         } else {
             return false;
         }
+    }
+    public function getBestSellingProducts($topNumber, $statType, $startDate, $endDate) {
+        // Validate inputs
+        $topNumber = (int)$topNumber;
+        if (!in_array($statType, ['totalRevenue', 'numberOfBuyers', 'quantitySold'])) {
+            throw new Exception("Invalid statistic type");
+        }
+    
+        // Define the base query
+        $query = "SELECT p.productID, p.name, ";
+    
+        // Modify the query based on the statType
+        switch ($statType) {
+            case 'totalRevenue':
+                $query .= "SUM(ot.total_amonut) AS value ";
+                break;
+            case 'numberOfBuyers':
+                $query .= "COUNT(DISTINCT t.userID) AS value ";
+                break;
+            case 'quantitySold':
+                $query .= "SUM(ot.quantity) AS value ";
+                break;
+        }
+    
+        // Add condition for start date and end date
+        $query .= "FROM ordertransaction ot
+                   JOIN transaction t ON ot.transactionID = t.transactionID
+                   JOIN product p ON ot.productID = p.productID
+                   WHERE t.time BETWEEN '$startDate' AND '$endDate'
+                   GROUP BY p.productID, p.name
+                   ORDER BY value DESC
+                   LIMIT $topNumber";
+    
+        // Execute the query
+        $result = $this->db->select($query);
+    
+        // Fetch and return the results
+        $bestSellingProducts = [];
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $bestSellingProducts[] = $row;
+            }
+        }
+        return $bestSellingProducts;
     }
 }
     

@@ -10,6 +10,7 @@ $modelCartDetail = new ModelCartDetail();
 $modelVariantDetail = new ModelVariantDetail();
 $cartDetails = $modelCartDetail->getCartDetailByCartID($modelUser->getUIDByUserName($_SESSION['username']));
 $total_price_cart = 0;
+$user = $modelUser->getUIDByUserName($_SESSION['username']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,6 +26,12 @@ $total_price_cart = 0;
     <script src="https://shopvnb.com/themes/gio_hang/jquery-2.1.3.min.js" type="text/javascript"></script>
     <script src="https://shopvnb.com/themes/js/bootstrap.min.js" type="text/javascript"></script>
     <script src="https://shopvnb.com/themes/gio_hang/select2-full-min.js" type="text/javascript"></script>
+    <script> var username = "<?php echo $user ?>"; </script>
+    <script>
+        
+    var totalPriceCart = <?php echo json_encode($total_price_cart); ?>;
+    var cartDetails = <?php echo json_encode($cartData); ?>;
+</script>
 
     <style>
         body {
@@ -184,11 +191,18 @@ $total_price_cart = 0;
                                         $quantity = $cartDetail->getQuantity();
                                         $productID = $cartDetail->getProductID();
                                         $price = $cartDetail->getPrice();
+                                        $varid = $cartDetail->getVariantID();
                                         $variantDetail = $modelVariantDetail->getVariantByID($cartDetail->getVariantID());
                                         $total_price_cart += $cartDetail->getPrice();
                                         $productName = $modelProduct->getProductNameByID($productID);
                                         $product = $modelProduct->getProductByID($productID);
 
+                                        $cartData[] = [
+                                            'quantity' => $quantity,
+                                            'productID' => $productID,
+                                            'price' => $price,
+                                            'variantID' => $varid,
+                                        ];
                                         echo '<tr class="product product-has-image clearfix">';
                                         echo '<td>';
                                         echo '<div class="product-thumbnail">';
@@ -257,41 +271,14 @@ $total_price_cart = 0;
                     });
                 }
             </script>
-
-            <script>
-                
-                    $(document).on('click', '.submit-btn', function(event) {
-                        event.preventDefault();
-
-                        // Collect form data
-                        var fullName = document.getElementById('fullname').value.trim();
-                        var phone = document.getElementById('phone').value.trim();
-                        var address = document.getElementById('address').value.trim();
-                        var note = document.getElementById('notes').value.trim();
-
-                        
-                        if (fullName === '' || phone === '' || address === '') {
-                            alert('Vui lòng nhập đủ thông tin!');
-                            return;
-                        }
-
-                        
-                        var xhr = new XMLHttpRequest();
-                        xhr.open("POST", "process_order.php", true);
-                        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                        xhr.onreadystatechange = function() {
-                            if (xhr.readyState === 4 && xhr.status === 200) {
-                                alert('Đặt hàng thành công!');
-                                
-                            }
-                        };
-                        xhr.send("&fullname=" + fullName + "&phone=" + phone + "&address=" + address + "&notes=" + note + "&total=" + <?php echo $total_price_cart; ?>);
-                    });
-                
-            </script>
-
-
-
+<script>
+    var totalPriceCart = <?php echo json_encode($total_price_cart); ?>;
+    var cartDetails = <?php echo json_encode($cartData); ?>;
+</script>
 </body>
 
 </html>
+
+<script type="text/javascript" src="../../../js/User.js"></script>
+<script type="text/javascript" src="../../../js/OrderTransaction.js"></script>
+<script type="text/javascript" src="../../../js/Transaction.js"></script>';

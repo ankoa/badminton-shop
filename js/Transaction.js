@@ -1,17 +1,21 @@
 window.onload = function() {
-    handleSearchByPhone();
-
+    handleAddTransaction();
     const urlParams = new URLSearchParams(window.location.search);
-    if (window.location.pathname === '/badminton-fix/Controllers/index.php' && urlParams.get('control') === 'checkDonHang') {
+    if (urlParams.get('control') === 'checkDonHang') {
+        console.log(username);
+        if(username === 'unknown'){
+            handleSearchByPhone();
+        }
+        else{
+            handleCustomerOrder();
+        }
         filterEndUserOrderStatus();
-        handleCustomerOrder();
         handleAllCustomerOrder();
         renderCustomerOrderDetail();
         loadMiniForm();
         handleDeleteTransaction();
-        // handleSearchByPhone();
     }
-    if (window.location.pathname === '/badminton-fix/Controllers/index.php' && urlParams.get('control') === 'DetailOrder') {
+    if (urlParams.get('control') === 'DetailOrder') {
         listDelete();
         renderReOrder();
     }
@@ -24,7 +28,7 @@ function searchTransactionsByPhone(phoneNumber) {
         data: { action: 'findPhone', phoneNumber },
         dataType: 'JSON',
         success: data => {
-            let html = ''
+            let html = '';
             // //Xử lý kết quả thành công
             if (data && data.length > 0) {
                 data.forEach((item) => {
@@ -384,6 +388,84 @@ function renderReOrder(){
         var id = $(this).closest('.order-details').find('.order-id').data('transaction-id');
         console.log(id);
         deleteTransaction(1,id);
+        location.reload();
         listDelete();
+    })
+}
+
+function addTransaction(user, total, notes, address, fullname, phone){
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: '../../../Controllers/TransactionController.php',
+            method: 'POST',
+            data: { action: "add", user, total, notes, address, fullname, phone },
+            // dataType: 'JSON',
+            success: res => resolve(res),
+            error: (xhr, status, error) => reject(error)
+        })
+    })
+}
+function addOrderTransaction(proID, varID, total_amonut, quantity) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: '../../../Controllers/OrderTransactionController.php',
+            method: 'POST',
+            data: { action: 'add-order', proID, varID, total_amonut, quantity },
+            dataType: 'JSON',
+            success: cthd => resolve(cthd),
+            error: (xhr, status, error) => reject(error)
+        })
+    })
+}
+
+function handleAddTransaction(){
+    $(document).on('click', '.submit-btn', function(event) {
+        event.preventDefault();
+
+        var fullName = document.getElementById('fullname').value.trim();
+        var phone = document.getElementById('phone').value.trim();
+        var address = document.getElementById('address').value.trim();
+        var note = document.getElementById('notes').value.trim();
+        var user = username;
+        console.log(fullName);
+        console.log(phone);
+        console.log(address);
+        console.log(note);
+        var total = totalPriceCart;
+        console.log(total);
+        var cart = cartDetails; 
+        cart.forEach(function(item) {
+                console.log('Product ID:', item.productID);
+                console.log('Quantity:', item.quantity);
+                console.log('Price:', item.price);
+                console.log('Variant:', item.variantID);
+            });
+        if (fullName === '' || phone === '' || address === '') {
+            alert('Vui lòng nhập đủ thông tin!');
+            return;
+        }else if (isNaN(phone) || phone.length !== 10 || phone[0] !== '0') {
+            alert('Số điện thoại không hợp lệ!');
+        } else {
+            alert('Đặt hàng thành công!');
+            addTransaction(user, total, note, address, fullName, phone);
+            cart.forEach(function(item) {
+                addOrderTransaction(item.productID, item.variantID, item.price, item.quantity);
+                
+            });
+            window.location.href = "../../../Controllers/index.php";
+            
+        }
+    });
+}
+function addOrderTransaction(proID, varID, total_amonut, quantity) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: '../../../Controllers/OrderTransactionController.php',
+            method: 'POST',
+            data: { action: 'add-order', proID, varID, total_amonut, quantity },
+            dataType: 'JSON',
+            success: cthd => resolve(cthd),
+            error: (xhr, status, error) => reject(error)
+        })
     })
 }

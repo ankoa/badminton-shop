@@ -22,7 +22,7 @@ class ModelOrderTransaction {
             echo 'Error:'. $e->getMessage();
             return null;
         }
-    }
+    }*/
 
     // Phương thức để lấy thông tin giao dịch đơn hàng bằng ID đơn hàng
     public function getOrderTransactionByOrderID($orderID) {
@@ -43,7 +43,7 @@ class ModelOrderTransaction {
             echo 'Error:'. $e->getMessage();
             return null;
         }
-    } */
+    } 
 // Phương thức để lấy tất cả các giao dịch đơn hàng từ cơ sở dữ liệu
 public function getAllOrderTransactions() {
     $query = "SELECT * FROM `ordertransaction` WHERE status != 0";
@@ -60,15 +60,15 @@ public function getAllOrderTransactions() {
 }
 
 // Phương thức để lấy thông tin giao dịch đơn hàng bằng ID đơn hàng
-public function getOrderTransactionByOrderID($orderID) {
-    $query = "SELECT * FROM `ordertransaction` WHERE orderID = '$orderID' AND status != 0";
-    $result = $this->db->select($query);
-    if ($result) {
-        return $result->fetch_assoc();
-    } else {
-        return false;
-    }
-}
+// public function getOrderTransactionByOrderID($orderID) {
+//     $query = "SELECT * FROM `ordertransaction` WHERE orderID = '$orderID' AND status != 0";
+//     $result = $this->db->select($query);
+//     if ($result) {
+//         return $result->fetch_assoc();
+//     } else {
+//         return false;
+//     }
+// }
 
     public function checkOrderDetail($id) {
         try {
@@ -89,10 +89,27 @@ public function getOrderTransactionByOrderID($orderID) {
     }
 
     // Phương thức để thêm một giao dịch đơn hàng mới vào cơ sở dữ liệu
-    public function addOrderTransaction($transactionID, $productID, $total, $note, $status) {
-        $query = "INSERT INTO `ordertransaction` (transactionID, productID, total, note, status) 
-                  VALUES ('$transactionID', '$productID', '$total', '$note', '$status')";
-        return $this->db->insert($query);
+    public function addOrderTransaction($productID, $variantID, $total_amonut, $quantity) {
+        $sql = "SELECT MAX(transactionID) AS id FROM transaction";
+        $result = $this->db->select($sql);
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $transaction_id = $row['id'];
+
+            $insert_sql =  "INSERT INTO `ordertransaction`(`transactionID`, `productID`, `variantID`, `total_amonut`, `quantity`) 
+                            VALUES ('$transaction_id','$productID','$variantID','$total_amonut','$quantity')";
+            $this->db->select($insert_sql);
+
+            $update_quantity = "UPDATE variantdetail var 
+                                JOIN ordertransaction orr ON var.variantID = orr.variantID
+                                SET var.quantity = (var.quantity - orr.quantity) 
+                                WHERE orr.variantID = '$variantID' AND orr.transactionID = '$transaction_id'";
+            $tmdt = $this->db->select($update_quantity);
+            if($tmdt === false){
+                echo 'Error:';
+            }
+        }
     }
 
     // Phương thức để cập nhật thông tin giao dịch đơn hàng trong cơ sở dữ liệu
