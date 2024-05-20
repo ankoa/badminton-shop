@@ -29,7 +29,7 @@ class ModelVariant {
     }
 
     public function getListVariantByProductID($productID) {
-        $query = "SELECT * FROM variant WHERE productID = '$productID'";
+        $query = "SELECT * FROM variant WHERE productID = '$productID' and status=1";
         $result = $this->db->select($query);
         $variants = [];
         if ($result) {

@@ -23,6 +23,7 @@ class VariantDetail {
         $this->status = $status;
     }
 
+    // Getter methods
     public function getVariantID() {
         return $this->variantID;
     }
@@ -57,6 +58,43 @@ class VariantDetail {
 
     public function getStatus() {
         return $this->status;
+    }
+
+    // Setter methods
+    public function setVariantID($variantID) {
+        $this->variantID = $variantID;
+    }
+
+    public function setColor($color) {
+        $this->color = $color;
+    }
+
+    public function setSize($size) {
+        $this->size = $size;
+    }
+
+    public function setSpeed($speed) {
+        $this->speed = $speed;
+    }
+
+    public function setGrip($grip) {
+        $this->grip = $grip;
+    }
+
+    public function setWeight($weight) {
+        $this->weight = $weight;
+    }
+
+    public function setQuantity($quantity) {
+        $this->quantity = $quantity;
+    }
+
+    public function setListImage($list_image) {
+        $this->list_image = $list_image;
+    }
+
+    public function setStatus($status) {
+        $this->status = $status;
     }
 }
 

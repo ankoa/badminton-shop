@@ -22,10 +22,10 @@ function getAll($id, $brandID)
 
     if($brandID==null) {
         $strSQL = "SELECT * FROM  product 
-        WHERE catalogID= $id";
+        WHERE catalogID= $id and status=1";
     } else {
         $strSQL = "SELECT * FROM  product 
-        WHERE catalogID= $id AND brandID = $brandID";
+        WHERE catalogID= $id AND brandID = $brandID and status=1";
     }
     
 
@@ -62,7 +62,7 @@ function getAllProduct($searchKeyword = null)
         exit();
     }
 
-    $strSQL = "SELECT * FROM  product";
+    $strSQL = "SELECT * FROM  product and status=1";
 
     if ($searchKeyword) {
         $strSQL .= " WHERE LOWER(name) LIKE '%" . $mysqli->real_escape_string(strtolower($searchKeyword)) . "%'";
@@ -106,7 +106,7 @@ function loadPage($page, $productsPerPage, $id)
     $strSQL = "SELECT * FROM (
     SELECT *, ROW_NUMBER() OVER() AS row_num 
     FROM product 
-    WHERE catalogID= $id
+    WHERE catalogID= $id and status=1
     ) AS numbered_rows
     ORDER BY row_num
     LIMIT $offset, $productsPerPage";
@@ -148,7 +148,7 @@ function loadPage2($page, $productsPerPage, $id, $brandID)
     $strSQL = "SELECT * FROM (
     SELECT *, ROW_NUMBER() OVER() AS row_num 
     FROM product 
-    WHERE catalogID= $id AND brandID= $brandID
+    WHERE catalogID= $id AND brandID= $brandID and status=1
     ) AS numbered_rows
     ORDER BY row_num
     LIMIT $offset, $productsPerPage";
@@ -198,7 +198,7 @@ function loadNav($productsPerPage, $id)
     }
 
     $strSQL = "SELECT catalogID, COUNT(*) AS total_products
-    FROM product
+    FROM product where status=1
     GROUP BY catalogID";
     $result = $mysqli->query($strSQL);
     while ($row = $result->fetch_assoc()) {
@@ -230,7 +230,7 @@ function loadNav2($productsPerPage, $id, $brandID)
 
     $strSQL = "SELECT catalogID, COUNT(*) AS total_products
     FROM product
-    Where brandID = $brandID
+    Where brandID = $brandID and status=1
     GROUP BY catalogID";
     $result = $mysqli->query($strSQL);
     while ($row = $result->fetch_assoc()) {

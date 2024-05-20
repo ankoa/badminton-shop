@@ -14,7 +14,16 @@ button[type=submit]
     height:30px;
 }
 
-input[type=text]
+input[type=text],input[type=number]
+{
+    height: 28px;
+    border-radius: 5px;
+    size:40;
+    margin-right: 50px;
+    float: right;
+}
+
+input[type=number]
 {
     height: 28px;
     border-radius: 5px;

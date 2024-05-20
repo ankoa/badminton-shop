@@ -80,7 +80,6 @@ session_start(); // Start the session at the beginning of the script
         }
 
         .product-version-container {
-            display: flex;
             align-items: center;
         }
 
@@ -112,6 +111,7 @@ session_start(); // Start the session at the beginning of the script
             /* Kích thước padding của nội dung tab */
             font-size: 16px;
             /* Kích thước chữ của nội dung tab */
+            margin-left: 10%;
         }
 
         .image-container {
@@ -1087,77 +1087,77 @@ session_start(); // Start the session at the beginning of the script
     </div>
 
     <div id="doanhso-content" class="content-section">
-    <form id="frmdoanhso">
-        <h1 style="padding-left: 10%;">TÌM KIẾM THEO NGÀY</h1>
-        <div class="containbox">
-            <label for="datestart">Ngày bắt đầu:</label>
-            <input type="date" id="datestart2">
+        <form id="frmdoanhso">
+            <h1 style="padding-left: 10%;">TÌM KIẾM THEO NGÀY</h1>
+            <div class="containbox">
+                <label for="datestart">Ngày bắt đầu:</label>
+                <input type="date" id="datestart2">
+            </div>
+            <div class="containbox">
+                <label for="dateend">Ngày kết thúc:</label>
+                <input type="date" id="dateend2">
+            </div>
+            <button type="submit" style="margin-top: 10px; margin-left: 10px;" onclick="thongKe(event);"> Thống kê doanh số </button>
+            <button type="submit" style="margin-top: 10px; margin-left: 10px;" onclick="thongKeByBrand(event);"> Thống kê doanh số theo hãng </button>
+            <button type="button" style="margin-top: 10px; margin-left: 10px;" onclick="showBestSellingProductsPopup();"> Thống kê sản phẩm bán chạy </button>
+            <h2 id="tongdoanhso"></h2>
+            <canvas id="salesChart" width="400" height="400"></canvas>
+            <table class="tabledoanhso" id="quanlydoanhso" cellpadding="50" cellspacing="100">
+                <thead>
+                    <tr></tr>
+                </thead>
+            </table>
+        </form>
+        <div id="bestSellingProductsTable" style="display: none;">
+            <table id="bestSellingTable">
+                <thead>
+                    <tr>
+                        <th>Tên sản phẩm</th>
+                        <th id="statTypeHeader">Statistic Value</th>
+                    </tr>
+                </thead>
+                <tbody id="bestSellingTableBody">
+                    <!-- Table body will be dynamically populated -->
+                </tbody>
+            </table>
         </div>
-        <div class="containbox">
-            <label for="dateend">Ngày kết thúc:</label>
-            <input type="date" id="dateend2">
-        </div>
-        <button type="submit" style="margin-top: 10px; margin-left: 10px;" onclick="thongKe(event);"> Thống kê doanh số </button>
-        <button type="submit" style="margin-top: 10px; margin-left: 10px;" onclick="thongKeByBrand(event);"> Thống kê doanh số theo hãng </button>
-        <button type="button" style="margin-top: 10px; margin-left: 10px;" onclick="showBestSellingProductsPopup();"> Thống kê sản phẩm bán chạy </button>
-        <h2 id="tongdoanhso"></h2>
-        <canvas id="salesChart" width="400" height="400"></canvas>
-        <table class="tabledoanhso" id="quanlydoanhso" cellpadding="50" cellspacing="100">
-            <thead>
-                <tr></tr>
-            </thead>
-        </table>
-    </form>
-    <div id="bestSellingProductsTable" style="display: none;">
-    <table id="bestSellingTable">
-        <thead>
-            <tr>
-                <th>Tên sản phẩm</th>
-                <th id="statTypeHeader">Statistic Value</th>
-            </tr>
-        </thead>
-        <tbody id="bestSellingTableBody">
-            <!-- Table body will be dynamically populated -->
-        </tbody>
-    </table>
-</div>
-<div id="salesDataTable" style="display: none;">
-    <h2>Bảng Dữ liệu Doanh số</h2>
-    <table id="salesData">
-        <thead>
-            <tr>
-            <th id="salesDateHeader">Ngày</th>
-            <th id="salesValueHeader">Doanh số</th>
-            </tr>
-        </thead>
-        <tbody>
-    
-        </tbody>
-    </table>
-</div>
-</div>
+        <div id="salesDataTable" style="display: none;">
+            <h2>Bảng Dữ liệu Doanh số</h2>
+            <table id="salesData">
+                <thead>
+                    <tr>
+                        <th id="salesDateHeader">Ngày</th>
+                        <th id="salesValueHeader">Doanh số</th>
+                    </tr>
+                </thead>
+                <tbody>
 
-
-<!-- Popup Modal -->
-<div id="bestSellingProductsModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeBestSellingProductsPopup()">&times;</span>
-        <h2>Thống kê sản phẩm bán chạy</h2>
-        <div>
-            <label for="topNumber">Top số lượng:</label>
-            <input type="number" id="topNumber" value="3" min="1">
+                </tbody>
+            </table>
         </div>
-        <div>
-            <label for="statType">Thống kê theo:</label>
-            <select id="statType">
-                <option value="totalRevenue">Tổng doanh thu</option>
-                <option value="numberOfBuyers">Số lượng người mua</option>
-                <option value="quantitySold">Số lượng bán ra</option>
-            </select>
-        </div>
-        <button onclick="fetchBestSellingProducts()">Thống kê</button>
     </div>
-</div>
+
+
+    <!-- Popup Modal -->
+    <div id="bestSellingProductsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeBestSellingProductsPopup()">&times;</span>
+            <h2>Thống kê sản phẩm bán chạy</h2>
+            <div>
+                <label for="topNumber">Top số lượng:</label>
+                <input type="number" id="topNumber" value="3" min="1">
+            </div>
+            <div>
+                <label for="statType">Thống kê theo:</label>
+                <select id="statType">
+                    <option value="totalRevenue">Tổng doanh thu</option>
+                    <option value="numberOfBuyers">Số lượng người mua</option>
+                    <option value="quantitySold">Số lượng bán ra</option>
+                </select>
+            </div>
+            <button onclick="fetchBestSellingProducts()">Thống kê</button>
+        </div>
+    </div>
     </div>
 
 
@@ -1361,7 +1361,10 @@ session_start(); // Start the session at the beginning of the script
                 });
             });
 
+
             function loadvariant(productID) {
+                document.getElementById("saveVariant").setAttribute('data-productID', productID);
+                var firstColor = "";
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4) {
@@ -1418,16 +1421,58 @@ session_start(); // Start the session at the beginning of the script
                                     if (firstRadio) {
                                         radioHTML += ` checked`;
                                         firstRadio = false;
+                                        firstColor = key;
+                                        console.log(firstColor);
                                     }
 
                                     radioHTML += `>
-                                <label class="form-check-label" for="${key}">${uppercaseKey}</label>
+                                <label class="form-check-label" for="${key}">
+                                    <span id="label-${key}">${key}</span>
+                                </label>
+                                <i class="fas fa-edit edit-icon" style="margin-left: 10px; cursor: pointer;" onclick="editLabel('${key}')"></i>
+                                <i class="fas fa-trash-alt delete-icon" style="margin-left: 10px; cursor: pointer;" onclick="deleteColor('${key}')"></i>
                             </div>
                         `;
-
                                     variantContainer.innerHTML += radioHTML;
                                 });
+                                variantContainer.innerHTML += `<i id="addRadioButton" onclick="addColor()" class="fas fa-plus-circle"></i>`;
+
                             }
+
+                            var xhttp2 = new XMLHttpRequest();
+                            xhttp2.onreadystatechange = function() {
+                                if (this.readyState == 4) {
+                                    if (this.status == 200) {
+                                        var productInfo = JSON.parse(this.responseText);
+                                        document.getElementById("variantTab").innerHTML = "";
+                                        var html = "";
+                                        console.log(productInfo);
+                                        for (var i = 0; i < productInfo.length; i++) {
+                                            if (i == 0) loadVariantDetail(productInfo[i].variantID);
+                                            var index = i + 1;
+                                            if (i == 0) {
+                                                html += `<li style="cursor:pointer" class="nav-item active">
+                            <a onclick="changeTab('content-variant-` + productInfo[i].variantID + `', this);loadVariantDetail(` + productInfo[i].variantID + `)" class="nav-link active" id="tab-variant-` + productInfo[i].variantID + `" role="tab" aria-controls="content-variant-` + productInfo[i].variantID + `" aria-selected="true">Biến thể ` + index + `</a>
+                        </li>`;
+                                            } else {
+                                                html += `<li style="cursor:pointer" class="nav-item">
+                            <a onclick="changeTab('content-variant-` + productInfo[i].variantID + `', this);loadVariantDetail(` + productInfo[i].variantID + `)" class="nav-link" id="tab-variant-` + productInfo[i].variantID + `" role="tab" aria-controls="content-variant-` + productInfo[i].variantID + `" aria-selected="true">Biến thể ` + index + `</a>
+                        </li>`;
+                                            }
+
+
+                                        }
+                                        html += `<li class="nav-item">
+                                        <a class="nav-link" id="addTabButton" onclick="addTab()">+</a>
+                                    </li>`;
+                                        document.getElementById("variantTab").innerHTML = html;
+                                    } else {
+                                        console.error("Yêu cầu thất bại");
+                                    }
+                                }
+                            };
+                            xhttp2.open("GET", "admin_product.php?get=variant&productID=" + productID + "&color=" + firstColor, true);
+                            xhttp2.send();
                         } else {
                             console.error("Yêu cầu thất bại");
                         }
@@ -1435,6 +1480,7 @@ session_start(); // Start the session at the beginning of the script
                 };
                 xhttp.open("GET", "admin_product.php?get=listImg&productID=" + productID, true);
                 xhttp.send();
+
             }
 
 
@@ -1464,7 +1510,7 @@ session_start(); // Start the session at the beginning of the script
                             var imgContainer = document.getElementById('image-container');
                             imgContainer.innerHTML = '';
 
-                            var promises = imgUrl.map((imgIndex, i) => {
+                            var promises = imgUrl.slice(1).map((imgIndex, i) => {
                                 let tmp = "images/product/" + productID + "/" + color + "/" + productID + "." + imgIndex + ".png";
                                 return getPromiseUrl(tmp).then(url => {
                                     return `<div class="image-container">
@@ -1486,7 +1532,104 @@ session_start(); // Start the session at the beginning of the script
                 };
                 xhttp.open("GET", "admin_product.php?get=listImg&productID=" + productID, true);
                 xhttp.send();
+
+                var xhttp2 = new XMLHttpRequest();
+                xhttp2.onreadystatechange = function() {
+                    if (this.readyState == 4) {
+                        if (this.status == 200) {
+                            var productInfo = JSON.parse(this.responseText);
+                            document.getElementById("variantTab").innerHTML = "";
+                            var html = "";
+                            console.log(productInfo);
+                            for (var i = 0; i < productInfo.length; i++) {
+                                if (i == 0) loadVariantDetail(productInfo[i].variantID);
+                                var index = i + 1;
+                                if (i == 0) {
+                                    html += `<li style="cursor:pointer" class="nav-item active">
+                            <a onclick="changeTab('content-variant-` + productInfo[i].variantID + `', this);loadVariantDetail(` + productInfo[i].variantID + `)" class="nav-link active" id="tab-variant-` + productInfo[i].variantID + `" role="tab" aria-controls="content-variant-` + productInfo[i].variantID + `" aria-selected="true">Biến thể ` + index + `</a>
+                        </li>`;
+                                } else {
+                                    html += `<li style="cursor:pointer" class="nav-item">
+                            <a onclick="changeTab('content-variant-` + productInfo[i].variantID + `', this);loadVariantDetail(` + productInfo[i].variantID + `)" class="nav-link" id="tab-variant-` + productInfo[i].variantID + `" role="tab" aria-controls="content-variant-` + productInfo[i].variantID + `" aria-selected="true">Biến thể ` + index + `</a>
+                        </li>`;
+                                }
+
+
+                            }
+                            html += `<li class="nav-item">
+                                        <a class="nav-link" id="addTabButton" onclick="addTab()">+</a>
+                                    </li>`;
+                            document.getElementById("variantTab").innerHTML = html;
+                        } else {
+                            console.error("Yêu cầu thất bại");
+                        }
+                    }
+                };
+                xhttp2.open("GET", "admin_product.php?get=variant&productID=" + productID + "&color=" + color, true);
+                xhttp2.send();
             }
+
+            function loadVariantDetail(variantID) {
+                document.getElementById("saveVariant").setAttribute('data-variantID', variantID);
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4) {
+                        if (this.status == 200) {
+                            var data = JSON.parse(this.responseText);
+                            if (data[0].grip != "" && data[0].grip != null) {
+                                var inputElement = document.getElementById("grip");
+                                inputElement.value = data[0].grip;
+                                inputElement.disabled = false;
+                            } else {
+                                var inputElement = document.getElementById("grip");
+                                inputElement.disabled = true;
+                            }
+
+                            if (data[0].weight != "" && data[0].weight != null) {
+                                var inputElement2 = document.getElementById("weight");
+                                inputElement2.value = data[0].weight;
+                                inputElement2.disabled = false;
+                            } else {
+                                var inputElement2 = document.getElementById("weight");
+                                inputElement2.disabled = true;
+                            }
+
+                            if (data[0].quantity != "" && data[0].quantity != null) {
+                                var inputElement3 = document.getElementById("quantity");
+                                inputElement3.value = data[0].quantity;
+                                inputElement3.disabled = false;
+                            } else {
+                                var inputElement3 = document.getElementById("quantity");
+                                inputElement3.disabled = true;
+                            }
+
+                            if (data[0].speed != "" && data[0].speed != null) {
+                                var inputElement4 = document.getElementById("speed");
+                                inputElement4.value = data[0].speed;
+                                inputElement4.disabled = false;
+                            } else {
+                                var inputElement4 = document.getElementById("speed");
+                                inputElement4.disabled = true;
+                            }
+
+                            if (data[0].size != "" && data[0].size != null) {
+                                var inputElement5 = document.getElementById("size");
+                                inputElement5.value = data[0].size;
+                                inputElement5.disabled = false;
+                            } else {
+                                var inputElement5 = document.getElementById("size");
+                                inputElement5.disabled = true;
+                            }
+
+                        } else {
+                            console.error("Yêu cầu thất bại");
+                        }
+                    }
+                };
+                xhttp.open("GET", "admin_product.php?get=variantdetail&variantID=" + variantID, true);
+                xhttp.send();
+            }
+
 
 
 
@@ -1579,69 +1722,240 @@ session_start(); // Start the session at the beginning of the script
                 <div class="input-group mb-3" id="variant">
 
                 </div>
+                <script>
+                    function editLabel(id) {
+                        var label = document.getElementById('label-' + id);
+                        var currentText = label.textContent;
+
+                        // Tạo input để chỉnh sửa văn bản
+                        var input = document.createElement('input');
+                        input.type = 'text';
+                        input.value = currentText;
+                        input.className = 'form-control form-control-sm';
+                        input.style.width = 'auto';
+
+                        // Thay thế label bằng input
+                        label.replaceWith(input);
+                        input.focus();
+
+                        // Khi input mất tiêu điểm, lưu lại văn bản và thay thế input bằng label
+                        input.addEventListener('blur', function() {
+                            var newText = input.value;
+                            label.textContent = newText;
+                            input.replaceWith(label);
+                        });
+
+                        // Xử lý khi nhấn phím Enter
+                        input.addEventListener('keydown', function(event) {
+                            if (event.key === 'Enter') {
+                                input.blur();
+                            }
+                        });
+                    }
+
+                    function addColor() {
+                        var newColorName = prompt("Enter the name for the new color:");
+
+                        if (newColorName) {
+                            // Tạo ID cho radio mới từ tên màu
+                            var newColorID = newColorName.replace(/\s+/g, '');
+
+                            // Tạo các phần tử HTML cho radio mới
+                            var div = document.createElement('div');
+                            div.className = 'form-check form-check-inline';
+
+                            var input = document.createElement('input');
+                            input.className = 'form-check-input';
+                            input.type = 'radio';
+                            input.name = 'color';
+                            input.id = newColorID;
+                            input.value = newColorName;
+                            input.setAttribute('data-value2', '1');
+                            input.setAttribute('onclick', 'loadvariantRadio(this)');
+
+                            var label = document.createElement('label');
+                            label.className = 'form-check-label';
+                            label.htmlFor = newColorID;
+                            label.id = 'label-' + newColorID;
+                            label.textContent = newColorName.toUpperCase();
+
+                            var editIcon = document.createElement('i');
+                            editIcon.className = 'fas fa-edit';
+                            editIcon.style.cssText = 'margin-left: 10px; cursor: pointer;';
+                            editIcon.setAttribute('onclick', 'editLabel(\'' + newColorID + '\')');
+
+                            // Thêm các phần tử vào div
+                            div.appendChild(input);
+                            div.appendChild(label);
+                            div.appendChild(editIcon);
+
+                            // Thêm div vào trước nút "Thêm"
+                            var addButton = document.getElementById('addRadioButton');
+                            addButton.parentNode.insertBefore(div, addButton);
+                        }
+                    }
+
+                    function deleteColor(colorID) {
+                        var deleteImageConfirmation = window.confirm("Bạn có muốn xoá ảnh này?");
+                        if (deleteImageConfirmation) {
+                            var colorElement = document.getElementById(colorID);
+                            var colorDiv = colorElement.parentNode;
+                            colorDiv.parentNode.removeChild(colorDiv);
+                        }
+                    }
+                </script>
                 <div class="input-group mb-3">
                     <div class="container">
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="product-version-container">
-                                    <div class="product-version">Biến thể:</div>
-                                    <div class="position-relative d-inline-block badge-container" style="margin-left: 20px; cursor:pointer;">
-                                        <div class="badge badge-primary" style="height: 40px; width:100px; line-height: 30px" data-toggle="badge">4UG5
-                                            <button type="button" class="btn btn-danger btn-sm rounded-circle position-absolute" style="top: -10px; right: -15px;" data-toggle="button">&times;</button>
+                            <div class="product-version-container">
+                                <ul class="nav nav-tabs" id="variantTab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="tab-variant-1" onclick="changeTab('content-variant-1', this)" role="tab" aria-controls="content-variant-1" aria-selected="true">Biến thể 1</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="tab-variant-2" onclick="changeTab('content-variant-2', this)" role="tab" aria-controls="content-variant-2" aria-selected="false">Biến thể 2</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="tab-variant-3" onclick="changeTab('content-variant-3', this)" role="tab" aria-controls="content-variant-3" aria-selected="false">Biến thể 3</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="addTabButton" onclick="addTab()">+</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content" id="variantTabContent">
+                                    <div class="tab-pane show active" id="content-variant-3" role="tabpanel" aria-labelledby="tab-variant-3">
+                                        <div class="form-group">
+                                            <label for="grip">Cán cầm</label>
+                                            <input type="text" class="form-control" id="grip" placeholder="Cán cầm">
                                         </div>
-                                    </div>
-                                    <div class="position-relative d-inline-block badge-container" style="margin-left: 20px; cursor:pointer;">
-                                        <div class="badge badge-primary" style="height: 40px; width:100px; line-height: 30px" data-toggle="badge">4UG5
-                                            <button type="button" class="btn btn-danger btn-sm rounded-circle position-absolute" style="top: -10px; right: -15px;" data-toggle="button">&times;</button>
+                                        <div class="form-group">
+                                            <label for="weight">Trọng lượng</label>
+                                            <input type="text" class="form-control" id="weight" placeholder="Trọng lượng">
                                         </div>
-                                    </div>
-                                    <div class="position-relative d-inline-block badge-container" style="margin-left: 20px; cursor:pointer;">
-                                        <div class="badge badge-primary" style="height: 40px; width:100px; line-height: 30px" data-toggle="badge">4UG5
-                                            <button type="button" class="btn btn-danger btn-sm rounded-circle position-absolute" style="top: -10px; right: -15px;" data-toggle="button">&times;</button>
+                                        <div class="form-group">
+                                            <label for="speed">Tốc độ</label>
+                                            <input type="text" class="form-control" id="speed" placeholder="Tốc độ">
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <script>
-                            // Lắng nghe sự kiện nhấp vào badge
-                            document.querySelectorAll('[data-toggle="badge"]').forEach(function(badge) {
-                                badge.addEventListener('click', function() {
-                                    // Loại bỏ lớp "badge-active" từ tất cả các badge
-                                    document.querySelectorAll('.badge-container').forEach(function(item) {
-                                        item.classList.remove('badge-active');
-                                    });
-                                    // Thêm lớp "badge-active" cho badge được nhấp vào
-                                    badge.closest('.badge-container').classList.add('badge-active');
-                                });
-                            });
-
-                            // Lắng nghe sự kiện nhấp vào nút xóa
-                            document.querySelectorAll('[data-toggle="button"]').forEach(function(button) {
-                                button.addEventListener('click', function(event) {
-                                    event.stopPropagation(); // Ngăn chặn sự kiện click trên badge
-                                });
-                            });
-                        </script>
-
-                        <!-- Thêm hàng mới cho input và nút lưu -->
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="input-group" style="margin-top: 10px; width:60%">
-                                    <input type="text" class="form-control" placeholder="Số lượng" aria-label="Số lượng" aria-describedby="basic-addon2">
-                                    <div class="input-group-append" style="width: 100px">
-                                        <button class="btn btn-outline-secondary" type="button">Lưu</button>
+                                        <div class="form-group">
+                                            <label for="size">Size</label>
+                                            <input type="text" class="form-control" id="size" placeholder="Size">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="quantity">Số lượng</label>
+                                            <input type="number" class="form-control" id="quantity" placeholder="Số lượng">
+                                        </div>
+                                        <button id="saveVariant" style="margin-top:10px" type="button" class="btn btn-primary" onclick="saveData()">Lưu dữ liệu</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-
-
-
                 </div>
+
+                <script>
+                    function saveData() {
+                        var buttonSave = document.getElementById("saveVariant");
+                        var variantID = buttonSave.getAttribute('data-variantid');
+                        var grip = document.getElementById("grip").value || null;
+                        var weight = document.getElementById("weight").value || null;
+                        var speed = document.getElementById("speed").value || null;
+                        var size = document.getElementById("size").value || null;
+                        var quantity = document.getElementById("quantity").value;
+                        var xhttp = new XMLHttpRequest();
+                        xhttp.onreadystatechange = function() {
+                            if (this.readyState == 4) {
+                                if (this.status == 200) {
+                                    alert("Cập nhật thành công");
+                                } else {
+                                    console.error("Yêu cầu thất bại");
+                                }
+                            }
+                        };
+                        xhttp.open("GET", "admin_product.php?get=updatevariant&variantID=" + variantID + "&grip=" + grip + "&weight=" + weight + "&speed=" + speed + "&size=" + size + "&quantity=" + quantity, true);
+                        xhttp.send();
+                    }
+
+                    function changeTab(tabID, tabElement) {
+                        // Lấy ra tất cả các tab
+                        var tabs = document.querySelectorAll('.nav-link');
+
+                        // Xóa lớp active cho tất cả các tab
+                        tabs.forEach(function(tab) {
+                            tab.classList.remove('active');
+                        });
+
+                        // Thêm lớp active cho tab được chọn
+                        tabElement.classList.add('active');
+
+
+                    }
+                </script>
+
+
+
+
+                <script>
+                    let tabCounter = 4;
+
+                    function addTab() {
+    const tabCount = document.querySelectorAll('#variantTab .nav-item').length;
+    const newTabNumber = tabCount; // Count includes the add button as well
+    const newTabID = `tab-variant-${newTabNumber}`;
+    const newContentID = `content-variant-${newTabNumber}`;
+    const newTabName = `Biến thể ${newTabNumber}`;
+
+    // Create new tab
+    const newTab = document.createElement('li');
+    newTab.className = 'nav-item';
+    newTab.innerHTML = `
+        <a class="nav-link" id="${newTabID}" data-toggle="tab" href="#${newContentID}" role="tab" aria-controls="${newContentID}" aria-selected="false">${newTabName}</a>
+    `;
+
+    // Append new tab
+    document.querySelector('#addTabButton').parentElement.before(newTab);
+
+    // Remove 'active' class from all tabs and contents
+    document.querySelectorAll('#variantTab .nav-link').forEach(tab => tab.classList.remove('active'));
+
+    // Add 'active' class to the new tab and content
+    newTab.querySelector('.nav-link').classList.add('active');
+
+    tabCounter++;
+
+    var fields = ['grip', 'weight', 'quantity', 'speed', 'size'];
+
+    fields.forEach(function(field) {
+        var inputElement = document.getElementById(field);
+        inputElement.value = "";
+        inputElement.disabled = false;
+    });
+}
+
+                </script>
+
+
+                <script>
+                    function removeTab(tabID) {
+                        const tab = document.getElementById(tabID);
+                        const contentID = tab.getAttribute('href').substring(1);
+                        const content = document.getElementById(contentID);
+
+                        // Remove tab and content
+                        tab.parentElement.remove();
+                        content.remove();
+
+                        // Activate the first tab if the removed tab was active
+                        if (tab.classList.contains('active')) {
+                            const firstTab = document.querySelector('#variantTab .nav-link');
+                            if (firstTab) {
+                                firstTab.classList.add('active');
+                                document.querySelector(firstTab.getAttribute('href')).classList.add('show', 'active');
+                            }
+                        }
+                    }
+                </script>
+
+
                 <div class="input-group mb-3">
                     <label for="existingImage">Ảnh đại diện:</label>
                     <div class="d-flex align-items-center">
@@ -1679,7 +1993,7 @@ session_start(); // Start the session at the beginning of the script
                 </div>
                 <script>
                     function deleteImage(button) {
-                        var deleteImageConfirmation = window.confirm("Bạn có muốn xoá ảnh này?");
+                        var deleteImageConfirmation = window.confirm("Bạn có muốn xoá màu này?");
                         if (deleteImageConfirmation) {
                             var imageContainer = button.parentElement; // Lấy phần tử cha của nút (div .image-container)
                             imageContainer.remove();
@@ -1765,20 +2079,19 @@ session_start(); // Start the session at the beginning of the script
                         });
                     });
 
-                    document.getElementById('uploadButton').addEventListener('click', function() {
+                    document.getElementById('uploadButton').addEventListener('click', function(event) {
                         event.preventDefault();
                         const files = document.getElementById('image-choose').files;
                         const uploadButton = document.getElementById('uploadButton');
                         var color = uploadButton.getAttribute("data-color");
                         var productID = uploadButton.getAttribute("data-productID");
+
                         if (files.length === 0) {
                             alert('No files selected');
                             return;
                         }
 
-                        Array.from(files).forEach(file => {
-                            convertAndUpload(file, productID, color);
-                        });
+                        uploadFiles(files, productID, color);
                     });
 
                     function convertUrlToLocalPath(url) {
@@ -1795,94 +2108,107 @@ session_start(); // Start the session at the beginning of the script
                             console.error('No timestamp found in the URL.');
                             return null;
                         }
-
                     }
+
                     let imageURLs = [];
 
                     function convertAndUpload(file, productID, color) {
-    return new Promise((resolve, reject) => {
-        // Tạo đối tượng FileReader để đọc tệp hình ảnh
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = function(event) {
-            const imgElement = document.createElement('img');
-            imgElement.src = event.target.result;
+                        return new Promise((resolve, reject) => {
+                            // Tạo đối tượng FileReader để đọc tệp hình ảnh
+                            const reader = new FileReader();
+                            reader.readAsDataURL(file);
+                            reader.onload = function(event) {
+                                const imgElement = document.createElement('img');
+                                imgElement.src = event.target.result;
 
-            imgElement.onload = function() {
-                // Tạo canvas để chuyển đổi hình ảnh
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-                canvas.width = imgElement.width;
-                canvas.height = imgElement.height;
-                ctx.drawImage(imgElement, 0, 0);
+                                imgElement.onload = function() {
+                                    // Tạo canvas để chuyển đổi hình ảnh
+                                    const canvas = document.createElement('canvas');
+                                    const ctx = canvas.getContext('2d');
+                                    canvas.width = imgElement.width;
+                                    canvas.height = imgElement.height;
+                                    ctx.drawImage(imgElement, 0, 0);
 
-                // Chuyển đổi hình ảnh thành định dạng PNG
-                canvas.toBlob(function(blob) {
-                    const filePath = 'images/product/' + productID + '/' + color + '/' + productID + '.' + Date.now() + ".png";
-                    const storageRef = storage.ref(filePath);
+                                    // Chuyển đổi hình ảnh thành định dạng PNG
+                                    canvas.toBlob(function(blob) {
+                                        const filePath = 'images/product/' + productID + '/' + color + '/' + productID + '.' + Date.now() + ".png";
+                                        const storageRef = storage.ref(filePath);
 
-                    // Tải lên tệp đã chuyển đổi
-                    const uploadTask = storageRef.put(blob);
+                                        // Tải lên tệp đã chuyển đổi
+                                        const uploadTask = storageRef.put(blob);
 
-                    uploadTask.on('state_changed',
-                        (snapshot) => {
-                            // Quan sát trạng thái thay đổi
-                            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                            console.log('Upload is ' + progress + '% done');
-                        },
-                        (error) => {
-                            // Xử lý lỗi
-                            console.error('Upload failed:', error);
-                            reject(error);
-                        },
-                        () => {
-                            // Lấy URL của ảnh đã tải lên
-                            uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-                                console.log('File available at', downloadURL);
+                                        uploadTask.on('state_changed',
+                                            (snapshot) => {
+                                                // Quan sát trạng thái thay đổi
+                                                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                                                console.log('Upload is ' + progress + '% done');
+                                            },
+                                            (error) => {
+                                                // Xử lý lỗi
+                                                console.error('Upload failed:', error);
+                                                reject(error);
+                                            },
+                                            () => {
+                                                // Lấy URL của ảnh đã tải lên
+                                                uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                                                    console.log('File available at', downloadURL);
 
-                                // Thêm đường dẫn vào mảng imageURLs
-                                const localPath = convertUrlToLocalPath(downloadURL);
-                                imageURLs.push(localPath);
-                                console.log('Array of image URLs:', imageURLs);
-                                resolve(localPath);
-                            }).catch(reject);
+                                                    // Thêm đường dẫn vào mảng imageURLs
+                                                    const localPath = convertUrlToLocalPath(downloadURL);
+                                                    imageURLs.push(localPath);
+                                                    //console.log('Array of image URLs:', imageURLs);
+                                                    resolve(localPath);
+                                                }).catch(reject);
+                                            }
+                                        );
+                                    }, 'image/png');
+                                };
+                            };
+                            reader.onerror = reject;
+                        });
+                    }
+
+                    async function uploadFiles(files, productID, color) {
+                        try {
+                            for (const file of files) {
+                                await convertAndUpload(file, productID, color);
+                            }
+
+                            // Chuyển đổi mảng imageURLs thành chuỗi JSON và mã hóa nó
+                            const imageURLsJson = encodeURIComponent(JSON.stringify(imageURLs));
+
+                            // Tạo và gửi yêu cầu XMLHttpRequest
+                            var xhttp = new XMLHttpRequest();
+                            xhttp.onreadystatechange = function() {
+                                if (this.readyState == 4) {
+                                    if (this.status == 200) {
+                                        var data = JSON.parse(this.responseText);
+                                        //console.log(data);
+                                        document.getElementById('image-choose').value='';
+                                        document.getElementById('selectedImages').innerHTML='';
+                                        
+                                        var colors = document.getElementsByName('color');
+                                        for (var i = 0; i < colors.length; i++) {
+                                            if (colors[i].checked) {
+                                                loadvariantRadio(colors[i]);
+                                                break;
+                                            }
+                                        }
+    
+                                        loadvariantRadio();
+                                        alert("Tải hình thành công")
+                                    } else {
+                                        console.error("Yêu cầu thất bại");
+                                    }
+                                }
+                            };
+
+                            xhttp.open("GET", "admin_product.php?get=addImg&productID=" + productID + "&color=" + color + "&imageURLs=" + imageURLsJson, true);
+                            xhttp.send();
+                        } catch (error) {
+                            console.error("Error during upload:", error);
                         }
-                    );
-                }, 'image/png');
-            };
-        };
-        reader.onerror = reject;
-    });
-}
-
-async function uploadFiles(files, productID, color) {
-    try {
-        for (const file of files) {
-            await convertAndUpload(file, productID, color);
-        }
-
-        // Chuyển đổi mảng imageURLs thành chuỗi JSON và mã hóa nó
-        const imageURLsJson = encodeURIComponent(JSON.stringify(imageURLs));
-
-        // Tạo và gửi yêu cầu XMLHttpRequest
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-            if (this.readyState == 4) {
-                if (this.status == 200) {
-                    var data = JSON.parse(this.responseText);
-                    console.log(data);
-                } else {
-                    console.error("Yêu cầu thất bại");
-                }
-            }
-        };
-
-        xhttp.open("GET", "admin_product.php?get=addImg&productID=" + productID + "&color=" + color + "&imageURLs=" + imageURLsJson, true);
-        xhttp.send();
-    } catch (error) {
-        console.error("Error during upload:", error);
-    }
-}
+                    }
                 </script>
 
 
@@ -2034,68 +2360,68 @@ async function uploadFiles(files, productID, color) {
 </body>
 <script>
     function showBestSellingProductsPopup() {
-    document.getElementById('bestSellingProductsModal').style.display = 'block';
-}
+        document.getElementById('bestSellingProductsModal').style.display = 'block';
+    }
 
-function closeBestSellingProductsPopup() {
-    document.getElementById('bestSellingProductsModal').style.display = 'none';
-}
+    function closeBestSellingProductsPopup() {
+        document.getElementById('bestSellingProductsModal').style.display = 'none';
+    }
 
-function fetchBestSellingProducts() {
-    const topNumber = document.getElementById('topNumber').value;
-    const statType = document.getElementById('statType').value;
-    var startDate = document.getElementById('datestart2').value;
-    var endDate = document.getElementById('dateend2').value;
-    document.getElementById('bestSellingProductsTable').style.display = 'block';
-    // Ẩn canvas của biểu đồ
-    document.getElementById('salesChart').style.display = 'none';
+    function fetchBestSellingProducts() {
+        const topNumber = document.getElementById('topNumber').value;
+        const statType = document.getElementById('statType').value;
+        var startDate = document.getElementById('datestart2').value;
+        var endDate = document.getElementById('dateend2').value;
+        document.getElementById('bestSellingProductsTable').style.display = 'block';
+        // Ẩn canvas của biểu đồ
+        document.getElementById('salesChart').style.display = 'none';
 
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', `../View/fetch_best_selling_products.php?startDate=${startDate}&endDate=${endDate}&topNumber=${topNumber}&statType=${statType}`, true);
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            const data = JSON.parse(xhr.responseText);
-            console.log(data);
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', `../View/fetch_best_selling_products.php?startDate=${startDate}&endDate=${endDate}&topNumber=${topNumber}&statType=${statType}`, true);
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                const data = JSON.parse(xhr.responseText);
+                console.log(data);
 
-            // Populate the table with data
-            const tableBody = document.getElementById('bestSellingTableBody');
-            tableBody.innerHTML = ''; // Clear previous data
-            data.forEach(product => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
+                // Populate the table with data
+                const tableBody = document.getElementById('bestSellingTableBody');
+                tableBody.innerHTML = ''; // Clear previous data
+                data.forEach(product => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
                     <td>${product.name}</td>
                     <td>${product.value}</td>
                 `;
-                tableBody.appendChild(row);
-            });
+                    tableBody.appendChild(row);
+                });
 
-            // Update the column header based on the selected statType
-            const statTypeHeader = document.getElementById('statTypeHeader');
-            switch (statType) {
-                case 'totalRevenue':
-                    statTypeHeader.textContent = 'Tổng doanh thu';
-                    break;
-                case 'numberOfBuyers':
-                    statTypeHeader.textContent = 'Số lượng người mua';
-                    break;
-                case 'quantitySold':
-                    statTypeHeader.textContent = 'Số lượng bán ra ';
-                    break;
-                default:
-                    statTypeHeader.textContent = 'Statistic Value';
+                // Update the column header based on the selected statType
+                const statTypeHeader = document.getElementById('statTypeHeader');
+                switch (statType) {
+                    case 'totalRevenue':
+                        statTypeHeader.textContent = 'Tổng doanh thu';
+                        break;
+                    case 'numberOfBuyers':
+                        statTypeHeader.textContent = 'Số lượng người mua';
+                        break;
+                    case 'quantitySold':
+                        statTypeHeader.textContent = 'Số lượng bán ra ';
+                        break;
+                    default:
+                        statTypeHeader.textContent = 'Statistic Value';
+                }
+
+                // Show the table
+                document.getElementById('bestSellingProductsTable').style.display = 'block';
+            } else {
+                console.error('Error fetching data:', xhr.status, xhr.statusText);
             }
-
-            // Show the table
-            document.getElementById('bestSellingProductsTable').style.display = 'block';
-        } else {
-            console.error('Error fetching data:', xhr.status, xhr.statusText);
-        }
-    };
-    xhr.onerror = function() {
-        console.error('Request failed');
-    };
-    xhr.send();
-}
+        };
+        xhr.onerror = function() {
+            console.error('Request failed');
+        };
+        xhr.send();
+    }
     document.getElementById('editUserForm').onsubmit = function(event) {
         event.preventDefault();
 

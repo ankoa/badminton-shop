@@ -242,7 +242,7 @@ class ModelProduct
     // Phương thức để lấy thông tin sản phẩm bằng catalogID
     public function getProductByCatalogID($catalogID)
     {
-        $query = "SELECT * FROM product WHERE catalogID = '$catalogID'";
+        $query = "SELECT * FROM product WHERE catalogID = '$catalogID' and status=1";
         $result = $this->db->select($query);
         $products = [];
         if ($result && $result->num_rows > 0) {
@@ -293,7 +293,7 @@ class ModelProduct
 
     public function getProductByBrandIDAndCatalogID($catalogID, $brandID)
     {
-        $query = "SELECT * FROM product WHERE brandID = '$brandID' AND catalogID = '$catalogID'";
+        $query = "SELECT * FROM product WHERE brandID = '$brandID' AND catalogID = '$catalogID' and status=1";
         $result = $this->db->select($query);
         $products = [];
         if ($result && $result->num_rows > 0) {

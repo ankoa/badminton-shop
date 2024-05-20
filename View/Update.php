@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Cập nhật sản phẩm và xử lý kết quả
         $result = $ModelProduct->updateProduct($productID, $name, $price, $fakePrice, $tmp);
         if ($result) {
-            echo "<script>window.location.href='../Controllers/Badminton_Admin.php';</script>";
+            echo "<script>alert('Sửa sản phẩm thành công!')</script><script>window.location.href='../Controllers/Badminton_Admin.php';</script>";
         } else {
             echo "<script>alert('Không thể cập nhật sản phẩm');</script>";
         }

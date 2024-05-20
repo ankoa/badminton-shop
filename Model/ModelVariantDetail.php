@@ -14,7 +14,7 @@ class ModelVariantDetail {
 
     // Phương thức để lấy tất cả các biến thể từ cơ sở dữ liệu
     public function getAllVariantsDetail() {
-        $query = "SELECT * FROM variantdetail WHERE status != 0";
+        $query = "SELECT * FROM variantdetail WHERE status=1";
         $result = $this->db->select($query);
         $variants = [];
         if ($result) {
@@ -39,7 +39,7 @@ class ModelVariantDetail {
     
 
     public function getListVariantsByID($variantID) {
-        $query = "SELECT * FROM variantdetail WHERE variantID = '$variantID' AND status != 0";
+        $query = "SELECT * FROM variantdetail WHERE variantID = '$variantID' and status=1";
         $result = $this->db->select($query);
         $variants = [];
         if ($result) {
@@ -65,7 +65,7 @@ class ModelVariantDetail {
     
     // Phương thức để lấy một biến thể theo ID
     public function getVariantByID($variantID) {
-        $query = "SELECT * FROM variantdetail WHERE variantID = '$variantID' AND status != 0";
+        $query = "SELECT * FROM variantdetail WHERE variantID = '$variantID'";
         $result = $this->db->select($query);
         if ($result) {
             $row = $result->fetch_assoc();
@@ -134,7 +134,7 @@ class ModelVariantDetail {
     }
 
     public function getListWeight() {
-        $query = "SELECT DISTINCT(weight) FROM variantdetail WHERE weight IS NOT NULL AND STATUS !=0;";
+        $query = "SELECT DISTINCT(weight) FROM variantdetail WHERE weight IS NOT NULL";
         $result = $this->db->select($query);
         $variants = [];
         if ($result) {
@@ -147,7 +147,7 @@ class ModelVariantDetail {
     }
 
     public function getListGrip() {
-        $query = "SELECT DISTINCT(grip) FROM variantdetail WHERE grip IS NOT NULL AND grip != '' AND STATUS !=0;";
+        $query = "SELECT DISTINCT(grip) FROM variantdetail WHERE grip IS NOT NULL AND grip != ''";
         $result = $this->db->select($query);
         $variants = [];
         if ($result) {
@@ -175,7 +175,7 @@ class ModelVariantDetail {
     }
 
     public function getListShuttleSpeed() {
-        $query = "SELECT DISTINCT(speed) FROM variantdetail WHERE speed IS NOT NULL AND STATUS !=0;";
+        $query = "SELECT DISTINCT(speed) FROM variantdetail WHERE speed IS NOT NULL AND STATUS =0;";
         $result = $this->db->select($query);
         $variants = [];
         if ($result) {
@@ -208,6 +208,46 @@ class ModelVariantDetail {
                       quantity = '$quantity', 
                       list_image = '$listImage', 
                       status = '$status' 
+                  WHERE variantID = '$variantID'";
+        return $this->db->update($query);
+    }
+
+    public function updateGrip($variantID, $grip) {
+
+        $query = "UPDATE variantdetail 
+                  SET grip = '$grip'
+                  WHERE variantID = '$variantID'";
+        return $this->db->update($query);
+    }
+    
+    public function updateWeight($variantID, $weight) {
+
+        $query = "UPDATE variantdetail 
+                  SET weight = '$weight'
+                  WHERE variantID = '$variantID'";
+        return $this->db->update($query);
+    }
+
+    public function updateSize($variantID, $size) {
+
+        $query = "UPDATE variantdetail 
+                  SET size = '$size' 
+                  WHERE variantID = '$variantID'";
+        return $this->db->update($query);
+    }
+
+    public function updateSpeed($variantID, $speed) {
+
+        $query = "UPDATE variantdetail 
+                  SET speed = '$speed'
+                  WHERE variantID = '$variantID'";
+        return $this->db->update($query);
+    }
+
+    public function updateQuantity($variantID, $quantity) {
+
+        $query = "UPDATE variantdetail 
+                  SET quantity = '$quantity' 
                   WHERE variantID = '$variantID'";
         return $this->db->update($query);
     }
