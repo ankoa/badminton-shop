@@ -63,7 +63,7 @@ function delImg($productID, $imgIndex, $color) {
             return $value != $imgIndex;
         });
         // Sắp xếp lại mảng để đảm bảo các chỉ số liên tiếp (nếu cần)
-        $result[$colorKey] = array_values($imageArray);
+        //$result[$colorKey] = array_values($imageArray);
     }
 
     // Tạo lại chuỗi URL từ mảng kết quả
@@ -83,6 +83,59 @@ function delImg($productID, $imgIndex, $color) {
     return $newUrlString;
 }
 
+function addImg($productID, $imageURLs, $color) {
+    $modelProduct = new ModelProduct();
+    $product = $modelProduct->getProductByID($productID);
+    $string = $product->getUrl();
+
+    // Tạo mảng để lưu kết quả
+    $result = array();
+
+    // Tách chuỗi theo dấu chấm phẩy để lấy ra các phần tử riêng biệt
+    $parts = explode(";", $string);
+
+    foreach ($parts as $part) {
+        // Tách từng phần tử thành tên và các số
+        $temp = explode(":", $part);
+
+        // Lưu tên làm key (viết thường) và các số làm value vào mảng kết quả
+        if (isset($temp[0]) && isset($temp[1])) {
+            $result[trim($temp[0])] = explode(",", $temp[1]);
+        }
+    }
+
+    $colorKey = trim($color);
+
+    if (isset($result[$colorKey])) {
+        $imageArray = $result[$colorKey];
+    } else {
+        $imageArray = [];
+    }
+
+    // Thêm tất cả phần tử trong imageURLs vào mảng
+    foreach ($imageURLs as $imgIndex) {
+        $imageArray[] = $imgIndex;
+    }
+
+    // Cập nhật lại mảng con trong $result
+    $result[$colorKey] = $imageArray;
+
+    // Tạo lại chuỗi URL từ mảng kết quả
+    $newUrlArray = array();
+    foreach ($result as $key => $values) {
+        if (!empty($values)) { // Chỉ thêm vào nếu mảng không rỗng
+            $newUrlArray[] = $key . ":" . implode(",", $values);
+        }
+    }
+    $newUrlString = implode(";", $newUrlArray);
+
+    // Cập nhật lại URL của sản phẩm
+    //$product->setUrl($newUrlString);
+    //$modelProduct->updateUrlImgProduct($productID, $newUrlString);
+
+    // Trả về chuỗi URL mới
+    return $newUrlString;
+}
 
 
 if (isset($_GET['get'])) {
@@ -95,6 +148,11 @@ if (isset($_GET['get'])) {
             if (isset($_GET['imgDel']))
                 if (isset($_GET['color']))
                     echo json_encode(delImg($_GET['productID'], $_GET['imgDel'], $_GET['color']));
+    } else if ($_GET['get']=='addImg') {
+        if (isset($_GET['productID']))
+            if (isset($_GET['imageURLs']))
+                if (isset($_GET['color']))
+                    echo json_encode(addImg($_GET['productID'], $_GET['imageURLs'], $_GET['color']));
     }
 }
 else {

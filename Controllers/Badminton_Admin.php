@@ -188,6 +188,7 @@ session_start(); // Start the session at the beginning of the script
     <script>
         // Your web app's Firebase configuration
         var imgCurrent = null;
+        var countIMG = 0;
         const firebaseConfig = {
             apiKey: "AIzaSyBsTkEPMoozdFG1qh--RQ1C-gyS9BVFh-w",
             authDomain: "badmintonstorage.firebaseapp.com",
@@ -1315,124 +1316,132 @@ session_start(); // Start the session at the beginning of the script
             });
 
             function loadvariant(productID) {
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState == 4) {
-            if (this.status == 200) {
-                var data = JSON.parse(this.responseText);
-                var keys = Object.keys(data);
-                var imagesrc = "images/product/" + productID + "/" + keys[0] + "/" + productID + ".1.png";
-                getPromiseUrl(imagesrc).then(url => {
-                    document.getElementById("existingImage").setAttribute('src', url);
-                }).catch(error => {
-                    console.error('Error fetching image URL:', error);
-                });
-                var imgUrl = data[keys[0]];
-                imgCurrent = imgUrl;
-                var imgContainer = document.getElementById('image-container');
-                imgContainer.innerHTML = '';
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4) {
+                        if (this.status == 200) {
+                            var data = JSON.parse(this.responseText);
+                            var keys = Object.keys(data);
+                            var imagesrc = "images/product/" + productID + "/" + keys[0] + "/" + productID + ".1.png";
+                            const uploadButton = document.getElementById('uploadButton');
+                            uploadButton.setAttribute('data-color', keys[0]);
+                            uploadButton.setAttribute('data-productID', productID);
+                            // Fetch and set the main image
+                            getPromiseUrl(imagesrc).then(url => {
+                                document.getElementById("existingImage").setAttribute('src', url);
+                            }).catch(error => {
+                                console.error('Error fetching image URL:', error);
+                            });
 
-                var promises = [];
-                for (var i = 1; i < imgUrl.length; i++) {
-                    let tmp = "images/product/" + productID + "/" + keys[0] + "/" + productID + "." + imgUrl[i] + ".png";
-                    promises.push(
-                        getPromiseUrl(tmp).then(url => {
-                            return `<div class="image-container">
-                                <img src="` + url + `" alt="Image ` + i + `" onclick="openImage(this.src)">
-                                <button data-scr="`+tmp+`" data-id="` + productID + `" data-color="` + keys[0] + `" data-value="` + imgUrl[i] + `" class="btn btn-danger delete-btn" onclick="deleteImage(this)">×</button>
-                            </div>`;
-                        }).catch(error => {
-                            console.error('Error fetching image URL:', error);
-                        })
-                    );
-                }
+                            var imgUrl = data[keys[0]];
+                            countIMG = imgUrl.length;
+                            imgCurrent = imgUrl;
+                            var imgContainer = document.getElementById('image-container');
+                            imgContainer.innerHTML = '';
 
-                Promise.all(promises).then(results => {
-                    imgContainer.innerHTML = results.join('');
-                });
+                            // Create promises for each image
+                            var promises = imgUrl.slice(1).map((imgIndex, i) => {
+                                let tmp = "images/product/" + productID + "/" + keys[0] + "/" + productID + "." + imgIndex + ".png";
+                                return getPromiseUrl(tmp).then(url => {
+                                    return `<div class="image-container">
+                            <img src="` + url + `" alt="Image ` + (i + 1) + `" onclick="openImage(this.src)">
+                            <button data-scr="` + tmp + `" data-id="` + productID + `" data-color="` + keys[0] + `" data-value="` + imgIndex + `" class="btn btn-danger delete-btn" onclick="deleteImage(this)">×</button>
+                        </div>`;
+                                }).catch(error => {
+                                    console.error('Error fetching image URL:', error);
+                                });
+                            });
 
-                var variantContainer = document.getElementById('variant');
-                variantContainer.innerHTML = '';
+                            // Render all images once all promises are resolved
+                            Promise.all(promises).then(results => {
+                                imgContainer.innerHTML = results.join('');
+                            });
 
-                if (variantContainer.innerHTML.trim() === '') {
-                    var firstRadio = true;
-                    keys.forEach(function(key) {
-                        var uppercaseKey = key.toUpperCase();
-                        var radioHTML = `
+                            var variantContainer = document.getElementById('variant');
+                            variantContainer.innerHTML = '';
+
+                            // Add radio buttons for variants
+                            if (variantContainer.innerHTML.trim() === '') {
+                                var firstRadio = true;
+                                keys.forEach(function(key) {
+                                    var uppercaseKey = key.toUpperCase();
+                                    var radioHTML = `
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="color" id="${key}" value="${key}" data-value2="${productID}" onclick="loadvariantRadio(this)"`;
 
-                        if (firstRadio) {
-                            radioHTML += ` checked`;
-                            firstRadio = false;
-                        }
+                                    if (firstRadio) {
+                                        radioHTML += ` checked`;
+                                        firstRadio = false;
+                                    }
 
-                        radioHTML += `>
+                                    radioHTML += `>
                                 <label class="form-check-label" for="${key}">${uppercaseKey}</label>
                             </div>
                         `;
 
-                        variantContainer.innerHTML += radioHTML;
-                    });
-                }
-            } else {
-                console.error("Yêu cầu thất bại");
+                                    variantContainer.innerHTML += radioHTML;
+                                });
+                            }
+                        } else {
+                            console.error("Yêu cầu thất bại");
+                        }
+                    }
+                };
+                xhttp.open("GET", "admin_product.php?get=listImg&productID=" + productID, true);
+                xhttp.send();
             }
-        }
-    };
-    xhttp.open("GET", "admin_product.php?get=listImg&productID=" + productID, true);
-    xhttp.send();
-}
 
 
-function loadvariantRadio(c) {
-    var productID = c.getAttribute('data-value2');
-    var color = c.value;
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState == 4) {
-            if (this.status == 200) {
-                var data = JSON.parse(this.responseText);
-                var keys = Object.keys(data);
-                var imagesrc = "images/product/" + productID + "/" + keys[0] + "/" + productID + ".1.png";
-                getPromiseUrl(imagesrc).then(url => {
-                    document.getElementById("existingImage").setAttribute('src', url);
-                }).catch(error => {
-                    console.error('Error fetching image URL:', error);
-                });
-                
-                var imgUrl = data[color];
-                imgCurrent = imgUrl;
-                console.log(imgCurrent);
-                var imgContainer = document.getElementById('image-container');
-                imgContainer.innerHTML = '';
 
-                var promises = [];
-                for (var i = 1; i < imgUrl.length; i++) {
-                    let tmp = "images/product/" + productID + "/" + color + "/" + productID + "." + imgUrl[i] + ".png";
-                    promises.push(
-                        getPromiseUrl(tmp).then(url => {
-                            return `<div class="image-container">
-                                <img src="` + url + `" alt="Image ` + (i) + `" onclick="openImage(this.src)">
-                                <button data-scr="`+tmp+`" data-color="` + color + `" data-id="` + productID + `" data-value="` + imgUrl[i] + `" class="btn btn-danger delete-btn" onclick="deleteImage(this)">×</button>
-                            </div>`;
-                        }).catch(error => {
-                            console.error('Error fetching image URL:', error);
-                        })
-                    );
-                }
+            function loadvariantRadio(c) {
+                var productID = c.getAttribute('data-value2');
+                var color = c.value;
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4) {
+                        if (this.status == 200) {
+                            var data = JSON.parse(this.responseText);
+                            var keys = Object.keys(data);
+                            const uploadButton = document.getElementById('uploadButton');
+                            uploadButton.setAttribute('data-color', color);
+                            uploadButton.setAttribute('data-productID', productID);
+                            var imagesrc = "images/product/" + productID + "/" + color + "/" + productID + ".1.png";
+                            getPromiseUrl(imagesrc).then(url => {
+                                document.getElementById("existingImage").setAttribute('src', url);
+                            }).catch(error => {
+                                console.error('Error fetching image URL:', error);
+                            });
 
-                Promise.all(promises).then(results => {
-                    imgContainer.innerHTML = results.join('');
-                });
-            } else {
-                console.error("Yêu cầu thất bại");
+                            var imgUrl = data[color];
+                            imgCurrent = imgUrl;
+                            countIMG = imgUrl.length;
+                            var imgContainer = document.getElementById('image-container');
+                            imgContainer.innerHTML = '';
+
+                            var promises = imgUrl.map((imgIndex, i) => {
+                                let tmp = "images/product/" + productID + "/" + color + "/" + productID + "." + imgIndex + ".png";
+                                return getPromiseUrl(tmp).then(url => {
+                                    return `<div class="image-container">
+                            <img src="` + url + `" alt="Image ` + (i + 1) + `" onclick="openImage(this.src)">
+                            <button data-color="` + color + `" data-id="` + productID + `" data-value="` + imgIndex + `" class="btn btn-danger delete-btn" onclick="deleteImage(this)">×</button>
+                        </div>`;
+                                }).catch(error => {
+                                    console.error('Error fetching image URL:', error);
+                                });
+                            });
+
+                            Promise.all(promises).then(results => {
+                                imgContainer.innerHTML = results.join('');
+                            });
+                        } else {
+                            console.error("Yêu cầu thất bại");
+                        }
+                    }
+                };
+                xhttp.open("GET", "admin_product.php?get=listImg&productID=" + productID, true);
+                xhttp.send();
             }
-        }
-    };
-    xhttp.open("GET", "admin_product.php?get=listImg&productID=" + productID, true);
-    xhttp.send();
-}
+
 
 
             // Hàm đóng modal form
@@ -1623,11 +1632,7 @@ function loadvariantRadio(c) {
                     <img class="modal-content-popup" id="modalImage">
                 </div>
                 <script>
-                    function deleteImage(button, event) {
-                        if (event) {
-                            event.preventDefault();
-                        }
-
+                    function deleteImage(button) {
                         var deleteImageConfirmation = window.confirm("Bạn có muốn xoá ảnh này?");
                         if (deleteImageConfirmation) {
                             var imageContainer = button.parentElement; // Lấy phần tử cha của nút (div .image-container)
@@ -1635,11 +1640,17 @@ function loadvariantRadio(c) {
                             var productID = button.getAttribute('data-id');
                             var imgIndex = button.getAttribute('data-value');
                             var color = button.getAttribute('data-color');
+                            var imgSrc = button.getAttribute('data-scr'); // Get the image src from data attribute
+
+                            // Call the deleteFile function with the image path
+
+
                             var xhttp = new XMLHttpRequest();
                             xhttp.onreadystatechange = function() {
                                 if (this.readyState == 4) {
                                     if (this.status == 200) {
                                         var data = JSON.parse(this.responseText);
+                                        deleteFile(imgSrc);
                                         console.log(data);
                                     } else {
                                         console.error("Yêu cầu thất bại");
@@ -1648,11 +1659,9 @@ function loadvariantRadio(c) {
                             };
                             xhttp.open("GET", "admin_product.php?get=delImg&productID=" + productID + "&imgDel=" + imgIndex + "&color=" + color, true);
                             xhttp.send();
-                        } else {
-                            // Không có hành động nào khi người dùng nhấn "Cancel"
-                            console.log("Hành động xoá ảnh đã bị huỷ.");
                         }
                     }
+
 
                     function openImage(src) {
                         var modal = document.getElementById('imageModal');
@@ -1669,24 +1678,167 @@ function loadvariantRadio(c) {
 
 
                 <div class="input-group mb-3">
-                    <label for="editProductImageInput">Chọn hình mới:</label>
-                    <input type="file" name="image" id="image-choose" accept="image/*">
-                    <img id="selectedImage" style="max-width: 100px; max-height: 70px;" alt="Hình được chọn">
-                    <button id="uploadButton">Upload Image</button>
+                    <div class="container mt-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Thêm hình chi tiết</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label for="image-choose" class="form-label">Chọn hình mới:</label>
+                                    <input type="file" class="form-control" id="image-choose" accept="image/*" multiple>
+                                </div>
+                                <div id="selectedImages" class="d-flex flex-wrap gap-2">
+                                    <!-- Hình được chọn sẽ hiển thị ở đây -->
+                                </div>
+                                <button id="uploadButton" class="btn btn-primary mt-3">Upload Image</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <script>
                     document.getElementById('image-choose').addEventListener('change', function(event) {
-                        const file = event.target.files[0];
-                        if (file) {
-                            const reader = new FileReader();
-                            reader.onload = function(e) {
-                                document.getElementById('selectedImage').src = e.target.result;
-                            };
-                            reader.readAsDataURL(file);
-                        }
+                        const files = event.target.files;
+                        const selectedImagesContainer = document.getElementById('selectedImages');
+                        selectedImagesContainer.innerHTML = ''; // Clear any previous images
+
+                        Array.from(files).forEach(file => {
+                            if (file) {
+                                const reader = new FileReader();
+                                reader.onload = function(e) {
+                                    const img = document.createElement('img');
+                                    img.src = e.target.result;
+                                    img.style.maxWidth = '150px';
+                                    img.style.maxHeight = '150px';
+                                    img.style.border = 'solid 1px #007bff';
+                                    selectedImagesContainer.appendChild(img);
+                                };
+                                reader.readAsDataURL(file);
+                            }
+                        });
                     });
+
+                    document.getElementById('uploadButton').addEventListener('click', function() {
+                        event.preventDefault();
+                        const files = document.getElementById('image-choose').files;
+                        const uploadButton = document.getElementById('uploadButton');
+                        var color = uploadButton.getAttribute("data-color");
+                        var productID = uploadButton.getAttribute("data-productID");
+                        if (files.length === 0) {
+                            alert('No files selected');
+                            return;
+                        }
+
+                        Array.from(files).forEach(file => {
+                            convertAndUpload(file, productID, color);
+                        });
+                    });
+
+                    function convertUrlToLocalPath(url) {
+                        // Tách phần query parameters từ URL
+                        const [pathPart] = url.split('?');
+                        // Thay thế các ký tự đặc biệt và các phần tử dấu '%2F' thành '/'
+                        const localPath = pathPart.replace(/%2F/g, '/').replace(/%20/g, ' ');
+                        const regex = /\.([0-9]+)\.png$/;
+                        const match = localPath.match(regex);
+
+                        if (match && match[1]) {
+                            return match[1];
+                        } else {
+                            console.error('No timestamp found in the URL.');
+                            return null;
+                        }
+
+                    }
+                    let imageURLs = [];
+
+                    function convertAndUpload(file, productID, color) {
+    return new Promise((resolve, reject) => {
+        // Tạo đối tượng FileReader để đọc tệp hình ảnh
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function(event) {
+            const imgElement = document.createElement('img');
+            imgElement.src = event.target.result;
+
+            imgElement.onload = function() {
+                // Tạo canvas để chuyển đổi hình ảnh
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = imgElement.width;
+                canvas.height = imgElement.height;
+                ctx.drawImage(imgElement, 0, 0);
+
+                // Chuyển đổi hình ảnh thành định dạng PNG
+                canvas.toBlob(function(blob) {
+                    const filePath = 'images/product/' + productID + '/' + color + '/' + productID + '.' + Date.now() + ".png";
+                    const storageRef = storage.ref(filePath);
+
+                    // Tải lên tệp đã chuyển đổi
+                    const uploadTask = storageRef.put(blob);
+
+                    uploadTask.on('state_changed',
+                        (snapshot) => {
+                            // Quan sát trạng thái thay đổi
+                            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                            console.log('Upload is ' + progress + '% done');
+                        },
+                        (error) => {
+                            // Xử lý lỗi
+                            console.error('Upload failed:', error);
+                            reject(error);
+                        },
+                        () => {
+                            // Lấy URL của ảnh đã tải lên
+                            uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                                console.log('File available at', downloadURL);
+
+                                // Thêm đường dẫn vào mảng imageURLs
+                                const localPath = convertUrlToLocalPath(downloadURL);
+                                imageURLs.push(localPath);
+                                console.log('Array of image URLs:', imageURLs);
+                                resolve(localPath);
+                            }).catch(reject);
+                        }
+                    );
+                }, 'image/png');
+            };
+        };
+        reader.onerror = reject;
+    });
+}
+
+async function uploadFiles(files, productID, color) {
+    try {
+        for (const file of files) {
+            await convertAndUpload(file, productID, color);
+        }
+
+        // Chuyển đổi mảng imageURLs thành chuỗi JSON và mã hóa nó
+        const imageURLsJson = encodeURIComponent(JSON.stringify(imageURLs));
+
+        // Tạo và gửi yêu cầu XMLHttpRequest
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4) {
+                if (this.status == 200) {
+                    var data = JSON.parse(this.responseText);
+                    console.log(data);
+                } else {
+                    console.error("Yêu cầu thất bại");
+                }
+            }
+        };
+
+        xhttp.open("GET", "admin_product.php?get=addImg&productID=" + productID + "&color=" + color + "&imageURLs=" + imageURLsJson, true);
+        xhttp.send();
+    } catch (error) {
+        console.error("Error during upload:", error);
+    }
+}
                 </script>
+
 
 
                 <button type="submit" class="btn btn-primary" style="width:100%;">Lưu</button>
