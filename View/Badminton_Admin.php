@@ -514,7 +514,10 @@ function changeUserStatus(userID, newStatus) {
                 if ($user['roleID'] != 1) {
                     $buttonText = $user['status'] == 1 ? 'Chặn' : 'Bỏ chặn';
                     $newStatus = $user['status'] == 1 ? 0 : 1;
-                    echo "<button onclick='changeUserStatus(\"" . $user['userID'] . "\", " . $newStatus . ", this)'>$buttonText</button>";
+                    echo "
+                    <button onclick='changeUserStatus(\"" . $user['userID'] . "\", " . $newStatus . ", this)'>$buttonText</button>
+                    <button id='openEditUser' data-userid = (\"" . $user['userID'] . "\")>Cập nhật</button>
+                    ";
                 }
                 echo "</td></tr>";
             }
