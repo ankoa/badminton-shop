@@ -168,7 +168,7 @@ class ModelProduct
 
     public function getListProductByGrip($grip, $brandID)
     {
-        $query = "SELECT DISTINCT p.productID, p.brandID, p.catalogID, p.name, p.description, p.status, p.price, p.fakePrice, p.url_image, p.timeCreated
+        $query = "SELECT DISTINCT p.productID, p.brandID, p.catalogID, p.name, p.fakePrice, p.status, p.price, p.fakePrice, p.url_image, p.timeCreated
         FROM product p, variantdetail vd, variant v
         WHERE p.productID=v.productID and v.variantID=vd.variantID and vd.grip='$grip'";
 

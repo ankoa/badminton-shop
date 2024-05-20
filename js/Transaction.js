@@ -1,6 +1,6 @@
 window.onload = function() {
     handleAddTransaction();
-    const urlParams = new URLSearchParams(window.location.search);
+    const urlParams = new URLSearchParams(window.location.search); HEAD
     if (urlParams.get('control') === 'checkDonHang') {
         console.log(username);
         if(username === 'unknown'){
@@ -9,6 +9,7 @@ window.onload = function() {
         else{
             handleCustomerOrder();
         }
+
         filterEndUserOrderStatus();
         handleAllCustomerOrder();
         renderCustomerOrderDetail();
